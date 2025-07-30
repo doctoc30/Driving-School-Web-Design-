@@ -11,7 +11,7 @@
   }
   body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ff3131;
+    background-color: #33a7d4;
     color: white;
     overflow-x: hidden;
   }
@@ -23,7 +23,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    background-color: #ff3131;
+    background-color: #33a7d4;
     z-index: 2000;
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
   }
@@ -66,7 +66,7 @@
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #ff3131;
+    background-color: #33a7d4;
     transform: translateX(-100%);
     transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
     display: flex;
@@ -187,7 +187,7 @@
 
   @keyframes solidRise {
     0% { background-color: white; }
-    100% { background-color: #ff3131; }
+    100% { background-color: #33a7d4; }
   }
 
   .overlay-text {
@@ -197,7 +197,7 @@
     transform: translate(-50%, -50%);
     font-weight: bold;
     color: white;
-    text-shadow: 0 0 30px #b30000;
+    text-shadow: 0 0 30px #227090; /* Adjusted shadow to complement new color */
     z-index: 1;
     text-align: center;
     opacity: 0;
@@ -269,7 +269,7 @@
 
 button {
     background: white;
-    color: #ff3131;
+    color: #33a7d4;
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
@@ -282,7 +282,7 @@ button {
 }
 
   button:hover {
-    background: #e60000;
+    background: #227090; /* Adjusted hover color to complement new color */
     color: white;
   }
 
@@ -473,7 +473,7 @@ input[type="email"] {
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 500px;
-  background: #ff3131;
+  background: #33a7d4;
   color: white;
   padding: 2rem;
   box-sizing: border-box;
@@ -506,7 +506,7 @@ input[type="email"] {
   width: 90%;
   max-width: 500px;
   min-height: 60vh;
-  background: #ff3131;
+  background: #33a7d4;
   color: white;
   padding: 2rem;
   box-sizing: border-box;
@@ -578,7 +578,7 @@ button {
   border: none;
   border-radius: 8px;
   background: white;
-  color: #ff3131;
+  color: #33a7d4;
   font-weight: bold;
   margin: 0.5rem;
   cursor: pointer;
@@ -628,7 +628,7 @@ button:hover {
   border: none;
   border-radius: 8px;
   background: white;
-  color: #ff3131;
+  color: #33a7d4;
   font-weight: bold;
   cursor: pointer;
   width: auto;              /* Make sure buttons size to content */
@@ -688,14 +688,11 @@ button:hover {
 </header> 
 
 
-<!-- This stays before form -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<!-- ✅ Wraps all form content now -->
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <!-- MAIN INTRO OPTIONS -->
   <div class="form-screen active" id="main-intro-options">
     <h2>What do you need help with?</h2>
     <div class="button-row">
@@ -705,7 +702,6 @@ button:hover {
     </div>
   </div>
 
-  <!-- LAYER 1: ENTRY SCREEN -->
   <div class="form-screen" id="form-start-choice">
     <h2>How would you like to get started?</h2>
     <div class="button-row">
@@ -716,7 +712,6 @@ button:hover {
     </div>
   </div>
 
-  <!-- LAYER 2: FULL QUOTE FORM -->
   <div class="form-screen" id="q0">
     <h2>What type of website are you looking for?</h2>
     <select name="Website Type" required>
@@ -730,8 +725,6 @@ button:hover {
       <button type="button" onclick="next()">Next</button>
     </div>
   </div>
-
-  <!-- All other #q1 to #q11 screens remain unchanged... -->
 
   <div class="form-screen" id="q11">
     <h2>Almost done! Please enter your details</h2>
