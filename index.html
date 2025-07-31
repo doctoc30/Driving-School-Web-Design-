@@ -500,7 +500,7 @@ input[type="email"] {
 --------------------------------------------- */
 .form-screen {
   position: fixed;
-  top: 55%;
+  top: 50%; /* instead of 55% */
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
@@ -514,10 +514,11 @@ input[type="email"] {
   z-index: 1000;
   display: none;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;  /* Center vertically */
+  align-items: center;      /* Center horizontally */
   overflow-y: auto;
   border-radius: 12px;
+  height: 100vh;            /* Take full screen height */
 }
 
 .form-screen.active {
@@ -530,6 +531,16 @@ input[type="email"] {
   max-width: 500px;
   line-height: 1.4;
 }
+
+/* Optional: adjust if very small screens */
+@media (max-height: 600px) {
+  .form-screen {
+    justify-content: flex-start;
+    padding-top: 4rem;
+  }
+}
+
+
 
 /* --------------------------------------------
    3. FORM FIELDS (input, select)
@@ -599,21 +610,7 @@ button:hover {
 /* --------------------------------------------
    6. MOBILE HEIGHT ADJUSTMENTS
 --------------------------------------------- */
-@media (max-height: 600px) {
-  #form-start-choice,
-  .form-screen {
-    top: 70%;
-    transform: translate(-50%, -55%);
-  }
-}
 
-
-
-.form-screen {
-  justify-content: flex-start;
-  padding-top: 10rem;
-  height: calc(100vh - 6rem);
-}
 
 .button-row {
   display: flex;
