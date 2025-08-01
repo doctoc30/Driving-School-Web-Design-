@@ -500,7 +500,7 @@ input[type="email"] {
 --------------------------------------------- */
 .form-screen {
   position: fixed;
-  top: 50%; /* instead of 55% */
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
@@ -514,11 +514,28 @@ input[type="email"] {
   z-index: 1000;
   display: none;
   flex-direction: column;
-  justify-content: center;  /* Center vertically */
-  align-items: center;      /* Center horizontally */
+  justify-content: center;   /* Center vertically */
+  align-items: center;       /* Center horizontally */
   overflow-y: auto;
   border-radius: 12px;
-  height: 100vh;            /* Take full screen height */
+}
+
+/* Show active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* On small-height screens, remove vertical centering
+   so content scrolls naturally */
+@media (max-height: 600px) {
+  .form-screen {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: flex-start;
+    padding-top: 4rem;
+    min-height: auto;
+  }
 }
 
 .form-screen.active {
