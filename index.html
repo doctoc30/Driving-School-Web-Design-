@@ -466,81 +466,59 @@ input[type="email"] {
  /* --------------------------------------------
    1. FIRST QUESTION SCREEN (#form-start-choice)
 --------------------------------------------- */
-#form-start-choice {
+/* --------------------------------------------
+   1. FORM WRAPPER (centering container)
+--------------------------------------------- */
+#formWrapper {
   position: fixed;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;                      /* shorthand for top:0; right:0; bottom:0; left:0 */
+  display: flex;
+  justify-content: center;       /* horizontal center */
+  align-items: center;           /* vertical center */
+  z-index: 1000;
+  background: rgba(0,0,0,0.4);   /* optional: dim background */
+  margin: 0;
+}
+
+/* --------------------------------------------
+   2. MULTI-STEP FORM SCREENS
+--------------------------------------------- */
+.form-screen,
+#form-start-choice {
   width: 90%;
   max-width: 500px;
   background: #33a7d4;
   color: white;
   padding: 2rem;
+  border-radius: 12px;
   box-sizing: border-box;
   text-align: center;
-  z-index: 1000;
-  display: none;
+
+  display: none;                 /* hidden by default */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
+
+  overflow-y: auto;              /* scroll if content too tall */
+  max-height: 90vh;              /* keeps box inside screen */
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.6s ease;
 }
 
+/* Active states */
+.form-screen.active,
 #form-start-choice.show {
   display: flex;
   opacity: 1;
 }
 
-
- 
-/* --------------------------------------------
-   2. MULTI-STEP FORM SCREENS (.form-screen)
---------------------------------------------- */
-.form-screen {
-  position: fixed;
-  top: 50%; /* instead of 55% */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  min-height: 60vh;
-  background: #33a7d4;
-  color: white;
-  padding: 2rem;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
-  justify-content: center;  /* Center vertically */
-  align-items: center;      /* Center horizontally */
-  overflow-y: auto;
-  border-radius: 12px;
-  height: 100vh;            /* Take full screen height */
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-.form-screen h2 {
+/* Headings */
+.form-screen h2,
+#form-start-choice h2 {
   font-size: 1.8rem;
-  margin-bottom: 3rem;
-  max-width: 500px;
+  margin-bottom: 2rem;
   line-height: 1.4;
 }
-
-/* Optional: adjust if very small screens */
-@media (max-height: 600px) {
-  .form-screen {
-    justify-content: flex-start;
-    padding-top: 4rem;
-  }
-}
-
-
 
 /* --------------------------------------------
    3. FORM FIELDS (input, select)
@@ -696,8 +674,11 @@ button:hover {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+<form action="https://formsubmit.co/fazhoq1977@gmail.com" 
+      method="POST" 
+      id="formWrapper">
 
+  <!-- Intro -->
   <div class="form-screen active" id="main-intro-options">
     <h2>What do you need help with?</h2>
     <div class="button-row">
@@ -707,16 +688,19 @@ button:hover {
     </div>
   </div>
 
+  <!-- Start choice -->
   <div class="form-screen" id="form-start-choice">
     <h2>How would you like to get started?</h2>
     <div class="button-row">
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Faz-Designs/pages/pricing.html'">
+      <button type="button" 
+              onclick="window.location.href='https://doctoc30.github.io/Faz-Designs/pages/pricing.html'">
         Choose a Package Deal
       </button>
       <button type="button" onclick="showScreen(0)">Request a Custom Quote</button>
     </div>
   </div>
 
+  <!-- Step 1 -->
   <div class="form-screen" id="q0">
     <h2>What type of website are you looking for?</h2>
     <select name="Website Type" required>
@@ -731,6 +715,7 @@ button:hover {
     </div>
   </div>
 
+  <!-- Final Step -->
   <div class="form-screen" id="q11">
     <h2>Almost done! Please enter your details</h2>
 
