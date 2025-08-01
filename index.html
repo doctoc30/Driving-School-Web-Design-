@@ -943,7 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function debounce(func, wait) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
@@ -968,45 +968,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const screens = document.querySelectorAll(".form-screen");
 
   function hideAllScreens() {
-    screens.forEach(screen => screen.classList.remove("active"));
-    const startChoice = document.getElementById('form-start-choice');
-    if (startChoice) startChoice.classList.remove("show");
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
   }
 
-  function showStartChoice() {
+  // ✅ Single, consistent showScreen function
+  window.showScreen = function (screenId) {
     hideAllScreens();
-    const startChoice = document.getElementById('form-start-choice');
-    if (startChoice) {
-      startChoice.classList.add('show');
-      startChoice.style.display = 'flex';
+    const screen = document.getElementById(screenId);
+    if (screen) {
+      screen.classList.add("active");
+      screen.style.display = "block";
     }
-  }
-
-  function showScreenById(id) {
-    hideAllScreens();
-    const screen = document.getElementById(id);
-    if (screen) screen.classList.add("active");
 
     const skipBtn = document.getElementById("skipToPackages");
     if (skipBtn) {
-      skipBtn.style.display = (id === "q11") ? "none" : "block";
+      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
     }
-  }
-
-  window.goToDesign = function () {
-    // Hide intro question
-    const intro = document.getElementById('main-intro-options');
-    if (intro) {
-      intro.style.display = 'none';
-      intro.classList.remove('active');
-    }
-
-    // Show the "get started" screen
-    showStartChoice();
   };
 
-  window.showScreen = function (index) {
-    showScreenById('q' + index);
+  // ✅ Fixed goToDesign
+  window.goToDesign = function () {
+    showScreen("design-start");
   };
 
   window.next = function () {
@@ -1016,6 +1001,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (i >= 0 && i < allScreens.length - 1) {
       hideAllScreens();
       allScreens[i + 1].classList.add('active');
+      allScreens[i + 1].style.display = "block";
     }
   };
 
@@ -1026,6 +1012,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (i > 0) {
       hideAllScreens();
       allScreens[i - 1].classList.add('active');
+      allScreens[i - 1].style.display = "block";
     }
   };
 
@@ -1061,29 +1048,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-    let userPath = "";
+// ------------------ FORM PATH + REDIRECT ---------------------
+let userPath = "";
 
-  function setPath(path) {
-    userPath = path;
-    next();
-  }
-
-  document.getElementById("pricing-redirect").addEventListener("click", function() {
-    if (userPath === "instructor") {
-      window.location.href = "https://yourwebsite.com/pricing-instructor";
-    } else if (userPath === "school") {
-      window.location.href = "https://yourwebsite.com/pricing-school";
-    } else {
-      window.location.href = "https://yourwebsite.com/pricing";
-    }
-  });
-
-  function showScreen(screenId) {
-  document.querySelectorAll('.form-screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
-  document.getElementById(screenId).classList.add('active');
+function setPath(path) {
+  userPath = path;
+  next();
 }
+
+document.getElementById("pricing-redirect").addEventListener("click", function () {
+  if (userPath === "instructor") {
+    window.location.href = "https://yourwebsite.com/pricing-instructor";
+  } else if (userPath === "school") {
+    window.location.href = "https://yourwebsite.com/pricing-school";
+  } else {
+    window.location.href = "https://yourwebsite.com/pricing";
+  }
+});
+
 </script>
 </body>
 </html>
