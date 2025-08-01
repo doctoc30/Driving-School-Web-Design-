@@ -715,38 +715,136 @@ button:hover {
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <div class="form-screen active" id="main-intro-options">
-    <h2>What do you need help with?</h2>
-    <div class="button-row">
-      <button type="button" onclick="goToDesign()">Website Design</button>
-      <button type="button">Website Redesign</button>
-      <button type="button">Website Maintenance</button>
-    </div>
-  </div>
 
-  <div class="form-screen" id="form-start-choice">
-    <h2>How would you like to get started?</h2>
-    <div class="button-row">
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Faz-Designs/pages/pricing.html'">
-        Choose a Package Deal
-      </button>
-      <button type="button" onclick="showScreen(0)">Request a Custom Quote</button>
-    </div>
+<!-- Step 1 -->
+<div class="form-screen active" id="main-intro-options">
+  <h2>What do you need help with?</h2>
+  <div class="button-row">
+    <button type="button" onclick="goToDesign()">Website Design</button>
+    <button type="button">Website Redesign</button>
+    <button type="button">Website Maintenance</button>
   </div>
+</div>
 
-  <div class="form-screen" id="q0">
-    <h2>What type of website are you looking for?</h2>
-    <select name="Website Type" required>
-      <option>Business</option>
-      <option>eCommerce</option>
-      <option>Portfolio</option>
-      <option>Blog</option>
-      <option>Other</option>
-    </select>
-    <div class="button-row">
-      <button type="button" onclick="next()">Next</button>
-    </div>
+<!-- Step 2 -->
+<div class="form-screen" id="form-start-choice">
+  <h2>How would you like to get started?</h2>
+  <div class="button-row">
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Faz-Designs/pages/pricing.html'">
+      Choose a Package Deal
+    </button>
+    <button type="button" onclick="showScreen(0)">Request a Custom Quote</button>
   </div>
+</div>
+
+<!-- Step 3 -->
+<div class="form-screen" id="q0">
+  <h2>What type of website are you looking for?</h2>
+  <select name="Website Type" required>
+    <option>Business</option>
+    <option>eCommerce</option>
+    <option>Portfolio</option>
+    <option>Blog</option>
+    <option>Other</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- Step 4 -->
+<div class="form-screen" id="q1">
+  <h2>Do you already have a logo or brand identity?</h2>
+  <div class="button-row">
+    <button type="button" onclick="next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<!-- Step 5 -->
+<div class="form-screen" id="q2">
+  <h2>How many pages do you expect your website to have?</h2>
+  <select name="Pages">
+    <option>1–5 Pages</option>
+    <option>6–10 Pages</option>
+    <option>11–20 Pages</option>
+    <option>20+ Pages</option>
+    <option>Not Sure</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- Step 6 -->
+<div class="form-screen" id="q3">
+  <h2>What features would you like included?</h2>
+  <select name="Features" multiple>
+    <option>Contact Form</option>
+    <option>Booking System</option>
+    <option>Blog</option>
+    <option>Online Store</option>
+    <option>Gallery</option>
+    <option>Other</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- Step 7 -->
+<div class="form-screen" id="q4">
+  <h2>What style best describes your website vision?</h2>
+  <select name="Style">
+    <option>Modern & Minimal</option>
+    <option>Professional & Corporate</option>
+    <option>Creative & Bold</option>
+    <option>Clean & Simple</option>
+    <option>Not Sure</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- Step 8 -->
+<div class="form-screen" id="q5">
+  <h2>Do you already have written content & images?</h2>
+  <div class="button-row">
+    <button type="button" onclick="next()">Yes, I have everything</button>
+    <button type="button" onclick="next()">I need help with content</button>
+    <button type="button" onclick="next()">Some, but not all</button>
+  </div>
+</div>
+
+<!-- Step 9 -->
+<div class="form-screen" id="q6">
+  <h2>What is your budget range?</h2>
+  <select name="Budget">
+    <option>$500 – $1,000</option>
+    <option>$1,000 – $2,500</option>
+    <option>$2,500 – $5,000</option>
+    <option>$5,000+</option>
+    <option>Not Sure</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- Step 10 -->
+<div class="form-screen" id="q7">
+  <h2>What is your desired timeline for launch?</h2>
+  <select name="Timeline">
+    <option>1–2 Weeks</option>
+    <option>1 Month</option>
+    <option>2–3 Months</option>
+    <option>Flexible</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Finish</button>
+  </div>
+</div>
 
   <div class="form-screen" id="q11">
     <h2>Almost done! Please enter your details</h2>
