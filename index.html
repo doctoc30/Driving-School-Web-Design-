@@ -733,9 +733,9 @@ button:hover {
 <div class="form-screen active" id="main-intro-options">
   <h2>What do you need help with today?</h2>
   <div class="button-row">
-    <button type="button" onclick="goToDesign()">Website Design (New Site)</button>
-    <button type="button">Website Redesign</button>
-    <button type="button">Website Maintenance</button>
+    <button type="button" onclick="showScreen('design-start')">Website Design (New Site)</button>
+    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
+    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
   </div>
 </div>
 
@@ -1077,6 +1077,13 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "https://yourwebsite.com/pricing";
     }
   });
+
+  function showScreen(screenId) {
+  document.querySelectorAll('.form-screen').forEach(screen => {
+    screen.classList.remove('active');
+  });
+  document.getElementById(screenId).classList.add('active');
+}
 </script>
 </body>
 </html>
