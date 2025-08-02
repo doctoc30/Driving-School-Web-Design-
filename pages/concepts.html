@@ -6,16 +6,21 @@
 <title>Concept Library</title>
 <style>
 /* ===== RESET & BASE ===== */
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #33a7d4;
   color: #fff;
   overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ===== HEADER ===== */
@@ -31,6 +36,7 @@ header {
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
   z-index: 2000;
 }
+
 .logo {
   font-weight: 900;
   font-size: 1.7rem;
@@ -39,15 +45,17 @@ header {
   cursor: default;
 }
 
-/* ===== HAMBURGER ===== */
+/* ===== HAMBURGER MENU ICON ===== */
 .hamburger {
-  width: 28px; height: 22px;
+  width: 28px;
+  height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
   z-index: 2100;
 }
+
 .hamburger span {
   display: block;
   height: 3.5px;
@@ -55,15 +63,25 @@ header {
   border-radius: 2px;
   transition: all 0.35s ease-in-out;
 }
-.hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-/* ===== MOBILE MENU ===== */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* ===== MOBILE NAVIGATION MENU ===== */
 nav.menu {
   position: fixed;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background-color: #33a7d4;
   transform: translateX(-100%);
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,8 +91,15 @@ nav.menu {
   padding-left: 4rem;
   z-index: 2050;
 }
-nav.menu.open { transform: translateX(0); }
-nav.menu ul { list-style: none; }
+
+nav.menu.open {
+  transform: translateX(0);
+}
+
+nav.menu ul {
+  list-style: none;
+}
+
 nav.menu ul li {
   margin-bottom: 2.2rem;
   opacity: 0;
@@ -82,17 +107,29 @@ nav.menu ul li {
   font-weight: 900;
   font-size: 3rem;
   letter-spacing: 0.1em;
+  /* Accessibility: smoother font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 nav.menu ul li a {
   color: #fff;
   text-decoration: none;
   display: inline-block;
   transition: color 0.3s ease;
 }
-nav.menu ul li a:hover { color: #222; }
 
-/* Animation sequence */
-nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
+nav.menu ul li a:hover,
+nav.menu ul li a:focus {
+  color: #222;
+  outline: none;
+}
+
+/* Animation sequence for menu items */
+nav.menu.open ul li {
+  animation: slideInFade 0.4s forwards;
+}
+
 nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
 nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
 nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
@@ -100,15 +137,22 @@ nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
 nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 @keyframes slideInFade {
-  to { opacity: 1; transform: translateX(0); }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* ===== DESKTOP MENU ===== */
+/* ===== DESKTOP NAVIGATION MENU ===== */
 @media (min-width: 1024px) {
-  .hamburger { display: none; }
+  .hamburger {
+    display: none;
+  }
+
   nav.menu {
     position: static;
-    height: auto; width: auto;
+    height: auto;
+    width: auto;
     background: transparent;
     transform: none !important;
     padding-left: 0;
@@ -116,10 +160,12 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     justify-content: flex-end;
     align-items: center;
   }
+
   nav.menu ul {
     display: flex;
     gap: 3rem;
   }
+
   nav.menu ul li {
     margin: 0;
     opacity: 1 !important;
@@ -127,6 +173,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     font-size: 1.4rem;
     animation: none !important;
   }
+
   nav.menu ul li a {
     font-weight: 900;
     font-size: 1.2rem;
@@ -134,7 +181,12 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     letter-spacing: 0.15em;
     text-decoration: none;
   }
-  nav.menu ul li a:hover { color: #222; }
+
+  nav.menu ul li a:hover,
+  nav.menu ul li a:focus {
+    color: #222;
+    outline: none;
+  }
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -143,9 +195,12 @@ main {
   padding: 20px;
   text-align: center;
 }
+
+/* Search input container */
 .search-container {
   margin-bottom: 30px;
 }
+
 .search-container input {
   width: 100%;
   max-width: 600px;
@@ -154,6 +209,12 @@ main {
   border-radius: 50px;
   border: none;
   outline: none;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-container input:focus {
+  box-shadow: 0 0 8px #fff;
 }
 
 /* ===== LIBRARY GRID ===== */
@@ -164,14 +225,26 @@ main {
   max-width: 1400px;
   margin: auto;
 }
-.item { position: relative; }
+
+.item {
+  position: relative;
+}
+
 .item img {
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 6px;
+  transition: transform 0.3s ease;
 }
+
+.item img:hover,
+.item img:focus {
+  transform: scale(1.05);
+  outline: none;
+}
+
 .code {
   margin-top: 8px;
   font-size: 0.9rem;
@@ -185,6 +258,7 @@ main {
   display: flex;
   gap: 8px;
 }
+
 .btn {
   padding: 6px 12px;
   border-radius: 4px;
@@ -194,12 +268,20 @@ main {
   color: #fff;
   background: #33a7d4;        /* brand turquoise */
   border: 2px solid #fff;
+  cursor: pointer;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
 }
-.btn:hover {
+
+.btn:hover,
+.btn:focus {
   background: #fff;
   color: #33a7d4;
   border-color: #33a7d4;
+  outline: none;
 }
 
 /* ===== MOBILE GRID (PORTRAIT) ===== */
@@ -209,21 +291,26 @@ main {
     grid-auto-rows: 80vh;         /* each image row = 80% viewport height */
     gap: 0;
   }
+
   .item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 0;
   }
-  .code, .buttons {
+
+  .code,
+  .buttons {
     position: absolute;
     bottom: 10px;
     left: 10px;
   }
+
   .buttons {
     flex-direction: row;
     gap: 6px;
   }
+
   .btn {
     font-size: 0.8rem;
     padding: 5px 10px;
