@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
 <style>
-
-  /* ===== RESET & BASE ===== */
+/* ===== RESET & BASE ===== */
 * {
   margin: 0;
   padding: 0;
@@ -174,17 +173,33 @@ main {
   border-radius: 6px;
 }
 .code {
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.9rem;
   font-weight: bold;
   color: #fff;
 }
-.item a {
-  display: inline-block;
-  margin-top: 4px;
+
+/* ===== BUTTONS (BRANDED) ===== */
+.buttons {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  padding: 6px 12px;
+  border-radius: 4px;
   font-size: 0.85rem;
-  color: #ffe;
-  text-decoration: underline;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  background: #33a7d4;        /* brand turquoise */
+  border: 2px solid #fff;
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  background: #fff;
+  color: #33a7d4;
+  border-color: #33a7d4;
 }
 
 /* ===== MOBILE GRID (PORTRAIT) ===== */
@@ -200,17 +215,19 @@ main {
     object-fit: cover;
     border-radius: 0;
   }
-  .code, .item a {
+  .code, .buttons {
     position: absolute;
     bottom: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 4px 6px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #fff;
+    left: 10px;
   }
-  .code { left: 10px; }
-  .item a { right: 10px; }
+  .buttons {
+    flex-direction: row;
+    gap: 6px;
+  }
+  .btn {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
 }
 </style>
 </head>
@@ -233,21 +250,22 @@ main {
 </header>
 
 <main>
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Search by concept code...">
-  </div>
+<div class="search-container">
+  <input type="text" id="search" placeholder="Search by concept code...">
+</div>
 
-  <div class="library" id="library">
-    <!-- 100 Concept Placeholders -->
-    <!-- You can replace placeholder.com with your real thumbnails -->
-    <!-- And replace example.com with live URLs -->
-    ${[...Array(100)].map((_,i)=>`
+<div class="library" id="library">
+  ${[...Array(100)].map((_,i)=>`
     <div class="item">
       <img src="https://via.placeholder.com/400x300?text=Concept+${i+1}" alt="Concept ${i+1}">
       <div class="code">DSWD-${i+1}</div>
-      <a href="https://example.com/concept${i+1}" target="_blank">View Live</a>
-    </div>`).join('')}
-  </div>
+      <div class="buttons">
+        <a href="https://example.com/concept${i+1}" target="_blank" class="btn">View Live</a>
+        <a href="https://example.com/code${i+1}" target="_blank" class="btn">View Code</a>
+      </div>
+    </div>
+  `).join('')}
+</div>
 </main>
 
 <script>
