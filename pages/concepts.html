@@ -201,6 +201,37 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 .item a:hover {
   text-decoration: underline;
 }
+
+  .library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3; /* keeps nice proportion */
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Mobile portrait: 1 image per row */
+@media (max-width: 600px) {
+  .library {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet portrait: 2 images per row */
+@media (min-width: 601px) and (max-width: 900px) {
+  .library {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 </style>
 </head>
 <body>
