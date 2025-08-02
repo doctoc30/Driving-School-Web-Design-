@@ -127,17 +127,79 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     margin: 0;
     opacity: 1 !important;
     transform: none !important;
-    font-size: 1.4rem; /* bigger than before */
+    font-size: 1.4rem;
     animation: none !important;
   }
   nav.menu ul li a {
     font-weight: 900;
-    font-size: 1.2rem; /* matches index.html */
+    font-size: 1.2rem;
     color: white;
     letter-spacing: 0.15em;
     text-decoration: none;
   }
   nav.menu ul li a:hover { color: #222; }
+}
+
+/* --- Concept Library --- */
+.main-content {
+  padding-top: 100px; /* push below header */
+  text-align: center;
+}
+
+.search-container {
+  margin: 20px auto 40px;
+  width: 60%;
+  max-width: 600px;
+}
+.search-box {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+}
+
+.library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: auto;
+}
+.item {
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+.item:hover {
+  transform: translateY(-4px);
+}
+.item img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.code {
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.item a {
+  display: inline-block;
+  margin-top: 6px;
+  color: #33a7d4;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.item a:hover {
+  text-decoration: underline;
 }
 </style>
 </head>
@@ -155,13 +217,44 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
     <ul>
      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
+     <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
+     <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
+     <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
+     <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
     </ul>
   </nav>
 </header>
+
+<main class="main-content">
+  <!-- Search -->
+  <div class="search-container">
+    <input type="text" class="search-box" placeholder="Search by reference code...">
+  </div>
+
+  <h2>Browse the Concept Library</h2>
+
+  <!-- Library Grid -->
+  <div class="library">
+    <!-- Example items -->
+    <div class="item">
+      <a href="https://example.com/concept1" target="_blank">
+        <img src="https://via.placeholder.com/150" alt="Concept 1">
+      </a>
+      <div class="code">DSWD - 1</div>
+      <a href="https://example.com/concept1" target="_blank">View Live</a>
+    </div>
+
+    <div class="item">
+      <a href="https://example.com/concept2" target="_blank">
+        <img src="https://via.placeholder.com/150" alt="Concept 2">
+      </a>
+      <div class="code">DSWD - 2</div>
+      <a href="https://example.com/concept2" target="_blank">View Live</a>
+    </div>
+
+    <!-- Repeat up to DSWD - 200 -->
+  </div>
+</main>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -195,4 +288,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
