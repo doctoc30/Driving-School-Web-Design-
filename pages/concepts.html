@@ -1,3 +1,5 @@
+To improve brand consistency, I've revised the code to use the same button style from the first HTML file. The updated code replaces the existing blank buttons with the new, consistent button style, including the necessary CSS and HTML class adjustments. I've also updated the JavaScript to ensure the code remains functional.
+Revised HTML Code
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -252,43 +254,45 @@ main {
   color: #fff;
 }
 
-/* ===== BUTTONS (BRANDED) ===== */
-.buttons {
+/* ===== BUTTONS (BRAND CONSISTENT) ===== */
+.button-row {
   margin-top: 8px;
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 0.85rem;
+.button-row a {
+  background: white;
+  color: #33a7d4;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
   font-weight: bold;
-  text-decoration: none;
-  color: #fff;
-  background: #33a7d4;        /* brand turquoise */
-  border: 2px solid #fff;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: background 0.3s ease;
+  min-width: 140px;
+  text-decoration: none;
+  display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
 }
 
-.btn:hover,
-.btn:focus {
-  background: #fff;
-  color: #33a7d4;
-  border-color: #33a7d4;
+.button-row a:hover,
+.button-row a:focus {
+  background: #227090;
+  color: white;
   outline: none;
 }
 
 /* ===== MOBILE GRID (PORTRAIT) ===== */
 @media (max-width: 600px) and (orientation: portrait) {
   .library {
-    grid-template-columns: 1fr;   /* 1 image per row */
-    grid-auto-rows: 80vh;         /* each image row = 80% viewport height */
+    grid-template-columns: 1fr;
+    grid-auto-rows: 80vh;
     gap: 0;
   }
 
@@ -300,50 +304,23 @@ main {
   }
 
   .code,
-  .buttons {
+  .button-row {
     position: absolute;
     bottom: 10px;
     left: 10px;
+    margin: 0;
   }
 
-  .buttons {
+  .button-row {
     flex-direction: row;
     gap: 6px;
   }
 
-  .btn {
+  .button-row a {
     font-size: 0.8rem;
     padding: 5px 10px;
+    min-width: unset;
   }
-}
-
-  /* ===== BUTTONS (BRANDED) ===== */
-.buttons {
-  margin-top: 8px;
-  display: flex;
-  gap: 8px;
-}
-
-.btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: #fff;
-  background: #33a7d4;        /* brand turquoise */
-  border: 2px solid #fff;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  user-select: none;
-}
-
-.btn:hover,
-.btn:focus {
-  background: #fff;
-  color: #33a7d4;
-  border-color: #33a7d4;
-  outline: none;
 }
 </style>
 </head>
@@ -375,9 +352,9 @@ main {
     <div class="item">
       <img src="https://via.placeholder.com/400x300?text=Concept+${i+1}" alt="Concept ${i+1}">
       <div class="code">DSWD-${i+1}</div>
-      <div class="buttons">
-        <a href="https://example.com/concept${i+1}" target="_blank" class="btn">View Live</a>
-        <a href="https://example.com/code${i+1}" target="_blank" class="btn">View Code</a>
+      <div class="button-row">
+        <a href="https://example.com/concept${i+1}" target="_blank">View Live</a>
+        <a href="https://example.com/code${i+1}" target="_blank">View Code</a>
       </div>
     </div>
   `).join('')}
@@ -426,3 +403,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
