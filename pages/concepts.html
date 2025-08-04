@@ -301,7 +301,13 @@ main {
   }
 }
 
-
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: nowrap;     /* prevents stacking */
+  overflow-x: auto;      /* allows horizontal scroll if space is too small */
+}
 
 </style>
 </head>
