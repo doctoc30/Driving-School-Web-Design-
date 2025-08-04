@@ -502,6 +502,13 @@ main {
   display: block;
 }
 
+    /* Always make the active image full width */
+.library .item.active img {
+  width: 100vw !important;
+  height: 100vh !important; /* optional: full screen height */
+  object-fit: cover;
+  border-radius: 0;
+}
 </style>
 </head>
 <body>
@@ -541,6 +548,8 @@ main {
       </div>
   </div>
 </main>
+
+
 
 <script>
 // Hamburger Menu
