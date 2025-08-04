@@ -23,7 +23,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== HEADER & NAVIGATION (no change) ===== */
+/* ===== HEADER ===== */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -54,7 +54,6 @@ header {
   cursor: pointer;
   z-index: 2100;
 }
-
 .hamburger span {
   display: block;
   height: 3.5px;
@@ -62,15 +61,10 @@ header {
   border-radius: 2px;
   transition: all 0.35s ease-in-out;
 }
-
 .hamburger.active span:nth-child(1) {
   transform: translateY(9px) rotate(45deg);
 }
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
+.hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) {
   transform: translateY(-9px) rotate(-45deg);
 }
@@ -89,15 +83,9 @@ nav.menu {
   padding-left: 4rem;
   z-index: 2050;
 }
+nav.menu.open { transform: translateX(0); }
 
-nav.menu.open {
-  transform: translateX(0);
-}
-
-nav.menu ul {
-  list-style: none;
-}
-
+nav.menu ul { list-style: none; }
 nav.menu ul li {
   margin-bottom: 2.2rem;
   opacity: 0;
@@ -105,27 +93,14 @@ nav.menu ul li {
   font-weight: 900;
   font-size: 3rem;
   letter-spacing: 0.1em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
 nav.menu ul li a {
   color: #fff;
   text-decoration: none;
-  display: inline-block;
-  transition: color 0.3s ease;
 }
+nav.menu ul li a:hover { color: #222; }
 
-nav.menu ul li a:hover,
-nav.menu ul li a:focus {
-  color: #222;
-  outline: none;
-}
-
-nav.menu.open ul li {
-  animation: slideInFade 0.4s forwards;
-}
-
+nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
 nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
 nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
 nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
@@ -133,16 +108,11 @@ nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
 nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 @keyframes slideInFade {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @media (min-width: 1024px) {
-  .hamburger {
-    display: none;
-  }
+  .hamburger { display: none; }
   nav.menu {
     position: static;
     height: auto;
@@ -168,14 +138,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   nav.menu ul li a {
     font-weight: 900;
     font-size: 1.2rem;
-    color: #fff;
     letter-spacing: 0.15em;
-    text-decoration: none;
-  }
-  nav.menu ul li a:hover,
-  nav.menu ul li a:focus {
-    color: #222;
-    outline: none;
   }
 }
 
@@ -200,92 +163,84 @@ main {
   border: none;
   outline: none;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
-  transition: box-shadow 0.3s ease;
 }
 .search-container input:focus {
   box-shadow: 0 0 8px #fff;
 }
 
-/* ===== SWIPEABLE LIBRARY (PORTRAIT MOBILE) ===== */
+/* ===== PORTRAIT FOLDER ROTATION SWIPE ===== */
 @media (max-width: 600px) and (orientation: portrait) {
   .library {
-    display: flex;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    height: calc(100vh - 120px); /* Full height minus header and search */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  .library::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-
-  .item {
-    min-width: 100%;
-    height: 100%;
     position: relative;
-    scroll-snap-align: center;
-    background-color: #33a7d4;
-    padding: 20px;
+    width: 100%;
+    height: calc(100vh - 120px);
+    perspective: 1200px;
+    overflow: hidden;
+  }
+  .item {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, opacity 0.6s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    opacity: 0;
   }
-  
-  .item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 10%);
-    pointer-events: none;
-    z-index: 10;
+  .item.active {
+    opacity: 1;
+    z-index: 2;
+    transform: rotateY(0deg);
   }
-
+  .item.prev {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(-75deg) translateX(-40%);
+  }
+  .item.next {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(75deg) translateX(40%);
+  }
   .item img {
-    width: 100%;
-    height: auto;
+    width: 90%;
     max-height: 70%;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     object-fit: contain;
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
-
   .item-content {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 20;
-    text-align: left;
+    margin-top: 1rem;
+    text-align: center;
   }
-
   .code {
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
-
-  .button-row {
-    justify-content: flex-start;
-    gap: 10px;
-    margin: 0;
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    width: 50px; height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    z-index: 10;
   }
-
-  .button-row a {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    min-width: unset;
-  }
+  .nav-arrow.left { left: 10px; }
+  .nav-arrow.right { right: 10px; }
 }
 
-/* ===== DESKTOP GRID (LANDSCAPE & WIDE SCREENS) ===== */
+/* ===== DESKTOP GRID ===== */
 @media (min-width: 601px), (orientation: landscape) {
   .library {
     display: grid;
@@ -294,37 +249,16 @@ main {
     max-width: 1400px;
     margin: auto;
   }
-
-  .item {
-    position: relative;
-  }
-
   .item img {
     width: 100%;
-    height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
     border-radius: 6px;
     transition: transform 0.3s ease;
   }
-  .item img:hover,
-  .item img:focus {
-    transform: scale(1.05);
-    outline: none;
-  }
-
-  .item-content {
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  .code {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 8px;
-  }
-
+  .item img:hover { transform: scale(1.05); }
+  .item-content { margin-top: 8px; text-align: center; }
+  .code { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; }
   .button-row {
     margin-top: 8px;
     display: flex;
@@ -332,29 +266,18 @@ main {
     flex-wrap: wrap;
     justify-content: center;
   }
-
   .button-row a {
     background: white;
     color: #33a7d4;
-    border: none;
-    padding: 1rem 2rem;
     border-radius: 8px;
+    padding: 1rem 2rem;
     font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: background 0.3s ease;
-    min-width: 140px;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background 0.3s ease;
   }
-  .button-row a:hover,
-  .button-row a:focus {
+  .button-row a:hover {
     background: #227090;
     color: white;
-    outline: none;
   }
 }
 </style>
@@ -368,34 +291,34 @@ main {
   </div>
   <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
     <ul>
-      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Concepts</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Contact</a></li>
     </ul>
   </nav>
 </header>
 
 <main>
-<div class="search-container">
-  <input type="text" id="search" placeholder="Search by concept code...">
-</div>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Search by concept code...">
+  </div>
 
-<div class="library" id="library">
-  ${[...Array(100)].map((_,i)=>`
-    <div class="item">
-      <img src="https://via.placeholder.com/400x300?text=Concept+${i+1}" alt="Concept ${i+1}">
-      <div class="item-content">
-        <div class="code">DSWD-${i+1}</div>
-        <div class="button-row">
-          <a href="https://example.com/concept${i+1}" target="_blank">View Live</a>
-          <a href="https://example.com/code${i+1}" target="_blank">View Code</a>
+  <div class="library" id="library">
+    ${[...Array(10)].map((_,i)=>`
+      <div class="item">
+        <img src="https://via.placeholder.com/400x600?text=Concept+${i+1}" alt="Concept ${i+1}">
+        <div class="item-content">
+          <div class="code">DSWD-${i+1}</div>
+          <div class="button-row">
+            <a href="#">View Live</a>
+            <a href="#">View Code</a>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('')}
-</div>
+    `).join('')}
+  </div>
 </main>
 
 <script>
@@ -404,17 +327,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
-  function toggleMenu() {
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
     const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
     hamburger.setAttribute('aria-expanded', isOpen);
     menu.setAttribute('aria-hidden', !isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-  hamburger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMenu();
   });
+
   document.addEventListener('click', (e) => {
     if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
       menu.classList.remove('open');
@@ -435,10 +356,61 @@ document.addEventListener("DOMContentLoaded", () => {
       item.style.display = code.includes(term) ? "block" : "none";
     });
   });
+
+  // Folder-style swipe rotation
+  const allItems = Array.from(document.querySelectorAll(".item"));
+  let current = 0;
+
+  function updateItems() {
+    allItems.forEach((item, i) => {
+      item.classList.remove("active", "prev", "next");
+      if (i === current) {
+        item.classList.add("active");
+      } else if (i === (current - 1 + allItems.length) % allItems.length) {
+        item.classList.add("prev");
+      } else if (i === (current + 1) % allItems.length) {
+        item.classList.add("next");
+      }
+    });
+  }
+
+  function nextItem() {
+    current = (current + 1) % allItems.length;
+    updateItems();
+  }
+  function prevItem() {
+    current = (current - 1 + allItems.length) % allItems.length;
+    updateItems();
+  }
+
+  // Initial
+  updateItems();
+
+  // Touch swipe
+  let startX = 0;
+  document.querySelector(".library").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+  document.querySelector(".library").addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) nextItem();
+    if (endX - startX > 50) prevItem();
+  });
+
+  // Optional arrows
+  const library = document.querySelector(".library");
+  const leftArrow = document.createElement("div");
+  leftArrow.className = "nav-arrow left";
+  leftArrow.innerHTML = "&#10094;";
+  leftArrow.onclick = prevItem;
+  const rightArrow = document.createElement("div");
+  rightArrow.className = "nav-arrow right";
+  rightArrow.innerHTML = "&#10095;";
+  rightArrow.onclick = nextItem;
+  library.appendChild(leftArrow);
+  library.appendChild(rightArrow);
 });
 </script>
 
 </body>
 </html>
-
-
