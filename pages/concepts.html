@@ -381,6 +381,31 @@ main {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+
+  .card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  width: 90%;
+  height: 100%;
+  border-radius: 0; /* no frame */
+  box-shadow: none; /* remove shadow */
+  overflow: hidden;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* push content down */
+  padding: 0;
+  background: transparent; /* remove background */
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fill the card space */
+  border-radius: 0;
+}
 </style>
 </head>
 <body>
