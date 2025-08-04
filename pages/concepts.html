@@ -184,7 +184,7 @@ nav.menu.open ul li:nth-child(5) {
   }
 }
 
-/* ===== MAIN CONTENT ===== */
+  /* ===== MAIN CONTENT ===== */
 main {
   position: relative;
   min-height: 100vh;
@@ -217,27 +217,35 @@ main {
 /* ===== LIBRARY (ALL VIEWPORTS) ===== */
 .library {
   position: relative;
-  width: 100%;
-  /* Use min-height instead of fixed height to improve responsiveness */
+  width: 100vw;              /* Full viewport width */
+  max-width: 1400px;         /* Limit max width on large screens */
+  margin: 0 auto;            /* Center horizontally */
   min-height: calc(100vh - 120px);
   perspective: 1200px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* ===== MOBILE SWIPE (portrait, max-width 600px) ===== */
 @media (max-width: 600px) and (orientation: portrait) {
+  .library {
+    height: calc(100vh - 120px);
+    width: 100vw;            /* Full width */
+    margin: 0 auto;
+  }
+
   .item {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     backface-visibility: hidden;
     transform-style: preserve-3d;
     transition: transform 0.6s ease, opacity 0.6s ease;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* buttons at bottom */
+    justify-content: flex-end;
     align-items: center;
     opacity: 0;
   }
@@ -264,81 +272,41 @@ main {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     object-fit: cover;
     border-radius: 0;
     background: transparent;
-    z-index: 0; /* Ensure image is behind content */
+    z-index: 0;
   }
 
-  /* BUTTONS — keep them above images */
   .button-row {
-    position: relative; /* important so buttons stay above images */
-    width: 100%;
-    padding: 1rem;
+    position: relative;
+    width: 100vw;
+    padding: 1rem 0;
     display: flex;
-    flex-direction: row; /* side by side */
-    gap: 12px;
-    flex-wrap: nowrap; /* no wrapping */
-    overflow-x: auto; /* horizontal scroll if needed */
     justify-content: center;
-    -webkit-overflow-scrolling: touch; /* smooth scroll iOS */
-    z-index: 5; /* above images */
+    gap: 12px;
+    overflow-x: auto;
+    z-index: 5;
   }
 
   .button-row a {
-    display: inline-block;
-    width: auto;
-    max-width: none;
-    margin: 0;
-    padding: 14px 18px;
-    border-radius: 8px;
+    white-space: nowrap;
+    padding: 14px 20px;
     background-color: #fff;
     color: #33a7d4;
+    border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;
-    text-align: center;
     text-decoration: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    white-space: nowrap; /* prevent text wrap */
-    flex-shrink: 0; /* prevent shrinking */
-    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
   }
 
-  .button-row a:hover,
-  .button-row a:focus {
+  .button-row a:hover {
     background-color: #e6f6fc;
-    color: #227090;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  /* Navigation arrows */
-  .nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    z-index: 10;
-  }
-
-  .nav-arrow.left {
-    left: 10px;
-  }
-
-  .nav-arrow.right {
-    right: 10px;
   }
 }
 
@@ -348,9 +316,12 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
-    max-width: 1400px;
-    margin: auto;
-    min-height: auto; /* reset min-height for desktop */
+    max-width: 1400px;       /* Limit max width */
+    width: 100vw;            /* Ensure full viewport width usage */
+    margin: 0 auto;
+    min-height: auto;
+    padding: 0 10px;         /* Optional: small horizontal padding */
+    box-sizing: border-box;
   }
 
   .item {
@@ -358,13 +329,13 @@ main {
   }
 
   .item img {
-    width: 100%;
+    width: 100%;             /* Fill container */
+    height: auto;            /* Maintain aspect ratio */
     aspect-ratio: 4 / 3;
     object-fit: cover;
     border-radius: 6px;
     transition: transform 0.3s ease;
-    position: relative; /* remove absolute */
-    height: auto;       /* remove fixed height */
+    position: relative;
     z-index: 1;
   }
 
@@ -391,6 +362,7 @@ main {
     justify-content: center;
     position: relative;
     z-index: 2;
+    width: 100%;           /* Make sure buttons span full width */
   }
 
   .button-row a {
@@ -402,6 +374,7 @@ main {
     text-decoration: none;
     transition: background 0.3s ease;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .button-row a:hover {
@@ -412,13 +385,13 @@ main {
 
 /* ===== GLOBAL BUTTON ROW OVERRIDES ===== */
 .button-row {
-  /* Avoid !important unless absolutely necessary */
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   gap: 10px;
   justify-content: center;
   -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
 
 .button-row a {
@@ -454,91 +427,12 @@ main {
   right: 12px;
 }
 
-  /* For mobile portrait - full width layout */
-@media (max-width: 600px) and (orientation: portrait) {
-  .library {
-    position: relative;
-    width: 100vw;       /* full viewport width */
-    height: calc(100vh - 120px);
-    perspective: 1200px;
-    overflow: hidden;
-    margin: 0 auto;     /* center horizontally */
-  }
-
-  .item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;      /* full viewport width */
-    height: 100%;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    transition: transform 0.6s ease, opacity 0.6s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* keep buttons at bottom */
-    align-items: center;
-    opacity: 0;
-  }
-
-  .item.active {
-    opacity: 1;
-    z-index: 2;
-    transform: rotateY(0deg);
-  }
-
-  .item.prev {
-    opacity: 0.4;
-    z-index: 1;
-    transform: rotateY(-75deg) translateX(-40%);
-  }
-
-  .item.next {
-    opacity: 0.4;
-    z-index: 1;
-    transform: rotateY(75deg) translateX(40%);
-  }
-
-  .item img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;       /* full viewport width */
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0;
-    background: transparent;
-    z-index: 0;
-  }
-
-  .button-row {
-    position: relative;  /* ensure buttons are above image */
-    width: 100vw;        /* full width */
-    padding: 1rem 0;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    overflow-x: auto;
-    z-index: 5;
-  }
-
-  .button-row a {
-    white-space: nowrap;
-    padding: 14px 20px;
-    background-color: #fff;
-    color: #33a7d4;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: background-color 0.3s ease;
-  }
-
-  .button-row a:hover {
-    background-color: #e6f6fc;
-  }
+/* ===== BODY & HTML reset ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  overflow-x: hidden; /* prevent horizontal scroll */
 }
 </style>
 </head>
