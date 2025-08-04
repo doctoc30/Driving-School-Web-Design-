@@ -493,6 +493,44 @@ main {
     color: white;
   }
 }
+
+  .library {
+  position: relative;  /* keep this */
+  width: 100%;
+  height: calc(100vh - 120px);
+  perspective: 1200px;
+  overflow: hidden;
+}
+
+/* Nav arrows inside .library boundaries */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0,0,0,0.4);
+  border-radius: 50%;
+  width: 40px;      /* smaller size */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  /* Make sure they don't take half screen */
+  pointer-events: auto;
+}
+
+/* Place them inside with some margin */
+.nav-arrow.left {
+  left: 12px;    /* close to left edge but inside */
+}
+
+.nav-arrow.right {
+  right: 12px;   /* close to right edge but inside */
+}
 </style>
 </head>
 <body>
