@@ -141,7 +141,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     letter-spacing: 0.15em;
   }
 }
-
 /* ===== MAIN CONTENT ===== */
 main {
   position: relative;
@@ -150,6 +149,7 @@ main {
   text-align: center;
 }
 
+/* ===== SEARCH BAR ===== */
 .search-container {
   padding: 10px 20px;
   background-color: #33a7d4;
@@ -168,7 +168,7 @@ main {
   box-shadow: 0 0 8px #fff;
 }
 
-/* ===== PORTRAIT FOLDER ROTATION SWIPE ===== */
+/* ===== MOBILE SWIPE (PORTRAIT MODE) ===== */
 @media (max-width: 600px) and (orientation: portrait) {
   .library {
     position: relative;
@@ -186,40 +186,56 @@ main {
     transition: transform 0.6s ease, opacity 0.6s ease;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end; /* buttons at bottom */
     align-items: center;
     opacity: 0;
   }
-  .item.active {
-    opacity: 1;
-    z-index: 2;
-    transform: rotateY(0deg);
-  }
-  .item.prev {
-    opacity: 0.4;
-    z-index: 1;
-    transform: rotateY(-75deg) translateX(-40%);
-  }
-  .item.next {
-    opacity: 0.4;
-    z-index: 1;
-    transform: rotateY(75deg) translateX(40%);
-  }
+  .item.active { opacity: 1; z-index: 2; transform: rotateY(0deg); }
+  .item.prev   { opacity: 0.4; z-index: 1; transform: rotateY(-75deg) translateX(-40%); }
+  .item.next   { opacity: 0.4; z-index: 1; transform: rotateY(75deg) translateX(40%); }
+
   .item img {
-    width: 90%;
-    max-height: 70%;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    object-fit: contain;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    background: transparent;
+    z-index: -1; /* keeps image behind buttons */
   }
-  .item-content {
-    margin-top: 1rem;
+
+  .button-row {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .button-row a {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 14px 18px;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #33a7d4;
+    font-weight: 600;
+    font-size: 1rem;
     text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
   }
-  .code {
-    font-size: 1.2rem;
-    font-weight: bold;
+  .button-row a:hover,
+  .button-row a:focus {
+    background-color: #e6f6fc;
+    color: #227090;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
+
   .nav-arrow {
     position: absolute;
     top: 50%;
@@ -249,6 +265,9 @@ main {
     max-width: 1400px;
     margin: auto;
   }
+  .item {
+    position: relative;
+  }
   .item img {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -259,6 +278,7 @@ main {
   .item img:hover { transform: scale(1.05); }
   .item-content { margin-top: 8px; text-align: center; }
   .code { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; }
+
   .button-row {
     margin-top: 8px;
     display: flex;
@@ -279,130 +299,6 @@ main {
     background: #227090;
     color: white;
   }
-}
-
-
-  .library {
-  position: relative;
-  width: 100%;
-  height: var(--vh); /* full screen usable height */
-  perspective: 1400px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Each card is literally the full image frame */
-.item {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  max-width: 390px;  /* iPhone 12 screen width */
-  max-height: 844px; /* iPhone 12 screen height */
-  border-radius: 24px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  opacity: 0;
-}
-
-.item.active {
-  opacity: 1;
-  z-index: 3;
-  transform: rotateY(0deg) translateZ(0);
-}
-.item.prev {
-  opacity: 0.6;
-  z-index: 2;
-  transform: rotateY(-65deg) translateX(-60%) scale(0.9);
-}
-.item.next {
-  opacity: 0.6;
-  z-index: 2;
-  transform: rotateY(65deg) translateX(60%) scale(0.9);
-}
-
-/* Image fills the card exactly like a phone screen */
-.item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-
-  .item {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  max-width: 390px;  /* iPhone 12 screen width */
-  max-height: 844px; /* iPhone 12 screen height */
-  border-radius: 24px;
-  overflow: hidden;
-  background: #fff;  /* 🔥 white instead of black */
-  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  opacity: 0;
-}
-
-  /* === TEMPLATE BUTTONS (Match Brand Style) === */
-.button-row a {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin: 10px auto;
-  padding: 14px 18px;
-  border-radius: 8px;
-  background-color: #fff;       /* white background */
-  color: #33a7d4;               /* brand blue text */
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: center;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-/* Hover & focus states */
-.button-row a:hover,
-.button-row a:focus {
-  background-color: #e6f6fc;    /* light blue tint */
-  color: #227090;               /* darker brand blue */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-
-  .card {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) scale(0.9);
-  width: 100%;
-  height: 100%;
-  border-radius: 0 !important; /* force remove rounded edges */
-  box-shadow: none !important; /* force remove shadow */
-  background: transparent !important; /* remove background */
-  padding: 0;
-  overflow: hidden;
-}
-
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* fills entire frame */
-  border-radius: 0 !important;
-  background: transparent !important;
 }
 </style>
 </head>
