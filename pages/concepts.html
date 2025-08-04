@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
 <style>
-/* ===== RESET & BASE ===== */
+
+  /* ===== RESET & BASE ===== */
 *,
 *::before,
 *::after {
@@ -20,13 +21,9 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
-}
-
-body {
   font-family: 'Poppins', sans-serif;
   background-color: #33a7d4;
   color: #fff;
-  overflow-x: hidden;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -41,7 +38,7 @@ header {
   justify-content: space-between;
   padding: 0 20px;
   background-color: #33a7d4;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 2000;
 }
 
@@ -118,6 +115,7 @@ nav.menu ul li {
 nav.menu ul li a {
   color: #fff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 nav.menu ul li a:hover {
@@ -155,6 +153,7 @@ nav.menu.open ul li:nth-child(5) {
   }
 }
 
+/* ===== MEDIA QUERIES ===== */
 @media (min-width: 1024px) {
   .hamburger {
     display: none;
@@ -318,8 +317,8 @@ main {
   }
 }
 
-/* ===== DESKTOP & TABLETS (≥601px) ONLY ===== */
-@media (min-width: 601px) {
+/* ===== DESKTOP & TABLETS (≥601px OR landscape) ===== */
+@media (min-width: 601px), (orientation: landscape) {
   .library {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -399,7 +398,66 @@ main {
   gap: 10px;
   justify-content: center;
   -webkit-overflow-scrolling: touch;
-  box-sizing: border
+  box-sizing: border-box;
+}
+
+.button-row a {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Nav arrows inside .library boundaries */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 12px;
+}
+
+.nav-arrow.right {
+  right: 12px;
+}
+
+/* ===== ONLY ONE ITEM HERO FIX ===== */
+/* Since :has() has limited support, use a JS class approach instead */
+/* If you want, I can help you write that JS snippet too */
+
+.library.single-item {
+  display: block !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+.library.single-item .item {
+  width: 100% !important;
+  height: 100vh !important; /* full screen height */
+}
+
+.library.single-item .item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  display: block;
+}
 
 </style>
 </head>
