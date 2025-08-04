@@ -301,12 +301,20 @@ main {
   }
 }
 
-.button-row {
-  display: flex;
-  justify-content: center;
+
+
+  .button-row {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
   gap: 10px;
-  flex-wrap: nowrap;     /* prevents stacking */
-  overflow-x: auto;      /* allows horizontal scroll if space is too small */
+  justify-content: center;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+}
+
+.button-row a {
+  white-space: nowrap; /* prevent buttons' text from wrapping */
+  flex-shrink: 0;      /* prevent buttons from shrinking */
 }
 
 </style>
