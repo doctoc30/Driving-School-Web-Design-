@@ -456,6 +456,30 @@ html, body {
   border-radius: 0 !important;
   display: block;
 }
+
+
+  /* ===== FORCE FULL-WIDTH if only one .item ===== */
+.library:has(.item:only-child) {
+  display: block !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+.library:has(.item:only-child) .item {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.library:has(.item:only-child) .item img {
+  display: block !important;
+  width: 100vw !important;
+  height: 100vh !important; /* ← makes it cover full screen height */
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
 </style>
 </head>
 <body>
