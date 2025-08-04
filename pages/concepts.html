@@ -453,6 +453,93 @@ main {
 .nav-arrow.right {
   right: 12px;
 }
+
+  /* For mobile portrait - full width layout */
+@media (max-width: 600px) and (orientation: portrait) {
+  .library {
+    position: relative;
+    width: 100vw;       /* full viewport width */
+    height: calc(100vh - 120px);
+    perspective: 1200px;
+    overflow: hidden;
+    margin: 0 auto;     /* center horizontally */
+  }
+
+  .item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;      /* full viewport width */
+    height: 100%;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* keep buttons at bottom */
+    align-items: center;
+    opacity: 0;
+  }
+
+  .item.active {
+    opacity: 1;
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .item.prev {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(-75deg) translateX(-40%);
+  }
+
+  .item.next {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(75deg) translateX(40%);
+  }
+
+  .item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;       /* full viewport width */
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    background: transparent;
+    z-index: 0;
+  }
+
+  .button-row {
+    position: relative;  /* ensure buttons are above image */
+    width: 100vw;        /* full width */
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    overflow-x: auto;
+    z-index: 5;
+  }
+
+  .button-row a {
+    white-space: nowrap;
+    padding: 14px 20px;
+    background-color: #fff;
+    color: #33a7d4;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .button-row a:hover {
+    background-color: #e6f6fc;
+  }
+}
 </style>
 </head>
 <body>
