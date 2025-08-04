@@ -459,6 +459,49 @@ main {
   display: block;
 }
 
+
+  /* Make .library a positioning container */
+.library {
+  position: relative; /* ensure arrows stay inside */
+  overflow: hidden;   /* prevents arrows from shifting layout */
+}
+
+/* Nav arrows overlay image instead of pushing it */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 20;  /* above the image */
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 16px; /* inside edge */
+}
+
+.nav-arrow.right {
+  right: 16px;
+}
+
+/* Ensure the image can be full width without arrows affecting it */
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 </style>
 </head>
 <body>
