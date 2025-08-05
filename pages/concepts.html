@@ -659,6 +659,28 @@ main {
     font-size: 0.9rem;
   }
 }
+
+
+  .hero-slider {
+  position: relative;
+  width: 100%;
+  height: auto;              /* allow height to adapt */
+  max-height: 90vh;          /* never bigger than screen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-dark);
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.hero-slider img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 85vh;          /* keeps full template visible */
+  object-fit: contain;       /* show whole template, no cropping */
+}
 </style>
 </head>
 <body>
