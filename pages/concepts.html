@@ -576,13 +576,11 @@ main {
   /* Adjust buttons and other elements if needed */
 }
 
-
-
 .slider-frame {
-  width: 90%;            /* relative size */
-  max-width: 600px;      /* never wider than 600px */
-  height: 350px;         /* fixed smaller height */
-  margin: 20px auto;     /* center it */
+  width: 80%;            /* smaller than full width */
+  max-width: 500px;      /* cap the max size */
+  height: 280px;         /* shorter height */
+  margin: 20px auto;     /* center horizontally */
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -597,9 +595,8 @@ main {
 .slider-frame .item img {
   width: 100%;
   height: 100%;
-  object-fit: contain;   /* scale image down */
+  object-fit: cover;   /* ensures no blank space, always fills frame */
 }
-  
 
 </style>
 </head>
