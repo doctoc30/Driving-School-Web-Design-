@@ -577,29 +577,27 @@ main {
 }
 
 
+
 .slider-frame {
-  max-width: 500px;       /* smaller width */
-  width: 100%;
-  height: 40vh;           /* smaller height */
-  margin: 20px auto;
+  width: 90%;            /* relative size */
+  max-width: 600px;      /* never wider than 600px */
+  height: 350px;         /* fixed smaller height */
+  margin: 20px auto;     /* center it */
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border-radius: 10px;
-  background-color: #fff;
-  touch-action: pan-y;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 
-  /* keep images centered */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .slider-frame .item img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;   /* no cropping */
-  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* scale image down */
 }
   
 
