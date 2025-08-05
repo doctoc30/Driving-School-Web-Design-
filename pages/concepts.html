@@ -543,7 +543,36 @@ main {
     border-radius: 10px;
   }
 
-  
+  /* Active (center) image */
+.library .item.active img {
+  width: 90vw;          /* not full screen */
+  max-width: 500px;
+  height: auto;
+  max-height: 70vh;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  z-index: 2;           /* keep above side images */
+}
+
+/* Side images (prev/next) */
+.library .item.prev img,
+.library .item.next img {
+  width: 50vw;          
+  max-width: 250px;
+  height: auto;
+  max-height: 40vh;
+  opacity: 0.6;
+  object-fit: contain;
+  border-radius: 6px;
+  transform: scale(0.9) rotateY(-15deg); /* default tilt */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Different tilt for next vs prev */
+.library .item.next img {
+  transform: scale(0.9) rotateY(15deg);
+}
 
 </style>
 </head>
