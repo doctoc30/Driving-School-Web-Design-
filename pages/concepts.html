@@ -1,216 +1,815 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driving School Slider</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Concept Library</title>
+<style>
 
-    .search-container {
-      text-align: center;
-      padding: 20px;
-    }
+  /* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .search-container input {
-      padding: 10px;
-      width: 250px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  background-color: #33a7d4;
+  color: #fff;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-    /* outer frame controls slider size */
-    .slider-frame {
-      width: 80%;          /* shrink overall width */
-      max-width: 800px;    /* cap max size */
-      margin: 30px auto;   /* center horizontally */
-      overflow: hidden;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+/* ===== HEADER ===== */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: #33a7d4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+}
 
-    /* slider track */
-    .library {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
+.logo {
+  font-weight: 900;
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  user-select: none;
+  cursor: default;
+}
 
-    /* each slide */
-    .library .item {
-      flex: 0 0 100%;             /* one image per view */
-      scroll-snap-align: center;
-      text-align: center;
-      padding: 10px;
-    }
+.hamburger {
+  width: 28px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 2100;
+}
 
-    /* scale down images */
-    .library .item img {
-      width: 90%;                 /* smaller inside frame */
-      max-height: 400px;          /* limit tall images */
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
-      border-radius: 8px;
-    }
+.hamburger span {
+  display: block;
+  height: 3.5px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.35s ease-in-out;
+}
 
-    .item-content {
-      margin-top: 10px;
-    }
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
 
-    .button-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 8px;
-    }
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
 
-    .button-row a {
-      padding: 8px 14px;
-      background: #007BFF;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: background 0.3s ease;
-    }
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
 
-    .button-row a:hover {
-      background: #0056b3;
-    }
-  </style>
+nav.menu {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #33a7d4;
+  transform: translateX(-100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 4rem;
+  z-index: 2050;
+}
+
+nav.menu.open {
+  transform: translateX(0);
+}
+
+nav.menu ul {
+  list-style: none;
+}
+
+nav.menu ul li {
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  transform: translateX(-40px);
+  font-weight: 900;
+  font-size: 3rem;
+  letter-spacing: 0.1em;
+}
+
+nav.menu ul li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+nav.menu ul li a:hover {
+  color: #222;
+}
+
+nav.menu.open ul li {
+  animation: slideInFade 0.4s forwards;
+}
+
+nav.menu.open ul li:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+nav.menu.open ul li:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+nav.menu.open ul li:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+nav.menu.open ul li:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+nav.menu.open ul li:nth-child(5) {
+  animation-delay: 0.95s;
+}
+
+@keyframes slideInFade {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (min-width: 1024px) {
+  .hamburger {
+    display: none;
+  }
+
+  nav.menu {
+    position: static;
+    height: auto;
+    width: auto;
+    background: transparent;
+    transform: none !important;
+    padding-left: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  nav.menu ul {
+    display: flex;
+    gap: 3rem;
+  }
+
+  nav.menu ul li {
+    margin: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    font-size: 1.4rem;
+    animation: none !important;
+  }
+
+  nav.menu ul li a {
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+  }
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 60px; /* Space for fixed header */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-container {
+  padding: 10px 20px;
+  background-color: #33a7d4;
+}
+
+.search-container input {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-container input:focus {
+  box-shadow: 0 0 8px #fff;
+}
+
+/* ===== LIBRARY (ALL VIEWPORTS) ===== */
+.library {
+  position: relative;
+  width: 100vw;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+  perspective: 1200px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ===== MOBILE SWIPE (portrait, max-width 600px) ===== */
+@media (max-width: 600px) and (orientation: portrait) {
+  .library {
+    height: calc(100vh - 120px);
+    width: 100vw;
+    margin: 0 auto;
+  }
+
+  .item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    opacity: 0;
+  }
+
+  .item.active {
+    opacity: 1;
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .item.prev {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(-75deg) translateX(-40%);
+  }
+
+  .item.next {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(75deg) translateX(40%);
+  }
+
+  .item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    background: transparent;
+    z-index: 0;
+  }
+
+  .button-row {
+    position: relative;
+    width: 100vw;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    overflow-x: auto;
+    z-index: 5;
+  }
+
+  .button-row a {
+    white-space: nowrap;
+    padding: 14px 20px;
+    background-color: #fff;
+    color: #33a7d4;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .button-row a:hover {
+    background-color: #e6f6fc;
+  }
+}
+
+/* ===== DESKTOP & TABLETS (≥601px OR landscape) ===== */
+@media (min-width: 601px), (orientation: landscape) {
+  .library {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    width: 100vw;
+    margin: 0 auto;
+    min-height: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .item {
+    position: relative;
+  }
+
+  .item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .item img:hover {
+    transform: scale(1.05);
+  }
+
+  .item-content {
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .code {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .button-row {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .button-row a {
+    background: white;
+    color: #33a7d4;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .button-row a:hover {
+    background: #227090;
+    color: white;
+  }
+}
+
+/* ===== GLOBAL BUTTON ROW OVERRIDES ===== */
+.button-row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.button-row a {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Nav arrows inside .library boundaries */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 12px;
+}
+
+.nav-arrow.right {
+  right: 12px;
+}
+
+/* ===== ONLY ONE ITEM HERO FIX ===== */
+/* Since :has() has limited support, use a JS class approach instead */
+/* If you want, I can help you write that JS snippet too */
+
+.library.single-item {
+  display: block !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+.library.single-item .item {
+  width: 100% !important;
+  height: 100vh !important; /* full screen height */
+}
+
+.library.single-item .item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  display: block;
+}
+
+
+  /* Make .library a positioning container */
+.library {
+  position: relative; /* ensure arrows stay inside */
+  overflow: hidden;   /* prevents arrows from shifting layout */
+}
+
+/* Nav arrows overlay image instead of pushing it */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 20;  /* above the image */
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 16px; /* inside edge */
+}
+
+.nav-arrow.right {
+  right: 16px;
+}
+
+/* Ensure the image can be full width without arrows affecting it */
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+    /* Always make the active image full width */
+.library .item.active img {
+  width: 100vw !important;
+  height: 100vh !important; /* optional: full screen height */
+  object-fit: cover;
+  border-radius: 0;
+}
+</style>
 </head>
 <body>
 
+<header>
+  <div class="logo">D S W D</div>
+  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+  <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Concepts</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
   <main>
-    <div class="search-container">
-      <input type="text" id="search" placeholder="Search by concept code...">
-    </div>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Search by concept code...">
+  </div>
 
-    <div class="slider-frame">
-      <div class="library" id="library">
+  <div class="library" id="library">
 
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6557.png" alt="Concept 1">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
+    <div class="item">
+      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6557.png" alt="Concept 1">
+      <div class="item-content">
+        <div class="button-row">
+          <a href="#">View Live</a>
+          <a href="#">View Code</a>
         </div>
-
-        <div class="item">
-          <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6558.png" alt="Concept 3">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6559.png" alt="Concept 4">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6560.png" alt="Concept 5">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6561.png" alt="Concept 6">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6562.png" alt="Concept 7">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6563.png" alt="Concept 8">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6564.png" alt="Concept 9">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6565.png" alt="Concept 10">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6566.png" alt="Concept 11">
-          <div class="item-content">
-            <div class="button-row">
-              <a href="#">View Live</a>
-              <a href="#">View Code</a>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
-  </main>
+
+    <div class="item">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
+      <div class="item-content">
+        <div class="button-row">
+          <a href="#">View Live</a>
+          <a href="#">View Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6558.png" alt="Concept 3">
+      <div class="item-content">
+        <div class="button-row">
+          <a href="#">View Live</a>
+          <a href="#">View Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6559.png" alt="Concept 4">
+      <div class="item-content">
+        <div class="button-row">
+          <a href="#">View Live</a>
+          <a href="#">View Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6560.png" alt="Concept 5">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6561.png" alt="Concept 6">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6562.png" alt="Concept 7">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6563.png" alt="Concept 8">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6564.png" alt="Concept 9">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6565.png" alt="Concept 10">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6566.png" alt="Concept 11">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<!-- New concepts using additional image URLs -->
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6644.png" alt="Concept 12">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6706.png" alt="Concept 13">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6707.png" alt="Concept 14">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6708.png" alt="Concept 15">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6709.png" alt="Concept 16">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6711.png" alt="Concept 17">
+  <div class="item-content">
+    <div class="button-row">
+      <a href="#">View Live</a>
+      <a href="#">View Code</a>
+    </div>
+  </div>
+</div>
+
+  </div>
+</main>
+
+
+<script>
+// Hamburger Menu
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', false);
+      menu.setAttribute('aria-hidden', true);
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Search filter
+  const searchInput = document.getElementById("search");
+  const items = document.querySelectorAll(".item");
+  searchInput.addEventListener("keyup", () => {
+    const term = searchInput.value.toLowerCase();
+    items.forEach(item => {
+      const code = item.querySelector(".code").textContent.toLowerCase();
+      item.style.display = code.includes(term) ? "block" : "none";
+    });
+  });
+
+  // Folder-style swipe rotation
+  const allItems = Array.from(document.querySelectorAll(".item"));
+  let current = 0;
+
+  function updateItems() {
+    allItems.forEach((item, i) => {
+      item.classList.remove("active", "prev", "next");
+      if (i === current) {
+        item.classList.add("active");
+      } else if (i === (current - 1 + allItems.length) % allItems.length) {
+        item.classList.add("prev");
+      } else if (i === (current + 1) % allItems.length) {
+        item.classList.add("next");
+      }
+    });
+  }
+
+  function nextItem() {
+    current = (current + 1) % allItems.length;
+    updateItems();
+  }
+  function prevItem() {
+    current = (current - 1 + allItems.length) % allItems.length;
+    updateItems();
+  }
+
+  // Initial
+  updateItems();
+
+  // Touch swipe
+  let startX = 0;
+  document.querySelector(".library").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+  document.querySelector(".library").addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) nextItem();
+    if (endX - startX > 50) prevItem();
+  });
+
+  // Optional arrows
+  const library = document.querySelector(".library");
+  const leftArrow = document.createElement("div");
+  leftArrow.className = "nav-arrow left";
+  leftArrow.innerHTML = "&#10094;";
+  leftArrow.onclick = prevItem;
+  const rightArrow = document.createElement("div");
+  rightArrow.className = "nav-arrow right";
+  rightArrow.innerHTML = "&#10095;";
+  rightArrow.onclick = nextItem;
+  library.appendChild(leftArrow);
+  library.appendChild(rightArrow);
+});
+
+
+
+ // Fix vh on mobile Safari / iPhone
+function setVh() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+}
+setVh();
+window.addEventListener('resize', setVh);
+</script>
 
 </body>
 </html>
