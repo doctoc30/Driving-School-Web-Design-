@@ -621,6 +621,44 @@ main {
   border-radius: 4px;
   font-size: 0.9rem;
 }
+
+  /* Hero Slider - make it responsive */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  max-height: 70vh;   /* instead of fixed 80vh */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-dark);
+  overflow: hidden;
+  padding: 1rem 0; /* breathing space */
+}
+
+.hero-slider img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Make sure toggle buttons + slider show together */
+.view-toggle {
+  position: sticky;   /* always visible while scrolling */
+  top: 0;
+  background: var(--bg-light);
+  z-index: 10;
+}
+
+/* Tablet / iPad specific fix */
+@media (max-width: 1024px) {
+  .hero-slider {
+    max-height: 55vh;  /* shrink slider so buttons + slider fit */
+  }
+  .view-toggle button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
 </style>
 </head>
 <body>
