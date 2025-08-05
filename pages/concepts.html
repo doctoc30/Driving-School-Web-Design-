@@ -545,7 +545,226 @@ main {
   display: block;
 }
 
-🔥
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+  background-color: #33a7d4;
+  color: #fff;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HERO SLIDER CONTAINER ===== */
+.library.single-item {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  background: #111; /* background filler for letterboxing */
+}
+
+/* ===== HERO SLIDER ITEM ===== */
+.library.single-item .item {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* ===== HERO SLIDER IMAGE ===== */
+.library.single-item .item img,
+.library .item.active img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;  /* show entire image without cropping */
+  object-position: center center;
+  background: #111;                /* letterbox background */
+  border-radius: 0 !important;
+  display: block;
+}
+
+/* ===== BUTTON ROW - OVERLAY AT BOTTOM ===== */
+.library.single-item .button-row {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Button style */
+.library.single-item .button-row a {
+  white-space: nowrap;
+  padding: 14px 20px;
+  background-color: #fff;
+  color: #33a7d4;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.library.single-item .button-row a:hover {
+  background-color: #e6f6fc;
+}
+
+/* ===== MAKE SURE NAV ARROWS ARE INSIDE ===== */
+.library.single-item .nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 40;
+  pointer-events: auto;
+}
+
+.library.single-item .nav-arrow.left {
+  left: 16px;
+}
+
+.library.single-item .nav-arrow.right {
+  right: 16px;
+}
+
+/* ===== RESPONSIVE GRID VIEW ===== */
+.library.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1400px;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+  min-height: auto;
+}
+
+.library.grid-view .item {
+  position: relative;
+}
+
+.library.grid-view .item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.library.grid-view .item img:hover {
+  transform: scale(1.05);
+}
+
+.library.grid-view .item-content {
+  margin-top: 8px;
+  text-align: center;
+  color: #fff;
+}
+
+.library.grid-view .code {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* ===== BUTTON ROW FOR GRID ===== */
+.library.grid-view .button-row {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.library.grid-view .button-row a {
+  background: white;
+  color: #33a7d4;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.library.grid-view .button-row a:hover {
+  background: #227090;
+  color: white;
+}
+
+/* ===== TOGGLE BUTTONS ===== */
+.view-toggle {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.view-toggle button {
+  margin: 0 10px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #ddd;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.view-toggle button.active {
+  background: #007BFF;
+  color: #fff;
+}
+
+/* Hide inactive views */
+.view-mode {
+  display: none;
+}
+
+.view-mode.active {
+  display: block;
+}
 </style>
 </head>
 <body>
