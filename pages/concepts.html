@@ -509,6 +509,10 @@ main {
   object-fit: cover;
   border-radius: 0;
 }
+
+  .item.hidden {
+  display: none;
+}
 </style>
 </head>
 <body>
@@ -809,6 +813,23 @@ function setVh() {
 }
 setVh();
 window.addEventListener('resize', setVh);
+
+function updateItems() {
+  allItems.forEach((item, i) => {
+    item.classList.remove("active", "prev", "next", "hidden");
+    if (i === current) {
+      item.classList.add("active");
+    } else if (i === (current - 1 + allItems.length) % allItems.length) {
+      item.classList.add("prev");
+    } else if (i === (current + 1) % allItems.length) {
+      item.classList.add("next");
+    } else {
+      item.classList.add("hidden"); // instead of leaving blank
+    }
+  });
+}
+
+
 </script>
 
 </body>
