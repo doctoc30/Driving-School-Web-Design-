@@ -575,6 +575,30 @@ main {
 
   /* Adjust buttons and other elements if needed */
 }
+
+
+
+  .slider-frame {
+  max-width: 700px;         /* smaller max width */
+  width: 100vw;
+  height: 55vh;             /* smaller height */
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  background-color: #fff;
+  touch-action: pan-y;
+}
+
+@media (max-width: 768px) {
+  .slider-frame {
+    height: 50vh;           /* slightly smaller on smaller screens */
+    max-width: 100vw;
+    margin: 20px 0;
+    border-radius: 0;
+  }
+}
 </style>
 </head>
 <body>
