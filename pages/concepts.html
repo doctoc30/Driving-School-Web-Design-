@@ -513,6 +513,114 @@ main {
   .item.hidden {
   display: none;
 }
+
+
+  /* Toggle buttons */
+.view-toggle {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.view-toggle button {
+  margin: 0 10px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #ddd;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.view-toggle button.active {
+  background: #007BFF;
+  color: #fff;
+}
+
+/* Hide inactive views */
+.view-mode {
+  display: none;
+}
+.view-mode.active {
+  display: block;
+}
+
+/* Hero Slider */
+.hero-slider {
+  position: relative;
+  max-width: 1200px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+
+.slide img {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Navigation Arrows */
+.slider-nav span {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  user-select: none;
+}
+
+.slider-nav .prev { left: 10px; }
+.slider-nav .next { right: 10px; }
+
+/* Grid Layout */
+.concept-grid .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.grid-item {
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.grid-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.button-row {
+  margin-top: 10px;
+}
+
+.button-row a {
+  margin: 0 5px;
+  padding: 8px 12px;
+  text-decoration: none;
+  background: #007BFF;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
 </style>
 </head>
 <body>
@@ -533,187 +641,65 @@ main {
   </nav>
 </header>
 
-  <main>
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Search by concept code...">
+<main>
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button id="sliderViewBtn" class="active">Slider View</button>
+    <button id="gridViewBtn">Grid View</button>
   </div>
 
-  <div class="library" id="library">
+  <!-- Hero Slider -->
+  <section class="hero-slider view-mode active">
+    <div class="slider">
+      <div class="slide active">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6557.png" alt="Concept 1">
+      </div>
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
+      </div>
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6558.png" alt="Concept 3">
+      </div>
+      <!-- more slides -->
+    </div>
 
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6557.png" alt="Concept 1">
-      <div class="item-content">
+    <!-- Navigation -->
+    <div class="slider-nav">
+      <span class="prev">&#10094;</span>
+      <span class="next">&#10095;</span>
+    </div>
+  </section>
+
+  <!-- Grid Layout -->
+  <section class="concept-grid view-mode">
+    <div class="grid">
+      <div class="grid-item">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6557.png" alt="Concept 1">
         <div class="button-row">
           <a href="#">View Live</a>
           <a href="#">View Code</a>
         </div>
       </div>
-    </div>
 
-    <div class="item">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
-      <div class="item-content">
+      <div class="grid-item">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
         <div class="button-row">
           <a href="#">View Live</a>
           <a href="#">View Code</a>
         </div>
       </div>
-    </div>
 
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6558.png" alt="Concept 3">
-      <div class="item-content">
+      <div class="grid-item">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6558.png" alt="Concept 3">
         <div class="button-row">
           <a href="#">View Live</a>
           <a href="#">View Code</a>
         </div>
       </div>
+      <!-- more grid items -->
     </div>
-
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6559.png" alt="Concept 4">
-      <div class="item-content">
-        <div class="button-row">
-          <a href="#">View Live</a>
-          <a href="#">View Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6560.png" alt="Concept 5">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6561.png" alt="Concept 6">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6562.png" alt="Concept 7">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6563.png" alt="Concept 8">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6564.png" alt="Concept 9">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6565.png" alt="Concept 10">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6566.png" alt="Concept 11">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<!-- New concepts using additional image URLs -->
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6644.png" alt="Concept 12">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6706.png" alt="Concept 13">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6707.png" alt="Concept 14">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6708.png" alt="Concept 15">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6709.png" alt="Concept 16">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6711.png" alt="Concept 17">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-  </div>
+  </section>
 </main>
-
 
 <script>
 // Hamburger Menu
@@ -829,7 +815,53 @@ function updateItems() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Slider ---
+  const slides = document.querySelectorAll(".slide");
+  const prevBtn = document.querySelector(".prev");
+  const nextBtn = document.querySelector(".next");
+  let index = 0;
 
+  function showSlide(i) {
+    index = (i + slides.length) % slides.length;
+    const offset = -index * 100;
+    document.querySelector(".slider").style.transform = `translateX(${offset}%)`;
+  }
+
+  nextBtn.addEventListener("click", () => showSlide(index + 1));
+  prevBtn.addEventListener("click", () => showSlide(index - 1));
+
+  // Swipe support
+  let startX = 0;
+  document.querySelector(".slider").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+  document.querySelector(".slider").addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) showSlide(index + 1);
+    if (endX - startX > 50) showSlide(index - 1);
+  });
+
+  // --- View Toggle ---
+  const sliderViewBtn = document.getElementById("sliderViewBtn");
+  const gridViewBtn = document.getElementById("gridViewBtn");
+  const sliderSection = document.querySelector(".hero-slider");
+  const gridSection = document.querySelector(".concept-grid");
+
+  sliderViewBtn.addEventListener("click", () => {
+    sliderViewBtn.classList.add("active");
+    gridViewBtn.classList.remove("active");
+    sliderSection.classList.add("active");
+    gridSection.classList.remove("active");
+  });
+
+  gridViewBtn.addEventListener("click", () => {
+    gridViewBtn.classList.add("active");
+    sliderViewBtn.classList.remove("active");
+    gridSection.classList.add("active");
+    sliderSection.classList.remove("active");
+  });
+});
 </script>
 
 </body>
