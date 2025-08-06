@@ -574,6 +574,47 @@ main {
   transform: scale(0.9) rotateY(15deg);
 }
 
+  .button-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem; /* Increased spacing */
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.button-row a.btn-view-live,
+.button-row a.btn-enquire {
+  display: inline-block;
+  background: white;
+  color: #33a7d4;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  box-sizing: border-box;
+  min-width: 140px;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button-row a.btn-view-live:hover,
+.button-row a.btn-enquire:hover {
+  background: #227090;
+  color: white;
+}
+
+.button-row span {
+  font-weight: bold;
+  color: #555;
+  font-size: 1rem;
+  min-width: 140px;
+  text-align: center;
+  display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -601,175 +642,140 @@ main {
 
   <div class="library" id="library">
 
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6557.png" alt="Concept 1">
-      <div class="item-content">
-        <div class="button-row">
-          <a href="#">View Live</a>
-          <a href="#">View Code</a>
-        </div>
+ <div class="slider">
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept 1">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 1</span>
+        <a href="/funnel?code=1" class="btn-enquire">I Want This Concept</a>
       </div>
     </div>
+  </div>
 
-    <div class="item">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/roadmaster_complete_with_header_footer.png" alt="Concept 2">
-      <div class="item-content">
-        <div class="button-row">
-          <a href="#">View Live</a>
-          <a href="#">View Code</a>
-        </div>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept 2">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 2</span>
+        <a href="/funnel?code=2" class="btn-enquire">I Want This Concept</a>
       </div>
     </div>
+  </div>
 
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6558.png" alt="Concept 3">
-      <div class="item-content">
-        <div class="button-row">
-          <a href="#">View Live</a>
-          <a href="#">View Code</a>
-        </div>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" alt="Concept 3">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 3</span>
+        <a href="/funnel?code=3" class="btn-enquire">I Want This Concept</a>
       </div>
     </div>
+  </div>
 
-    <div class="item">
-      <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6559.png" alt="Concept 4">
-      <div class="item-content">
-        <div class="button-row">
-          <a href="#">View Live</a>
-          <a href="#">View Code</a>
-        </div>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" alt="Concept 4">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 4</span>
+        <a href="/funnel?code=4" class="btn-enquire">I Want This Concept</a>
       </div>
     </div>
+  </div>
 
-    <div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6560.png" alt="Concept 5">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" alt="Concept 5">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 5</span>
+        <a href="/funnel?code=5" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6561.png" alt="Concept 6">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Concept 6">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 6</span>
+        <a href="/funnel?code=6" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6562.png" alt="Concept 7">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Concept 7">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 7</span>
+        <a href="/funnel?code=7" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6563.png" alt="Concept 8">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept 8">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 8</span>
+        <a href="/funnel?code=8" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6564.png" alt="Concept 9">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/autolearn_pro_gradient_website.png" alt="Concept 9">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 9</span>
+        <a href="/funnel?code=9" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6565.png" alt="Concept 10">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/drivewise_proper_website.png" alt="Concept 10">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 10</span>
+        <a href="/funnel?code=10" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://github.com/doctoc30/Driving-School-Web-Design-/raw/main/Images/IMG_6566.png" alt="Concept 11">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/prodrive_academy_complete_website.png" alt="Concept 11">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 11</span>
+        <a href="/funnel?code=11" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- New concepts using additional image URLs -->
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6644.png" alt="Concept 12">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/swiftlearn_light_theme_website.png" alt="Concept 12">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 12</span>
+        <a href="/funnel?code=12" class="btn-enquire">I Want This Concept</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6706.png" alt="Concept 13">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6707.png" alt="Concept 14">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6708.png" alt="Concept 15">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6709.png" alt="Concept 16">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
-</div>
-
-<div class="item">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6711.png" alt="Concept 17">
-  <div class="item-content">
-    <div class="button-row">
-      <a href="#">View Live</a>
-      <a href="#">View Code</a>
-    </div>
-  </div>
 </div>
 
   </div>
