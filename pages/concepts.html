@@ -621,41 +621,52 @@ main {
   .library {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px;
-    padding: 20px;
+    gap: 20px !important;
+    padding: 20px !important;
     box-sizing: border-box;
-    overflow: auto;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    height: auto !important;
+    perspective: none !important;
+    overflow: visible !important;
   }
 
-  .item {
-    position: relative !important;
-    opacity: 1 !important;
+  .item,
+  .item.active,
+  .item.prev,
+  .item.next {
+    position: static !important;
     transform: none !important;
+    opacity: 1 !important;
     z-index: auto !important;
+    display: block !important;
     height: auto !important;
-    transition: none !important;
   }
 
   .item img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: 6px;
-    display: block;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3 !important;
+    object-fit: cover !important;
+    border-radius: 6px !important;
+    display: block !important;
   }
 
   .button-row {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    margin-top: 8px !important;
+  }
+
+  /* Optional: hide swipe arrows in landscape */
+  .nav-arrow {
+    display: none !important;
   }
 }
+  
 </style>
 </head>
 <body>
