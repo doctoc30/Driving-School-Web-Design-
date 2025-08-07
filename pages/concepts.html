@@ -422,6 +422,155 @@ main {
 
   }
 }
+
+  /* Base layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f8f8f8;
+}
+
+.library {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Default hidden state for all items */
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.item.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+  transform: none;
+}
+
+.item.prev {
+  opacity: 0.4;
+  transform: translateX(-40%) scale(0.8) rotateY(-15deg);
+  z-index: 1;
+}
+
+.item.next {
+  opacity: 0.4;
+  transform: translateX(40%) scale(0.8) rotateY(15deg);
+  z-index: 1;
+}
+
+/* Portrait slider image styles */
+.item img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  background: black;
+  display: block;
+  border-radius: 0;
+}
+
+/* Button layout */
+.item-content {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.btn-view-live,
+.btn-enquire {
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #fff;
+  background: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.btn-enquire {
+  background: #28a745;
+}
+
+/* Landscape (Grid layout) */
+@media (orientation: landscape) {
+  .library {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .item {
+    position: static;
+    width: 100%;
+    height: auto;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto;
+  }
+
+  .item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+  }
+
+  .item-content {
+    position: static;
+    background: none;
+    color: #333;
+    margin-top: 8px;
+  }
+
+  .button-row {
+    background: none;
+  }
+
+  .btn-view-live,
+  .btn-enquire {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+}
+
+/* Tablet portrait override */
+@media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
+  .item img {
+    max-width: 90vw;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+}
 </style>
 </head>
 <body>
