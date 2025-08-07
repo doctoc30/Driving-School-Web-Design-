@@ -617,34 +617,59 @@ main {
 }
 
 
-  @media (max-width: 600px) and (orientation: portrait) {
+ @media (max-width: 600px) and (orientation: portrait) {
+  .item {
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .item.active {
+    opacity: 1;
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .item.prev {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(-75deg) translateX(-40%);
+  }
+
+  .item.next {
+    opacity: 0.4;
+    z-index: 1;
+    transform: rotateY(75deg) translateX(40%);
+  }
+
   .item img {
-    width: auto !important;
-    height: auto !important;
     max-width: 90vw;
     max-height: 70vh;
     object-fit: contain !important;
+    width: auto;
+    height: auto;
+    display: block;
     margin: 0 auto;
-    position: relative !important;
-  }
-
-  .item {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    height: auto !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 
   .library {
-    height: auto !important;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+    height: 100vh;
     overflow: hidden;
   }
 
-  .nav-arrow {
-    top: 50%;
-    transform: translateY(-50%);
+  .item-content {
+    margin-top: 1rem;
   }
 }
 </style>
