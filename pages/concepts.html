@@ -618,27 +618,13 @@ main {
 
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .library .item img {
-    position: relative !important;
-    width: auto !important;
+    width: 90% !important;
     height: auto !important;
-    max-width: 50% !important;
-    max-height: 50vh !important;
+    max-height: 55vh !important;
     object-fit: contain !important;
+    position: relative !important;
     display: block !important;
     margin: 0 auto !important;
-    transform: none !important;
-  }
-
-  .library .item.active img {
-    max-width: 50% !important;
-    max-height: 50vh !important;
-    transform: none !important;
-  }
-
-  .library .item.prev img,
-  .library .item.next img {
-    max-width: 60% !important;
-    opacity: 0.4 !important;
     transform: none !important;
   }
 }
@@ -909,6 +895,15 @@ function setVh() {
 }
 setVh();
 window.addEventListener('resize', setVh);
+
+  function updateVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  window.addEventListener('resize', updateVh);
+  window.addEventListener('orientationchange', updateVh);
+  updateVh();
+
 </script>
 
 </body>
