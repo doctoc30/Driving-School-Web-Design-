@@ -1,14 +1,14 @@
 <style>
-  /* Container for slider/grid */
+  /* Base styles */
   .slider-container {
+    display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    display: flex;
     gap: 1rem;
     padding: 1rem;
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Each item */
   .item {
     flex: 0 0 80%;
     scroll-snap-align: start;
@@ -20,8 +20,10 @@
 
   .item img {
     width: 100%;
-    border-radius: 8px 8px 0 0;
     display: block;
+    border-radius: 8px 8px 0 0;
+    height: auto;
+    object-fit: contain;
   }
 
   .item-content {
@@ -43,6 +45,7 @@
     border-radius: 4px;
     text-decoration: none;
     font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   .btn-view-live:hover,
@@ -50,8 +53,8 @@
     background: #0056b3;
   }
 
-  /* Landscape mode: switch to grid with 3 columns */
-  @media (orientation: landscape) {
+  /* Landscape or wider screens: switch to grid */
+  @media (orientation: landscape), (min-width: 900px) {
     .slider-container {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr);
@@ -60,27 +63,11 @@
       scroll-snap-type: none;
       padding: 1rem;
     }
-    .item {
-      flex: none;
-      scroll-snap-align: none;
-      width: 100%;
-    }
-  }
 
-  /* Also switch to grid if width is larger than 900px (just in case) */
-  @media (min-width: 900px) {
-    .slider-container {
-      display: grid !important;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      overflow-x: visible;
-      scroll-snap-type: none;
-      padding: 1rem;
-    }
     .item {
-      flex: none;
-      scroll-snap-align: none;
-      width: 100%;
+      flex: none !important;
+      scroll-snap-align: none !important;
+      width: 100% !important;
     }
   }
 </style>
@@ -97,19 +84,19 @@
       </div>
     </div>
   </div>
-  <!-- ... repeat all other .item divs here ... -->
+  <!-- Repeat for other .item divs -->
+  <!-- ... -->
 </div>
 
 <script>
-  // Basic swipe support for the slider container (only when flex scroll is active)
   (function() {
     const slider = document.getElementById('slider');
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    // Only enable drag scrolling when NOT in grid layout (landscape)
     function isSliderActive() {
+      // Check if display is flex (slider mode) or grid (landscape)
       return window.getComputedStyle(slider).display === 'flex';
     }
 
@@ -135,11 +122,11 @@
       if (!isDown || !isSliderActive()) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 2; // scroll-fast multiplier
+      const walk = (x - startX) * 2; // scroll speed multiplier
       slider.scrollLeft = scrollLeft - walk;
     });
 
-    // Optional: touch support
+    // Touch support
     let touchStartX = 0;
     let touchScrollLeft = 0;
 
