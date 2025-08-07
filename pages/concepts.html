@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
 <style>
-/* ===== RESET & BASE ===== */
+
+  /* ===== RESET & BASE ===== */
 *,
 *::before,
 *::after {
@@ -15,8 +16,11 @@
 }
 
 html, body {
+  margin: 0;
+  padding: 0;
   width: 100%;
   overflow-x: hidden;
+  box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   background-color: #33a7d4;
   color: #fff;
@@ -29,10 +33,10 @@ header {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 60px;
-  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
   background-color: #33a7d4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 2000;
@@ -122,11 +126,25 @@ nav.menu.open ul li {
   animation: slideInFade 0.4s forwards;
 }
 
-nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
-nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
-nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
-nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
-nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
+nav.menu.open ul li:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+nav.menu.open ul li:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+nav.menu.open ul li:nth-child(3) {
+  animation-delay: 0.55s;
+}
+
+nav.menu.open ul li:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+nav.menu.open ul li:nth-child(5) {
+  animation-delay: 0.95s;
+}
 
 @keyframes slideInFade {
   to {
@@ -177,12 +195,33 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 main {
   position: relative;
   min-height: 100vh;
-  padding-top: 60px; /* for fixed header */
+  padding-top: 60px; /* Space for fixed header */
   text-align: center;
   box-sizing: border-box;
 }
 
-/* ===== LIBRARY CONTAINER ===== */
+/* ===== SEARCH BAR ===== */
+.search-container {
+  padding: 10px 20px;
+  background-color: #33a7d4;
+}
+
+.search-container input {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-container input:focus {
+  box-shadow: 0 0 8px #fff;
+}
+
+/* ===== LIBRARY (ALL VIEWPORTS) ===== */
 .library {
   position: relative;
   width: 100vw;
@@ -194,87 +233,7 @@ main {
   box-sizing: border-box;
 }
 
-/* ===== SLIDER CONTAINER & ITEMS ===== */
-.slider-container {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem;
-  -webkit-overflow-scrolling: touch;
-}
-
-.item {
-  flex: 0 0 80%;
-  scroll-snap-align: start;
-  background: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
-  position: relative;
-}
-
-.item img {
-  width: 100%;
-  display: block;
-  border-radius: 8px 8px 0 0;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Content inside item */
-.item-content {
-  padding: 0.5rem 1rem 1rem;
-}
-
-/* Button row inside items */
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.5rem;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 10px;
-  justify-content: center;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
-
-.button-row a {
-  white-space: nowrap;
-  flex-shrink: 0;
-  background: #007bff;
-  color: white;
-  padding: 0.3rem 0.7rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
-}
-
-.button-row a:hover {
-  background: #0056b3;
-}
-
-/* ===== LANDSCAPE OR WIDE SCREENS (≥900px or landscape) ===== */
-@media (orientation: landscape), (min-width: 900px) {
-  .slider-container {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    padding: 1rem;
-  }
-
-  .item {
-    flex: none !important;
-    scroll-snap-align: none !important;
-    width: 100% !important;
-  }
-}
-
-/* ===== MOBILE SWIPE MODE (portrait & max-width 600px) ===== */
+/* ===== MOBILE SWIPE (portrait, max-width 600px) ===== */
 @media (max-width: 600px) and (orientation: portrait) {
   .library {
     height: calc(100vh - 120px);
@@ -284,7 +243,8 @@ main {
 
   .item {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100%;
     backface-visibility: hidden;
@@ -317,7 +277,8 @@ main {
 
   .item img {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100%;
     object-fit: cover;
@@ -338,12 +299,13 @@ main {
   }
 
   .button-row a {
+    white-space: nowrap;
+    padding: 14px 20px;
     background-color: #fff;
     color: #33a7d4;
     border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;
-    padding: 14px 20px;
     text-decoration: none;
     flex-shrink: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -355,7 +317,200 @@ main {
   }
 }
 
-/* ===== TABLET PORTRAIT SLIDER FIX (601-1024px) ===== */
+/* ===== DESKTOP & TABLETS (≥601px OR landscape) ===== */
+@media (min-width: 601px), (orientation: landscape) {
+  .library {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    width: 100vw;
+    margin: 0 auto;
+    min-height: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .item {
+    position: relative;
+  }
+
+  .item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .item img:hover {
+    transform: scale(1.05);
+  }
+
+  .item-content {
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .code {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .button-row {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .button-row a {
+    background: white;
+    color: #33a7d4;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .button-row a:hover {
+    background: #227090;
+    color: white;
+  }
+}
+
+/* ===== GLOBAL BUTTON ROW OVERRIDES ===== */
+.button-row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.button-row a {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Nav arrows inside .library boundaries */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 12px;
+}
+
+.nav-arrow.right {
+  right: 12px;
+}
+
+/* ===== ONLY ONE ITEM HERO FIX ===== */
+/* Since :has() has limited support, use a JS class approach instead */
+/* If you want, I can help you write that JS snippet too */
+
+.library.single-item {
+  display: block !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+.library.single-item .item {
+  width: 100% !important;
+  height: 100vh !important; /* full screen height */
+}
+
+.library.single-item .item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  display: block;
+}
+
+
+  /* Make .library a positioning container */
+.library {
+  position: relative; /* ensure arrows stay inside */
+  overflow: hidden;   /* prevents arrows from shifting layout */
+}
+
+/* Nav arrows overlay image instead of pushing it */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  z-index: 20;  /* above the image */
+  pointer-events: auto;
+}
+
+.nav-arrow.left {
+  left: 16px; /* inside edge */
+}
+
+.nav-arrow.right {
+  right: 16px;
+}
+
+/* Ensure the image can be full width without arrows affecting it */
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+    /* Always make the active image full width */
+.library .item.active img {
+  width: 100vw !important;
+  height: 100vh !important; /* optional: full screen height */
+  object-fit: cover;
+  border-radius: 0;
+}
+
+  /* ===== TABLET PORTRAIT SLIDER FIX ===== */
 @media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
   .library {
     display: block !important;
@@ -366,7 +521,8 @@ main {
 
   .item {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
@@ -379,197 +535,85 @@ main {
   }
 
   .item img {
-    width: 90%;
-    max-width: 500px;
-    max-height: 70vh;
+    width: 90%;        /* smaller than full width */
     height: auto;
+    max-height: 70vh;  /* not full height */
     margin: 0 auto;
     object-fit: contain;
     border-radius: 10px;
   }
 
-  /* Active image */
-  .library .item.active img {
-    border-radius: 8px;
-    z-index: 2;
-  }
+  /* Active (center) image */
+.library .item.active img {
+  width: 90vw;          /* not full screen */
+  max-width: 500px;
+  height: auto;
+  max-height: 70vh;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  z-index: 2;           /* keep above side images */
+}
 
-  /* Side images */
-  .library .item.prev img,
-  .library .item.next img {
-    width: 50vw;
-    max-width: 250px;
-    max-height: 40vh;
-    height: auto;
-    opacity: 0.6;
-    object-fit: contain;
-    border-radius: 6px;
-    transform: scale(0.9) rotateY(-15deg);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
+/* Side images (prev/next) */
+.library .item.prev img,
+.library .item.next img {
+  width: 50vw;          
+  max-width: 250px;
+  height: auto;
+  max-height: 40vh;
+  opacity: 0.6;
+  object-fit: contain;
+  border-radius: 6px;
+  transform: scale(0.9) rotateY(-15deg); /* default tilt */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
 
-  .library .item.next img {
-    transform: scale(0.9) rotateY(15deg);
-  }
+/* Different tilt for next vs prev */
+.library .item.next img {
+  transform: scale(0.9) rotateY(15deg);
+}
 
   .button-row {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom:
-
-  }
-}
-
-  /* Base layout */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background: #f8f8f8;
-}
-
-.library {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Default hidden state for all items */
-.item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
   display: flex;
   justify-content: center;
+  gap: 2.5rem; /* Increased spacing */
+  flex-wrap: wrap;
   align-items: center;
-  pointer-events: none;
+  margin-bottom: 2rem;
 }
 
-.item.active {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 2;
-  transform: none;
-}
-
-.item.prev {
-  opacity: 0.4;
-  transform: translateX(-40%) scale(0.8) rotateY(-15deg);
-  z-index: 1;
-}
-
-.item.next {
-  opacity: 0.4;
-  transform: translateX(40%) scale(0.8) rotateY(15deg);
-  z-index: 1;
-}
-
-/* Portrait slider image styles */
-.item img {
-  width: 100vw;
-  height: 100vh;
-  object-fit: contain;
-  background: black;
-  display: block;
-  border-radius: 0;
-}
-
-/* Button layout */
-.item-content {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
+.button-row a.btn-view-live,
+.button-row a.btn-enquire {
+  display: inline-block;
+  background: white;
+  color: #33a7d4;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  box-sizing: border-box;
+  min-width: 140px;
   text-align: center;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button-row a.btn-view-live:hover,
+.button-row a.btn-enquire:hover {
+  background: #227090;
   color: white;
 }
 
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px;
-  border-radius: 6px;
-}
-
-.btn-view-live,
-.btn-enquire {
-  padding: 6px 12px;
-  border-radius: 4px;
-  color: #fff;
-  background: #007bff;
-  text-decoration: none;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.btn-enquire {
-  background: #28a745;
-}
-
-/* Landscape (Grid layout) */
-@media (orientation: landscape) {
-  .library {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
-    height: auto;
-    overflow-y: auto;
-  }
-
-  .item {
-    position: static;
-    width: 100%;
-    height: auto;
-    opacity: 1 !important;
-    transform: none !important;
-    pointer-events: auto;
-  }
-
-  .item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-    border-radius: 8px;
-  }
-
-  .item-content {
-    position: static;
-    background: none;
-    color: #333;
-    margin-top: 8px;
-  }
-
-  .button-row {
-    background: none;
-  }
-
-  .btn-view-live,
-  .btn-enquire {
-    font-size: 13px;
-    padding: 5px 10px;
-  }
-}
-
-/* Tablet portrait override */
-@media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
-  .item img {
-    max-width: 90vw;
-    max-height: 70vh;
-    object-fit: contain;
-    border-radius: 8px;
-  }
+.button-row span {
+  font-weight: bold;
+  color: #555;
+  font-size: 1rem;
+  min-width: 140px;
+  text-align: center;
+  display: inline-block;
 }
 </style>
 </head>
@@ -591,8 +635,15 @@ body {
   </nav>
 </header>
 
-<div class="slider-container" id="slider">
-  <!-- Paste your .item divs here -->
+  <main>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Search by concept code...">
+  </div>
+
+  <div class="library" id="library">
+
+ <div class="slider">
+
   <div class="item">
     <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept 1">
     <div class="item-content">
@@ -603,66 +654,135 @@ body {
       </div>
     </div>
   </div>
-  <!-- Repeat for other .item divs -->
-  <!-- ... -->
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept 2">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 2</span>
+        <a href="/funnel?code=2" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" alt="Concept 3">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 3</span>
+        <a href="/funnel?code=3" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" alt="Concept 4">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 4</span>
+        <a href="/funnel?code=4" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" alt="Concept 5">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 5</span>
+        <a href="/funnel?code=5" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Concept 6">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 6</span>
+        <a href="/funnel?code=6" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Concept 7">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 7</span>
+        <a href="/funnel?code=7" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept 8">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 8</span>
+        <a href="/funnel?code=8" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/autolearn_pro_gradient_website.png" alt="Concept 9">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 9</span>
+        <a href="/funnel?code=9" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/drivewise_proper_website.png" alt="Concept 10">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 10</span>
+        <a href="/funnel?code=10" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/prodrive_academy_complete_website.png" alt="Concept 11">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 11</span>
+        <a href="/funnel?code=11" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/swiftlearn_light_theme_website.png" alt="Concept 12">
+    <div class="item-content">
+      <div class="button-row">
+        <a href="#" class="btn-view-live">View Live</a>
+        <span>Code: 12</span>
+        <a href="/funnel?code=12" class="btn-enquire">I Want This Concept</a>
+      </div>
+    </div>
+  </div>
+
 </div>
 
+  </div>
+</main>
+
+
 <script>
-  (function() {
-    const slider = document.getElementById('slider');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    function isSliderActive() {
-      // Check if display is flex (slider mode) or grid (landscape)
-      return window.getComputedStyle(slider).display === 'flex';
-    }
-
-    slider.addEventListener('mousedown', (e) => {
-      if (!isSliderActive()) return;
-      isDown = true;
-      slider.classList.add('active');
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-
-    slider.addEventListener('mouseleave', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-
-    slider.addEventListener('mouseup', () => {
-      isDown = false;
-      slider.classList.remove('active');
-    });
-
-    slider.addEventListener('mousemove', (e) => {
-      if (!isDown || !isSliderActive()) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 2; // scroll speed multiplier
-      slider.scrollLeft = scrollLeft - walk;
-    });
-
-    // Touch support
-    let touchStartX = 0;
-    let touchScrollLeft = 0;
-
-    slider.addEventListener('touchstart', (e) => {
-      if (!isSliderActive()) return;
-      touchStartX = e.touches[0].pageX - slider.offsetLeft;
-      touchScrollLeft = slider.scrollLeft;
-    });
-
-    slider.addEventListener('touchmove', (e) => {
-      if (!isSliderActive()) return;
-      const x = e.touches[0].pageX - slider.offsetLeft;
-      const walk = (x - touchStartX) * 2;
-      slider.scrollLeft = touchScrollLeft - walk;
-    });
-  })();
-  
 // Hamburger Menu
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector('.hamburger');
