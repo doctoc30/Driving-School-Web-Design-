@@ -643,6 +643,93 @@ main {
     transform: none !important;
   }
 }
+
+  /*
+  The existing code has many media queries. I will be
+  modifying the one that handles portrait mode.
+
+  The core issue is in this section:
+  @media (max-width: 600px) and (orientation: portrait) {
+      .item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100%;
+        object-fit: cover; <--- This causes the zoom
+        ...
+      }
+  }
+
+  I will override this with a more specific rule for a better mobile experience.
+*/
+
+/* ===== MOBILE PORTRAIT SLIDER FIX (iPhone/similar phones) ===== */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+  /* Ensure the library container is set up correctly */
+  .library {
+    height: calc(100vh - 120px);
+    width: 100vw;
+    margin: 0 auto;
+    display: block; /* Ensure grid/flex doesn't interfere */
+  }
+
+  /*
+    New styles for the image within the slider.
+    This replaces the 'zoomed-in' effect of object-fit: cover.
+  */
+  .library .item img {
+    position: relative; /* Change to relative for centering */
+    top: auto;
+    left: auto;
+    width: auto; /* Let the aspect ratio define width */
+    height: auto;
+    max-width: 90vw; /* Constrain image to a percentage of viewport width */
+    max-height: 50vh; /* Constrain image to a percentage of viewport height */
+    object-fit: contain; /* IMPORTANT: Ensures the full image is visible */
+    border-radius: 8px; /* Optional: adds rounded corners */
+    margin: 20px auto; /* Center the image horizontally and add spacing */
+    display: block; /* Ensures it behaves as a block element for margin: auto */
+  }
+
+  /*
+    Refine the styles for the active (center) item.
+    Make it slightly larger than the inactive ones if needed.
+  */
+  .library .item.active img {
+    max-width: 95vw;
+    max-height: 60vh;
+  }
+
+  /*
+    Adjust the inactive prev/next images to be slightly smaller and transparent.
+    This preserves the 3D slider effect.
+  */
+  .library .item.prev img,
+  .library .item.next img {
+    max-width: 80vw;
+    max-height: 40vh;
+    opacity: 0.5;
+  }
+
+  /* Adjust the slider arrows to be correctly positioned */
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: auto;
+  }
+
+  /* Adjust the button row to be below the image */
+  .item-content {
+    position: relative;
+    z-index: 5;
+    padding-bottom: 20px;
+    background: transparent;
+  }
+}
+
   
 </style>
 </head>
