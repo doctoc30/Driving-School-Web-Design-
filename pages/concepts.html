@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Driving School Web Concepts</title>
   <style>
-    /* === RESET + BASE === */
     * {
       margin: 0;
       padding: 0;
@@ -15,73 +14,176 @@
       font-family: sans-serif;
       background-color: #f6f6f6;
       color: #222;
+      overflow-x: hidden;
     }
     a {
       text-decoration: none;
       color: inherit;
     }
+
+    /* ===== HEADER ===== */
     header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background-color: #000;
-      color: #fff;
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: #33a7d4;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 2000;
     }
+
     .logo {
-      font-weight: bold;
-      font-size: 1.5rem;
+      font-weight: 900;
+      font-size: 1.7rem;
       letter-spacing: 2px;
+      user-select: none;
+      cursor: default;
+      color: #fff;
     }
+
     .hamburger {
-      cursor: pointer;
-      width: 25px;
-      height: 20px;
+      width: 28px;
+      height: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-    .hamburger span {
-      background: #fff;
-      height: 3px;
-      width: 100%;
-    }
-    nav.menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      height: 100%;
-      width: 250px;
-      background: #000;
-      color: #fff;
-      transition: right 0.3s ease-in-out;
-      padding-top: 4rem;
-    }
-    nav.menu.open {
-      right: 0;
-    }
-    nav.menu ul {
-      list-style: none;
-      padding: 0 1rem;
-    }
-    nav.menu li {
-      margin-bottom: 1rem;
-    }
-    nav.menu a {
-      color: #fff;
-      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 2100;
     }
 
-    /* === SLIDER (PORTRAIT) === */
+    .hamburger span {
+      display: block;
+      height: 3.5px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.35s ease-in-out;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    nav.menu {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #33a7d4;
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 4rem;
+      z-index: 2050;
+    }
+
+    nav.menu.open {
+      transform: translateX(0);
+    }
+
+    nav.menu ul {
+      list-style: none;
+    }
+
+    nav.menu ul li {
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      transform: translateX(-40px);
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: 0.1em;
+    }
+
+    nav.menu ul li a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    nav.menu ul li a:hover {
+      color: #222;
+    }
+
+    nav.menu.open ul li {
+      animation: slideInFade 0.4s forwards;
+    }
+
+    nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
+    nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
+    nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
+    nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
+    nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
+
+    @keyframes slideInFade {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hamburger {
+        display: none;
+      }
+
+      nav.menu {
+        position: static;
+        height: auto;
+        width: auto;
+        background: transparent;
+        transform: none !important;
+        padding-left: 0;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      nav.menu ul {
+        display: flex;
+        gap: 3rem;
+      }
+
+      nav.menu ul li {
+        margin: 0;
+        opacity: 1 !important;
+        transform: none !important;
+        font-size: 1.4rem;
+        animation: none !important;
+      }
+
+      nav.menu ul li a {
+        font-weight: 900;
+        font-size: 1.2rem;
+        letter-spacing: 0.15em;
+      }
+    }
+
+    /* ===== SLIDER ===== */
+    main {
+      margin-top: 60px;
+    }
+
+    .slider-container {
+      position: relative;
+    }
+
     .slider {
       display: flex;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
     }
+
     .item {
       flex: 0 0 100%;
       scroll-snap-align: center;
@@ -90,6 +192,7 @@
       align-items: center;
       padding: 1rem;
     }
+
     .item img {
       width: auto;
       max-width: 90vw;
@@ -98,25 +201,37 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
+
     .item-content {
       margin-top: 1rem;
       text-align: center;
     }
+
     .button-row {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
+
     .btn-view-live,
-    .btn-enquire {
+    .btn-enquire,
+    .btn-code {
       padding: 0.5rem 1rem;
-      background: #000;
+      background: #33a7d4;
       color: #fff;
       border-radius: 4px;
       font-size: 0.9rem;
+      font-weight: bold;
+      display: inline-block;
     }
 
-    /* === LANDSCAPE GRID === */
+    .btn-view-live:hover,
+    .btn-enquire:hover,
+    .btn-code:hover {
+      background: #2b94bb;
+    }
+
+    /* LANDSCAPE GRID */
     @media (orientation: landscape) {
       .slider {
         display: grid;
@@ -125,6 +240,7 @@
         padding: 1rem;
         overflow: visible;
       }
+
       .item {
         flex: unset;
         scroll-snap-align: unset;
@@ -133,17 +249,49 @@
         border-radius: 6px;
         box-shadow: 0 1px 6px rgba(0,0,0,0.1);
       }
+
       .item img {
         width: 100%;
         height: auto;
         object-fit: cover;
         border-radius: 6px 6px 0 0;
       }
+
       .item-content {
         padding: 0.5rem;
       }
+
       .button-row {
         flex-direction: column;
+      }
+    }
+
+    /* Arrows */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      border: none;
+      font-size: 2rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      z-index: 100;
+      border-radius: 6px;
+    }
+
+    .arrow.left {
+      left: 5px;
+    }
+
+    .arrow.right {
+      right: 5px;
+    }
+
+    @media (orientation: landscape) {
+      .arrow {
+        display: none;
       }
     }
   </style>
@@ -166,31 +314,25 @@
   </header>
 
   <main>
-    <div class="slider">
-      <!-- ITEM TEMPLATE (copy as needed) -->
-      <div class="item">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept 1">
-        <div class="item-content">
-          <div class="button-row">
-            <a href="#" class="btn-view-live">View Live</a>
-            <span>Code: 1</span>
-            <a href="/funnel?code=1" class="btn-enquire">I Want This Concept</a>
+    <div class="slider-container">
+      <button class="arrow left">&#8592;</button>
+      <button class="arrow right">&#8594;</button>
+      <div class="slider">
+        <!-- === SLIDER ITEMS START === -->
+        ${[...Array(10)].map((_, i) => `
+          <div class="item">
+            <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_69${25 + i * 3}.png" alt="Concept ${i + 1}">
+            <div class="item-content">
+              <div class="button-row">
+                <a href="#" class="btn-view-live">View Live</a>
+                <span class="btn-code">Code: ${i + 1}</span>
+                <a href="/funnel?code=${i + 1}" class="btn-enquire">I Want This Concept</a>
+              </div>
+            </div>
           </div>
-        </div>
+        `).join('')}
+        <!-- === SLIDER ITEMS END === -->
       </div>
-
-      <div class="item">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept 2">
-        <div class="item-content">
-          <div class="button-row">
-            <a href="#" class="btn-view-live">View Live</a>
-            <span>Code: 2</span>
-            <a href="/funnel?code=2" class="btn-enquire">I Want This Concept</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Add more .item blocks here as needed -->
     </div>
   </main>
 
@@ -218,8 +360,17 @@
         }
       });
 
-      // Touch swipe for portrait mode
       const slider = document.querySelector(".slider");
+
+      // Arrows
+      document.querySelector(".arrow.left").addEventListener("click", () => {
+        slider.scrollBy({ left: -slider.offsetWidth, behavior: 'smooth' });
+      });
+      document.querySelector(".arrow.right").addEventListener("click", () => {
+        slider.scrollBy({ left: slider.offsetWidth, behavior: 'smooth' });
+      });
+
+      // Touch swipe (fallback)
       if (window.matchMedia("(orientation: portrait)").matches) {
         let startX = 0;
         slider.addEventListener("touchstart", e => {
