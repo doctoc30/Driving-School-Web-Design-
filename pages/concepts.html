@@ -616,27 +616,26 @@ main {
   display: inline-block;
 }
 
- 
 @media (orientation: landscape) {
   .library {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 20px !important;
-    width: 100vw !important;
-    height: auto !important;
-    overflow: visible !important;
     padding: 20px !important;
+    width: 100% !important;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: auto !important;
     box-sizing: border-box;
+    overflow: auto !important;
+    position: relative !important;
   }
 
   .item,
   .item.active,
   .item.prev,
   .item.next {
-    position: static !important;
-    transform: none !important;
-    opacity: 1 !important;
-    z-index: auto !important;
+    all: unset;
     display: block !important;
     width: 100% !important;
     height: auto !important;
@@ -646,18 +645,19 @@ main {
     width: 100% !important;
     height: auto !important;
     object-fit: cover !important;
-    border-radius: 6px !important;
+    border-radius: 6px;
+    aspect-ratio: 4 / 3;
   }
 
   .button-row {
-    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    margin-top: 8px;
   }
 
-  /* Optional: hide nav arrows in landscape */
+  /*  HIDE nav arrows entirely in landscape */
   .nav-arrow {
     display: none !important;
   }
@@ -983,6 +983,62 @@ if (window.matchMedia("(orientation: portrait)").matches) {
   library.appendChild(rightArrow);
 }
 
+  // Only run slider/swipe logic in portrait orientation
+if (window.matchMedia("(orientation: portrait)").matches) {
+  const allItems = Array.from(document.querySelectorAll(".item"));
+  let current = 0;
+
+  function updateItems() {
+    allItems.forEach((item, i) => {
+      item.classList.remove("active", "prev", "next");
+      if (i === current) {
+        item.classList.add("active");
+      } else if (i === (current - 1 + allItems.length) % allItems.length) {
+        item.classList.add("prev");
+      } else if (i === (current + 1) % allItems.length) {
+        item.classList.add("next");
+      }
+    });
+  }
+
+  function nextItem() {
+    current = (current + 1) % allItems.length;
+    updateItems();
+  }
+
+  function prevItem() {
+    current = (current - 1 + allItems.length) % allItems.length;
+    updateItems();
+  }
+
+  updateItems();
+
+  // Swipe logic
+  let startX = 0;
+  document.querySelector(".library").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+  document.querySelector(".library").addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) nextItem();
+    if (endX - startX > 50) prevItem();
+  });
+
+  // Arrows
+  const library = document.querySelector(".library");
+  const leftArrow = document.createElement("div");
+  leftArrow.className = "nav-arrow left";
+  leftArrow.innerHTML = "&#10094;";
+  leftArrow.onclick = prevItem;
+
+  const rightArrow = document.createElement("div");
+  rightArrow.className = "nav-arrow right";
+  rightArrow.innerHTML = "&#10095;";
+  rightArrow.onclick = nextItem;
+
+  library.appendChild(leftArrow);
+  library.appendChild(rightArrow);
+}
 </script>
 
 </body>
