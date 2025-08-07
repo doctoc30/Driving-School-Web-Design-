@@ -616,27 +616,27 @@ main {
   display: inline-block;
 }
 
-  @media screen and (max-width: 600px) and (orientation: portrait) {
+  @media screen and (max-width: 480px) and (orientation: portrait) {
   .library .item img {
-    width: 100vw !important;
+    width: 90% !important;
     height: auto !important;
     object-fit: contain !important;
-    max-height: 80vh !important; /* you can adjust this if needed */
     margin: 0 auto !important;
-    border-radius: 0 !important;
-    transform: scale(1.1); /* Slight zoom in */
+    transform: scale(0.85); /* Scale down image */
+    transition: transform 0.3s ease;
   }
 
   .library .item.active img {
-    transform: scale(1.1); /* Ensures only the center image is scaled */
+    transform: scale(0.85); /* Make center image smaller */
   }
 
   .library .item.prev img,
   .library .item.next img {
-    transform: scale(0.95); /* slightly zoomed for side items */
-    opacity: 0.5;
+    transform: scale(0.75) rotateY(15deg);
+    opacity: 0.4;
   }
 }
+  
 </style>
 </head>
 <body>
