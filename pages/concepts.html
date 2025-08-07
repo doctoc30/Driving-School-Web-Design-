@@ -1,78 +1,4 @@
-<style>
-  /* Base styles */
-  .slider-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1rem;
-    padding: 1rem;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .item {
-    flex: 0 0 80%;
-    scroll-snap-align: start;
-    background: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
-    position: relative;
-  }
-
-  .item img {
-    width: 100%;
-    display: block;
-    border-radius: 8px 8px 0 0;
-    height: auto;
-    object-fit: contain;
-  }
-
-  .item-content {
-    padding: 0.5rem 1rem 1rem;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-
-  .btn-view-live,
-  .btn-enquire {
-    background: #007bff;
-    color: white;
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .btn-view-live:hover,
-  .btn-enquire:hover {
-    background: #0056b3;
-  }
-
-  /* Landscape or wider screens: switch to grid */
-  @media (orientation: landscape), (min-width: 900px) {
-    .slider-container {
-      display: grid !important;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      overflow-x: visible;
-      scroll-snap-type: none;
-      padding: 1rem;
-    }
-
-    .item {
-      flex: none !important;
-      scroll-snap-align: none !important;
-      width: 100% !important;
-    }
-  }
-
-  
-  /* ===== RESET & BASE ===== */
+/* ===== RESET & BASE ===== */
 *,
 *::before,
 *::after {
@@ -82,11 +8,8 @@
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   width: 100%;
   overflow-x: hidden;
-  box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   background-color: #33a7d4;
   color: #fff;
@@ -99,10 +22,10 @@ header {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 60px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
   background-color: #33a7d4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 2000;
@@ -192,25 +115,11 @@ nav.menu.open ul li {
   animation: slideInFade 0.4s forwards;
 }
 
-nav.menu.open ul li:nth-child(1) {
-  animation-delay: 0.15s;
-}
-
-nav.menu.open ul li:nth-child(2) {
-  animation-delay: 0.35s;
-}
-
-nav.menu.open ul li:nth-child(3) {
-  animation-delay: 0.55s;
-}
-
-nav.menu.open ul li:nth-child(4) {
-  animation-delay: 0.75s;
-}
-
-nav.menu.open ul li:nth-child(5) {
-  animation-delay: 0.95s;
-}
+nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
+nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
+nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
+nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
+nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 @keyframes slideInFade {
   to {
@@ -261,12 +170,12 @@ nav.menu.open ul li:nth-child(5) {
 main {
   position: relative;
   min-height: 100vh;
-  padding-top: 60px; /* Space for fixed header */
+  padding-top: 60px; /* for fixed header */
   text-align: center;
   box-sizing: border-box;
 }
 
-/* ===== LIBRARY (ALL VIEWPORTS) ===== */
+/* ===== LIBRARY CONTAINER ===== */
 .library {
   position: relative;
   width: 100vw;
@@ -278,7 +187,87 @@ main {
   box-sizing: border-box;
 }
 
-/* ===== MOBILE SWIPE (portrait, max-width 600px) ===== */
+/* ===== SLIDER CONTAINER & ITEMS ===== */
+.slider-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.item {
+  flex: 0 0 80%;
+  scroll-snap-align: start;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
+  position: relative;
+}
+
+.item img {
+  width: 100%;
+  display: block;
+  border-radius: 8px 8px 0 0;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Content inside item */
+.item-content {
+  padding: 0.5rem 1rem 1rem;
+}
+
+/* Button row inside items */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.button-row a {
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: #007bff;
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.button-row a:hover {
+  background: #0056b3;
+}
+
+/* ===== LANDSCAPE OR WIDE SCREENS (≥900px or landscape) ===== */
+@media (orientation: landscape), (min-width: 900px) {
+  .slider-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding: 1rem;
+  }
+
+  .item {
+    flex: none !important;
+    scroll-snap-align: none !important;
+    width: 100% !important;
+  }
+}
+
+/* ===== MOBILE SWIPE MODE (portrait & max-width 600px) ===== */
 @media (max-width: 600px) and (orientation: portrait) {
   .library {
     height: calc(100vh - 120px);
@@ -288,8 +277,7 @@ main {
 
   .item {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100vw;
     height: 100%;
     backface-visibility: hidden;
@@ -322,8 +310,7 @@ main {
 
   .item img {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100vw;
     height: 100%;
     object-fit: cover;
@@ -344,13 +331,12 @@ main {
   }
 
   .button-row a {
-    white-space: nowrap;
-    padding: 14px 20px;
     background-color: #fff;
     color: #33a7d4;
     border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;
+    padding: 14px 20px;
     text-decoration: none;
     flex-shrink: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -362,200 +348,7 @@ main {
   }
 }
 
-/* ===== DESKTOP & TABLETS (≥601px OR landscape) ===== */
-@media (min-width: 601px), (orientation: landscape) {
-  .library {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    max-width: 1400px;
-    width: 100vw;
-    margin: 0 auto;
-    min-height: auto;
-    padding: 0 10px;
-    box-sizing: border-box;
-  }
-
-  .item {
-    position: relative;
-  }
-
-  .item img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: 6px;
-    transition: transform 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  .item img:hover {
-    transform: scale(1.05);
-  }
-
-  .item-content {
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  .code {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .button-row {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    width: 100%;
-  }
-
-  .button-row a {
-    background: white;
-    color: #33a7d4;
-    border-radius: 8px;
-    padding: 1rem 2rem;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background 0.3s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .button-row a:hover {
-    background: #227090;
-    color: white;
-  }
-}
-
-/* ===== GLOBAL BUTTON ROW OVERRIDES ===== */
-.button-row {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 10px;
-  justify-content: center;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
-
-.button-row a {
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Nav arrows inside .library boundaries */
-.nav-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-  user-select: none;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-.nav-arrow.left {
-  left: 12px;
-}
-
-.nav-arrow.right {
-  right: 12px;
-}
-
-/* ===== ONLY ONE ITEM HERO FIX ===== */
-/* Since :has() has limited support, use a JS class approach instead */
-/* If you want, I can help you write that JS snippet too */
-
-.library.single-item {
-  display: block !important;
-  width: 100vw !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-}
-
-.library.single-item .item {
-  width: 100% !important;
-  height: 100vh !important; /* full screen height */
-}
-
-.library.single-item .item img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  border-radius: 0 !important;
-  display: block;
-}
-
-
-  /* Make .library a positioning container */
-.library {
-  position: relative; /* ensure arrows stay inside */
-  overflow: hidden;   /* prevents arrows from shifting layout */
-}
-
-/* Nav arrows overlay image instead of pushing it */
-.nav-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-  user-select: none;
-  z-index: 20;  /* above the image */
-  pointer-events: auto;
-}
-
-.nav-arrow.left {
-  left: 16px; /* inside edge */
-}
-
-.nav-arrow.right {
-  right: 16px;
-}
-
-/* Ensure the image can be full width without arrows affecting it */
-.item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-    /* Always make the active image full width */
-.library .item.active img {
-  width: 100vw !important;
-  height: 100vh !important; /* optional: full screen height */
-  object-fit: cover;
-  border-radius: 0;
-}
-
-  /* ===== TABLET PORTRAIT SLIDER FIX ===== */
+/* ===== TABLET PORTRAIT SLIDER FIX (601-1024px) ===== */
 @media (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
   .library {
     display: block !important;
@@ -566,8 +359,7 @@ main {
 
   .item {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
@@ -580,134 +372,46 @@ main {
   }
 
   .item img {
-    width: 90%;        /* smaller than full width */
+    width: 90%;
+    max-width: 500px;
+    max-height: 70vh;
     height: auto;
-    max-height: 70vh;  /* not full height */
     margin: 0 auto;
     object-fit: contain;
     border-radius: 10px;
   }
 
-  /* Active (center) image */
-.library .item.active img {
-  width: 90vw;          /* not full screen */
-  max-width: 500px;
-  height: auto;
-  max-height: 70vh;
-  margin: 0 auto;
-  object-fit: contain;
-  border-radius: 8px;
-  z-index: 2;           /* keep above side images */
-}
-
-/* Side images (prev/next) */
-.library .item.prev img,
-.library .item.next img {
-  width: 50vw;          
-  max-width: 250px;
-  height: auto;
-  max-height: 40vh;
-  opacity: 0.6;
-  object-fit: contain;
-  border-radius: 6px;
-  transform: scale(0.9) rotateY(-15deg); /* default tilt */
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Different tilt for next vs prev */
-.library .item.next img {
-  transform: scale(0.9) rotateY(15deg);
-}
-
-  .button-row {
-  display: flex;
-  justify-content: center;
-  gap: 2.5rem; /* Increased spacing */
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.button-row a.btn-view-live,
-.button-row a.btn-enquire {
-  display: inline-block;
-  background: white;
-  color: #33a7d4;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 1rem;
-  box-sizing: border-box;
-  min-width: 140px;
-  text-align: center;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.button-row a.btn-view-live:hover,
-.button-row a.btn-enquire:hover {
-  background: #227090;
-  color: white;
-}
-
-.button-row span {
-  font-weight: bold;
-  color: #555;
-  font-size: 1rem;
-  min-width: 140px;
-  text-align: center;
-  display: inline-block;
-}
-
-@media (orientation: landscape) {
-  .library {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important;
-    padding: 20px !important;
-    width: 100% !important;
-    max-width: 1400px;
-    margin: 0 auto;
-    height: auto !important;
-    box-sizing: border-box;
-    overflow: auto !important;
-    position: relative !important;
+  /* Active image */
+  .library .item.active img {
+    border-radius: 8px;
+    z-index: 2;
   }
 
-  .item,
-  .item.active,
-  .item.prev,
-  .item.next {
-    all: unset;
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .item img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: cover !important;
+  /* Side images */
+  .library .item.prev img,
+  .library .item.next img {
+    width: 50vw;
+    max-width: 250px;
+    max-height: 40vh;
+    height: auto;
+    opacity: 0.6;
+    object-fit: contain;
     border-radius: 6px;
-    aspect-ratio: 4 / 3;
+    transform: scale(0.9) rotateY(-15deg);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .library .item.next img {
+    transform: scale(0.9) rotateY(15deg);
   }
 
   .button-row {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-top: 8px;
-  }
-
-  /*  HIDE nav arrows entirely in landscape */
-  .nav-arrow {
-    display: none !important;
-  }
-}
-</style>
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom:
 
 <div class="slider-container" id="slider">
   <!-- Paste your .item divs here -->
