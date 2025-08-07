@@ -615,6 +615,29 @@ main {
   text-align: center;
   display: inline-block;
 }
+
+  @media (max-width: 600px) and (orientation: portrait) {
+  .item img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .item {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .library {
+    height: auto;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+}
 </style>
 </head>
 <body>
