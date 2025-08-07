@@ -618,13 +618,28 @@ main {
 
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .library .item img {
-    width: 90% !important;
+    width: auto !important;
     height: auto !important;
+    max-width: 90% !important;
     max-height: 55vh !important;
     object-fit: contain !important;
     position: relative !important;
-    display: block !important;
     margin: 0 auto !important;
+    transform: none !important;
+    display: block !important;
+  }
+
+  .library .item.active img {
+    max-width: 90% !important;
+    max-height: 55vh !important;
+    transform: none !important;
+  }
+
+  .library .item.prev img,
+  .library .item.next img {
+    max-width: 70% !important;
+    max-height: 45vh !important;
+    opacity: 0.5 !important;
     transform: none !important;
   }
 }
@@ -796,10 +811,9 @@ main {
   </div>
 </main>
 
-
-<script>
-// Hamburger Menu
+  <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // Hamburger Menu
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
@@ -828,12 +842,12 @@ document.addEventListener("DOMContentLoaded", () => {
   searchInput.addEventListener("keyup", () => {
     const term = searchInput.value.toLowerCase();
     items.forEach(item => {
-      const code = item.querySelector(".code").textContent.toLowerCase();
+      const code = item.querySelector(".code")?.textContent.toLowerCase() || '';
       item.style.display = code.includes(term) ? "block" : "none";
     });
   });
 
-  // Folder-style swipe rotation
+  // Slider logic
   const allItems = Array.from(document.querySelectorAll(".item"));
   let current = 0;
 
@@ -854,56 +868,52 @@ document.addEventListener("DOMContentLoaded", () => {
     current = (current + 1) % allItems.length;
     updateItems();
   }
+
   function prevItem() {
     current = (current - 1 + allItems.length) % allItems.length;
     updateItems();
   }
 
-  // Initial
+  // Initial state
   updateItems();
 
   // Touch swipe
   let startX = 0;
-  document.querySelector(".library").addEventListener("touchstart", e => {
+  const library = document.querySelector(".library");
+
+  library.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
-  document.querySelector(".library").addEventListener("touchend", e => {
+
+  library.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
     if (startX - endX > 50) nextItem();
     if (endX - startX > 50) prevItem();
   });
 
-  // Optional arrows
-  const library = document.querySelector(".library");
+  // Optional nav arrows
   const leftArrow = document.createElement("div");
   leftArrow.className = "nav-arrow left";
   leftArrow.innerHTML = "&#10094;";
   leftArrow.onclick = prevItem;
+
   const rightArrow = document.createElement("div");
   rightArrow.className = "nav-arrow right";
   rightArrow.innerHTML = "&#10095;";
   rightArrow.onclick = nextItem;
+
   library.appendChild(leftArrow);
   library.appendChild(rightArrow);
 });
 
-
-
- // Fix vh on mobile Safari / iPhone
-function setVh() {
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+// ✅ Safe viewport height fix for iOS Safari (dynamic toolbars)
+function updateVh() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
-setVh();
-window.addEventListener('resize', setVh);
-
-  function updateVh() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  window.addEventListener('resize', updateVh);
-  window.addEventListener('orientationchange', updateVh);
-  updateVh();
-
+window.addEventListener('resize', updateVh);
+window.addEventListener('orientationchange', updateVh);
+updateVh();
 </script>
 
 </body>
