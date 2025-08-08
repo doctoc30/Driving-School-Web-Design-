@@ -315,7 +315,11 @@ footer {
   }
 }
 
-
+@media (orientation: portrait) and (max-width: 768px) {
+  .concept-slider {
+    padding-bottom: 120px; /* Give space for footer when full screen */
+  }
+}
 </style>
 </head>
 <body>
@@ -368,22 +372,24 @@ footer {
   <button class="arrow next">&#10095;</button>
 </div>
 
-<div class="social-icons" aria-label="Social media links">
-  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
-  </a>
-  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
-  </a>
-  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
-  </a>
-</div>
 
-<div class="footer-inner" data-aos="fade-up">
-  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
-</div>
+    <footer>
+  <div class="social-icons" aria-label="Social media links">
+    <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+    </a>
+    <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+    </a>
+    <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+    </a>
+  </div>
 
+  <div class="footer-inner" data-aos="fade-up">
+    <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+  </div>
+</footer>
 
   </main>
 
