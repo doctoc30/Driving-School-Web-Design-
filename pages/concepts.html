@@ -362,18 +362,28 @@ footer {
 }
 
 
-    /* ✅ Force single row in portrait mode */
-@media (orientation: portrait), (max-width: 767px) {
-  .slider-wrapper {
-    flex-wrap: nowrap !important; /* prevents stacking */
+   /* FINAL — Force slider to be single row in portrait */
+@media screen and (orientation: portrait) {
+  .concept-slider .slider-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    transform: translateX(0); /* start at first slide */
   }
-  .slide {
-    flex: 0 0 100% !important; /* one slide takes full width */
+
+  .concept-slider .slide {
+    flex: 0 0 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  .concept-slider .slide img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
   }
 }
-
 
 </style>
 </head>
