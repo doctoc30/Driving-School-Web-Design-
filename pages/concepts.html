@@ -282,6 +282,28 @@ footer {
     padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
+
+
+    /* Landscape view: Grid with 3 images per row, no arrows */
+@media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .slide {
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .arrow {
+    display: none !important;
+  }
+}
 </style>
 </head>
 <body>
