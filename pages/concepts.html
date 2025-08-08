@@ -526,11 +526,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevBtn = document.querySelector('.arrow.prev');
   let current = 0;
 
-  function updateSlider() {
+function updateSlider() {
   if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
-    wrapper.style.transform = `translateX(-${current * 100}%)`;
+    wrapper.style.transform = `translateX(-${current * 100}%)`; // swipe mode
   } else {
-    wrapper.style.transform = "none"; // Grid mode, no sliding
+    wrapper.style.transform = "none"; // grid mode
   }
 }
 
