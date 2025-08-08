@@ -152,6 +152,82 @@ main {
   }
   .item a { left: auto; right: 10px; }
 }
+
+  /* Footer layout */
+footer {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Social Icons Container */
+.social-icons {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: flex !important;
+  flex-wrap: nowrap;
+  padding: 0;
+}
+
+/* Each social link */
+.social-icons a {
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: coin-spin 6s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  margin: 0;
+}
+
+/* Icon images */
+.social-icons img {
+  width: 48px;
+  height: 48px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.4s ease;
+}
+
+/* Spacing between icons */
+.social-icons a:not(:last-child) {
+  margin-right: 40px;
+}
+
+/* Coin spin animation */
+@keyframes coin-spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Footer bottom text */
+.footer-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  padding-top: 10px;
+}
+
+/* iPhone landscape fix */
+@media (orientation: landscape) and (max-device-width: 812px) {
+  footer {
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
+  }
+}
 </style>
 </head>
 <body>
@@ -172,7 +248,22 @@ main {
   </nav>
 </header>
 
+<div class="social-icons" aria-label="Social media links">
+  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+  </a>
+  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+  </a>
+  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+  </a>
+</div>
 
+<div class="footer-inner" data-aos="fade-up">
+  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+</div>
+  
 <script>
 // Hamburger Menu
 document.addEventListener("DOMContentLoaded", () => {
@@ -211,6 +302,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+  
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  AOS.init();
+
 </script>
 
 </body>
