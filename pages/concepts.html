@@ -248,6 +248,27 @@ footer {
   </nav>
 </header>
 
+  <section class="contact-form-section" style="max-width: 600px; margin: 40px auto; padding: 20px; background: #1e88c7; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: white; font-family: 'Poppins', sans-serif;">
+  <h2 style="text-align: center; margin-bottom: 24px; font-weight: 700;">Contact Us</h2>
+  <form id="contactForm" action="#" method="POST" style="display: flex; flex-direction: column; gap: 16px;">
+    <label for="name" style="font-weight: 600;">Name <span style="color:#ffb347;">*</span></label>
+    <input type="text" id="name" name="name" required placeholder="Your full name" style="padding: 12px 15px; border-radius: 6px; border: none; font-size: 1rem;" />
+
+    <label for="email" style="font-weight: 600;">Email <span style="color:#ffb347;">*</span></label>
+    <input type="email" id="email" name="email" required placeholder="you@example.com" style="padding: 12px 15px; border-radius: 6px; border: none; font-size: 1rem;" />
+
+    <label for="phone" style="font-weight: 600;">Phone</label>
+    <input type="tel" id="phone" name="phone" placeholder="Optional phone number" style="padding: 12px 15px; border-radius: 6px; border: none; font-size: 1rem;" />
+
+    <label for="message" style="font-weight: 600;">Message <span style="color:#ffb347;">*</span></label>
+    <textarea id="message" name="message" rows="5" required placeholder="Write your message here..." style="padding: 12px 15px; border-radius: 6px; border: none; font-size: 1rem; resize: vertical;"></textarea>
+
+    <button type="submit" style="background: #ffb347; color: #222; font-weight: 700; font-size: 1.1rem; padding: 14px 0; border-radius: 50px; border: none; cursor: pointer; transition: background 0.3s ease;">
+      Send Message
+    </button>
+  </form>
+</section>
+
 <div class="social-icons" aria-label="Social media links">
   <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
