@@ -210,3 +210,43 @@
   // Update slider content based on currentIndex
   function updateSlider() {
     const data = sliderData[currentIndex
+
+          const data = sliderData[currentIndex];
+    sliderImage.src = data.img;
+    liveLink.href = data.liveLink;
+    wantButton.href = data.wantLink;
+    codeButton.textContent = "Code: " + data.code;
+  }
+
+  // Initial load
+  updateSlider();
+
+  // Swipe detection for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  sliderImage.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  sliderImage.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+
+  function handleSwipe() {
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe right
+        currentIndex = (currentIndex - 1 + sliderData.length) % sliderData.length;
+      } else {
+        // Swipe left
+        currentIndex = (currentIndex + 1) % sliderData.length;
+      }
+      updateSlider();
+    }
+  }
+</script>
+  </body>
+</html>
