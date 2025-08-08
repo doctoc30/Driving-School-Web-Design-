@@ -317,43 +317,6 @@ footer {
 }
 
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  const wrapper = document.querySelector('.slider-wrapper');
-  const slides = document.querySelectorAll('.slide');
-  const nextBtn = document.querySelector('.arrow.next');
-  const prevBtn = document.querySelector('.arrow.prev');
-  let current = 0;
-
-  function updateSlider() {
-    wrapper.style.transform = `translateX(-${current * 100}%)`;
-  }
-
-  nextBtn.addEventListener('click', () => {
-    current = (current + 1) % slides.length;
-    updateSlider();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    current = (current - 1 + slides.length) % slides.length;
-    updateSlider();
-  });
-
-  // Swipe Support
-  let startX = 0;
-  wrapper.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  });
-
-  wrapper.addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      nextBtn.click();
-    } else if (endX - startX > 50) {
-      prevBtn.click();
-    }
-  });
-});
 </style>
 </head>
 <body>
@@ -422,11 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  // Initialize AOS animation
-  AOS.init();
-
+ 
   // Hamburger Menu and Search Filter
   document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector('.hamburger');
@@ -467,6 +426,52 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
+
+
+  
+
+document.addEventListener("DOMContentLoaded", () => {
+  const wrapper = document.querySelector('.slider-wrapper');
+  const slides = document.querySelectorAll('.slide');
+  const nextBtn = document.querySelector('.arrow.next');
+  const prevBtn = document.querySelector('.arrow.prev');
+  let current = 0;
+
+  function updateSlider() {
+    wrapper.style.transform = `translateX(-${current * 100}%)`;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    current = (current + 1) % slides.length;
+    updateSlider();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    current = (current - 1 + slides.length) % slides.length;
+    updateSlider();
+  });
+
+  // Swipe Support
+  let startX = 0;
+  wrapper.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+
+  wrapper.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) {
+      nextBtn.click();
+    } else if (endX - startX > 50) {
+      prevBtn.click();
+    }
+  });
+});
+
+   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // Initialize AOS animation
+  AOS.init();
+
 </script>
   
 </body>
