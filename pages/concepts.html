@@ -360,6 +360,19 @@ footer {
     display: none !important;
   }
 }
+
+
+    /* ✅ Portrait mode: force each slide full width */
+@media (orientation: portrait), (max-width: 767px) {
+  .slider-wrapper {
+    flex-wrap: nowrap !important;
+  }
+  .slide {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -493,8 +506,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let current = 0;
 
   function updateSlider() {
+  if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
     wrapper.style.transform = `translateX(-${current * 100}%)`;
+  } else {
+    wrapper.style.transform = "none"; // Grid mode, no sliding
   }
+}
 
   nextBtn.addEventListener('click', () => {
     current = (current + 1) % slides.length;
