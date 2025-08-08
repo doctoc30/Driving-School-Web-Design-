@@ -316,6 +316,31 @@ body {
     }
   }
 
+  .social-icons {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 30px; /* use gap instead of margin-right */
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.social-icons a {
+  width: 48px;
+  height: 48px;
+  animation: none; /* REMOVE coin-spin */
+  transform: none;
+}
+
+.social-icons img {
+  width: 100%;
+  height: auto;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
 </style>
 </head>
 <body>
