@@ -361,23 +361,15 @@ footer {
   }
 }
 
-    /* Ensure transparent background for footer social in portrait mode */
-@media (orientation: portrait) {
-  .footer-social {
+    @media (orientation: portrait) {
+  .footer-inner,
+  .social-icons {
+    background: transparent !important;
     background-color: transparent !important;
   }
 }
 
-    @media (orientation: portrait) {
-  .slider {
-    margin-bottom: 4rem;
-  }
-
-  .footer-inner,
-  .social-icons {
-    margin-top: 3rem;
-  }
-}
+  
 </style>
 </head>
 <body>
