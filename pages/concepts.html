@@ -1,3 +1,6 @@
+Header & Footer
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -228,95 +231,6 @@ footer {
     padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
-
-
-  /* Concept Slider Styles */
-.concept-slider {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  margin-top: 80px;
-}
-
-.slider-wrapper {
-  display: flex;
-  transition: transform 0.5s ease;
-  will-change: transform;
-}
-
-.slide {
-  min-width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.slide img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  max-height: 80vh;
-}
-
-.buttons {
-  position: absolute;
-  bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px 14px;
-  border-radius: 8px;
-}
-
-.buttons a,
-.buttons span {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  background: rgba(255,255,255,0.1);
-  padding: 6px 10px;
-  border-radius: 6px;
-  text-align: center;
-}
-
-/* Arrows */
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.4);
-  border: none;
-  color: white;
-  font-size: 2rem;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 100;
-  border-radius: 50%;
-}
-.arrow.prev { left: 10px; }
-.arrow.next { right: 10px; }
-
-/* Fullscreen Portrait */
-@media (orientation: portrait) and (max-width: 768px) {
-  .concept-slider {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #000;
-    z-index: 1000;
-  }
-  .slide img {
-    max-height: 100vh;
-    object-fit: contain;
-  }
-}
-
-
 </style>
 </head>
 <body>
@@ -337,38 +251,6 @@ footer {
   </nav>
 </header>
 
-<div class="concept-slider">
-  <div class="slider-wrapper">
-    <!-- Repeat this block for each image -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" target="_blank">View live link</a>
-        <span>Code: 1</span>
-        <a href="#contact">I want this concept</a>
-      </div>
-    </div>
-
-    <!-- Add other slides the same way, changing links/images -->
-    <!-- Example below: -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept Image 2">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
-        <span>Code: 2</span>
-        <a href="#contact">I want this concept</a>
-      </div>
-    </div>
-
-    <!-- continue with rest of the images -->
-  </div>
-
-  <!-- Arrows -->
-  <button class="arrow prev">&#10094;</button>
-  <button class="arrow next">&#10095;</button>
-</div>
-
-  
 <div class="social-icons" aria-label="Social media links">
   <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
@@ -385,7 +267,11 @@ footer {
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
- 
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // Initialize AOS animation
+  AOS.init();
+
   // Hamburger Menu and Search Filter
   document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector('.hamburger');
@@ -426,52 +312,6 @@ footer {
       });
     });
   });
-
-
-  
-
-document.addEventListener("DOMContentLoaded", () => {
-  const wrapper = document.querySelector('.slider-wrapper');
-  const slides = document.querySelectorAll('.slide');
-  const nextBtn = document.querySelector('.arrow.next');
-  const prevBtn = document.querySelector('.arrow.prev');
-  let current = 0;
-
-  function updateSlider() {
-    wrapper.style.transform = `translateX(-${current * 100}%)`;
-  }
-
-  nextBtn.addEventListener('click', () => {
-    current = (current + 1) % slides.length;
-    updateSlider();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    current = (current - 1 + slides.length) % slides.length;
-    updateSlider();
-  });
-
-  // Swipe Support
-  let startX = 0;
-  wrapper.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  });
-
-  wrapper.addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      nextBtn.click();
-    } else if (endX - startX > 50) {
-      prevBtn.click();
-    }
-  });
-});
-
-   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  // Initialize AOS animation
-  AOS.init();
-
 </script>
   
 </body>
