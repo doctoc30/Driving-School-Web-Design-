@@ -263,51 +263,53 @@ footer {
 <div class="footer-inner" data-aos="fade-up">
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
-  
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-// Hamburger Menu
-document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-  hamburger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMenu();
-  });
-  document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', false);
-      menu.setAttribute('aria-hidden', true);
-      document.body.style.overflow = '';
-    }
-  });
-
-  // Search filter
-  const searchInput = document.getElementById("search");
-  const items = document.querySelectorAll(".item");
-  searchInput.addEventListener("keyup", () => {
-    const term = searchInput.value.toLowerCase();
-    items.forEach(item => {
-      const code = item.querySelector(".code").textContent.toLowerCase();
-      item.style.display = code.includes(term) ? "block" : "none";
-    });
-  });
-});
-
-  
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  // Initialize AOS animation
   AOS.init();
 
-</script>
+  // Hamburger Menu and Search Filter
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('nav.menu');
+    
+    function toggleMenu() {
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
 
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Search filter
+    const searchInput = document.getElementById("search");
+    const items = document.querySelectorAll(".item");
+    
+    searchInput.addEventListener("keyup", () => {
+      const term = searchInput.value.toLowerCase();
+      items.forEach(item => {
+        const code = item.querySelector(".code").textContent.toLowerCase();
+        item.style.display = code.includes(term) ? "block" : "none";
+      });
+    });
+  });
+</script>
+  
 </body>
 </html>
