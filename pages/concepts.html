@@ -362,17 +362,19 @@ footer {
 }
 
 
-    /* ✅ Portrait mode: force each slide full width */
+    /* ✅ Force single row in portrait mode */
 @media (orientation: portrait), (max-width: 767px) {
   .slider-wrapper {
-    flex-wrap: nowrap !important;
+    flex-wrap: nowrap !important; /* prevents stacking */
   }
   .slide {
-    flex: 0 0 100% !important;
+    flex: 0 0 100% !important; /* one slide takes full width */
     min-width: 100% !important;
     max-width: 100% !important;
   }
 }
+
+
 </style>
 </head>
 <body>
