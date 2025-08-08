@@ -125,7 +125,10 @@ main {
   text-decoration: underline;
 }
 
-@media (max-width: 600px) and (orientation: portrait) {
+
+
+
+  @media (max-width: 600px) and (orientation: portrait) {
   .library {
     grid-template-columns: 1fr;       /* 1 image per row */
     grid-auto-rows: 80vh;             /* each image row is 80% of viewport height */
@@ -150,7 +153,7 @@ main {
   .item a { left: auto; right: 10px; }
 }
 
-/* Footer layout */
+  /* Footer layout */
 footer {
   flex-direction: column;
   text-align: center;
@@ -225,40 +228,7 @@ footer {
     padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
-
-/* ===== SWIPER STYLES ===== */
-.swiper {
-  width: 100%;
-  max-width: 1400px;
-  margin: 30px auto;
-  border-radius: 8px;
-  overflow: hidden;
-  background: white;
-}
-.swiper-slide img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-}
-
-/* navigation buttons */
-.swiper-button-next, .swiper-button-prev {
-  color: #33a7d4;
-}
-
-/* pagination bullets */
-.swiper-pagination-bullet {
-  background: #33a7d4;
-}
 </style>
-
-<!-- Swiper CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-/>
-
 </head>
 <body>
 
@@ -278,17 +248,68 @@ footer {
   </nav>
 </header>
 
-<!-- ===== SWIPER SLIDER START ===== -->
-<div class="swiper" aria-label="Concept Library Image Slider">
-  <div class="swiper-wrapper">
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Driving School Design 6925" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Driving School Design 6938" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" alt="Driving School Design 6939" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" alt="Driving School Design 6940" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" alt="Driving School Design 6941" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Driving School Design 6942" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Driving School Design 6943" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Driving School Design 6945" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/autolearn_pro_gradient_website.png" alt="Autolearn Pro Gradient Website" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/drivewise_proper_website.png" alt="Drivewise Proper Website" /></div>
-    <div class="swiper-slide"><img src="https://raw.githubusercontent.com/doctoc30/Driving-School
+<div class="social-icons" aria-label="Social media links">
+  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+  </a>
+  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+  </a>
+  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+  </a>
+</div>
+
+<div class="footer-inner" data-aos="fade-up">
+  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+</div>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // Initialize AOS animation
+  AOS.init();
+
+  // Hamburger Menu and Search Filter
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('nav.menu');
+    
+    function toggleMenu() {
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Search filter
+    const searchInput = document.getElementById("search");
+    const items = document.querySelectorAll(".item");
+    
+    searchInput.addEventListener("keyup", () => {
+      const term = searchInput.value.toLowerCase();
+      items.forEach(item => {
+        const code = item.querySelector(".code").textContent.toLowerCase();
+        item.style.display = code.includes(term) ? "block" : "none";
+      });
+    });
+  });
+</script>
+  
+</body>
+</html>
