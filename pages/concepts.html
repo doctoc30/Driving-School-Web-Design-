@@ -405,6 +405,16 @@ footer {
   }
 }
 
+    @media (orientation: landscape) {
+  .slider-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 15px; /* NEW - adds space between slides */
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
 </style>
 </head>
 <body>
