@@ -385,6 +385,14 @@ footer {
   }
 }
 
+    @media (orientation: portrait) {
+  .slide img {
+    width: 100vw;   /* fill full width */
+    height: auto;   /* keep aspect ratio */
+    max-height: 100vh;
+    object-fit: contain;
+  }
+}
 </style>
 </head>
 <body>
