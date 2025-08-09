@@ -385,12 +385,27 @@ footer {
   }
 }
 
-    @media (orientation: portrait) {
+@media (orientation: portrait) {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000; /* optional to remove white edges */
+  }
+  .slider-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+  }
   .slide img {
-    width: 100vw;   /* fill full width */
-    height: auto;   /* keep aspect ratio */
-    max-height: 100vh;
-    object-fit: contain;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain; /* no cropping */
+    display: block;
   }
 }
 </style>
