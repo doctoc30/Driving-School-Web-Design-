@@ -387,14 +387,6 @@ footer {
 
 
     @media (orientation: portrait) {
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
-  .slider-container {
-    width: 100vw;
-    overflow: hidden;
-  }
   .slide {
     width: 100vw;
     flex-shrink: 0;
@@ -402,15 +394,17 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #33a7d4; /* match your template background */
   }
   .slide img {
     width: 100%;
     height: auto;
-    object-fit: contain;
+    object-fit: contain; /* keep full image visible */
     display: block;
-    background-color: white; /* matches your template */
+    background-color: #33a7d4; /* fill behind transparent areas */
   }
 }
+
 </style>
 </head>
 <body>
