@@ -405,17 +405,16 @@ footer {
   }
 }
 
-@media (orientation: landscape) {
+@media only screen and (orientation: landscape) {
   .slider-container {
-    display: grid;
+    display: grid !important; /* force grid instead of flex */
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: auto;
-    gap: 20px; /* space between slides */
+    gap: 20px;
     padding: 15px;
     box-sizing: border-box;
   }
   .slide {
-    margin: 0; /* prevent double spacing */
+    margin: 0;
   }
 }
     
