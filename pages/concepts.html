@@ -423,7 +423,27 @@ footer {
     flex-shrink: 1 !important; /* allow shrinking in grid */
   }
 }
-    
+
+
+    @media only screen and (orientation: landscape) {
+  .slider-container {
+    display: grid !important; /* switch to grid layout */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* space between slides */
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: visible !important;
+    transform: none !important; /* stop JS slider shifts */
+  }
+
+  .slide {
+    min-width: auto !important; /* remove full-width from portrait mode */
+    flex: none !important;
+    transform: none !important; /* stop translateX positioning */
+    width: 100% !important;
+    height: auto !important;
+  }
+}
 </style>
 </head>
 <body>
