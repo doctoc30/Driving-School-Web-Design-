@@ -412,6 +412,38 @@ footer {
   font-weight: bold;
 }
 
+
+    @media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* space between both vertically and horizontally */
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .slide {
+    flex: 0 0 calc((100% / 3) - (20px * 2 / 3));
+    max-width: calc((100% / 3) - (20px * 2 / 3));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0; /* rely on gap for spacing */
+  }
+
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 300px;
+    border-radius: 8px;
+  }
+
+  .arrow {
+    display: none !important;
+  }
+}
 </style>
 </head>
 <body>
