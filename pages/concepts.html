@@ -405,29 +405,28 @@ footer {
   }
 }
 
-
-/* Landscape iPad and larger */
 @media only screen and (orientation: landscape) and (min-width: 900px) {
   .slider-container {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important; /* horizontal & vertical space */
+    column-gap: 20px !important; /* horizontal space */
+    row-gap: 20px !important;    /* vertical space */
     padding: 15px !important;
-    box-sizing: border-box !important;
+    background-color: #33a7d4 !important;
   }
 
-  /* Remove inline slider widths in landscape */
   .slider-container .slide {
-    width: 100% !important;
-    min-width: 0 !important;
+    width: auto !important;       /* let grid size it */
+    min-width: 0 !important;      
+    max-width: 100% !important;
     flex: none !important;
-    transform: none !important;
   }
 
-  /* If there's a slider track wrapper, make slides flow naturally */
-  .slider-track {
-    display: contents !important;
+  /* Override inline transforms from slider JS */
+  .slider-track,
+  .slider-list {
     transform: none !important;
+    width: 100% !important;
   }
 }
 
