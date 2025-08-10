@@ -353,9 +353,37 @@ footer {
   padding-top: 10px;
 }
 
-/* iPhone landscape safe area */
-@media (orientation: landscape) and (max-device-width: 812px) {
-  footer {
+/* ===== ORIENTATION DEPENDENT LAYOUT ===== */
+
+/* Landscape: show grid, hide slider */
+@media (orientation: landscape) {
+  .library {
+    display: grid;
+  }
+  .concept-slider {
+    display: none;
+  }
+}
+
+/* Portrait: show slider, hide grid */
+@media (orientation: portrait) {
+  .library {
+    display: none;
+  }
+  .concept-slider {
+    display: block;
+  }
+}
+
+/* ===== DESKTOP OVERRIDE: show grid always, hide slider */
+@media (min-width: 1024px) {
+  .library {
+    display: grid !important;
+  }
+  .concept-slider {
+    display: none !important;
+  }
+}
    
 </style>
 </head>
