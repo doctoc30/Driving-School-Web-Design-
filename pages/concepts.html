@@ -361,43 +361,6 @@ footer {
   }
 }
 
-
-@media (orientation: portrait) {
-  .concept-slider .slider-wrapper {
-    display: flex !important;
-    flex-direction: column !important; /* stack slides vertically */
-    flex-wrap: nowrap !important;
-    gap: 0 !important;
-    transform: translateX(0); /* start at first slide */
-    margin: 0 !important;
-  }
-
-  .concept-slider .slide {
-    flex: 0 0 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    margin-bottom: 20px !important; /* space between slides */
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: #33a7d4; /* optional */
-  }
-
-  .concept-slider .slide img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    display: block !important;
-    background-color: #33a7d4; /* optional */
-  }
-}
-
-
- 
-
-
-
 .separator {
   letter-spacing: 5px;  /* Spreads out the dashes */
   font-weight: bold;
@@ -476,7 +439,37 @@ footer {
     }
   }
 
+@media (orientation: portrait) {
+  .concept-slider .slider-wrapper {
+    display: flex !important;
+    flex-direction: row !important; /* keep horizontal row */
+    flex-wrap: nowrap !important;   /* no wrapping */
+    gap: 0 !important;
+    transform: translateX(0);
+    overflow-x: hidden; /* hide overflow for sliding */
+    margin: 0 !important;
+  }
 
+  .concept-slider .slide {
+    flex: 0 0 100% !important;  /* full width per slide */
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #33a7d4; /* optional */
+  }
+
+  .concept-slider .slide img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    background-color: #33a7d4; /* optional */
+  }
+}
     
 </style>
 </head>
