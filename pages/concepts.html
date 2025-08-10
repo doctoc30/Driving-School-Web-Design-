@@ -410,20 +410,26 @@ footer {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: auto;
-    gap: 20px;
-    padding: 15px;
+    gap: 20px !important; /* actual space */
+    padding: 15px !important;
     box-sizing: border-box;
-    overflow-x: visible !important; /* stop horizontal scroll */
-    transform: none !important; /* remove swipe translate */
+    overflow: visible !important;
+    transform: none !important; /* stop swipe offset */
   }
-  .slider-container .slide {
-    min-width: auto !important; /* reset 100vw from portrait */
-    width: 100% !important;
+
+  .slide {
+    min-width: auto !important; /* reset portrait swipe width */
+    max-width: 100% !important;
+    flex: none !important;
     height: auto !important;
-    flex-shrink: 1 !important; /* allow shrinking in grid */
+  }
+
+  /* Also reset any inline transforms from JS */
+  .slider-container,
+  .slide {
+    transform: none !important;
   }
 }
-    
 </style>
 </head>
 <body>
