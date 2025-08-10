@@ -425,16 +425,15 @@ footer {
 }
 
 
-    @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  /* Replace .slides-container with the actual class of your parent div */
-  .slides-container {
-    display: flex;
-    flex-direction: column; /* Ensure items stack vertically */
-    gap: 20px; /* This creates the space between the slides */
-  }
-}
+
 
   
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .slide {
+    margin: 0; /* Reset all margins */
+    padding-bottom: 20px; /* Add padding to the bottom instead */
+  }
+}
 
     
 </style>
