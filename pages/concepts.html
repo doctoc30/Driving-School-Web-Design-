@@ -704,58 +704,19 @@ footer {
   }
 }
 
-
-    @media (orientation: portrait) {
-  .slide {
-    width: 100vw;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #33a7d4; /* match your template background */
-  }
-  .slide img {
-    width: 100%;
-    height: auto;
-    object-fit: contain; /* keep full image visible */
-    display: block;
-    background-color: #33a7d4; /* fill behind transparent areas */
-  }
-}
-
-@media only screen and (orientation: landscape) {
-  .slider-container {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: auto;
-    gap: 20px;
-    padding: 15px;
-    box-sizing: border-box;
-    overflow-x: visible !important; /* stop horizontal scroll */
-    transform: none !important; /* remove swipe translate */
-  }
-  .slider-container .slide {
-    min-width: auto !important; /* reset 100vw from portrait */
-    width: 100% !important;
-    height: auto !important;
-    flex-shrink: 1 !important; /* allow shrinking in grid */
-  }
-}p
-
-@media (orientation: landscape) and (min-width: 768px) {
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1024px) {
   .slider-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;          /* uniform gap between rows and columns */
+    gap: 20px; /* 20px space vertically AND horizontally */
     justify-content: center;
     transform: none !important;
   }
 
   .slide {
-    flex: 0 0 calc((100% / 3) - (20px * 2 / 3)); /* three columns minus gaps */
-    max-width: calc((100% / 3) - (20px * 2 / 3));
-    margin: 0;          /* no margins to avoid extra spacing */
+    flex: 0 0 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    margin: 0; /* no extra margin */
   }
 }
 
