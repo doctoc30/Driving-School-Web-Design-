@@ -416,7 +416,60 @@ footer {
   }
 }
 
-  
+
+  .slider-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* Use margin fallback instead of gap for better iPad support */
+    margin: -10px;
+  }
+
+  .slide {
+    flex: 0 0 calc((100% / 3) - 20px);
+    max-width: calc((100% / 3) - 20px);
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 300px;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* Hide arrows if you have them */
+  .arrow {
+    display: none !important;
+  }
+
+  /* Portrait mode: single slide per row */
+  @media (orientation: portrait) {
+    .slider-wrapper {
+      flex-wrap: nowrap;
+      margin: 0;
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      max-width: 100%;
+      margin: 0 0 20px 0;
+    }
+
+    .slide img {
+      object-fit: contain;
+      max-height: none;
+    }
+  }
+
+
+    
 </style>
 </head>
 <body>
