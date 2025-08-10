@@ -406,24 +406,26 @@ footer {
 }
 
 
-
-
-    @media only screen and (orientation: landscape) {
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
   .slider-container {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important; /* space between slides */
-    padding: 15px !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 15px;
     box-sizing: border-box;
   }
 
   .slide {
-    flex: none !important;         /* stop JS flexbox sizing */
-    min-width: unset !important;   /* remove JS min-width */
-    max-width: 100% !important;
-    margin: 0 !important;
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  .slider-track {
+    display: contents !important; /* Break slider track */
   }
 }
+
+
 </style>
 </head>
 <body>
