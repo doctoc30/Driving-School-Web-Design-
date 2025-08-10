@@ -405,30 +405,13 @@ footer {
   }
 }
 
-@media only screen and (orientation: landscape) and (min-width: 900px) {
-  .slider-container {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    column-gap: 20px !important; /* horizontal space */
-    row-gap: 20px !important;    /* vertical space */
-    padding: 15px !important;
-    background-color: #33a7d4 !important;
-  }
 
-  .slider-container .slide {
-    width: auto !important;       /* let grid size it */
-    min-width: 0 !important;      
-    max-width: 100% !important;
-    flex: none !important;
-  }
 
-  /* Override inline transforms from slider JS */
-  .slider-track,
-  .slider-list {
-    transform: none !important;
-    width: 100% !important;
-  }
+    .image-container {
+  margin-right: 10px;  /* Adds space on the right side */
+  margin-bottom: 10px; /* Adds space below */
 }
+
 
 </style>
 </head>
