@@ -426,13 +426,15 @@ footer {
 
 
 
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  .slides-container .slide { /* Replace .slides-container with the parent's class */
-    margin-bottom: 20px !important; /* The !important rule forces it to apply */
+
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  /* This selects every .slide element that is not the first one */
+  .slide:not(:first-child) {
+    margin-top: 20px;
   }
 }
 
-  
 
     
 </style>
