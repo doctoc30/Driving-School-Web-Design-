@@ -407,11 +407,10 @@ footer {
 
 
 
-    .image-container {
-  margin-right: 10px;  /* Adds space on the right side */
-  margin-bottom: 10px; /* Adds space below */
+.separator {
+  letter-spacing: 5px;  /* Spreads out the dashes */
+  font-weight: bold;
 }
-
 
 </style>
 </head>
@@ -658,37 +657,7 @@ function updateSlider() {
 
 
   
-function handleLandscapeGrid() {
-  const sliderContainer = document.querySelector('.slider-container');
 
-  if (window.matchMedia('(orientation: landscape)').matches) {
-    // Stop slider JS
-    if (window.mySlider && typeof window.mySlider.destroy === 'function') {
-      window.mySlider.destroy(true); // if using a lib like Slick/Swiper
-    }
-
-    // Force pure grid layout
-    sliderContainer.style.display = 'grid';
-    sliderContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
-    sliderContainer.style.columnGap = '20px';
-    sliderContainer.style.rowGap = '20px';
-    sliderContainer.style.padding = '15px';
-    sliderContainer.style.backgroundColor = '#33a7d4';
-
-    // Remove inline widths from slides
-    sliderContainer.querySelectorAll('.slide').forEach(slide => {
-      slide.style.width = 'auto';
-      slide.style.minWidth = '0';
-      slide.style.maxWidth = '100%';
-    });
-
-  } else {
-    // Portrait mode: you can re-init slider if needed
-  }
-}
-
-window.addEventListener('resize', handleLandscapeGrid);
-window.addEventListener('load', handleLandscapeGrid);
 
 </script>
   
