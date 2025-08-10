@@ -406,25 +406,30 @@ footer {
 }
 
 
-@media only screen and (min-width: 1024px) and (orientation: landscape) {
+/* Landscape iPad and larger */
+@media only screen and (orientation: landscape) and (min-width: 900px) {
   .slider-container {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 15px;
-    box-sizing: border-box;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important; /* horizontal & vertical space */
+    padding: 15px !important;
+    box-sizing: border-box !important;
   }
 
-  .slide {
+  /* Remove inline slider widths in landscape */
+  .slider-container .slide {
     width: 100% !important;
+    min-width: 0 !important;
     flex: none !important;
+    transform: none !important;
   }
 
+  /* If there's a slider track wrapper, make slides flow naturally */
   .slider-track {
-    display: contents !important; /* Break slider track */
+    display: contents !important;
+    transform: none !important;
   }
 }
-
 
 </style>
 </head>
