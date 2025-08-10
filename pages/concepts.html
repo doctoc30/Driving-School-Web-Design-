@@ -742,6 +742,25 @@ footer {
     flex-shrink: 1 !important; /* allow shrinking in grid */
   }
 }p
+
+@media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;          /* uniform gap between rows and columns */
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .slide {
+    flex: 0 0 calc((100% / 3) - (20px * 2 / 3)); /* three columns minus gaps */
+    max-width: calc((100% / 3) - (20px * 2 / 3));
+    margin: 0;          /* no margins to avoid extra spacing */
+  }
+}
+
+
+    
 </style>
 </head>
 <body>
