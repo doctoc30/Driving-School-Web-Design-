@@ -396,6 +396,26 @@ footer {
 }
 
 
+
+       @media (orientation: portrait) {
+  .slide {
+    width: 100vw;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #33a7d4; /* match your template background */
+  }
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* keep full image visible */
+    display: block;
+    background-color: #33a7d4; /* fill behind transparent areas */
+  }
+}
+
     @media (orientation: landscape) and (min-width: 768px) {
   .slider-wrapper {
     display: flex;
