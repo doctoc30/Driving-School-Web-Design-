@@ -384,7 +384,45 @@ footer {
     display: none !important;
   }
 }
-   
+
+
+    /* Default state: show grid, hide slider */
+.library {
+  display: grid;
+}
+.concept-slider {
+  display: none;
+}
+
+/* Landscape: show grid, hide slider */
+@media (orientation: landscape) {
+  .library {
+    display: grid !important;
+  }
+  .concept-slider {
+    display: none !important;
+  }
+}
+
+/* Portrait: show slider, hide grid */
+@media (orientation: portrait) {
+  .library {
+    display: none !important;
+  }
+  .concept-slider {
+    display: block !important;
+  }
+}
+
+/* Desktop override: show grid always, hide slider */
+@media (min-width: 1024px) {
+  .library {
+    display: grid !important;
+  }
+  .concept-slider {
+    display: none !important;
+  }
+}
 </style>
 </head>
 <body>
