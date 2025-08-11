@@ -234,47 +234,25 @@
   </div>
 </header>
 
+
+    <div class="hero-float reveal" onclick="location.href='tel:+1234567890'">
+      📞 Call us
+    </div>
+  </div>
+</section>
+
   <!-- HERO -->
 <section class="hero-wrap" aria-label="Hero">
   <div class="hero-bg">
     <div class="img" aria-hidden="true"></div>
     <div class="hero-overlay" aria-hidden="true"></div>
 
-    <div class="hero-content" style="display: flex; flex-direction: column; align-items: center; gap: 32px; max-width: 900px; margin: 0 auto; padding: 1rem;">
-      
-      <!-- Car image & copy together on top -->
-      <div class="hero-copy reveal" style="text-align: center;">
-        <h2>Start your journey —<br>book expert driving lessons</h2>
-        <p class="lead">Patient instructors • Modern dual-control cars • Lessons available 7 days a week. Tailored packages and test day preparation.</p>
-        <div class="hero-actions" style="display: flex; justify-content: center; gap: 1rem;">
-          <a class="btn-primary" href="#booking">Book Now</a>
-          <a class="btn-ghost" href="#pricing">See Pricing</a>
-        </div>
-      </div>
-
-      <!-- Quick booking form below -->
-      <div class="hero-side" style="width: 100%; max-width: 400px;">
-        <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form" style="display: flex; flex-direction: column; gap: 12px;">
-          <h3>Quick booking</h3>
-          <label for="hname">Full name</label>
-          <input id="hname" name="name" type="text" placeholder="Your name" required>
-          <label for="hemail">Email</label>
-          <input id="hemail" name="email" type="email" placeholder="you@example.com" required>
-          <label for="hphone">Phone</label>
-          <input id="hphone" name="phone" type="tel" placeholder="+44 7...">
-          <label for="hcourse">Course</label>
-          <select id="hcourse" name="course">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-          <button type="submit">Get started</button>
-        </form>
-
-        <div class="info-pill reveal" aria-hidden="true" style="margin-top: 16px;">
-          <strong>Why choose us</strong>
-          <p style="margin-top:8px;color:var(--muted)">High pass rate • Modern, branded learner cars • Flexible scheduling across the city.</p>
-        </div>
+    <div class="hero-content" style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; text-align: center;">
+      <h2>Start your journey —<br>book expert driving lessons</h2>
+      <p class="lead">Patient instructors • Modern dual-control cars • Lessons available 7 days a week. Tailored packages and test day preparation.</p>
+      <div class="hero-actions" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+        <a class="btn-primary" href="#booking">Book Now</a>
+        <a class="btn-ghost" href="#pricing">See Pricing</a>
       </div>
     </div>
 
@@ -284,6 +262,30 @@
   </div>
 </section>
 
+<!-- QUICK BOOKING FORM BELOW HERO -->
+<section id="quickBooking" aria-label="Quick booking form" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
+  <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form" style="display: flex; flex-direction: column; gap: 12px;">
+    <h3>Quick booking</h3>
+    <label for="hname">Full name</label>
+    <input id="hname" name="name" type="text" placeholder="Your name" required>
+    <label for="hemail">Email</label>
+    <input id="hemail" name="email" type="email" placeholder="you@example.com" required>
+    <label for="hphone">Phone</label>
+    <input id="hphone" name="phone" type="tel" placeholder="+44 7...">
+    <label for="hcourse">Course</label>
+    <select id="hcourse" name="course">
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+    <button type="submit">Get started</button>
+  </form>
+
+  <div class="info-pill reveal" aria-hidden="true" style="margin-top: 16px; max-width: 400px;">
+    <strong>Why choose us</strong>
+    <p style="margin-top:8px;color:var(--muted)">High pass rate • Modern, branded learner cars • Flexible scheduling across the city.</p>
+  </div>
+</section>
 
       <div class="hero-float reveal" onclick="location.href='tel:+1234567890'">
         📞 Call us
