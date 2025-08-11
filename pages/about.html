@@ -182,7 +182,33 @@
   .muted{color:var(--muted)}
   .center{text-align:center}
   input,select,textarea{font-family:inherit}
+
+.mobile-toggle {
+  display: inline-block !important;
+  font-size: 28px !important; /* larger */
+  color: var(--choco) !important; /* brand color */
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+}
+
+  @media (min-width: 841px) {
+  nav.primary {
+    display: flex !important;
+    justify-content: center;
+    gap: 24px;
+    font-weight: 700;
+  }
+
+  .hero-content {
+    justify-content: center;
+    text-align: center;
+  }
+}
 </style>
+
+  
 </head>
 <body>
 
@@ -208,31 +234,34 @@
   </div>
 </header>
 
-<!-- HERO -->
+  <!-- HERO -->
 <section class="hero-wrap" aria-label="Hero">
   <div class="hero-bg">
     <div class="img" aria-hidden="true"></div>
     <div class="hero-overlay" aria-hidden="true"></div>
 
-    <div class="hero-content">
-      <div class="hero-copy reveal">
+    <div class="hero-content" style="display: flex; flex-direction: column; align-items: center; gap: 32px; max-width: 900px; margin: 0 auto; padding: 1rem;">
+      
+      <!-- Car image & copy together on top -->
+      <div class="hero-copy reveal" style="text-align: center;">
         <h2>Start your journey —<br>book expert driving lessons</h2>
         <p class="lead">Patient instructors • Modern dual-control cars • Lessons available 7 days a week. Tailored packages and test day preparation.</p>
-        <div class="hero-actions">
+        <div class="hero-actions" style="display: flex; justify-content: center; gap: 1rem;">
           <a class="btn-primary" href="#booking">Book Now</a>
           <a class="btn-ghost" href="#pricing">See Pricing</a>
         </div>
       </div>
 
-      <div class="hero-side">
-        <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form">
+      <!-- Quick booking form below -->
+      <div class="hero-side" style="width: 100%; max-width: 400px;">
+        <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form" style="display: flex; flex-direction: column; gap: 12px;">
           <h3>Quick booking</h3>
           <label for="hname">Full name</label>
           <input id="hname" name="name" type="text" placeholder="Your name" required>
           <label for="hemail">Email</label>
           <input id="hemail" name="email" type="email" placeholder="you@example.com" required>
           <label for="hphone">Phone</label>
-          <input id="hphone" name="phone" type="tel" placeholder="+44 7..." >
+          <input id="hphone" name="phone" type="tel" placeholder="+44 7...">
           <label for="hcourse">Course</label>
           <select id="hcourse" name="course">
             <option value="beginner">Beginner</option>
@@ -242,11 +271,19 @@
           <button type="submit">Get started</button>
         </form>
 
-        <div class="info-pill reveal" aria-hidden="true">
+        <div class="info-pill reveal" aria-hidden="true" style="margin-top: 16px;">
           <strong>Why choose us</strong>
           <p style="margin-top:8px;color:var(--muted)">High pass rate • Modern, branded learner cars • Flexible scheduling across the city.</p>
         </div>
       </div>
+    </div>
+
+    <div class="hero-float reveal" onclick="location.href='tel:+1234567890'">
+      📞 Call us
+    </div>
+  </div>
+</section>
+
 
       <div class="hero-float reveal" onclick="location.href='tel:+1234567890'">
         📞 Call us
@@ -490,6 +527,28 @@
     <div style="display:flex;align-items:center;gap:12px">
       <a class="socials" href="#" aria-label="facebook">f</a>
       <a class="socials" href="#" aria-label="instagram">ig</a>
+     
+    
+  <div>© <span id="year"></span> Your Driving School</div>
+  <div class="socials">
+    <a href="https://facebook.com" target="_blank" aria-label="Facebook" rel="noopener noreferrer">
+      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M22 12a10 10 0 1 0-11.5 9.87v-6.98H8v-2.9h2.5v-2.2c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.6v1.9h2.9l-.5 2.9h-2.4v6.98A10 10 0 0 0 22 12"/>
+      </svg>
+    </a>
+    <a href="https://instagram.com" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M7 2C4.79 2 3 3.79 3 6v12c0 2.21 1.79 4 4 4h10c2.21 0 4-1.79 4-4V6c0-2.21-1.79-4-4-4H7zm10 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-5 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/>
+      </svg>
+    </a>
+    <a href="https://twitter.com" target="_blank" aria-label="Twitter" rel="noopener noreferrer">
+      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M23 3a10.9 10.9 0 0 1-3.14.86 4.48 4.48 0 0 0 1.95-2.48 9.17 9.17 0 0 1-2.88 1.1A4.48 4.48 0 0 0 16.66 2c-2.5 0-4.52 2.06-4.52 4.6 0 .36.04.7.12 1.03A12.87 12.87 0 0 1 3 4.1a4.5 4.5 0 0 0-.61 2.31c0 1.6.81 3.02 2.03 3.85a4.48 4.48 0 0 1-2.05-.58v.06c0 2.25 1.6 4.13 3.72 4.56a4.55 4.55 0 0 1-2.04.08 4.5 4.5 0 0 0 4.2 3.18A9 9 0 0 1 2 18.06a12.68 12.68 0 0 0 6.92 2.03c8.3 0 12.85-7.05 12.85-13.18 0-.2 0-.43-.02-.65A9.43 9.43 0 0 0 23 3z"/>
+      </svg>
+    </a>
+  </div>
+</div>
+      
       <small class="muted">Built for premium conversions</small>
     </div>
   </div>
