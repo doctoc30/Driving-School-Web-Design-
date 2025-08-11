@@ -1,412 +1,513 @@
 <!doctype html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Driving School — Book a lesson</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<title>Driving School — Premium Template</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
 <style>
+  /* -------------------- BRAND / THEME -------------------- */
   :root{
-    --bg:#eaf0f5;          /* outer page bg (blue in screenshot) */
-    --panel:#f5efe7;       /* cream panel bg */
-    --band:#5b3522;        /* deep chocolate band */
-    --accent:#7a4f32;      /* medium brown (buttons/icons) */
-    --muted:#6b4e3f;       /* muted brown text */
-    --white:#fff;
-    --radius:8px;
-    --shadow:0 8px 24px rgba(30,20,10,0.12);
-    --maxw:740px;
+    /* Brand derived from your image: cream + warm beige + chocolate */
+    --cream: #f6ece0;        /* main panel bg */
+    --sand:  #efe0cf;        /* lighter accents */
+    --choco: #4a2e20;        /* deep chocolate (CTAs & headings) */
+    --bronze:#8b613f;        /* supporting accent (icons/buttons) */
+    --muted: #6b5243;        /* body text */
+    --white: #ffffff;
+    --glass: rgba(255,255,255,0.6);
+    --radius:14px;
+    --shadow: 0 18px 40px rgba(40,24,16,0.12);
+    --maxcontent:1200px;
+    --container-pad:24px;
   }
+
   *{box-sizing:border-box}
+  html,body{height:100%}
   body{
     margin:0;
-    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    background:var(--bg);
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     color:var(--muted);
+    background:linear-gradient(180deg,var(--sand), #f9f7f5 1200px);
     -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
   }
 
-  /* center the brochure like card */
-  .stage{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:28px;
-    gap:20px;
-  }
-  .card{
-    width:100%;
-    max-width:520px;
-    background:var(--panel);
-    border-radius:8px;
-    box-shadow:0 30px 50px rgba(10,10,10,0.08);
-    overflow:hidden;
-    border:6px solid rgba(0,0,0,0.02);
+  /* ---------- GLOBAL LAYOUT ---------- */
+  .site {
+    max-width:var(--maxcontent);
+    margin:0 auto;
+    padding:0 var(--container-pad);
   }
 
-  /* Header strip */
-  .topbar{
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:120;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
+    border-bottom:1px solid rgba(70,40,25,0.04);
+  }
+  .site-header .inner{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:14px 18px;
-    background:linear-gradient(180deg,var(--panel),#f0e7db);
-  }
-  .brand{
-    display:flex;align-items:center;gap:12px;
-  }
-  .logo{
-    width:44px;height:44px;border-radius:8px;background:var(--band);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:14px;
-  }
-  .brand h1{font-size:15px;margin:0;color:var(--band);font-weight:700}
-  .cta-row{display:flex;gap:8px;align-items:center}
-  .btn-book{
-    background:var(--band);color:var(--white);padding:8px 12px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 8px 18px rgba(0,0,0,0.12)
-  }
-  .icon-call{
-    width:42px;height:42px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:16px;
+    gap:18px;
+    max-width:var(--maxcontent);
+    margin:0 auto;
+    padding:14px var(--container-pad);
   }
 
-  /* hero image */
-  .hero-img{
+  .brand {
+    display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--choco);
+  }
+  .brand .mark{
+    width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,var(--choco),var(--bronze));
+    display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;
+    box-shadow:var(--shadow);
+  }
+  .brand h1{margin:0;font-size:18px;letter-spacing:0.2px;font-weight:700}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+  /* nav */
+  nav.primary{display:flex;gap:18px;align-items:center}
+  nav.primary a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:8px}
+  .btn-cta{
+    background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none;
+    box-shadow:0 10px 30px rgba(74,46,32,0.12);
+  }
+  .mobile-toggle{display:none;border:0;background:none;font-size:20px;padding:6px}
+
+  /* ---------- HERO (FULL WIDTH EDGE-TO-EDGE) ---------- */
+  .hero-wrap{
     width:100%;
+    margin-top:12px;
     display:block;
-    height:170px;
-    background:#ddd url('hero-interior.jpg') center/cover no-repeat;
   }
-
-  /* brown band text */
-  .brown-band{
-    background:var(--band);
-    color:var(--white);
-    padding:18px;
-    font-weight:700;
-    font-size:18px;
-    line-height:1.2;
-  }
-
-  /* content area with checklist and CTA/form */
-  .content{
+  .hero {
+    width:100%;
     display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-    padding:18px;
-  }
-
-  .checklist{
-    display:block;
-    padding:10px 0 6px 0;
-  }
-  .check-item{
-    display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:0;
-  }
-  .check-item:last-child{padding-bottom:6px}
-  .check-icon{
-    width:30px;height:30px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--band);box-shadow:var(--shadow);font-weight:700;font-size:14px;
-    margin-top:2px;
-  }
-  .check-text{font-weight:600;color:var(--muted);font-size:14px}
-
-  .offer{
-    margin-top:10px;font-weight:800;color:var(--band);font-size:15px;
-  }
-
-  /* CTA button full width like in image */
-  .cta-full{
-    background:var(--band);color:var(--white);display:inline-block;padding:10px 14px;border-radius:6px;text-decoration:none;font-weight:700;margin-top:10px;
-  }
-
-  .muted-small{font-size:13px;color:#3f2e25;margin-top:10px}
-
-  /* bottom brown strip w/ location + socials */
-  .foot-strip{
-    background:var(--band);
-    color:var(--white);
-    display:flex;
+    grid-template-columns: 1fr;
     align-items:center;
+    gap:28px;
+  }
+
+  .hero-media{
+    position:relative;
+    width:100%;
+    height:420px;               /* desktop hero height */
+    overflow:hidden;
+    background:linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02));
+  }
+  /* Replace hero-cars.jpg with your uploaded file. If you want me to embed base64, tell me. */
+  .hero-media .bg{
+    position:absolute;inset:0;background:url('hero-cars.jpg') center/cover no-repeat;filter:contrast(0.98) saturate(1) brightness(1);
+    transform:scale(1.02);
+  }
+  .hero-media::after{
+    /* subtle warm overlay to match brand */
+    content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.06), rgba(255,255,255,0.02));
+  }
+
+  .hero-inner{
+    position:relative;
+    z-index:10;
+    display:flex;
+    gap:32px;
+    align-items:flex-end;
     justify-content:space-between;
-    padding:12px 16px;
-    gap:8px;
-  }
-  .location{display:flex;gap:10px;align-items:center;font-size:13px}
-  .socials{display:flex;gap:8px}
-  .socials a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--white);text-decoration:none;font-weight:700}
-
-  /* floating contact buttons (page-level) */
-  .floating{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    display:flex;flex-direction:column;gap:12px;
-    z-index:2000;
-  }
-  .float-btn{
-    width:56px;height:56px;border-radius:50%;background:var(--band);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:20px;text-decoration:none;box-shadow:0 12px 30px rgba(30,20,10,0.2)
+    max-width:var(--maxcontent);
+    margin:0 auto;
+    padding:28px var(--container-pad);
   }
 
-  /* small responsive tweaks */
-  @media (min-width:880px){
-    .card{max-width:520px}
-  }
-  @media (max-width:560px){
-    .hero-img{height:150px}
-    .brand h1{font-size:14px}
-  }
-
-  /* ---- additional sections below the brochure (courses / pricing) ---- */
-  .below{
-    max-width:var(--maxw);
-    margin:26px auto 60px;
-    padding:0 18px;
+  .hero-copy{
+    max-width:760px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.92));
+    border-radius:12px;
+    padding:28px;
+    box-shadow:var(--shadow);
+    transform:translateY(12px);
   }
 
-  .section{
-    background:var(--white);border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow);
+  .hero-copy h2{
+    margin:0 0 10px 0;font-size:44px;line-height:1.02;color:var(--choco);font-weight:800;letter-spacing:-1px;
+    font-family: "Playfair Display", serif;
   }
-  .section h2{margin:0 0 8px 0;color:var(--band);font-family:Playfair Display, serif;font-size:20px}
-  .section p.desc{margin:0 0 12px 0;color:var(--muted)}
+  .hero-copy p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px}
 
-  .widgets{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-  .widget{width:120px;background:var(--panel);border-radius:10px;padding:12px;text-align:center;box-shadow:0 10px 22px rgba(30,20,10,0.06)}
-  .widget .circle{width:64px;height:64px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:22px;color:var(--band);box-shadow:var(--shadow)}
-  .widget h4{margin:6px 0 4px 0;font-size:14px;color:var(--muted);font-weight:700}
-  .widget p{margin:0;color:#6b5548;font-size:13px}
+  .hero-cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .btn-ghost{
+    border:2px solid rgba(74,46,32,0.06);padding:10px 12px;border-radius:10px;background:transparent;color:var(--choco);font-weight:700;
+  }
 
-  .pricing-grid{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-  .price{width:150px;background:var(--panel);padding:12px;border-radius:10px;text-align:center;box-shadow:0 10px 22px rgba(30,20,10,0.06)}
-  .price h3{margin:0;font-size:16px;color:var(--band)}
-  .price p{margin:6px 0 8px 0;font-weight:700;font-size:18px;color:var(--muted)}
+  /* right-side hero cards (form + info stacked on top of image) */
+  .hero-side{
+    min-width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    align-items:flex-end;
+  }
+
+  .card-lead{
+    width:340px;
+    background:var(--choco);
+    color:var(--white);
+    border-radius:12px;padding:18px;
+    box-shadow:0 20px 40px rgba(50,30,18,0.16);
+  }
+  .card-lead h3{margin:0 0 8px 0;font-size:18px}
+  .card-lead label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.92)}
+  .card-lead input, .card-lead select{
+    width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px;
+  }
+  .card-lead button{width:100%;padding:10px;border-radius:8px;border:0;background:var(--bronze);color:var(--white);font-weight:800}
+
+  .info-pill{
+    width:260px;background:var(--cream);padding:14px;border-radius:12px;border:1px solid rgba(74,46,32,0.04);
+    color:var(--choco);box-shadow:0 14px 30px rgba(40,24,16,0.06)
+  }
+
+  /* floating contact (site-level) */
+  .floating-contact{
+    position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:150;
+  }
+  .float{
+    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--choco);color:var(--white);
+    box-shadow:0 16px 36px rgba(64,38,24,0.18);text-decoration:none;font-size:18px;
+  }
+
+  /* ---------- CONTENT SECTIONS ---------- */
+  main .section{
+    max-width:var(--maxcontent);
+    margin:48px auto;
+    padding:28px var(--container-pad);
+    display:block;
+  }
+
+  .section .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .section h3{margin:0;color:var(--choco);font-size:24px;font-weight:800;font-family:Playfair Display, serif}
+  .section p.desc{margin:6px 0 0 0;color:var(--muted)}
+
+  /* circle widgets (courses) */
+  .grid-courses{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  .course{
+    width:240px;background:linear-gradient(180deg,var(--cream),#fff);border-radius:12px;padding:18px;text-align:center;box-shadow:var(--shadow);
+  }
+  .course .circle{
+    width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;
+    background:linear-gradient(180deg,var(--white),var(--sand));border:2px solid rgba(74,46,32,0.06);
+  }
+  .course h4{margin:6px 0 8px 0;color:var(--choco);font-weight:800}
+  .course p{margin:0;color:var(--muted)}
+
+  /* pricing */
+  .pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .pricing-card{
+    width:240px;border-radius:12px;padding:18px;background:linear-gradient(180deg,var(--white),#fff);box-shadow:0 18px 38px rgba(40,24,16,0.06);
+    border:1px solid rgba(74,46,32,0.03);
+  }
+  .pricing-card .price{font-weight:900;color:var(--choco);font-size:20px;margin:12px 0}
+
+  /* footer */
+  footer.site-footer{background:linear-gradient(180deg,var(--sand),var(--cream));padding:28px 0;border-top:1px solid rgba(74,46,32,0.03)}
+  .footer-inner{max-width:var(--maxcontent);margin:0 auto;padding:0 var(--container-pad);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .socials a{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:var(--white);text-decoration:none;margin-left:8px}
 
   /* reveal animation */
-  .reveal{opacity:0;transform:translateY(10px);transition:all 560ms cubic-bezier(.2,.9,.2,1)}
+  .reveal{opacity:0;transform:translateY(12px);transition:all 640ms cubic-bezier(.2,.9,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
-  /* tiny form styles inside a compact area to mimic brochure layout */
-  .lead-inline{
-    margin-top:8px;
-    display:flex;flex-direction:column;gap:8px;
+  /* RESPONSIVE */
+  @media (max-width:1100px){
+    .hero-media{height:360px}
+    .hero-inner{padding:22px}
+    .card-lead{width:320px}
   }
-  .lead-inline input, .lead-inline button{
-    padding:10px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);font-size:14px;
+  @media (max-width:880px){
+    nav.primary{display:none}
+    .mobile-toggle{display:inline-block}
+    .hero-media{height:360px}
+    .hero-inner{flex-direction:column;align-items:stretch}
+    .hero-side{align-items:stretch}
+    .card-lead{width:100%}
+    .info-pill{width:100%}
   }
-  .lead-inline input::placeholder{color:#9a8a80}
-  .lead-inline button{background:var(--accent);color:var(--white);border:0;font-weight:700}
-
-
+  @media (max-width:560px){
+    .hero-media{height:280px}
+    .hero-copy h2{font-size:28px}
+    .brand h1{font-size:16px}
+    .brand .mark{width:42px;height:42px}
+  }
 </style>
 </head>
 <body>
 
-<!-- Floating contact -->
-<div class="floating" aria-hidden="false">
-  <a class="float-btn" href="tel:+1234567890" title="Call us">📞</a>
-  <a class="float-btn" href="sms:+1234567890" title="Message">💬</a>
-</div>
+<header class="site-header" role="banner">
+  <div class="inner">
+    <a class="brand" href="#">
+      <div class="mark" aria-hidden="true">NDS</div>
+      <div>
+        <h1>Driving School</h1>
+        <p>Professional driving lessons</p>
+      </div>
+    </a>
 
-<main class="stage" role="main">
-  <!-- brochure card -->
-  <article class="card reveal" aria-labelledby="headline">
-    <!-- top header -->
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">DS</div>
-        <div>
-          <h1 id="headline">DRIVING SCHOOL</h1>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px">Trusted instructors</div>
+    <nav class="primary" aria-label="Main navigation">
+      <a href="#courses">Courses</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#booking">Book</a>
+      <a class="btn-cta" href="#booking">BOOK NOW</a>
+    </nav>
+
+    <button class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<!-- HERO (FULL WIDTH) -->
+<section class="hero-wrap" aria-label="Hero">
+  <div class="hero-media" role="img" aria-label="Learner cars hero">
+    <!-- IMPORTANT: replace 'hero-cars.jpg' in the CSS above with your uploaded image filename if needed -->
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <!-- left: copy -->
+      <div class="hero-copy reveal" role="region" aria-labelledby="hero-title">
+        <h2 id="hero-title">Start your journey<br>with expert driving lessons</h2>
+        <p class="lead">Professional instructors, modern learner cars branded for your school — lessons available 7 days a week.</p>
+
+        <div class="hero-cta-row">
+          <a class="btn-cta" href="#booking">Book Now</a>
+          <a class="btn-ghost" href="#pricing">View Pricing</a>
         </div>
       </div>
 
-      <div class="cta-row">
-        <a class="btn-book" href="#below">Book now</a>
-        <a class="icon-call" href="tel:+1234567890" aria-label="Call">📞</a>
-      </div>
-    </div>
+      <!-- right: lead card + info pill -->
+      <div class="hero-side">
+        <form class="card-lead reveal" id="leadForm" aria-label="Request a lesson">
+          <h3>Book a lesson</h3>
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required>
 
-    <!-- hero image -->
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required>
 
-    <!-- hero image -->
-<div class="hero-img" 
-     role="img" 
-     aria-label="Car interior hero image"
-     style="background-image: url('https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7080.jpeg'); 
-            background-size: cover; 
-            background-position: center; 
-            width: 100%; 
-            height: 500px;">
-</div>
-   
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+44 7..." >
 
-    <!-- band -->
-    <div class="brown-band">
-      Expert driving lessons<br>available 7 days a week
-    </div>
+          <label for="courseSelect">Course</label>
+          <select id="courseSelect" name="course">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
 
-    <!-- content area -->
-    <div class="content">
-      <!-- left: checklist -->
-      <div class="checklist">
-        <div class="check-item">
-          <div class="check-icon">✓</div>
-          <div class="check-text">Teen and adult programs</div>
-        </div>
-        <div class="check-item">
-          <div class="check-icon">✓</div>
-          <div class="check-text">Professional, licensed instructors</div>
-        </div>
-        <div class="check-item">
-          <div class="check-icon">✓</div>
-          <div class="check-text">Flexible scheduling options</div>
-        </div>
-        <div class="check-item">
-          <div class="check-icon">✓</div>
-          <div class="check-text">Competitive pricing</div>
-        </div>
-
-        <div class="offer">Book online and save 10%</div>
-
-        <!-- CTA large button -->
-        <a class="cta-full" href="#booking">Book a lesson now</a>
-
-        <div class="muted-small">or call with questions or to book</div>
-      </div>
-
-      <!-- right: simple inline lead form (fits like the poster) -->
-      <aside style="padding-top:4px;">
-        <form id="miniLead" class="lead-inline" aria-label="Booking form">
-          <input id="miniName" name="name" type="text" placeholder="Name" required>
-          <input id="miniEmail" name="email" type="email" placeholder="Email" required>
-          <input id="miniPhone" name="phone" type="tel" placeholder="Phone (optional)">
-          <button type="submit">Get Started</button>
+          <button type="submit">Get started</button>
         </form>
-      </aside>
-    </div>
 
-    <!-- footer strip -->
-    <div class="foot-strip">
-      <div class="location">
-        <span style="font-size:16px">📍</span>
-        <div style="font-size:13px">123 Anywhere St, City, State</div>
-      </div>
-      <div class="socials" aria-label="social links">
-        <a href="#" aria-label="facebook">f</a>
-        <a href="#" aria-label="twitter">t</a>
-      </div>
-    </div>
-  </article>
-</main>
-
-<!-- Additional sections below (Courses / Pricing / contact anchor) -->
-<section id="below" class="below">
-  <div class="section reveal" aria-labelledby="coursesTitle">
-    <h2 id="coursesTitle">OUR COURSES</h2>
-    <p class="desc">Choose a course for your level — tailored lessons, dual-controlled cars, and patient instructors.</p>
-    <div class="widgets">
-      <div class="widget">
-        <div class="circle">📘</div>
-        <h4>BEGINNER</h4>
-        <p>Basic driving & foundations</p>
-      </div>
-      <div class="widget">
-        <div class="circle">🚗</div>
-        <h4>INTERMEDIATE</h4>
-        <p>Road skills & confidence</p>
-      </div>
-      <div class="widget">
-        <div class="circle">🛣️</div>
-        <h4>ADVANCED</h4>
-        <p>Highway & test prep</p>
+        <div class="info-pill reveal" aria-hidden="true">
+          <strong>Why choose us</strong>
+          <p style="margin:8px 0 0 0;font-size:14px;color:var(--muted)">Patient instructors • Modern dual-control cars • 80% pass coaching</p>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="section reveal" aria-labelledby="priceTitle">
-    <h2 id="priceTitle">PRICING</h2>
-    <p class="desc">Simple packages — flexible scheduling. Contact us for block booking discounts.</p>
-    <div class="pricing-grid">
-      <div class="price">
-        <h3>Starter</h3>
-        <p>£30</p>
-        <div style="font-size:13px;color:#7a5a47">1 x 1 hour</div>
+<main class="site" role="main">
+
+  <!-- COURSES -->
+  <section id="courses" class="section reveal" aria-labelledby="coursesTitle">
+    <div class="section-head">
+      <h3 id="coursesTitle">Our Courses</h3>
+      <p class="desc">Programs to suit every learner — structured plans, clear outcomes.</p>
+    </div>
+
+    <div class="grid-courses">
+      <!-- Custom SVG icons used below (not generic) -->
+      <article class="course reveal" aria-labelledby="c1">
+        <div class="circle" aria-hidden="true">
+          <!-- custom book SVG -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="5" width="7.5" height="13" rx="1.2" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
+            <rect x="13.5" y="5" width="7.5" height="13" rx="1.2" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
+            <path d="M3 9h18" stroke="#4a2e20" stroke-width="0.9" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h4 id="c1">Beginner</h4>
+        <p>Foundations, controls and confidence building.</p>
+      </article>
+
+      <article class="course reveal" aria-labelledby="c2">
+        <div class="circle" aria-hidden="true">
+          <!-- custom steering wheel SVG -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="7.2" stroke="#4a2e20" stroke-width="1.1" fill="#fff"/>
+            <path d="M12 5v6l4 2" stroke="#4a2e20" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="1.2" fill="#4a2e20"/>
+          </svg>
+        </div>
+        <h4 id="c2">Intermediate</h4>
+        <p>Road positioning, junctions and manoeuvres.</p>
+      </article>
+
+      <article class="course reveal" aria-labelledby="c3">
+        <div class="circle" aria-hidden="true">
+          <!-- custom road SVG -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9.4" y="3" width="5.2" height="18" rx="1" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
+            <path d="M12 6v2M12 10v2M12 14v2M12 18v2" stroke="#4a2e20" stroke-width="0.9" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h4 id="c3">Advanced</h4>
+        <p>Highway, test prep and advanced safety.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section reveal" aria-labelledby="priceTitle">
+    <div class="section-head">
+      <h3 id="priceTitle">Pricing</h3>
+      <p class="desc">Transparent packages — no surprises. Flexible block booking discounts available.</p>
+    </div>
+
+    <div class="pricing-grid" role="list">
+      <div class="pricing-card reveal" role="listitem">
+        <div style="font-size:13px;color:var(--muted)">Starter</div>
+        <div class="price">£30</div>
+        <div style="font-size:13px;color:var(--muted)">1 × 1 hour</div>
+        <div style="margin-top:12px">
+          <a href="#booking" class="btn-ghost">Choose</a>
+        </div>
       </div>
-      <div class="price">
-        <h3>Standard</h3>
-        <p>£140</p>
-        <div style="font-size:13px;color:#7a5a47">5 x 1 hour</div>
+
+      <div class="pricing-card reveal" role="listitem">
+        <div style="font-size:13px;color:var(--muted)">Standard</div>
+        <div class="price">£140</div>
+        <div style="font-size:13px;color:var(--muted)">5 × 1 hour</div>
+        <div style="margin-top:12px">
+          <a href="#booking" class="btn-cta">Choose</a>
+        </div>
       </div>
-      <div class="price">
-        <h3>Complete</h3>
-        <p>£260</p>
-        <div style="font-size:13px;color:#7a5a47">10 x 1 hour</div>
+
+      <div class="pricing-card reveal" role="listitem">
+        <div style="font-size:13px;color:var(--muted)">Complete</div>
+        <div class="price">£260</div>
+        <div style="font-size:13px;color:var(--muted)">10 × 1 hour</div>
+        <div style="margin-top:12px">
+          <a href="#booking" class="btn-ghost">Choose</a>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section reveal" id="booking" aria-labelledby="contactTitle">
-    <h2 id="contactTitle">BOOK A LESSON</h2>
-    <p class="desc">Fill in your details and we'll contact you to confirm times.</p>
-    <form id="mainLead" style="display:grid;gap:8px;max-width:420px;margin:auto">
-      <input id="name" name="name" type="text" placeholder="Full name" required>
-      <input id="email" name="email" type="email" placeholder="Email address" required>
-      <input id="phone" name="phone" type="tel" placeholder="Phone number" required>
-      <select id="course" name="course" required>
-        <option value="">Select course</option>
+  <!-- BOOKING / CONTACT -->
+  <section id="booking" class="section reveal" aria-labelledby="contactTitle">
+    <div class="section-head">
+      <h3 id="contactTitle">Book a lesson</h3>
+      <p class="desc">Tell us a little about you and your preferred course.</p>
+    </div>
+
+    <form id="mainForm" style="max-width:720px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <input id="fullName" placeholder="Full name" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
+      <input id="emailAddr" placeholder="Email address" type="email" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
+      <input id="phoneMain" placeholder="Phone number" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
+      <select id="courseSelect2" style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)" required>
+        <option value="">Choose a course</option>
         <option value="beginner">Beginner</option>
         <option value="intermediate">Intermediate</option>
         <option value="advanced">Advanced</option>
       </select>
-      <button type="submit" style="padding:12px;border-radius:8px;border:0;background:var(--band);color:var(--white);font-weight:800">Request booking</button>
+      <textarea id="notes" placeholder="Any notes or preferred days" style="grid-column:1 / -1;padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)" rows="4"></textarea>
+      <div style="grid-column:1 / -1;display:flex;gap:12px;align-items:center">
+        <button type="submit" class="btn-cta" style="flex:0 0 auto">Request booking</button>
+        <div id="formMessage" style="color:var(--muted);font-size:14px"></div>
+      </div>
     </form>
-    <div id="leadMessage" style="text-align:center;margin-top:12px;font-size:14px;color:var(--muted)"></div>
-  </div>
-</section>
+  </section>
 
-<!-- success modal (simple) -->
-<div id="modal" aria-hidden="true" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);z-index:9999">
-  <div style="background:white;padding:20px;border-radius:10px;max-width:420px;text-align:center;box-shadow:var(--shadow)">
-    <h3 style="margin-top:0;color:var(--band)">Thanks — request received</h3>
-    <p style="color:#6b4e3f;margin:8px 0 16px 0">We will contact you soon to confirm. Check your email for details.</p>
-    <button id="closeModal" style="padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:700">Close</button>
+</main>
+
+<!-- FLOATING CONTACT BUTTONS -->
+<div class="floating-contact" aria-hidden="false">
+  <a class="float" href="tel:+1234567890" aria-label="Call">📞</a>
+  <a class="float" href="sms:+1234567890" aria-label="Message">💬</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div>
+      <strong style="display:block;color:var(--choco)">Driving School</strong>
+      <div style="color:var(--muted);font-size:13px">123 Anywhere St, City, State</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <a class="socials" href="#" aria-label="facebook"><span style="display:inline-block;width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;display:flex;align-items:center;justify-content:center">f</span></a>
+      <a class="socials" href="#" aria-label="instagram"><span style="display:inline-block;width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;display:flex;align-items:center;justify-content:center">ig</span></a>
+      <small style="color:var(--muted);margin-left:12px">© <span id="year"></span> Driving School</small>
+    </div>
+  </div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div id="modal" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;align-items:center;justify-content:center;">
+  <div style="background:var(--white);padding:22px;border-radius:12px;max-width:420px;text-align:center;box-shadow:var(--shadow);">
+    <h4 style="margin:0;color:var(--choco)">Thanks — we received your request</h4>
+    <p style="color:var(--muted);margin-top:8px">We'll contact you within 24 hours to confirm your lesson.</p>
+    <div style="margin-top:14px"><button id="closeModal" style="padding:10px 14px;border-radius:10px;border:0;background:var(--bronze);color:var(--white);font-weight:800">Close</button></div>
   </div>
 </div>
 
 <script>
-/* Simple reveal on scroll */
+/* ------------------ Tiny UX/JAVASCRIPT ------------------ */
+
+/* update footer year */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Mobile nav toggle (simple) */
+const mobileBtn = document.querySelector('.mobile-toggle');
+mobileBtn && mobileBtn.addEventListener('click', ()=>{
+  const nav = document.querySelector('nav.primary');
+  const shown = nav.style.display === 'flex';
+  nav.style.display = shown ? 'none' : 'flex';
+  mobileBtn.setAttribute('aria-expanded', String(!shown));
+});
+
+/* scroll reveal using IntersectionObserver */
 (function(){
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
     });
-  }, {threshold:0.06});
-  document.querySelectorAll('.reveal').forEach(el=> obs.observe(el));
+  }, {threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 })();
 
-/* mini form (inline on brochure) */
-document.getElementById('miniLead').addEventListener('submit', function(e){
-  e.preventDefault();
-  const name = document.getElementById('miniName').value.trim();
-  const email = document.getElementById('miniEmail').value.trim();
-  const phone = document.getElementById('miniPhone').value.trim();
-  if(!name || !email){ alert('Please enter name and email'); return; }
-  storeLead({name,email,phone,source:'mini'});
-  showModal();
-  this.reset();
-});
+/* Hero subtle parallax on mouse move (desktop only) */
+(function(){
+  const hero = document.querySelector('.hero-media');
+  if(!hero) return;
+  hero.addEventListener('mousemove', (e)=>{
+    const rect = hero.getBoundingClientRect();
+    const px = (e.clientX - rect.left)/rect.width - 0.5;
+    const py = (e.clientY - rect.top)/rect.height - 0.5;
+    const bg = hero.querySelector('.bg');
+    if(bg) bg.style.transform = `translate(${px*6}px, ${py*6}px) scale(1.02)`;
+  });
+  hero.addEventListener('mouseleave', ()=> {
+    const bg = hero.querySelector('.bg');
+    if(bg) bg.style.transform = 'translate(0,0) scale(1.02)';
+  });
+})();
 
-/* main (detailed) form */
-document.getElementById('mainLead').addEventListener('submit', function(e){
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const course = document.getElementById('course').value;
-  if(!name || !email || !phone || !course){ document.getElementById('leadMessage').textContent = 'Please complete all fields.'; return; }
-  storeLead({name,email,phone,course,source:'main'});
-  document.getElementById('leadMessage').textContent = 'Request saved — we will contact you shortly.';
-  this.reset();
-});
-
-/* store lead to localStorage */
+/* Form handling: store leads to localStorage and show modal */
 function storeLead(obj){
   const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
   obj.id = Date.now();
@@ -415,31 +516,51 @@ function storeLead(obj){
   localStorage.setItem('ds_leads', JSON.stringify(leads));
 }
 
-/* modal controls used by inline form */
-function showModal(){
-  const modal = document.getElementById('modal');
-  modal.style.display = 'flex';
-  modal.setAttribute('aria-hidden','false');
-}
-document.getElementById('closeModal').addEventListener('click', function(){
-  const modal = document.getElementById('modal');
-  modal.style.display = 'none';
-  modal.setAttribute('aria-hidden','true');
+/* hero card form */
+document.getElementById('leadForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = this.name?.value || document.getElementById('name')?.value || '';
+  const email = this.email?.value || document.getElementById('email')?.value || '';
+  const phone = this.phone?.value || document.getElementById('phone')?.value || '';
+  const course = this.course?.value || this.querySelector('select')?.value || '';
+  if(!name || !email) { alert('Please enter name and email'); return; }
+  storeLead({name,email,phone,course,source:'hero'});
+  showModal();
+  this.reset();
 });
 
-/* helper: download leads as JSON (for you) */
+/* main booking form */
+document.getElementById('mainForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('emailAddr').value.trim();
+  const phone = document.getElementById('phoneMain').value.trim();
+  const course = document.getElementById('courseSelect2').value;
+  const notes = document.getElementById('notes').value.trim();
+  const msg = document.getElementById('formMessage');
+
+  if(!name || !email || !phone || !course){ msg.textContent = 'Please complete all required fields.'; return; }
+  storeLead({name,email,phone,course,notes,source:'main'});
+  msg.textContent = 'Request saved — we will contact you shortly.';
+  this.reset();
+  setTimeout(()=>msg.textContent='', 5000);
+});
+
+/* modal */
+function showModal(){ document.getElementById('modal').style.display = 'flex'; document.getElementById('modal').setAttribute('aria-hidden','false'); }
+document.getElementById('closeModal').addEventListener('click', ()=>{ document.getElementById('modal').style.display='none'; document.getElementById('modal').setAttribute('aria-hidden','true'); });
+
+/* helper: download leads (developer) */
 window.downloadLeads = function(){
-  const leads = JSON.parse(localStorage.getItem('ds_leads') || '[]');
+  const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
   const blob = new Blob([JSON.stringify(leads,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'driving-school-leads.json'; document.body.appendChild(a); a.click(); a.remove();
+  const a = document.createElement('a');
+  a.href = url; a.download = 'ds-leads.json'; document.body.appendChild(a); a.click(); a.remove();
 };
 
-/* small accessibility: close modal on ESC */
-document.addEventListener('keydown', (e)=>{
-  const modal = document.getElementById('modal');
-  if(e.key === 'Escape' && modal.style.display === 'flex'){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
-});
+/* accessibility: close modal with ESC */
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ document.getElementById('modal').style.display='none'; } });
 </script>
 
 </body>
