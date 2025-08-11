@@ -1,208 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NDS Driving School</title>
-
-
-  <style>
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-body {
-  background: #f9f9f9;
-  color: #333;
-}
-
-.hero {
-  background: linear-gradient(to right, #0055a5, #00b4d8);
-  color: white;
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.hero button {
-  background: white;
-  color: #0055a5;
-  border: none;
-  padding: 12px 24px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
-
-.hero button:hover {
-  background: #e0e0e0;
-}
-
-.car-showcase img {
-  width: 100%;
-  display: block;
-  margin: 0 auto;
-}
-
-.booking-form {
-  padding: 40px 20px;
-  background: #fff;
-  text-align: center;
-}
-
-.booking-form h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.booking-form input {
-  width: 80%;
-  max-width: 400px;
-  margin: 10px auto;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  display: block;
-}
-
-.booking-form button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #0055a5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.info-blurb {
-  background: #eaf4fc;
-  padding: 30px 20px;
-  text-align: center;
-}
-
-.courses {
-  padding: 40px 20px;
-  background: #fff;
-}
-
-.courses h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.course-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.course-card {
-  background: #f0f0f0;
-  padding: 20px;
-  width: 250px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-footer {
-  background: #333;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Driving School - Drive with Confidence</title>
+<!-- AOS CSS for animations -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+<style>
+  :root {
+    --gradient-start: #6a11cb;
+    --gradient-end: #2575fc;
+  }
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    color: #333;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+  }
+  header h1 {
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+  }
+  nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  .hero {
+    height: 100vh;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    color: #fff;
+  }
+  .hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+  }
+  .hero p {
+    font-size: 1.2em;
+    max-width: 600px;
+  }
+  .btn {
+    padding: 15px 30px;
+    background-color: #fff;
+    color: var(--gradient-start);
+    border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .btn:hover {
+    background-color: #eee;
+  }
+  section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    color: var(--gradient-start);
+  }
+  /* Example Feature Cards */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    flex: 1 1 300px;
+    padding: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  /* Footer styles */
+  footer {
+    background-color: #222;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+  }
 </style>
-
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-content">
-      <h1>START YOUR JOURNEY</h1>
-      <p>Professional driving lessons for all experience levels.</p>
-      <button onclick="scrollToBooking()">BOOK NOW</button>
+
+<!-- Header -->
+<header>
+  <h1>DriveMaster</h1>
+  <nav>
+    <a href="#about">About Us</a>
+    <a href="#courses">Courses</a>
+    <a href="#booking">Book Now</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home" data-aos="fade-in">
+  <h2>Drive with Confidence</h2>
+  <p>Join our expert driving courses and hit the road safely. Flexible schedules, experienced instructors, and modern cars.</p>
+  <button class="btn" onclick="document.querySelector('#booking').scrollIntoView({behavior: 'smooth'});">Book a Lesson</button>
+</section>
+
+<!-- About Us -->
+<section id="about" data-aos="fade-up">
+  <h2>About Us</h2>
+  <p style="max-width: 800px; margin:auto; text-align:center;">DriveMaster has been training drivers for over 10 years. Our mission is to help you become a confident and safe driver with personalized coaching and modern vehicles.</p>
+</section>
+
+<!-- Courses & Packages -->
+<section id="courses" data-aos="fade-up">
+  <h2>Our Courses</h2>
+  <div class="cards">
+    <div class="card" data-aos="flip-left">
+      <h3>Beginner</h3>
+      <p>Learn the basics of driving, road safety, and vehicle control.</p>
     </div>
-  </header>
-
-  <section class="car-showcase">
-    <img src="cars.jpg" alt="NDS Driving School Cars" />
-  </section>
-
-  <section class="booking-form" id="booking">
-    <h2>BOOK A LESSON</h2>
-    <form id="lessonForm">
-      <input type="text" id="name" placeholder="Name" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <button type="submit">GET STARTED</button>
-    </form>
-  </section>
-
-  <section class="info-blurb">
-    <h2>BOOK A LESSON</h2>
-    <p>Lorem ipsum dolor ame. consectetur adipiscinigi est. 80 extevicvia.</p>
-  </section>
-
-  <section class="courses">
-    <h2>OUR COURSES</h2>
-    <div class="course-grid">
-      <div class="course-card">
-        <h3>BEGINNER</h3>
-        <p>Lorem ipsum dolor amet, consectetur.</p>
-      </div>
-      <div class="course-card">
-        <h3>INTERMEDIATE</h3>
-        <p>Lorem ipsum dolor amet, consectetur.</p>
-      </div>
-      <div class="course-card">
-        <h3>ADVANCED</h3>
-        <p>Lorem ipsum dolor amet, consectetur.</p>
-      </div>
+    <div class="card" data-aos="flip-left" data-aos-delay="100">
+      <h3>Intermediate</h3>
+      <p>Build confidence with city driving, parking, and highway skills.</p>
     </div>
-  </section>
+    <div class="card" data-aos="flip-left" data-aos-delay="200">
+      <h3>Advanced</h3>
+      <p>Master defensive driving, night driving, and emergency maneuvers.</p>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <p>© 2025 NDS Driving School. All rights reserved.</p>
-  </footer>
+<!-- Book a Lesson -->
+<section id="booking" style="background-color:#f9f9f9;" data-aos="fade-up">
+  <h2 style="text-align:center; margin-bottom:40px;">Book Your Lesson</h2>
+  <form style="max-width:600px; margin:auto; display:flex; flex-direction:column; gap:15px;">
+    <input type="text" placeholder="Full Name" required style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input type="email" placeholder="Email" required style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input type="tel" placeholder="Phone Number" required style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <select required style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+      <option value="">Select Course Type</option>
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+    </select>
+    <input type="date" required style="padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <button class="btn" style="align-self:center; width:50%; margin-top:20px;">Submit</button>
+  </form>
+</section>
 
+<!-- Instructors -->
+<section id="instructors" data-aos="fade-up">
+  <h2>Meet Our Instructors</h2>
+  <!-- You can add a carousel here -->
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+    <div style="flex:1 1 200px; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <img src="https://via.placeholder.com/150" alt="Instructor" style="border-radius:50%; width:100px; height:100px; display:block; margin:auto;">
+      <h3 style="text-align:center;">Jane Doe</h3>
+      <p style="text-align:center;">Senior Driving Instructor with 15+ years of experience.</p>
+    </div>
+    <!-- Add more instructors as needed -->
+  </div>
+</section>
 
+<!-- Testimonials -->
+<section id="testimonials" style="background:#f1f1f1; padding:60px 20px;" data-aos="fade-up">
+  <h2 style="text-align:center; margin-bottom:40px;">What Our Students Say</h2>
+  <!-- Slider or static testimonials -->
+  <div style="max-width:800px; margin:auto; text-align:center;">
+    <p>"Thanks to DriveMaster, I passed my test on the first try! Highly recommend."</p>
+    <h4>- John Smith</h4>
+  </div>
+</section>
 
+<!-- FAQs -->
+<section id="faqs" style="padding:60px 20px;" data-aos="fade-up">
+  <h2 style="text-align:center; margin-bottom:40px;">FAQs</h2>
+  <div style="max-width:800px; margin:auto;">
+    <details>
+      <summary>How do I book a lesson?</summary>
+      <p>You can fill out our booking form or contact us directly via phone or email.</p>
+    </details>
+    <details>
+      <summary>What is the price of a course?</summary>
+      <p>Prices vary depending on the course type. Contact us for detailed pricing.</p>
+    </details>
+  </div>
+</section>
 
+<!-- Contact & Map -->
+<section id="contact" style="background:#222; color:#fff; padding:60px 20px;" data-aos="fade-up">
+  <h2 style="text-align:center; margin-bottom:40px;">Contact Us</h2>
+  <div style="display:flex; flex-direction:column; max-width:600px; margin:auto; gap:15px;">
+    <p><strong>Address:</strong> 123 Main Street, City, Country</p>
+    <p><strong>Phone:</strong> +123 456 7890</p>
+    <p><strong>Email:</strong> info@drivemaster.com</p>
+  </div>
+  <!-- Embed Google Map -->
+  <div style="margin-top:30px;">
+    <iframe src="https://maps.google.com/maps?q=city&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="300" style="border:0; border-radius:10px;" allowfullscreen></iframe>
+  </div>
+</section>
 
-</script>
+<!-- Footer -->
+<footer>
+  <p>&copy; 2024 DriveMaster. All rights reserved.</p>
+  <div style="margin-top:10px;">
+    <a href="#" style="margin:0 10px; color:#fff; text-decoration:none;">Facebook</a>
+    <a href="#" style="margin:0 10px; color:#fff; text-decoration:none;">Instagram</a>
+    <a href="#" style="margin:0 10px; color:#fff; text-decoration:none;">Twitter</a>
+  </div>
+</footer>
 
-function scrollToBooking() {
-  document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
-}
-
-document.getElementById("lessonForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  if (!name || !email) {
-    alert("Please fill in both fields.");
-    return;
-  }
-
-  alert(`Thanks ${name}, we’ll be in touch at ${email}!`);
-  this.reset();
-});
-
+<!-- AOS JS for animations -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000 });
 </script>
 </body>
 </html>
