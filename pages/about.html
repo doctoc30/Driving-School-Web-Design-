@@ -3,422 +3,462 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Driving School — Premium Template</title>
+<title>Premium Driving School — Book Lessons</title>
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* -------------------- BRAND / THEME -------------------- */
+  /* ----------------- THEME / BASE ----------------- */
   :root{
-    /* Brand derived from your image: cream + warm beige + chocolate */
-    --cream: #f6ece0;        /* main panel bg */
-    --sand:  #efe0cf;        /* lighter accents */
-    --choco: #4a2e20;        /* deep chocolate (CTAs & headings) */
-    --bronze:#8b613f;        /* supporting accent (icons/buttons) */
-    --muted: #6b5243;        /* body text */
+    --cream: #f7efe6;
+    --sand:  #efe0cf;
+    --choco: #42291f;
+    --bronze:#8f623f;
+    --muted: #6b5649;
+    --accent: #a6784a;
     --white: #ffffff;
     --glass: rgba(255,255,255,0.6);
     --radius:14px;
-    --shadow: 0 18px 40px rgba(40,24,16,0.12);
-    --maxcontent:1200px;
-    --container-pad:24px;
+    --max:1200px;
+    --pad:24px;
+    --shadow-lg: 0 28px 60px rgba(40,24,12,0.14);
+    --shadow-md: 0 12px 30px rgba(40,24,12,0.08);
+    --transition: 360ms cubic-bezier(.2,.9,.2,1);
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;
     font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     color:var(--muted);
-    background:linear-gradient(180deg,var(--sand), #f9f7f5 1200px);
+    background:linear-gradient(180deg,var(--sand), #fbf9f7 1200px);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     line-height:1.45;
   }
+  a{color:inherit}
 
-  /* ---------- GLOBAL LAYOUT ---------- */
-  .site {
-    max-width:var(--maxcontent);
-    margin:0 auto;
-    padding:0 var(--container-pad);
-  }
-
-  header.site-header{
-    position:sticky;
-    top:0;
-    z-index:120;
-    backdrop-filter: blur(6px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
-    border-bottom:1px solid rgba(70,40,25,0.04);
-  }
-  .site-header .inner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:18px;
-    max-width:var(--maxcontent);
-    margin:0 auto;
-    padding:14px var(--container-pad);
-  }
-
-  .brand {
-    display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--choco);
-  }
-  .brand .mark{
-    width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,var(--choco),var(--bronze));
-    display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;
-    box-shadow:var(--shadow);
-  }
-  .brand h1{margin:0;font-size:18px;letter-spacing:0.2px;font-weight:700}
+  /* ---------- SITE LAYOUT ---------- */
+  header{position:sticky;top:0;z-index:150;background:rgba(255,255,255,0.78);backdrop-filter: blur(6px);border-bottom:1px solid rgba(0,0,0,0.03)}
+  .site-inner{max-width:var(--max);margin:0 auto;padding:12px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .mark{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--choco),var(--bronze));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;box-shadow:var(--shadow-lg)}
+  .brand h1{margin:0;font-size:18px;color:var(--choco);font-weight:700}
   .brand p{margin:0;font-size:12px;color:var(--muted)}
 
-  /* nav */
   nav.primary{display:flex;gap:18px;align-items:center}
-  nav.primary a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:8px}
-  .btn-cta{
-    background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none;
-    box-shadow:0 10px 30px rgba(74,46,32,0.12);
-  }
-  .mobile-toggle{display:none;border:0;background:none;font-size:20px;padding:6px}
+  nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+  .btn-primary{background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;box-shadow:0 10px 30px rgba(66,41,31,0.12)}
+  .mobile-toggle{display:none;border:0;background:none;font-size:20px}
 
-  /* ---------- HERO (FULL WIDTH EDGE-TO-EDGE) ---------- */
-  .hero-wrap{
-    width:100%;
-    margin-top:12px;
-    display:block;
+  /* ---------- HERO (FULL-WIDTH) ---------- */
+  .hero-wrap{width:100%;overflow:hidden;position:relative;margin-bottom:40px}
+  .hero-bg{
+    position:relative;height:520px;width:100%;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
   }
-  .hero {
-    width:100%;
-    display:grid;
-    grid-template-columns: 1fr;
-    align-items:center;
-    gap:28px;
+  /* using the provided raw GitHub image as the hero bg */
+  .hero-bg .img{
+    position:absolute;inset:0;background:url('https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7080.jpeg') center/cover no-repeat;
+    transform:scale(1.06);transition:transform 1600ms ease-out;
+    will-change:transform;
+    filter:contrast(0.98) saturate(0.95);
   }
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.08), rgba(255,255,255,0.03));}
 
-  .hero-media{
-    position:relative;
-    width:100%;
-    height:420px;               /* desktop hero height */
-    overflow:hidden;
-    background:linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02));
-  }
-  /* Replace hero-cars.jpg with your uploaded file. If you want me to embed base64, tell me. */
-  .hero-media .bg{
-    position:absolute;inset:0;background:url('hero-cars.jpg') center/cover no-repeat;filter:contrast(0.98) saturate(1) brightness(1);
-    transform:scale(1.02);
-  }
-  .hero-media::after{
-    /* subtle warm overlay to match brand */
-    content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.06), rgba(255,255,255,0.02));
-  }
-
-  .hero-inner{
-    position:relative;
-    z-index:10;
-    display:flex;
-    gap:32px;
-    align-items:flex-end;
-    justify-content:space-between;
-    max-width:var(--maxcontent);
-    margin:0 auto;
-    padding:28px var(--container-pad);
+  .hero-content{
+    position:relative;z-index:6;max-width:var(--max);margin:0 auto;padding:48px var(--pad);display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:end;
   }
 
   .hero-copy{
-    max-width:760px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.92));
-    border-radius:12px;
-    padding:28px;
-    box-shadow:var(--shadow);
-    transform:translateY(12px);
+    background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.94));
+    border-radius:12px;padding:28px;box-shadow:var(--shadow-lg);transform:translateY(18px);
   }
-
-  .hero-copy h2{
-    margin:0 0 10px 0;font-size:44px;line-height:1.02;color:var(--choco);font-weight:800;letter-spacing:-1px;
-    font-family: "Playfair Display", serif;
-  }
+  .hero-copy h2{margin:0 0 12px 0;font-family:"Playfair Display", serif;font-size:44px;color:var(--choco);line-height:1.02;font-weight:700}
   .hero-copy p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px}
 
-  .hero-cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .btn-ghost{
-    border:2px solid rgba(74,46,32,0.06);padding:10px 12px;border-radius:10px;background:transparent;color:var(--choco);font-weight:700;
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn-ghost{background:transparent;border:2px solid rgba(66,41,31,0.06);padding:10px 12px;border-radius:10px;color:var(--choco);font-weight:700}
+
+  /* right side: card with form and highlights */
+  .hero-side{display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+  .lead-card{
+    width:360px;background:linear-gradient(180deg,var(--choco),#5a362a);color:var(--white);padding:18px;border-radius:12px;box-shadow:var(--shadow-lg)
+  }
+  .lead-card h3{margin:0 0 8px 0}
+  .lead-card label{display:block;font-size:13px;margin-bottom:8px;color:rgba(255,255,255,0.9)}
+  .lead-card input, .lead-card select{width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px}
+  .lead-card button{width:100%;padding:12px;border-radius:8px;border:0;background:var(--accent);font-weight:800;color:var(--white)}
+  .info-pill{width:320px;background:var(--cream);border-radius:12px;padding:14px;color:var(--choco);box-shadow:var(--shadow-md);text-align:left}
+
+  /* micro floating call to action inside hero */
+  .hero-float{
+    position:absolute;right:30px;bottom:30px;background:var(--choco);color:var(--white);padding:10px 12px;border-radius:12px;box-shadow:0 14px 30px rgba(40,24,12,0.18);
+    display:flex;gap:12px;align-items:center;font-weight:800;
   }
 
-  /* right-side hero cards (form + info stacked on top of image) */
-  .hero-side{
-    min-width:320px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    align-items:flex-end;
-  }
+  /* ---------- MAIN CONTENT ---------- */
+  .container{max-width:var(--max);margin:0 auto;padding:28px var(--pad)}
 
-  .card-lead{
-    width:340px;
-    background:var(--choco);
-    color:var(--white);
-    border-radius:12px;padding:18px;
-    box-shadow:0 20px 40px rgba(50,30,18,0.16);
-  }
-  .card-lead h3{margin:0 0 8px 0;font-size:18px}
-  .card-lead label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.92)}
-  .card-lead input, .card-lead select{
-    width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px;
-  }
-  .card-lead button{width:100%;padding:10px;border-radius:8px;border:0;background:var(--bronze);color:var(--white);font-weight:800}
+  .section{margin:40px 0}
+  .section .head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .section h3{margin:0;color:var(--choco);font-family:Playfair Display, serif;font-size:26px}
+  .section p.lead{margin:0;color:var(--muted)}
 
-  .info-pill{
-    width:260px;background:var(--cream);padding:14px;border-radius:12px;border:1px solid rgba(74,46,32,0.04);
-    color:var(--choco);box-shadow:0 14px 30px rgba(40,24,16,0.06)
-  }
-
-  /* floating contact (site-level) */
-  .floating-contact{
-    position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:150;
-  }
-  .float{
-    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--choco);color:var(--white);
-    box-shadow:0 16px 36px rgba(64,38,24,0.18);text-decoration:none;font-size:18px;
-  }
-
-  /* ---------- CONTENT SECTIONS ---------- */
-  main .section{
-    max-width:var(--maxcontent);
-    margin:48px auto;
-    padding:28px var(--container-pad);
-    display:block;
-  }
-
-  .section .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-  .section h3{margin:0;color:var(--choco);font-size:24px;font-weight:800;font-family:Playfair Display, serif}
-  .section p.desc{margin:6px 0 0 0;color:var(--muted)}
-
-  /* circle widgets (courses) */
-  .grid-courses{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  /* Courses - circular widgets */
+  .courses-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px}
   .course{
-    width:240px;background:linear-gradient(180deg,var(--cream),#fff);border-radius:12px;padding:18px;text-align:center;box-shadow:var(--shadow);
+    width:260px;border-radius:14px;padding:18px;text-align:center;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md);
   }
-  .course .circle{
-    width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;
-    background:linear-gradient(180deg,var(--white),var(--sand));border:2px solid rgba(74,46,32,0.06);
-  }
-  .course h4{margin:6px 0 8px 0;color:var(--choco);font-weight:800}
+  .course .circle{width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,var(--sand));border:2px solid rgba(74,46,32,0.06)}
+  .course h4{margin:8px 0 6px;color:var(--choco);font-weight:800}
   .course p{margin:0;color:var(--muted)}
 
-  /* pricing */
-  .pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:18px}
-  .pricing-card{
-    width:240px;border-radius:12px;padding:18px;background:linear-gradient(180deg,var(--white),#fff);box-shadow:0 18px 38px rgba(40,24,16,0.06);
-    border:1px solid rgba(74,46,32,0.03);
+  /* Pricing */
+  .pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  .price-card{width:240px;border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,var(--cream));box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
+  .price-card .price{font-size:20px;font-weight:900;color:var(--choco);margin:10px 0}
+
+  .badge{background:linear-gradient(135deg,var(--bronze),var(--accent));color:#fff;padding:6px 8px;border-radius:6px;font-weight:800;font-size:12px}
+
+  /* Testimonials carousel */
+  .testimonials{max-width:980px;margin:0 auto}
+  .test-track{display:flex;gap:18px;overflow:hidden}
+  .test-item{min-width:100%;padding:22px;border-radius:12px;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md)}
+
+  /* Instructors */
+  .instructors{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+  .inst{width:220px;border-radius:12px;padding:12px;background:linear-gradient(180deg,#fff,var(--sand));text-align:center;box-shadow:var(--shadow-md)}
+
+  /* GEO / Service area section */
+  .geo{
+    display:grid;grid-template-columns:1fr 420px;gap:18px;align-items:center;margin-top:24px;align-items:stretch;
   }
-  .pricing-card .price{font-weight:900;color:var(--choco);font-size:20px;margin:12px 0}
+  .geo-map{background:url('https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7080.jpeg') center/cover no-repeat;border-radius:12px;height:360px;box-shadow:var(--shadow-lg);border:1px solid rgba(0,0,0,0.03)}
+  .geo-cards{display:flex;flex-direction:column;gap:12px}
 
-  /* footer */
-  footer.site-footer{background:linear-gradient(180deg,var(--sand),var(--cream));padding:28px 0;border-top:1px solid rgba(74,46,32,0.03)}
-  .footer-inner{max-width:var(--maxcontent);margin:0 auto;padding:0 var(--container-pad);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-  .socials a{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:var(--white);text-decoration:none;margin-left:8px}
+  .service-card{background:linear-gradient(180deg,#fff,var(--cream));padding:14px;border-radius:12px;box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
+  .service-card h4{margin:0 0 8px 0;color:var(--choco)}
+  .service-card p{margin:0;color:var(--muted);font-size:14px}
 
-  /* reveal animation */
-  .reveal{opacity:0;transform:translateY(12px);transition:all 640ms cubic-bezier(.2,.9,.2,1)}
+  /* Footer */
+  footer{margin-top:42px;background:linear-gradient(180deg,var(--sand),var(--cream));padding:28px 0;border-top:1px solid rgba(74,46,32,0.04)}
+  .footer-inner{max-width:var(--max);margin:0 auto;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .socials a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;text-decoration:none;margin-left:8px}
+
+  /* floating contact buttons */
+  .floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:220}
+  .float-btn{width:56px;height:56px;border-radius:50%;background:var(--choco);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 18px 40px rgba(66,41,31,0.14);font-size:18px}
+
+  /* Reveal animations helper */
+  .reveal{opacity:0;transform:translateY(14px);transition:all var(--transition)}
   .reveal.in{opacity:1;transform:none}
 
-  /* RESPONSIVE */
+  /* responsive */
   @media (max-width:1100px){
-    .hero-media{height:360px}
-    .hero-inner{padding:22px}
-    .card-lead{width:320px}
+    .hero-content{grid-template-columns:1fr 340px;padding:26px}
+    .geo{grid-template-columns:1fr;grid-auto-rows:auto}
+    .hero-bg{height:520px}
   }
-  @media (max-width:880px){
+  @media (max-width:840px){
     nav.primary{display:none}
     .mobile-toggle{display:inline-block}
-    .hero-media{height:360px}
-    .hero-inner{flex-direction:column;align-items:stretch}
+    .hero-bg{height:420px}
+    .hero-content{grid-template-columns:1fr;align-items:stretch}
     .hero-side{align-items:stretch}
-    .card-lead{width:100%}
-    .info-pill{width:100%}
+    .lead-card{width:100%}
+    .geo-map{height:260px}
   }
-  @media (max-width:560px){
-    .hero-media{height:280px}
+  @media (max-width:520px){
+    .hero-bg{height:320px}
     .hero-copy h2{font-size:28px}
-    .brand h1{font-size:16px}
-    .brand .mark{width:42px;height:42px}
+    .course{width:100%}
+    .price-card{width:100%}
   }
+
+  /* small util */
+  .muted{color:var(--muted)}
+  .center{text-align:center}
+  input,select,textarea{font-family:inherit}
 </style>
 </head>
 <body>
 
-<header class="site-header" role="banner">
-  <div class="inner">
+<header>
+  <div class="site-inner">
     <a class="brand" href="#">
       <div class="mark" aria-hidden="true">NDS</div>
       <div>
         <h1>Driving School</h1>
-        <p>Professional driving lessons</p>
+        <p class="muted">Professional lessons • Local instructors</p>
       </div>
     </a>
 
     <nav class="primary" aria-label="Main navigation">
       <a href="#courses">Courses</a>
       <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Testimonials</a>
       <a href="#booking">Book</a>
-      <a class="btn-cta" href="#booking">BOOK NOW</a>
+      <a class="btn-primary" href="#booking">BOOK NOW</a>
     </nav>
 
     <button class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
 
-<!-- HERO (FULL WIDTH) -->
+<!-- HERO -->
 <section class="hero-wrap" aria-label="Hero">
-  <div class="hero-media" role="img" aria-label="Learner cars hero">
-    <!-- IMPORTANT: replace 'hero-cars.jpg' in the CSS above with your uploaded image filename if needed -->
-    <div class="bg" aria-hidden="true"></div>
+  <div class="hero-bg">
+    <div class="img" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
 
-    <div class="hero-inner">
-      <!-- left: copy -->
-      <div class="hero-copy reveal" role="region" aria-labelledby="hero-title">
-        <h2 id="hero-title">Start your journey<br>with expert driving lessons</h2>
-        <p class="lead">Professional instructors, modern learner cars branded for your school — lessons available 7 days a week.</p>
-
-        <div class="hero-cta-row">
-          <a class="btn-cta" href="#booking">Book Now</a>
-          <a class="btn-ghost" href="#pricing">View Pricing</a>
+    <div class="hero-content">
+      <div class="hero-copy reveal">
+        <h2>Start your journey —<br>book expert driving lessons</h2>
+        <p class="lead">Patient instructors • Modern dual-control cars • Lessons available 7 days a week. Tailored packages and test day preparation.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#booking">Book Now</a>
+          <a class="btn-ghost" href="#pricing">See Pricing</a>
         </div>
       </div>
 
-      <!-- right: lead card + info pill -->
       <div class="hero-side">
-        <form class="card-lead reveal" id="leadForm" aria-label="Request a lesson">
-          <h3>Book a lesson</h3>
-          <label for="name">Full name</label>
-          <input id="name" name="name" type="text" placeholder="Your name" required>
-
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com" required>
-
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" placeholder="+44 7..." >
-
-          <label for="courseSelect">Course</label>
-          <select id="courseSelect" name="course">
+        <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form">
+          <h3>Quick booking</h3>
+          <label for="hname">Full name</label>
+          <input id="hname" name="name" type="text" placeholder="Your name" required>
+          <label for="hemail">Email</label>
+          <input id="hemail" name="email" type="email" placeholder="you@example.com" required>
+          <label for="hphone">Phone</label>
+          <input id="hphone" name="phone" type="tel" placeholder="+44 7..." >
+          <label for="hcourse">Course</label>
+          <select id="hcourse" name="course">
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
             <option value="advanced">Advanced</option>
           </select>
-
           <button type="submit">Get started</button>
         </form>
 
         <div class="info-pill reveal" aria-hidden="true">
           <strong>Why choose us</strong>
-          <p style="margin:8px 0 0 0;font-size:14px;color:var(--muted)">Patient instructors • Modern dual-control cars • 80% pass coaching</p>
+          <p style="margin-top:8px;color:var(--muted)">High pass rate • Modern, branded learner cars • Flexible scheduling across the city.</p>
         </div>
       </div>
+
+      <div class="hero-float reveal" onclick="location.href='tel:+1234567890'">
+        📞 Call us
+      </div>
+
     </div>
   </div>
 </section>
 
-<main class="site" role="main">
+<main class="container" role="main">
 
   <!-- COURSES -->
-  <section id="courses" class="section reveal" aria-labelledby="coursesTitle">
-    <div class="section-head">
-      <h3 id="coursesTitle">Our Courses</h3>
-      <p class="desc">Programs to suit every learner — structured plans, clear outcomes.</p>
+  <section id="courses" class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Courses</h3>
+        <p class="lead">Choose a path that suits your level — structured lessons, measured progress.</p>
+      </div>
+      <div class="muted">Need help choosing? <a href="#booking" class="btn-ghost">Contact us</a></div>
     </div>
 
-    <div class="grid-courses">
-      <!-- Custom SVG icons used below (not generic) -->
-      <article class="course reveal" aria-labelledby="c1">
+    <div class="courses-grid">
+      <!-- BEGINNER -->
+      <article class="course reveal" aria-labelledby="beginnerTitle">
         <div class="circle" aria-hidden="true">
-          <!-- custom book SVG -->
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="5" width="7.5" height="13" rx="1.2" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
-            <rect x="13.5" y="5" width="7.5" height="13" rx="1.2" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
-            <path d="M3 9h18" stroke="#4a2e20" stroke-width="0.9" stroke-linecap="round"/>
+          <!-- custom book icon -->
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="7.5" height="15" rx="1.2" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
+            <rect x="13.5" y="4" width="7.5" height="15" rx="1.2" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
+            <path d="M3 9h18" stroke="#42291f" stroke-width="0.9" stroke-linecap="round"/>
           </svg>
         </div>
-        <h4 id="c1">Beginner</h4>
-        <p>Foundations, controls and confidence building.</p>
+        <h4 id="beginnerTitle">Beginner</h4>
+        <p class="muted">Foundations & confidence: vehicle controls, basic manoeuvres and road rules.</p>
       </article>
 
-      <article class="course reveal" aria-labelledby="c2">
+      <!-- INTERMEDIATE -->
+      <article class="course reveal" aria-labelledby="interTitle">
         <div class="circle" aria-hidden="true">
-          <!-- custom steering wheel SVG -->
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="7.2" stroke="#4a2e20" stroke-width="1.1" fill="#fff"/>
-            <path d="M12 5v6l4 2" stroke="#4a2e20" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="12" cy="12" r="1.2" fill="#4a2e20"/>
+          <!-- custom steering icon -->
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="7.2" stroke="#42291f" stroke-width="1.1" fill="#fff"/>
+            <path d="M12 5v6l4 2" stroke="#42291f" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="1.2" fill="#42291f"/>
           </svg>
         </div>
-        <h4 id="c2">Intermediate</h4>
-        <p>Road positioning, junctions and manoeuvres.</p>
+        <h4 id="interTitle">Intermediate</h4>
+        <p class="muted">Refine road positioning, junctions, roundabouts and independent driving.</p>
       </article>
 
-      <article class="course reveal" aria-labelledby="c3">
+      <!-- ADVANCED -->
+      <article class="course reveal" aria-labelledby="advTitle">
         <div class="circle" aria-hidden="true">
-          <!-- custom road SVG -->
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="9.4" y="3" width="5.2" height="18" rx="1" fill="#fff" stroke="#4a2e20" stroke-width="0.9"/>
-            <path d="M12 6v2M12 10v2M12 14v2M12 18v2" stroke="#4a2e20" stroke-width="0.9" stroke-linecap="round"/>
+          <!-- custom road icon -->
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9.4" y="2.8" width="5.2" height="18" rx="1" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
+            <path d="M12 6v2M12 10v2M12 14v2M12 18v2" stroke="#42291f" stroke-width="0.9" stroke-linecap="round"/>
           </svg>
         </div>
-        <h4 id="c3">Advanced</h4>
-        <p>Highway, test prep and advanced safety.</p>
+        <h4 id="advTitle">Advanced</h4>
+        <p class="muted">Test preparation, motorway confidence and advanced safety maneuvers.</p>
       </article>
     </div>
   </section>
 
   <!-- PRICING -->
-  <section id="pricing" class="section reveal" aria-labelledby="priceTitle">
-    <div class="section-head">
-      <h3 id="priceTitle">Pricing</h3>
-      <p class="desc">Transparent packages — no surprises. Flexible block booking discounts available.</p>
+  <section id="pricing" class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Pricing</h3>
+        <p class="lead">Transparent pricing with clear value. Choose the plan that fits your learning goals.</p>
+      </div>
+      <div class="muted">Save on prepaid blocks — ask about discounts for students.</div>
     </div>
 
-    <div class="pricing-grid" role="list">
-      <div class="pricing-card reveal" role="listitem">
-        <div style="font-size:13px;color:var(--muted)">Starter</div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700;color:var(--muted)">Starter</div>
+          <div class="badge">Popular</div>
+        </div>
         <div class="price">£30</div>
-        <div style="font-size:13px;color:var(--muted)">1 × 1 hour</div>
-        <div style="margin-top:12px">
-          <a href="#booking" class="btn-ghost">Choose</a>
-        </div>
+        <div class="muted">1 × 1 hour</div>
+        <div style="margin-top:12px"><a class="btn-ghost" href="#booking">Choose</a></div>
       </div>
 
-      <div class="pricing-card reveal" role="listitem">
-        <div style="font-size:13px;color:var(--muted)">Standard</div>
+      <div class="price-card reveal">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700;color:var(--muted)">Standard</div>
+          <div class="badge" style="background:linear-gradient(135deg,var(--choco),var(--bronze))">Best value</div>
+        </div>
         <div class="price">£140</div>
-        <div style="font-size:13px;color:var(--muted)">5 × 1 hour</div>
-        <div style="margin-top:12px">
-          <a href="#booking" class="btn-cta">Choose</a>
+        <div class="muted">5 × 1 hour</div>
+        <div style="margin-top:12px"><a class="btn-primary" href="#booking">Choose</a></div>
+      </div>
+
+      <div class="price-card reveal">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700;color:var(--muted)">Complete</div>
+        </div>
+        <div class="price">£260</div>
+        <div class="muted">10 × 1 hour</div>
+        <div style="margin-top:12px"><a class="btn-ghost" href="#booking">Choose</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Testimonials</h3>
+        <p class="lead">What our learners say about us.</p>
+      </div>
+      <div class="muted">Real learners, real progress.</div>
+    </div>
+
+    <div class="testimonials">
+      <div class="test-track" id="testTrack">
+        <div class="test-item">
+          <strong>Olivia P.</strong>
+          <p class="muted">"My instructor was calm and clear — I passed first time. Highly recommend the Standard package."</p>
+        </div>
+        <div class="test-item">
+          <strong>Hassan R.</strong>
+          <p class="muted">"Flexible scheduling made lessons fit around my work. Excellent cars and coaching."</p>
+        </div>
+        <div class="test-item">
+          <strong>Sophie K.</strong>
+          <p class="muted">"Patient, modern and professional. Great experience from first lesson to test day."</p>
         </div>
       </div>
 
-      <div class="pricing-card reveal" role="listitem">
-        <div style="font-size:13px;color:var(--muted)">Complete</div>
-        <div class="price">£260</div>
-        <div style="font-size:13px;color:var(--muted)">10 × 1 hour</div>
-        <div style="margin-top:12px">
-          <a href="#booking" class="btn-ghost">Choose</a>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+        <button id="prevTest" aria-label="Previous testimonial" class="btn-ghost">‹</button>
+        <button id="nextTest" aria-label="Next testimonial" class="btn-ghost">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTRUCTORS -->
+  <section class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Instructors</h3>
+        <p class="lead">Qualified, insured and DBS-checked instructors.</p>
+      </div>
+    </div>
+
+    <div class="instructors">
+      <div class="inst reveal">
+        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">A.S</div>
+        <strong>Adam S.</strong>
+        <div class="muted" style="font-size:13px">Senior Instructor — 10 yrs experience</div>
+      </div>
+
+      <div class="inst reveal">
+        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">L.M</div>
+        <strong>Leah M.</strong>
+        <div class="muted" style="font-size:13px">Driver Trainer — patient & calm</div>
+      </div>
+
+      <div class="inst reveal">
+        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">R.T</div>
+        <strong>Ryan T.</strong>
+        <div class="muted" style="font-size:13px">Pass-rate specialist</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GEO / SERVICE AREA -->
+  <section class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Service area</h3>
+        <p class="lead">We cover the following towns and test centres.</p>
+      </div>
+    </div>
+
+    <div class="geo">
+      <div class="geo-map reveal" aria-hidden="true"></div>
+      <div class="geo-cards">
+        <div class="service-card reveal">
+          <h4>Central City</h4>
+          <p class="muted">Daily lessons and weekend intensive courses. Nearby test centre: Central Test Centre.</p>
+        </div>
+        <div class="service-card reveal">
+          <h4>Northside & Suburbs</h4>
+          <p class="muted">Flexible pick-up locations and block discounts for students in this area.</p>
+        </div>
+        <div class="service-card reveal">
+          <h4>Outskirts</h4>
+          <p class="muted">Motorway training and rural-road coaching; ideal for advanced learners.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- BOOKING / CONTACT -->
-  <section id="booking" class="section reveal" aria-labelledby="contactTitle">
-    <div class="section-head">
-      <h3 id="contactTitle">Book a lesson</h3>
-      <p class="desc">Tell us a little about you and your preferred course.</p>
+  <section id="booking" class="section reveal">
+    <div class="head">
+      <div>
+        <h3>Book a lesson</h3>
+        <p class="lead">Choose a time and tell us how we can help. We'll get back within 24 hours.</p>
+      </div>
     </div>
 
-    <form id="mainForm" style="max-width:720px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <form id="mainBooking" style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <input id="fullName" placeholder="Full name" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
       <input id="emailAddr" placeholder="Email address" type="email" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
       <input id="phoneMain" placeholder="Phone number" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
-      <select id="courseSelect2" style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)" required>
+      <select id="courseSelect" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
         <option value="">Choose a course</option>
         <option value="beginner">Beginner</option>
         <option value="intermediate">Intermediate</option>
@@ -426,52 +466,49 @@
       </select>
       <textarea id="notes" placeholder="Any notes or preferred days" style="grid-column:1 / -1;padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)" rows="4"></textarea>
       <div style="grid-column:1 / -1;display:flex;gap:12px;align-items:center">
-        <button type="submit" class="btn-cta" style="flex:0 0 auto">Request booking</button>
-        <div id="formMessage" style="color:var(--muted);font-size:14px"></div>
+        <button type="submit" class="btn-primary">Request booking</button>
+        <div id="formMsg" class="muted"></div>
       </div>
     </form>
   </section>
 
 </main>
 
-<!-- FLOATING CONTACT BUTTONS -->
-<div class="floating-contact" aria-hidden="false">
-  <a class="float" href="tel:+1234567890" aria-label="Call">📞</a>
-  <a class="float" href="sms:+1234567890" aria-label="Message">💬</a>
+<!-- FLOATING CONTACT -->
+<div class="floating" aria-hidden="false">
+  <a class="float-btn" href="tel:+1234567890" aria-label="Call">📞</a>
+  <a class="float-btn" href="https://wa.me/441234567890" aria-label="WhatsApp">💬</a>
 </div>
 
 <!-- FOOTER -->
-<footer class="site-footer" role="contentinfo">
+<footer>
   <div class="footer-inner">
     <div>
       <strong style="display:block;color:var(--choco)">Driving School</strong>
-      <div style="color:var(--muted);font-size:13px">123 Anywhere St, City, State</div>
+      <div class="muted">123 Anywhere St, City — <span id="year"></span></div>
     </div>
-
     <div style="display:flex;align-items:center;gap:12px">
-      <a class="socials" href="#" aria-label="facebook"><span style="display:inline-block;width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;display:flex;align-items:center;justify-content:center">f</span></a>
-      <a class="socials" href="#" aria-label="instagram"><span style="display:inline-block;width:36px;height:36px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;display:flex;align-items:center;justify-content:center">ig</span></a>
-      <small style="color:var(--muted);margin-left:12px">© <span id="year"></span> Driving School</small>
+      <a class="socials" href="#" aria-label="facebook">f</a>
+      <a class="socials" href="#" aria-label="instagram">ig</a>
+      <small class="muted">Built for premium conversions</small>
     </div>
   </div>
 </footer>
 
-<!-- SUCCESS MODAL -->
+<!-- MODAL -->
 <div id="modal" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;align-items:center;justify-content:center;">
-  <div style="background:var(--white);padding:22px;border-radius:12px;max-width:420px;text-align:center;box-shadow:var(--shadow);">
+  <div style="background:var(--white);padding:22px;border-radius:12px;max-width:520px;text-align:center;box-shadow:var(--shadow-lg);">
     <h4 style="margin:0;color:var(--choco)">Thanks — we received your request</h4>
-    <p style="color:var(--muted);margin-top:8px">We'll contact you within 24 hours to confirm your lesson.</p>
+    <p class="muted" style="margin-top:8px">We'll contact you within 24 hours to confirm your lesson.</p>
     <div style="margin-top:14px"><button id="closeModal" style="padding:10px 14px;border-radius:10px;border:0;background:var(--bronze);color:var(--white);font-weight:800">Close</button></div>
   </div>
 </div>
 
 <script>
-/* ------------------ Tiny UX/JAVASCRIPT ------------------ */
-
-/* update footer year */
+/* ---------- Small utilities ---------- */
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* Mobile nav toggle (simple) */
+/* Mobile nav toggle */
 const mobileBtn = document.querySelector('.mobile-toggle');
 mobileBtn && mobileBtn.addEventListener('click', ()=>{
   const nav = document.querySelector('nav.primary');
@@ -480,87 +517,98 @@ mobileBtn && mobileBtn.addEventListener('click', ()=>{
   mobileBtn.setAttribute('aria-expanded', String(!shown));
 });
 
-/* scroll reveal using IntersectionObserver */
+/* IntersectionObserver reveal animations */
 (function(){
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, {threshold:0.08});
+  },{threshold:0.08});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 })();
 
-/* Hero subtle parallax on mouse move (desktop only) */
+/* Hero subtle parallax effect (mouse) */
 (function(){
-  const hero = document.querySelector('.hero-media');
-  if(!hero) return;
+  const hero = document.querySelector('.hero-bg');
+  const bg = hero?.querySelector('.img');
+  if(!hero || !bg) return;
   hero.addEventListener('mousemove', (e)=>{
-    const rect = hero.getBoundingClientRect();
-    const px = (e.clientX - rect.left)/rect.width - 0.5;
-    const py = (e.clientY - rect.top)/rect.height - 0.5;
-    const bg = hero.querySelector('.bg');
-    if(bg) bg.style.transform = `translate(${px*6}px, ${py*6}px) scale(1.02)`;
+    const r = hero.getBoundingClientRect();
+    const px = (e.clientX - r.left)/r.width - 0.5;
+    const py = (e.clientY - r.top)/r.height - 0.5;
+    bg.style.transform = `translate(${px*10}px, ${py*8}px) scale(1.06)`;
   });
-  hero.addEventListener('mouseleave', ()=> {
-    const bg = hero.querySelector('.bg');
-    if(bg) bg.style.transform = 'translate(0,0) scale(1.02)';
-  });
+  hero.addEventListener('mouseleave', ()=> bg.style.transform = 'scale(1.06)');
 })();
 
-/* Form handling: store leads to localStorage and show modal */
+/* Testimonials carousel (simple) */
+(function(){
+  const track = document.getElementById('testTrack');
+  const items = track?.children || [];
+  let idx = 0;
+  function show(i){
+    if(!track) return;
+    idx = (i + items.length) % items.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+  }
+  document.getElementById('prevTest').addEventListener('click', ()=> show(idx-1));
+  document.getElementById('nextTest').addEventListener('click', ()=> show(idx+1));
+  // auto-advance
+  setInterval(()=> show(idx+1), 7000);
+})();
+
+/* ---------- Lead capture (localStorage) ---------- */
 function storeLead(obj){
   const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
-  obj.id = Date.now();
-  obj.created = new Date().toISOString();
+  obj.id = Date.now(); obj.created = new Date().toISOString();
   leads.unshift(obj);
   localStorage.setItem('ds_leads', JSON.stringify(leads));
 }
 
-/* hero card form */
-document.getElementById('leadForm').addEventListener('submit', function(e){
+/* hero quick form */
+document.getElementById('heroLead').addEventListener('submit', function(e){
   e.preventDefault();
-  const name = this.name?.value || document.getElementById('name')?.value || '';
-  const email = this.email?.value || document.getElementById('email')?.value || '';
-  const phone = this.phone?.value || document.getElementById('phone')?.value || '';
-  const course = this.course?.value || this.querySelector('select')?.value || '';
-  if(!name || !email) { alert('Please enter name and email'); return; }
+  const name = this.querySelector('[name=name]').value.trim();
+  const email = this.querySelector('[name=email]').value.trim();
+  const phone = this.querySelector('[name=phone]').value.trim();
+  const course = this.querySelector('select')?.value || '';
+  if(!name || !email){ alert('Please provide name and email'); return; }
   storeLead({name,email,phone,course,source:'hero'});
   showModal();
   this.reset();
 });
 
 /* main booking form */
-document.getElementById('mainForm').addEventListener('submit', function(e){
+document.getElementById('mainBooking').addEventListener('submit', function(e){
   e.preventDefault();
   const name = document.getElementById('fullName').value.trim();
   const email = document.getElementById('emailAddr').value.trim();
   const phone = document.getElementById('phoneMain').value.trim();
-  const course = document.getElementById('courseSelect2').value;
+  const course = document.getElementById('courseSelect').value;
   const notes = document.getElementById('notes').value.trim();
-  const msg = document.getElementById('formMessage');
+  const msg = document.getElementById('formMsg');
 
-  if(!name || !email || !phone || !course){ msg.textContent = 'Please complete all required fields.'; return; }
+  if(!name || !email || !phone || !course){ msg.textContent = 'Please complete required fields.'; return; }
   storeLead({name,email,phone,course,notes,source:'main'});
   msg.textContent = 'Request saved — we will contact you shortly.';
   this.reset();
-  setTimeout(()=>msg.textContent='', 5000);
+  setTimeout(()=> msg.textContent = '', 6000);
 });
 
-/* modal */
+/* modal controls */
 function showModal(){ document.getElementById('modal').style.display = 'flex'; document.getElementById('modal').setAttribute('aria-hidden','false'); }
-document.getElementById('closeModal').addEventListener('click', ()=>{ document.getElementById('modal').style.display='none'; document.getElementById('modal').setAttribute('aria-hidden','true'); });
+document.getElementById('closeModal').addEventListener('click', ()=> { document.getElementById('modal').style.display = 'none'; });
 
-/* helper: download leads (developer) */
+/* helper for developer: download leads */
 window.downloadLeads = function(){
-  const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
+  const leads = JSON.parse(localStorage.getItem('ds_leads') || '[]');
   const blob = new Blob([JSON.stringify(leads,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'ds-leads.json'; document.body.appendChild(a); a.click(); a.remove();
+  const a = document.createElement('a'); a.href = url; a.download = 'driving-school-leads.json'; document.body.appendChild(a); a.click(); a.remove();
 };
 
-/* accessibility: close modal with ESC */
-document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ document.getElementById('modal').style.display='none'; } });
+/* accessibility: close modal on ESC */
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ document.getElementById('modal').style.display='none'; } });
 </script>
 
 </body>
