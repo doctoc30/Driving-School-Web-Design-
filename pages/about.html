@@ -3,483 +3,430 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Start Your Journey — Driving School</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+<title>Driving School — Book a lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f6e9da;            /* page background */
-    --accent:#e6caa6;        /* soft accent */
-    --dark:#3a2a1f;          /* dark brown */
-    --muted:#8b6f59;         /* muted brown */
-    --card:#fff4ea;          /* card bg */
-    --cta:#3a2a1f;           /* button bg */
-    --radius:12px;
-    --maxwidth:1100px;
-    --container-padding:20px;
-    --shadow: 0 10px 30px rgba(50,30,15,0.08);
+    --bg:#eaf0f5;          /* outer page bg (blue in screenshot) */
+    --panel:#f5efe7;       /* cream panel bg */
+    --band:#5b3522;        /* deep chocolate band */
+    --accent:#7a4f32;      /* medium brown (buttons/icons) */
+    --muted:#6b4e3f;       /* muted brown text */
+    --white:#fff;
+    --radius:8px;
+    --shadow:0 8px 24px rgba(30,20,10,0.12);
+    --maxw:740px;
   }
-
   *{box-sizing:border-box}
-  html,body{height:100%}
   body{
     margin:0;
     font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    background:linear-gradient(180deg,var(--bg),#fff);
-    color:var(--dark);
+    background:var(--bg);
+    color:var(--muted);
     -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    line-height:1.4;
   }
 
-  /* page container */
-  .wrap{
-    max-width:var(--maxwidth);
-    margin:0 auto;
-    padding:var(--container-padding);
+  /* center the brochure like card */
+  .stage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    gap:20px;
+  }
+  .card{
+    width:100%;
+    max-width:520px;
+    background:var(--panel);
+    border-radius:8px;
+    box-shadow:0 30px 50px rgba(10,10,10,0.08);
+    overflow:hidden;
+    border:6px solid rgba(0,0,0,0.02);
   }
 
-  /* Header */
-  header{
+  /* Header strip */
+  .topbar{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:16px;
-    padding:8px 0 16px;
+    padding:14px 18px;
+    background:linear-gradient(180deg,var(--panel),#f0e7db);
   }
   .brand{
+    display:flex;align-items:center;gap:12px;
+  }
+  .logo{
+    width:44px;height:44px;border-radius:8px;background:var(--band);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:14px;
+  }
+  .brand h1{font-size:15px;margin:0;color:var(--band);font-weight:700}
+  .cta-row{display:flex;gap:8px;align-items:center}
+  .btn-book{
+    background:var(--band);color:var(--white);padding:8px 12px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 8px 18px rgba(0,0,0,0.12)
+  }
+  .icon-call{
+    width:42px;height:42px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:16px;
+  }
+
+  /* hero image */
+  .hero-img{
+    width:100%;
+    display:block;
+    height:170px;
+    background:#ddd url('hero-interior.jpg') center/cover no-repeat;
+  }
+
+  /* brown band text */
+  .brown-band{
+    background:var(--band);
+    color:var(--white);
+    padding:18px;
+    font-weight:700;
+    font-size:18px;
+    line-height:1.2;
+  }
+
+  /* content area with checklist and CTA/form */
+  .content{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    padding:18px;
+  }
+
+  .checklist{
+    display:block;
+    padding:10px 0 6px 0;
+  }
+  .check-item{
+    display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:0;
+  }
+  .check-item:last-child{padding-bottom:6px}
+  .check-icon{
+    width:30px;height:30px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--band);box-shadow:var(--shadow);font-weight:700;font-size:14px;
+    margin-top:2px;
+  }
+  .check-text{font-weight:600;color:var(--muted);font-size:14px}
+
+  .offer{
+    margin-top:10px;font-weight:800;color:var(--band);font-size:15px;
+  }
+
+  /* CTA button full width like in image */
+  .cta-full{
+    background:var(--band);color:var(--white);display:inline-block;padding:10px 14px;border-radius:6px;text-decoration:none;font-weight:700;margin-top:10px;
+  }
+
+  .muted-small{font-size:13px;color:#3f2e25;margin-top:10px}
+
+  /* bottom brown strip w/ location + socials */
+  .foot-strip{
+    background:var(--band);
+    color:var(--white);
     display:flex;
     align-items:center;
-    gap:12px;
-    text-decoration:none;
-    color:var(--dark);
+    justify-content:space-between;
+    padding:12px 16px;
+    gap:8px;
   }
-  .logo-mark{
-    width:46px;height:46px;border-radius:8px;
-    background:linear-gradient(135deg,var(--dark),var(--muted));
-    display:flex;align-items:center;justify-content:center;color:var(--card);
-    font-weight:800;font-size:16px;
-    box-shadow:var(--shadow);
-  }
-  .brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:0.6px}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
+  .location{display:flex;gap:10px;align-items:center;font-size:13px}
+  .socials{display:flex;gap:8px}
+  .socials a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--white);text-decoration:none;font-weight:700}
 
-  /* nav */
-  nav{display:flex;align-items:center;gap:20px}
-  .nav-links{display:flex;gap:18px}
-  .nav-links a{color:var(--dark);text-decoration:none;font-weight:600;font-size:14px}
-  .cta-btn{
-    background:var(--cta); color:var(--card); padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700;
-    box-shadow: 0 6px 18px rgba(58,42,31,0.18);
-  }
-
-  /* mobile menu toggle */
-  .menu-toggle{display:none;background:none;border:0;color:var(--dark);font-size:20px;padding:8px}
-
-  /* Hero section */
-  .hero{
-    display:grid;
-    grid-template-columns: 1fr 480px;
-    gap:28px;
-    align-items:start;
-    margin-top:8px;
-    background:transparent;
-  }
-
-  .hero-left{
-    padding:20px 0;
-  }
-  .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px}
-  .hero h2{
-    margin:0 0 12px 0;
-    font-size:48px;
-    line-height:1;
-    letter-spacing: -1px;
-    color:var(--dark);
-    font-weight:800;
-  }
-  .hero p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px;max-width:540px}
-
-  .hero .primary-cta{display:inline-block;background:var(--cta);color:var(--card);padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 10px 20px rgba(58,42,31,0.12)}
-
-  /* hero right column (image + cards) */
-  .hero-right{
-    position:relative; padding-top:10px;
-    display:flex;flex-direction:column;gap:18px;align-items:flex-end;
-  }
-  .hero-image{
-    width:100%;
-    border-radius:14px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    background:#efe0cf;
-  }
-  .hero-image img{width:100%;height:auto;display:block;transform:translateY(6px)}
-
-  /* Form card overlay on the hero area (dark left) */
-  .lead-card{
-    position:absolute;
-    left:0;
-    transform:translateX(-10%);
-    top:60%;
-    background:var(--dark);
-    color:var(--card);
-    padding:22px;
-    width:260px;
-    border-radius:14px;
-    box-shadow:var(--shadow);
-  }
-  .lead-card h3{margin:0 0 10px 0;font-size:16px}
-  .lead-card label{display:block;margin-bottom:6px;font-size:13px;color:rgba(255,255,255,0.85)}
-  .lead-card input[type="text"], .lead-card input[type="email"]{
-    width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px;
-  }
-  .lead-card button{
-    width:100%;padding:10px;border-radius:8px;border:0;background:var(--card);color:var(--dark);font-weight:700;
-  }
-
-  /* info card on the right */
-  .info-card{
-    position:absolute;
-    right:-6%;
-    top:30%;
-    width:240px;
-    background:var(--card);
-    color:var(--dark);
-    padding:18px;border-radius:12px;box-shadow:var(--shadow);
-    border:1px solid rgba(0,0,0,0.03);
-  }
-  .info-card h4{margin:0 0 8px 0;font-size:16px}
-  .info-card p{margin:0;color:var(--muted);font-size:13px}
-
-  /* Circle floating contact buttons */
-  .floating-contact{
+  /* floating contact buttons (page-level) */
+  .floating{
     position:fixed;
-    right:18px;
-    bottom:18px;
+    right:20px;
+    bottom:20px;
     display:flex;flex-direction:column;gap:12px;
-    z-index:100;
+    z-index:2000;
   }
   .float-btn{
-    width:56px;height:56px;border-radius:50%;background:var(--cta);display:flex;align-items:center;justify-content:center;color:var(--card);box-shadow:0 10px 30px rgba(58,42,31,0.18);border:6px solid rgba(255,255,255,0.06);
-    text-decoration:none;font-size:20px;
+    width:56px;height:56px;border-radius:50%;background:var(--band);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:20px;text-decoration:none;box-shadow:0 12px 30px rgba(30,20,10,0.2)
   }
 
-  /* Courses Section */
-  .section{padding:56px 0}
-  .section h3{font-size:28px;margin:0 0 8px 0;text-align:center}
-  .section p.intro{color:var(--muted);text-align:center;margin:8px auto 28px auto;max-width:780px}
-
-  .courses{
-    display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:18px;
+  /* small responsive tweaks */
+  @media (min-width:880px){
+    .card{max-width:520px}
   }
-  .course{
-    width:220px;background:transparent;text-align:center;padding:18px;border-radius:12px;
-  }
-  .course .icon{
-    width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto;
-    background:var(--card);box-shadow:var(--shadow);font-weight:800;font-size:22px;color:var(--cta)
-  }
-  .course h4{margin:6px 0 6px 0}
-  .course p{color:var(--muted);font-size:13px}
-
-  /* Pricing scaffold */
-  .pricing{
-    display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:22px;
-  }
-  .price-card{
-    background:var(--card);padding:18px;border-radius:12px;width:220px;text-align:center;box-shadow:var(--shadow);
+  @media (max-width:560px){
+    .hero-img{height:150px}
+    .brand h1{font-size:14px}
   }
 
-  /* Footer */
-  footer{
-    margin-top:40px;padding:28px 0;border-top:1px solid rgba(0,0,0,0.04);
-    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  }
-  .socials a{margin-left:8px;text-decoration:none;color:var(--dark);font-weight:700}
-
-  /* modal */
-  .modal{
-    position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:120;
-  }
-  .modal .card{background:white;padding:26px;border-radius:12px;max-width:420px;text-align:center}
-
-  /* small displays / responsiveness */
-  @media (max-width:1000px){
-    .hero{grid-template-columns: 1fr 420px}
-    .hero h2{font-size:44px}
-  }
-  @media (max-width:880px){
-    .hero{grid-template-columns: 1fr;gap:12px}
-    .hero-right{order:2;align-items:center}
-    .hero-left{order:1}
-    .lead-card{position:relative;left:auto;transform:none;top:auto;width:100%}
-    .info-card{position:relative;right:auto;top:auto;width:100%}
-    .hero-image img{transform:none}
-    nav .nav-links{display:none}
-    .menu-toggle{display:inline-block}
-    header{padding-bottom:6px}
-  }
-  @media (max-width:420px){
-    .hero h2{font-size:36px}
-    .lead-card{padding:16px}
-    .course{width:100%}
-    .price-card{width:100%}
-    .brand p{display:none}
+  /* ---- additional sections below the brochure (courses / pricing) ---- */
+  .below{
+    max-width:var(--maxw);
+    margin:26px auto 60px;
+    padding:0 18px;
   }
 
-  /* Simple reveal animation styles */
-  .reveal{opacity:0;transform:translateY(12px);transition:all 650ms cubic-bezier(.2,.9,.2,1)}
+  .section{
+    background:var(--white);border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow);
+  }
+  .section h2{margin:0 0 8px 0;color:var(--band);font-family:Playfair Display, serif;font-size:20px}
+  .section p.desc{margin:0 0 12px 0;color:var(--muted)}
+
+  .widgets{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .widget{width:120px;background:var(--panel);border-radius:10px;padding:12px;text-align:center;box-shadow:0 10px 22px rgba(30,20,10,0.06)}
+  .widget .circle{width:64px;height:64px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:22px;color:var(--band);box-shadow:var(--shadow)}
+  .widget h4{margin:6px 0 4px 0;font-size:14px;color:var(--muted);font-weight:700}
+  .widget p{margin:0;color:#6b5548;font-size:13px}
+
+  .pricing-grid{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .price{width:150px;background:var(--panel);padding:12px;border-radius:10px;text-align:center;box-shadow:0 10px 22px rgba(30,20,10,0.06)}
+  .price h3{margin:0;font-size:16px;color:var(--band)}
+  .price p{margin:6px 0 8px 0;font-weight:700;font-size:18px;color:var(--muted)}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(10px);transition:all 560ms cubic-bezier(.2,.9,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
-  /* small helpers */
-  .muted{color:var(--muted)}
-  .center{text-align:center}
+  /* tiny form styles inside a compact area to mimic brochure layout */
+  .lead-inline{
+    margin-top:8px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .lead-inline input, .lead-inline button{
+    padding:10px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);font-size:14px;
+  }
+  .lead-inline input::placeholder{color:#9a8a80}
+  .lead-inline button{background:var(--accent);color:var(--white);border:0;font-weight:700}
 </style>
 </head>
 <body>
 
-<!-- Floating contact buttons -->
-<div class="floating-contact" aria-hidden="false">
-  <a href="sms:+1234567890" class="float-btn" title="Message">💬</a>
-  <a href="tel:+1234567890" class="float-btn" title="Call">📞</a>
+<!-- Floating contact -->
+<div class="floating" aria-hidden="false">
+  <a class="float-btn" href="tel:+1234567890" title="Call us">📞</a>
+  <a class="float-btn" href="sms:+1234567890" title="Message">💬</a>
 </div>
 
-<header class="wrap" role="banner">
-  <a class="brand" href="#">
-    <div class="logo-mark">NDS</div>
-    <div>
-      <h1>NDS Parking School</h1>
-      <p>Professional driving lessons</p>
-    </div>
-  </a>
-
-  <nav aria-label="Main navigation">
-    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false">☰</button>
-    <div class="nav-links" id="main-nav">
-      <a href="#courses">Courses</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <a href="#booking" class="cta-btn">BOOK NOW</a>
-  </nav>
-</header>
-
-<main class="wrap">
-  <!-- HERO -->
-  <section class="hero" aria-label="Hero">
-    <div class="hero-left">
-      <p class="eyebrow muted">START YOUR</p>
-      <h2 class="reveal">START YOUR<br>JOURNEY</h2>
-      <p class="lead muted reveal">Professional driving lessons for all experience levels</p>
-
-      <p class="reveal">
-        <a href="#booking" class="primary-cta">BOOK NOW</a>
-      </p>
-    </div>
-
-    <div class="hero-right">
-      <!-- large hero image: replace hero-cars.jpg with your file -->
-      <div class="hero-image reveal" style="width:100%;max-width:520px;">
-        <img src="hero-cars.jpg" alt="Learner cars with L badges — conceptual hero" />
+<main class="stage" role="main">
+  <!-- brochure card -->
+  <article class="card reveal" aria-labelledby="headline">
+    <!-- top header -->
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">DS</div>
+        <div>
+          <h1 id="headline">DRIVING SCHOOL</h1>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Trusted instructors</div>
+        </div>
       </div>
 
-      <!-- absolute positioned dark lead form -->
-      <div class="lead-card reveal" id="booking" style="z-index:10;">
-        <h3>BOOK A LESSON</h3>
-        <form id="leadForm">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Your name" required />
+      <div class="cta-row">
+        <a class="btn-book" href="#below">Book now</a>
+        <a class="icon-call" href="tel:+1234567890" aria-label="Call">📞</a>
+      </div>
+    </div>
 
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+    <!-- hero image -->
+    <div class="hero-img" role="img" aria-label="Car interior hero image"></div>
 
-          <label for="tel">Phone</label>
-          <input id="tel" name="phone" type="text" placeholder="+44 7..." />
+    <!-- band -->
+    <div class="brown-band">
+      Expert driving lessons<br>available 7 days a week
+    </div>
 
-          <button type="submit">GET STARTED</button>
+    <!-- content area -->
+    <div class="content">
+      <!-- left: checklist -->
+      <div class="checklist">
+        <div class="check-item">
+          <div class="check-icon">✓</div>
+          <div class="check-text">Teen and adult programs</div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">✓</div>
+          <div class="check-text">Professional, licensed instructors</div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">✓</div>
+          <div class="check-text">Flexible scheduling options</div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">✓</div>
+          <div class="check-text">Competitive pricing</div>
+        </div>
+
+        <div class="offer">Book online and save 10%</div>
+
+        <!-- CTA large button -->
+        <a class="cta-full" href="#booking">Book a lesson now</a>
+
+        <div class="muted-small">or call with questions or to book</div>
+      </div>
+
+      <!-- right: simple inline lead form (fits like the poster) -->
+      <aside style="padding-top:4px;">
+        <form id="miniLead" class="lead-inline" aria-label="Booking form">
+          <input id="miniName" name="name" type="text" placeholder="Name" required>
+          <input id="miniEmail" name="email" type="email" placeholder="Email" required>
+          <input id="miniPhone" name="phone" type="tel" placeholder="Phone (optional)">
+          <button type="submit">Get Started</button>
         </form>
-      </div>
-
-      <!-- info card -->
-      <div class="info-card reveal">
-        <h4>BOOK A LESSON</h4>
-        <p>Lorem ipsum dolor amet, consectetur adipiscing el. Fast, friendly instructors — est. 80% pass rate.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- COURSES -->
-  <section id="courses" class="section">
-    <h3 class="reveal">OUR COURSES</h3>
-    <p class="intro reveal">Lorem ipsum dolor amet, consectetur — pick a course that suits your level.</p>
-
-    <div class="courses">
-      <div class="course reveal">
-        <div class="icon">📘</div>
-        <h4>BEGINNER</h4>
-        <p class="muted">Introductory lessons, dual controls, basics of the road.</p>
-      </div>
-
-      <div class="course reveal">
-        <div class="icon">🚗</div>
-        <h4>INTERMEDIATE</h4>
-        <p class="muted">Road positioning, manoeuvres, roundabouts, and confidence building.</p>
-      </div>
-
-      <div class="course reveal">
-        <div class="icon">🛣️</div>
-        <h4>ADVANCED</h4>
-        <p class="muted">Highway, advanced manoeuvres and pass preparation.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING (scaffold) -->
-  <section id="pricing" class="section">
-    <h3 class="reveal center">PRICING</h3>
-    <p class="intro reveal center">Clear pricing for packages — editable to match your offerings.</p>
-
-    <div class="pricing">
-      <div class="price-card reveal">
-        <h4>Starter</h4>
-        <p class="muted">1 x 1hr lesson</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£30</p>
-        <a href="#booking" class="cta-btn" style="background:transparent;color:var(--cta);border:2px solid var(--cta);">Book</a>
-      </div>
-
-      <div class="price-card reveal">
-        <h4>Standard</h4>
-        <p class="muted">5 x 1hr lessons</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£140</p>
-        <a href="#booking" class="cta-btn" style="background:var(--cta);color:var(--card);">Book</a>
-      </div>
-
-      <div class="price-card reveal">
-        <h4>Complete</h4>
-        <p class="muted">10 x 1hr lessons</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£260</p>
-        <a href="#booking" class="cta-btn" style="background:transparent;color:var(--cta);border:2px solid var(--cta);">Book</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT / FOOTER -->
-  <footer id="contact" class="wrap" role="contentinfo">
-    <div>
-      <h3 style="margin:0 0 6px 0">NDS Parking School</h3>
-      <p class="muted" style="margin:0">Professional driving lessons • Friendly instructors</p>
+      </aside>
     </div>
 
-    <div class="socials" aria-label="Social links">
-      <a href="#" aria-label="Instagram">IG</a>
-      <a href="#" aria-label="Facebook">FB</a>
-      <a href="#" aria-label="X">X</a>
+    <!-- footer strip -->
+    <div class="foot-strip">
+      <div class="location">
+        <span style="font-size:16px">📍</span>
+        <div style="font-size:13px">123 Anywhere St, City, State</div>
+      </div>
+      <div class="socials" aria-label="social links">
+        <a href="#" aria-label="facebook">f</a>
+        <a href="#" aria-label="twitter">t</a>
+      </div>
     </div>
-  </footer>
+  </article>
 </main>
 
-<!-- success modal -->
-<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="card">
-    <h3>Thanks — we received your request</h3>
-    <p class="muted">We'll be in touch soon to confirm the lesson. Check your email for details.</p>
-    <div style="margin-top:16px;">
-      <button id="closeModal" class="cta-btn" style="background:var(--cta);color:var(--card);">Close</button>
+<!-- Additional sections below (Courses / Pricing / contact anchor) -->
+<section id="below" class="below">
+  <div class="section reveal" aria-labelledby="coursesTitle">
+    <h2 id="coursesTitle">OUR COURSES</h2>
+    <p class="desc">Choose a course for your level — tailored lessons, dual-controlled cars, and patient instructors.</p>
+    <div class="widgets">
+      <div class="widget">
+        <div class="circle">📘</div>
+        <h4>BEGINNER</h4>
+        <p>Basic driving & foundations</p>
+      </div>
+      <div class="widget">
+        <div class="circle">🚗</div>
+        <h4>INTERMEDIATE</h4>
+        <p>Road skills & confidence</p>
+      </div>
+      <div class="widget">
+        <div class="circle">🛣️</div>
+        <h4>ADVANCED</h4>
+        <p>Highway & test prep</p>
+      </div>
     </div>
+  </div>
+
+  <div class="section reveal" aria-labelledby="priceTitle">
+    <h2 id="priceTitle">PRICING</h2>
+    <p class="desc">Simple packages — flexible scheduling. Contact us for block booking discounts.</p>
+    <div class="pricing-grid">
+      <div class="price">
+        <h3>Starter</h3>
+        <p>£30</p>
+        <div style="font-size:13px;color:#7a5a47">1 x 1 hour</div>
+      </div>
+      <div class="price">
+        <h3>Standard</h3>
+        <p>£140</p>
+        <div style="font-size:13px;color:#7a5a47">5 x 1 hour</div>
+      </div>
+      <div class="price">
+        <h3>Complete</h3>
+        <p>£260</p>
+        <div style="font-size:13px;color:#7a5a47">10 x 1 hour</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section reveal" id="booking" aria-labelledby="contactTitle">
+    <h2 id="contactTitle">BOOK A LESSON</h2>
+    <p class="desc">Fill in your details and we'll contact you to confirm times.</p>
+    <form id="mainLead" style="display:grid;gap:8px;max-width:420px;margin:auto">
+      <input id="name" name="name" type="text" placeholder="Full name" required>
+      <input id="email" name="email" type="email" placeholder="Email address" required>
+      <input id="phone" name="phone" type="tel" placeholder="Phone number" required>
+      <select id="course" name="course" required>
+        <option value="">Select course</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+      <button type="submit" style="padding:12px;border-radius:8px;border:0;background:var(--band);color:var(--white);font-weight:800">Request booking</button>
+    </form>
+    <div id="leadMessage" style="text-align:center;margin-top:12px;font-size:14px;color:var(--muted)"></div>
+  </div>
+</section>
+
+<!-- success modal (simple) -->
+<div id="modal" aria-hidden="true" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);z-index:9999">
+  <div style="background:white;padding:20px;border-radius:10px;max-width:420px;text-align:center;box-shadow:var(--shadow)">
+    <h3 style="margin-top:0;color:var(--band)">Thanks — request received</h3>
+    <p style="color:#6b4e3f;margin:8px 0 16px 0">We will contact you soon to confirm. Check your email for details.</p>
+    <button id="closeModal" style="padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:700">Close</button>
   </div>
 </div>
 
 <script>
-/* Responsive menu toggle */
+/* Simple reveal on scroll */
 (function(){
-  const btn = document.querySelector('.menu-toggle');
-  const nav = document.getElementById('main-nav');
-  btn.addEventListener('click', ()=>{
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    nav.style.display = expanded ? 'none' : 'flex';
-  });
-  // ensure nav shows on resize for large screens
-  window.addEventListener('resize', ()=>{
-    if(window.innerWidth > 880){
-      nav.style.display = 'flex';
-      btn.setAttribute('aria-expanded','false');
-    } else {
-      nav.style.display = 'none';
-    }
-  });
-})();
-
-/* Lead form handling - does lightweight validation, saves to localStorage and shows modal */
-(function(){
-  const form = document.getElementById('leadForm');
-  const modal = document.getElementById('modal');
-  const closeModal = document.getElementById('closeModal');
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const phone = form.phone.value.trim();
-
-    if(!name || !email){
-      alert('Please provide your name and email.');
-      return;
-    }
-
-    // save lead to localStorage (simple lead store)
-    const leads = JSON.parse(localStorage.getItem('nds_leads')||'[]');
-    leads.unshift({id: Date.now(), name, email, phone, template: 'DS-001', created: new Date().toISOString()});
-    localStorage.setItem('nds_leads', JSON.stringify(leads));
-
-    // reset & show modal
-    form.reset();
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden','false');
-  });
-
-  closeModal.addEventListener('click', () => {
-    const modal = document.getElementById('modal');
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
-  });
-})();
-
-/* Scroll reveal animations using IntersectionObserver */
-(function(){
-  const opts = {threshold: 0.08};
   const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('in');
-        obs.unobserve(entry.target);
-      }
+    entries.forEach(e=>{
+      if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
     });
-  }, opts);
-
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }, {threshold:0.06});
+  document.querySelectorAll('.reveal').forEach(el=> obs.observe(el));
 })();
 
-/* Small accessibility: close modal on ESC */
-document.addEventListener('keydown', (e)=>{
-  const modal = document.getElementById('modal');
-  if(e.key === 'Escape' && modal.style.display === 'flex'){
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
-  }
+/* mini form (inline on brochure) */
+document.getElementById('miniLead').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('miniName').value.trim();
+  const email = document.getElementById('miniEmail').value.trim();
+  const phone = document.getElementById('miniPhone').value.trim();
+  if(!name || !email){ alert('Please enter name and email'); return; }
+  storeLead({name,email,phone,source:'mini'});
+  showModal();
+  this.reset();
 });
 
-/* -- Helpful debug: expose a function to download leads as JSON (for you to use in production) -- */
-window.ndsDownloadLeads = function(){
-  const leads = JSON.parse(localStorage.getItem('nds_leads') || '[]');
-  const blob = new Blob([JSON.stringify(leads, null, 2)], {type:'application/json'});
+/* main (detailed) form */
+document.getElementById('mainLead').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const course = document.getElementById('course').value;
+  if(!name || !email || !phone || !course){ document.getElementById('leadMessage').textContent = 'Please complete all fields.'; return; }
+  storeLead({name,email,phone,course,source:'main'});
+  document.getElementById('leadMessage').textContent = 'Request saved — we will contact you shortly.';
+  this.reset();
+});
+
+/* store lead to localStorage */
+function storeLead(obj){
+  const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
+  obj.id = Date.now();
+  obj.created = new Date().toISOString();
+  leads.unshift(obj);
+  localStorage.setItem('ds_leads', JSON.stringify(leads));
+}
+
+/* modal controls used by inline form */
+function showModal(){
+  const modal = document.getElementById('modal');
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden','false');
+}
+document.getElementById('closeModal').addEventListener('click', function(){
+  const modal = document.getElementById('modal');
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden','true');
+});
+
+/* helper: download leads as JSON (for you) */
+window.downloadLeads = function(){
+  const leads = JSON.parse(localStorage.getItem('ds_leads') || '[]');
+  const blob = new Blob([JSON.stringify(leads,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'nds-leads.json'; document.body.appendChild(a); a.click(); a.remove();
+  const a = document.createElement('a'); a.href = url; a.download = 'driving-school-leads.json'; document.body.appendChild(a); a.click(); a.remove();
 };
+
+/* small accessibility: close modal on ESC */
+document.addEventListener('keydown', (e)=>{
+  const modal = document.getElementById('modal');
+  if(e.key === 'Escape' && modal.style.display === 'flex'){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+});
 </script>
 
 </body>
