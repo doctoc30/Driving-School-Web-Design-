@@ -1,86 +1,264 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Driving School Template Preview</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Premium Driving School — Book Lessons</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
 <style>
-    /* Default scale variables (desktop / landscape) */
-    :root {
-        --scale-factor: 1;
-    }
+/* ----------------- THEME / BASE ----------------- */
+:root{
+  --cream: #f7efe6;
+  --sand:  #efe0cf;
+  --choco: #42291f;
+  --bronze:#8f623f;
+  --muted: #6b5649;
+  --accent: #a6784a;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.6);
+  --radius:14px;
+  --max:1200px;
+  --pad:24px;
+  --shadow-lg: 0 28px 60px rgba(40,24,12,0.14);
+  --shadow-md: 0 12px 30px rgba(40,24,12,0.08);
+  --transition: 360ms cubic-bezier(.2,.9,.2,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--muted);
+  background:linear-gradient(180deg,var(--sand), #fbf9f7 1200px);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+a{color:inherit}
 
-    @media (max-width: 520px) {
-        /* Shrink factor for portrait */
-        :root {
-            --scale-factor: 0.55;
-        }
-    }
+/* ---------- SITE LAYOUT ---------- */
+header{position:sticky;top:0;z-index:150;background:rgba(255,255,255,0.78);backdrop-filter: blur(6px);border-bottom:1px solid rgba(0,0,0,0.03)}
+.site-inner{max-width:var(--max);margin:0 auto;padding:12px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--choco),var(--bronze));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;box-shadow:var(--shadow-lg)}
+.brand h1{margin:0;font-size:18px;color:var(--choco);font-weight:700}
+.brand p{margin:0;font-size:12px;color:var(--muted)}
 
-    body {
-        margin: 0;
-        padding: 0;
-        font-size: calc(16px * var(--scale-factor));
-        line-height: 1.4;
-    }
+nav.primary{display:flex;gap:18px;align-items:center}
+nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+.btn-primary{background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;box-shadow:0 10px 30px rgba(66,41,31,0.12)}
+.mobile-toggle{display:none;border:0;background:none;font-size:20px}
 
-    header, section, footer {
-        padding: calc(40px * var(--scale-factor));
-    }
+/* ---------- HERO (FULL-WIDTH) ---------- */
+.hero-wrap{width:100%;overflow:hidden;position:relative;margin-bottom:40px}
+.hero-bg{
+  position:relative;height:520px;width:100%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+}
+.hero-bg .img {
+  position: absolute;
+  inset: 0;
+  background: url('https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7096.png') center/cover no-repeat;
+  transform: scale(1.06);
+  transition: transform 1600ms ease-out;
+  will-change: transform;
+  filter: contrast(0.98) saturate(0.95);
+}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.08), rgba(255,255,255,0.03));}
+.hero-content{
+  position:relative;z-index:6;max-width:var(--max);margin:0 auto;padding:48px var(--pad);display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:end;
+}
+.hero-copy{
+  background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.94));
+  border-radius:12px;padding:28px;box-shadow:var(--shadow-lg);transform:translateY(18px);
+}
+.hero-copy h2{margin:0 0 12px 0;font-family:"Playfair Display", serif;font-size:44px;color:var(--choco);line-height:1.02;font-weight:700}
+.hero-copy p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-ghost{background:transparent;border:2px solid rgba(66,41,31,0.06);padding:10px 12px;border-radius:10px;color:var(--choco);font-weight:700}
+.hero-side{display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+.lead-card{
+  width:360px;background:linear-gradient(180deg,var(--choco),#5a362a);color:var(--white);padding:18px;border-radius:12px;box-shadow:var(--shadow-lg)
+}
+.lead-card h3{margin:0 0 8px 0}
+.lead-card label{display:block;font-size:13px;margin-bottom:8px;color:rgba(255,255,255,0.9)}
+.lead-card input, .lead-card select{width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px}
+.lead-card button{width:100%;padding:12px;border-radius:8px;border:0;background:var(--accent);font-weight:800;color:var(--white)}
+.info-pill{width:320px;background:var(--cream);border-radius:12px;padding:14px;color:var(--choco);box-shadow:var(--shadow-md);text-align:left}
+.hero-float{
+  position:absolute;right:30px;bottom:30px;background:var(--choco);color:var(--white);padding:10px 12px;border-radius:12px;box-shadow:0 14px 30px rgba(40,24,12,0.18);
+  display:flex;gap:12px;align-items:center;font-weight:800;
+}
 
-    h1 {
-        font-size: calc(32px * var(--scale-factor));
-    }
-    h2 {
-        font-size: calc(24px * var(--scale-factor));
-    }
-    p, li {
-        font-size: calc(16px * var(--scale-factor));
-    }
+/* ---------- MAIN CONTENT ---------- */
+.container{max-width:var(--max);margin:0 auto;padding:28px var(--pad)}
+.section{margin:40px 0}
+.section .head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.section h3{margin:0;color:var(--choco);font-family:Playfair Display, serif;font-size:26px}
+.section p.lead{margin:0;color:var(--muted)}
 
-    ul {
-        padding-left: calc(20px * var(--scale-factor));
-    }
+/* Courses */
+.courses-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.course{
+  width:260px;border-radius:14px;padding:18px;text-align:center;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md);
+}
+.course .circle{width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,var(--sand));border:2px solid rgba(74,46,32,0.06)}
+.course h4{margin:8px 0 6px;color:var(--choco);font-weight:800}
+.course p{margin:0;color:var(--muted)}
 
-    /* Buttons example */
-    button {
-        padding: calc(10px * var(--scale-factor)) calc(20px * var(--scale-factor));
-        font-size: calc(14px * var(--scale-factor));
-    }
+/* Pricing */
+.pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.price-card{width:240px;border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,var(--cream));box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
+.price-card .price{font-size:20px;font-weight:900;color:var(--choco);margin:10px 0}
+.badge{background:linear-gradient(135deg,var(--bronze),var(--accent));color:#fff;padding:6px 8px;border-radius:6px;font-weight:800;font-size:12px}
 
-    /* Ensure full width always */
-    header, section, footer {
-        width: 100vw;
-        box-sizing: border-box;
-    }
+/* Responsive tweaks */
+@media (max-width:1100px){
+  .hero-content{grid-template-columns:1fr 340px;padding:26px}
+  .geo{grid-template-columns:1fr;grid-auto-rows:auto}
+  .hero-bg{height:520px}
+}
+@media (max-width:840px){
+  nav.primary{display:none}
+  .mobile-toggle{display:inline-block}
+  .hero-bg{height:420px}
+  .hero-content{grid-template-columns:1fr;align-items:stretch}
+  .hero-side{align-items:stretch}
+  .lead-card{width:100%}
+  .geo-map{height:260px}
+}
+@media (max-width:520px){
+  .hero-bg{height:320px}
+  .hero-copy h2{font-size:28px}
+  .course{width:100%}
+  .price-card{width:100%}
+}
 
+/* Mobile toggle styling */
+.mobile-toggle {
+  display: inline-block !important;
+  font-size: 28px !important;
+  color: var(--choco) !important;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+}
+
+/* Scaling wrapper for screenshots */
+.scale-wrapper {
+  transform: scale(0.8);
+  transform-origin: top center;
+}
+@media (max-width: 520px) {
+  .scale-wrapper {
+    transform: scale(0.65);
+  }
+}
+
+    /* Remove scaling on portrait mobile */
+@media (max-width: 520px) {
+  .scale-wrapper {
+    transform: none;
+  }
+  .hero-bg {
+    width: 100vw;
+    height: 100vh; /* makes it full height of screen */
+  }
+  .hero-bg .img {
+    background-size: cover;
+    background-position: center;
+  }
+}
 </style>
 </head>
 <body>
+<div class="scale-wrapper">
 
-<header style="background:#222; color:#fff; text-align:center;">
-    <h1>Driving School Template</h1>
-    <p>Preview Mode</p>
+<header>
+  <div class="site-inner">
+    <a class="brand" href="#">
+      <div class="mark" aria-hidden="true">NDS</div>
+      <div>
+        <h1>Driving School</h1>
+        <p class="muted">Professional lessons • Local instructors</p>
+      </div>
+    </a>
+    <nav class="primary" aria-label="Main navigation">
+      <a href="#courses">Courses</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#booking">Book</a>
+      <a class="btn-primary" href="#booking">BOOK NOW</a>
+    </nav>
+    <button class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
 </header>
 
-<section style="background:#f4f4f4;">
-    <h2>Welcome to Our Driving School</h2>
-    <p>We provide professional driving lessons tailored to your needs. Learn with experienced instructors and modern vehicles.</p>
+<!-- HERO -->
+<section class="hero-wrap">
+  <div class="hero-bg">
+    <div class="img"></div>
+    <div class="hero-overlay"></div>
+  </div>
 </section>
 
-<section>
-    <h2>Our Courses</h2>
-    <ul>
-        <li>Beginner Driving Lessons</li>
-        <li>Advanced Driving Techniques</li>
-        <li>Refresher Courses</li>
-    </ul>
+<!-- QUICK BOOKING -->
+<section id="quickBooking" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
+  <form class="lead-card" id="heroLead" style="display: flex; flex-direction: column; gap: 12px;">
+    <h3>Quick booking</h3>
+    <label for="hname">Full name</label>
+    <input id="hname" name="name" type="text" required>
+    <label for="hemail">Email</label>
+    <input id="hemail" name="email" type="email" required>
+    <label for="hphone">Phone</label>
+    <input id="hphone" name="phone" type="tel">
+    <label for="hcourse">Course</label>
+    <select id="hcourse" name="course">
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+    <button type="submit">Get started</button>
+  </form>
 </section>
 
-<footer style="background:#222; color:#fff; text-align:center;">
-    <p>&copy; 2025 Driving School. All rights reserved.</p>
-    <p>Contact: info@drivingschool.com</p>
+<!-- COURSES -->
+<main class="container">
+  <section id="courses" class="section">
+    <div class="head">
+      <div>
+        <h3>Courses</h3>
+        <p class="lead">Choose a path that suits your level.</p>
+      </div>
+    </div>
+    <div class="courses-grid">
+      <article class="course">
+        <div class="circle"></div>
+        <h4>Beginner</h4>
+        <p class="muted">Foundations & confidence.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <strong>Driving School</strong>
+      <div class="muted">123 Anywhere St, City — <span id="year"></span></div>
+    </div>
+  </div>
 </footer>
 
+</div><!-- end scale-wrapper -->
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
