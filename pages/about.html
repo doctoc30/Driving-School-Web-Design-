@@ -196,8 +196,9 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
 
 <div class="scale-wrapper">
 
-<section id="quickBooking" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
-  <form class="lead-card" id="heroLead" style="display: flex; flex-direction: column; gap: 12px;">
+  <!-- Remove max-width and move outside .scale-wrapper if possible -->
+<section id="quickBooking" style="margin: 2rem auto; padding: 1rem;">
+  <form class="lead-card" id="heroLead">
     <h3>Quick booking</h3>
     <label for="hname">Full name</label>
     <input id="hname" name="name" type="text" required>
@@ -214,6 +215,8 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
     <button type="submit">Get started</button>
   </form>
 </section>
+
+
 
 <main class="container">
   <section id="courses" class="section">
