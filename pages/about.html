@@ -5,57 +5,82 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Driving School Template Preview</title>
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Scaling wrapper to shrink page but keep full width */
-    .scale-wrapper {
-        transform: scale(0.7);
-        transform-origin: top center;
-        width: 143%; /* counteract horizontal shrink */
+    /* Default scale variables (desktop / landscape) */
+    :root {
+        --scale-factor: 1;
     }
 
     @media (max-width: 520px) {
-        .scale-wrapper {
-            transform: scale(0.55); /* shrink more for portrait */
-            width: 182%; /* keep full width */
+        /* Shrink factor for portrait */
+        :root {
+            --scale-factor: 0.55;
         }
     }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-size: calc(16px * var(--scale-factor));
+        line-height: 1.4;
+    }
+
+    header, section, footer {
+        padding: calc(40px * var(--scale-factor));
+    }
+
+    h1 {
+        font-size: calc(32px * var(--scale-factor));
+    }
+    h2 {
+        font-size: calc(24px * var(--scale-factor));
+    }
+    p, li {
+        font-size: calc(16px * var(--scale-factor));
+    }
+
+    ul {
+        padding-left: calc(20px * var(--scale-factor));
+    }
+
+    /* Buttons example */
+    button {
+        padding: calc(10px * var(--scale-factor)) calc(20px * var(--scale-factor));
+        font-size: calc(14px * var(--scale-factor));
+    }
+
+    /* Ensure full width always */
+    header, section, footer {
+        width: 100vw;
+        box-sizing: border-box;
+    }
+
 </style>
 </head>
 <body>
 
-<div class="scale-wrapper">
+<header style="background:#222; color:#fff; text-align:center;">
+    <h1>Driving School Template</h1>
+    <p>Preview Mode</p>
+</header>
 
-    <!-- ===== Your actual page content starts here ===== -->
-    <header style="background:#222; color:#fff; padding:20px; text-align:center;">
-        <h1>Driving School Template</h1>
-        <p>Preview Mode</p>
-    </header>
+<section style="background:#f4f4f4;">
+    <h2>Welcome to Our Driving School</h2>
+    <p>We provide professional driving lessons tailored to your needs. Learn with experienced instructors and modern vehicles.</p>
+</section>
 
-    <section style="padding:40px; background:#f4f4f4;">
-        <h2>Welcome to Our Driving School</h2>
-        <p>We provide professional driving lessons tailored to your needs. Learn with experienced instructors and modern vehicles.</p>
-    </section>
+<section>
+    <h2>Our Courses</h2>
+    <ul>
+        <li>Beginner Driving Lessons</li>
+        <li>Advanced Driving Techniques</li>
+        <li>Refresher Courses</li>
+    </ul>
+</section>
 
-    <section style="padding:40px;">
-        <h2>Our Courses</h2>
-        <ul>
-            <li>Beginner Driving Lessons</li>
-            <li>Advanced Driving Techniques</li>
-            <li>Refresher Courses</li>
-        </ul>
-    </section>
-
-    <footer style="background:#222; color:#fff; padding:40px; text-align:center;">
-        <p>&copy; 2025 Driving School. All rights reserved.</p>
-        <p>Contact: info@drivingschool.com</p>
-    </footer>
-    <!-- ===== Your actual page content ends here ===== -->
-
-</div>
+<footer style="background:#222; color:#fff; text-align:center;">
+    <p>&copy; 2025 Driving School. All rights reserved.</p>
+    <p>Contact: info@drivingschool.com</p>
+</footer>
 
 </body>
 </html>
