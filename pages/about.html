@@ -135,11 +135,6 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
   .hero-copy h2{font-size:28px}
   .course{width:100%}
   .price-card{width:100%}
-  /* The quick booking section needs to be full-width on mobile */
-  #quickBooking {
-      max-width: 100%;
-      padding: 1rem var(--pad); /* Use the standard padding for a consistent look */
-  }
 }
 
 /* Mobile toggle styling */
@@ -153,10 +148,21 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
   padding: 6px 10px;
 }
 
-/* Removed scaling wrapper for a proper full-width layout */
+/* Scaling wrapper for screenshots */
+.scale-wrapper {
+  transform: scale(0.8);
+  transform-origin: top center;
+  width: 100%;
+}
+@media (max-width: 520px) {
+  .scale-wrapper {
+    transform: scale(0.65);
+  }
+}
 </style>
 </head>
 <body>
+<div class="scale-wrapper">
 
 <header>
   <div class="site-inner">
@@ -185,8 +191,8 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
   </div>
 </section>
 
-<section id="quickBooking" style="max-width: 400px; margin: 2rem auto;">
-  <form class="lead-card" id="heroLead" style="display: flex; flex-direction: column; gap: 12px; width: auto; max-width: 400px; margin: 0 auto; padding: 18px var(--pad);">
+<section id="quickBooking" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
+  <form class="lead-card" id="heroLead" style="display: flex; flex-direction: column; gap: 12px;">
     <h3>Quick booking</h3>
     <label for="hname">Full name</label>
     <input id="hname" name="name" type="text" required>
@@ -231,7 +237,7 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
   </div>
 </footer>
 
-<script>
+</div><script>
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>
