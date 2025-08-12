@@ -9,58 +9,56 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ----------------- THEME / BASE ----------------- */
-  :root{
-    --cream: #f7efe6;
-    --sand:  #efe0cf;
-    --choco: #42291f;
-    --bronze:#8f623f;
-    --muted: #6b5649;
-    --accent: #a6784a;
-    --white: #ffffff;
-    --glass: rgba(255,255,255,0.6);
-    --radius:14px;
-    --max:1200px;
-    --pad:24px;
-    --shadow-lg: 0 28px 60px rgba(40,24,12,0.14);
-    --shadow-md: 0 12px 30px rgba(40,24,12,0.08);
-    --transition: 360ms cubic-bezier(.2,.9,.2,1);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    color:var(--muted);
-    background:linear-gradient(180deg,var(--sand), #fbf9f7 1200px);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    line-height:1.45;
-  }
-  a{color:inherit}
+/* ----------------- THEME / BASE ----------------- */
+:root{
+  --cream: #f7efe6;
+  --sand:  #efe0cf;
+  --choco: #42291f;
+  --bronze:#8f623f;
+  --muted: #6b5649;
+  --accent: #a6784a;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.6);
+  --radius:14px;
+  --max:1200px;
+  --pad:24px;
+  --shadow-lg: 0 28px 60px rgba(40,24,12,0.14);
+  --shadow-md: 0 12px 30px rgba(40,24,12,0.08);
+  --transition: 360ms cubic-bezier(.2,.9,.2,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--muted);
+  background:linear-gradient(180deg,var(--sand), #fbf9f7 1200px);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+a{color:inherit}
 
-  /* ---------- SITE LAYOUT ---------- */
-  header{position:sticky;top:0;z-index:150;background:rgba(255,255,255,0.78);backdrop-filter: blur(6px);border-bottom:1px solid rgba(0,0,0,0.03)}
-  .site-inner{max-width:var(--max);margin:0 auto;padding:12px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-  .mark{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--choco),var(--bronze));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;box-shadow:var(--shadow-lg)}
-  .brand h1{margin:0;font-size:18px;color:var(--choco);font-weight:700}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
+/* ---------- SITE LAYOUT ---------- */
+header{position:sticky;top:0;z-index:150;background:rgba(255,255,255,0.78);backdrop-filter: blur(6px);border-bottom:1px solid rgba(0,0,0,0.03)}
+.site-inner{max-width:var(--max);margin:0 auto;padding:12px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--choco),var(--bronze));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:800;font-size:16px;box-shadow:var(--shadow-lg)}
+.brand h1{margin:0;font-size:18px;color:var(--choco);font-weight:700}
+.brand p{margin:0;font-size:12px;color:var(--muted)}
 
-  nav.primary{display:flex;gap:18px;align-items:center}
-  nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
-  .btn-primary{background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;box-shadow:0 10px 30px rgba(66,41,31,0.12)}
-  .mobile-toggle{display:none;border:0;background:none;font-size:20px}
+nav.primary{display:flex;gap:18px;align-items:center}
+nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted)}
+.btn-primary{background:var(--choco);color:var(--white);padding:10px 14px;border-radius:10px;font-weight:800;box-shadow:0 10px 30px rgba(66,41,31,0.12)}
+.mobile-toggle{display:none;border:0;background:none;font-size:20px}
 
-  /* ---------- HERO (FULL-WIDTH) ---------- */
-  .hero-wrap{width:100%;overflow:hidden;position:relative;margin-bottom:40px}
-  .hero-bg{
-    position:relative;height:520px;width:100%;overflow:hidden;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
-  }
-
-  /* using the provided raw GitHub image as the hero bg */
+/* ---------- HERO (FULL-WIDTH) ---------- */
+.hero-wrap{width:100%;overflow:hidden;position:relative;margin-bottom:40px}
+.hero-bg{
+  position:relative;height:520px;width:100%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+}
 .hero-bg .img {
   position: absolute;
   inset: 0;
@@ -70,152 +68,101 @@
   will-change: transform;
   filter: contrast(0.98) saturate(0.95);
 }
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.08), rgba(255,255,255,0.03));}
+.hero-content{
+  position:relative;z-index:6;max-width:var(--max);margin:0 auto;padding:48px var(--pad);display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:end;
+}
+.hero-copy{
+  background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.94));
+  border-radius:12px;padding:28px;box-shadow:var(--shadow-lg);transform:translateY(18px);
+}
+.hero-copy h2{margin:0 0 12px 0;font-family:"Playfair Display", serif;font-size:44px;color:var(--choco);line-height:1.02;font-weight:700}
+.hero-copy p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-ghost{background:transparent;border:2px solid rgba(66,41,31,0.06);padding:10px 12px;border-radius:10px;color:var(--choco);font-weight:700}
+.hero-side{display:flex;flex-direction:column;gap:14px;align-items:flex-end}
+.lead-card{
+  width:360px;background:linear-gradient(180deg,var(--choco),#5a362a);color:var(--white);padding:18px;border-radius:12px;box-shadow:var(--shadow-lg)
+}
+.lead-card h3{margin:0 0 8px 0}
+.lead-card label{display:block;font-size:13px;margin-bottom:8px;color:rgba(255,255,255,0.9)}
+.lead-card input, .lead-card select{width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px}
+.lead-card button{width:100%;padding:12px;border-radius:8px;border:0;background:var(--accent);font-weight:800;color:var(--white)}
+.info-pill{width:320px;background:var(--cream);border-radius:12px;padding:14px;color:var(--choco);box-shadow:var(--shadow-md);text-align:left}
+.hero-float{
+  position:absolute;right:30px;bottom:30px;background:var(--choco);color:var(--white);padding:10px 12px;border-radius:12px;box-shadow:0 14px 30px rgba(40,24,12,0.18);
+  display:flex;gap:12px;align-items:center;font-weight:800;
+}
 
-  .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(74,46,32,0.08), rgba(255,255,255,0.03));}
+/* ---------- MAIN CONTENT ---------- */
+.container{max-width:var(--max);margin:0 auto;padding:28px var(--pad)}
+.section{margin:40px 0}
+.section .head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.section h3{margin:0;color:var(--choco);font-family:Playfair Display, serif;font-size:26px}
+.section p.lead{margin:0;color:var(--muted)}
 
-  .hero-content{
-    position:relative;z-index:6;max-width:var(--max);margin:0 auto;padding:48px var(--pad);display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:end;
-  }
+/* Courses */
+.courses-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.course{
+  width:260px;border-radius:14px;padding:18px;text-align:center;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md);
+}
+.course .circle{width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,var(--sand));border:2px solid rgba(74,46,32,0.06)}
+.course h4{margin:8px 0 6px;color:var(--choco);font-weight:800}
+.course p{margin:0;color:var(--muted)}
 
-  .hero-copy{
-    background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.94));
-    border-radius:12px;padding:28px;box-shadow:var(--shadow-lg);transform:translateY(18px);
-  }
-  .hero-copy h2{margin:0 0 12px 0;font-family:"Playfair Display", serif;font-size:44px;color:var(--choco);line-height:1.02;font-weight:700}
-  .hero-copy p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px}
+/* Pricing */
+.pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.price-card{width:240px;border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,var(--cream));box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
+.price-card .price{font-size:20px;font-weight:900;color:var(--choco);margin:10px 0}
+.badge{background:linear-gradient(135deg,var(--bronze),var(--accent));color:#fff;padding:6px 8px;border-radius:6px;font-weight:800;font-size:12px}
 
-  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-  .btn-ghost{background:transparent;border:2px solid rgba(66,41,31,0.06);padding:10px 12px;border-radius:10px;color:var(--choco);font-weight:700}
+/* Responsive tweaks */
+@media (max-width:1100px){
+  .hero-content{grid-template-columns:1fr 340px;padding:26px}
+  .geo{grid-template-columns:1fr;grid-auto-rows:auto}
+  .hero-bg{height:520px}
+}
+@media (max-width:840px){
+  nav.primary{display:none}
+  .mobile-toggle{display:inline-block}
+  .hero-bg{height:420px}
+  .hero-content{grid-template-columns:1fr;align-items:stretch}
+  .hero-side{align-items:stretch}
+  .lead-card{width:100%}
+  .geo-map{height:260px}
+}
+@media (max-width:520px){
+  .hero-bg{height:320px}
+  .hero-copy h2{font-size:28px}
+  .course{width:100%}
+  .price-card{width:100%}
+}
 
-  /* right side: card with form and highlights */
-  .hero-side{display:flex;flex-direction:column;gap:14px;align-items:flex-end}
-  .lead-card{
-    width:360px;background:linear-gradient(180deg,var(--choco),#5a362a);color:var(--white);padding:18px;border-radius:12px;box-shadow:var(--shadow-lg)
-  }
-  .lead-card h3{margin:0 0 8px 0}
-  .lead-card label{display:block;font-size:13px;margin-bottom:8px;color:rgba(255,255,255,0.9)}
-  .lead-card input, .lead-card select{width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px}
-  .lead-card button{width:100%;padding:12px;border-radius:8px;border:0;background:var(--accent);font-weight:800;color:var(--white)}
-  .info-pill{width:320px;background:var(--cream);border-radius:12px;padding:14px;color:var(--choco);box-shadow:var(--shadow-md);text-align:left}
-
-  /* micro floating call to action inside hero */
-  .hero-float{
-    position:absolute;right:30px;bottom:30px;background:var(--choco);color:var(--white);padding:10px 12px;border-radius:12px;box-shadow:0 14px 30px rgba(40,24,12,0.18);
-    display:flex;gap:12px;align-items:center;font-weight:800;
-  }
-
-  /* ---------- MAIN CONTENT ---------- */
-  .container{max-width:var(--max);margin:0 auto;padding:28px var(--pad)}
-
-  .section{margin:40px 0}
-  .section .head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-  .section h3{margin:0;color:var(--choco);font-family:Playfair Display, serif;font-size:26px}
-  .section p.lead{margin:0;color:var(--muted)}
-
-  /* Courses - circular widgets */
-  .courses-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px}
-  .course{
-    width:260px;border-radius:14px;padding:18px;text-align:center;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md);
-  }
-  .course .circle{width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,var(--sand));border:2px solid rgba(74,46,32,0.06)}
-  .course h4{margin:8px 0 6px;color:var(--choco);font-weight:800}
-  .course p{margin:0;color:var(--muted)}
-
-  /* Pricing */
-  .pricing-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-  .price-card{width:240px;border-radius:14px;padding:18px;background:linear-gradient(180deg,#fff,var(--cream));box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
-  .price-card .price{font-size:20px;font-weight:900;color:var(--choco);margin:10px 0}
-
-  .badge{background:linear-gradient(135deg,var(--bronze),var(--accent));color:#fff;padding:6px 8px;border-radius:6px;font-weight:800;font-size:12px}
-
-  /* Testimonials carousel */
-  .testimonials{max-width:980px;margin:0 auto}
-  .test-track{display:flex;gap:18px;overflow:hidden}
-  .test-item{min-width:100%;padding:22px;border-radius:12px;background:linear-gradient(180deg,var(--cream),#fff);box-shadow:var(--shadow-md)}
-
-  /* Instructors */
-  .instructors{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:16px}
-  .inst{width:220px;border-radius:12px;padding:12px;background:linear-gradient(180deg,#fff,var(--sand));text-align:center;box-shadow:var(--shadow-md)}
-
-  /* GEO / Service area section */
-  .geo{
-    display:grid;grid-template-columns:1fr 420px;gap:18px;align-items:center;margin-top:24px;align-items:stretch;
-  }
-  
-  .geo-cards{display:flex;flex-direction:column;gap:12px}
-
-  .service-card{background:linear-gradient(180deg,#fff,var(--cream));padding:14px;border-radius:12px;box-shadow:var(--shadow-md);border:1px solid rgba(74,46,32,0.03)}
-  .service-card h4{margin:0 0 8px 0;color:var(--choco)}
-  .service-card p{margin:0;color:var(--muted);font-size:14px}
-
-  /* Footer */
-  footer{margin-top:42px;background:linear-gradient(180deg,var(--sand),var(--cream));padding:28px 0;border-top:1px solid rgba(74,46,32,0.04)}
-  .footer-inner{max-width:var(--max);margin:0 auto;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .socials a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:linear-gradient(180deg,var(--choco),var(--bronze));color:#fff;text-decoration:none;margin-left:8px}
-
-  /* floating contact buttons */
-  .floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:220}
-  .float-btn{width:56px;height:56px;border-radius:50%;background:var(--choco);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 18px 40px rgba(66,41,31,0.14);font-size:18px}
-
-  /* Reveal animations helper */
-  .reveal{opacity:0;transform:translateY(14px);transition:all var(--transition)}
-  .reveal.in{opacity:1;transform:none}
-
-  /* responsive */
-  @media (max-width:1100px){
-    .hero-content{grid-template-columns:1fr 340px;padding:26px}
-    .geo{grid-template-columns:1fr;grid-auto-rows:auto}
-    .hero-bg{height:520px}
-  }
-  @media (max-width:840px){
-    nav.primary{display:none}
-    .mobile-toggle{display:inline-block}
-    .hero-bg{height:420px}
-    .hero-content{grid-template-columns:1fr;align-items:stretch}
-    .hero-side{align-items:stretch}
-    .lead-card{width:100%}
-    .geo-map{height:260px}
-  }
-  @media (max-width:520px){
-    .hero-bg{height:320px}
-    .hero-copy h2{font-size:28px}
-    .course{width:100%}
-    .price-card{width:100%}
-  }
-
-  /* small util */
-  .muted{color:var(--muted)}
-  .center{text-align:center}
-  input,select,textarea{font-family:inherit}
-
+/* Mobile toggle styling */
 .mobile-toggle {
   display: inline-block !important;
-  font-size: 28px !important; /* larger */
-  color: var(--choco) !important; /* brand color */
+  font-size: 28px !important;
+  color: var(--choco) !important;
   cursor: pointer;
   border: none;
   background: transparent;
   padding: 6px 10px;
 }
 
-  @media (min-width: 841px) {
-  nav.primary {
-    display: flex !important;
-    justify-content: center;
-    gap: 24px;
-    font-weight: 700;
-  }
-
-  .hero-content {
-    justify-content: center;
-    text-align: center;
+/* Scaling wrapper for screenshots */
+.scale-wrapper {
+  transform: scale(0.8);
+  transform-origin: top center;
+}
+@media (max-width: 520px) {
+  .scale-wrapper {
+    transform: scale(0.65);
   }
 }
 </style>
-
-  
 </head>
 <body>
+<div class="scale-wrapper">
 
 <header>
   <div class="site-inner">
@@ -226,7 +173,6 @@
         <p class="muted">Professional lessons • Local instructors</p>
       </div>
     </a>
-
     <nav class="primary" aria-label="Main navigation">
       <a href="#courses">Courses</a>
       <a href="#pricing">Pricing</a>
@@ -234,35 +180,28 @@
       <a href="#booking">Book</a>
       <a class="btn-primary" href="#booking">BOOK NOW</a>
     </nav>
-
     <button class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
 
-
-  
-</section>
-
-  <!-- HERO -->
-<section class="hero-wrap" aria-label="Hero">
+<!-- HERO -->
+<section class="hero-wrap">
   <div class="hero-bg">
-    <div class="img" aria-hidden="true"></div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-
-    
-  
+    <div class="img"></div>
+    <div class="hero-overlay"></div>
+  </div>
 </section>
 
-<!-- QUICK BOOKING FORM BELOW HERO -->
-<section id="quickBooking" aria-label="Quick booking form" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
-  <form class="lead-card reveal" id="heroLead" aria-label="Hero booking form" style="display: flex; flex-direction: column; gap: 12px;">
+<!-- QUICK BOOKING -->
+<section id="quickBooking" style="max-width: 400px; margin: 2rem auto; padding: 1rem;">
+  <form class="lead-card" id="heroLead" style="display: flex; flex-direction: column; gap: 12px;">
     <h3>Quick booking</h3>
     <label for="hname">Full name</label>
-    <input id="hname" name="name" type="text" placeholder="Your name" required>
+    <input id="hname" name="name" type="text" required>
     <label for="hemail">Email</label>
-    <input id="hemail" name="email" type="email" placeholder="you@example.com" required>
+    <input id="hemail" name="email" type="email" required>
     <label for="hphone">Phone</label>
-    <input id="hphone" name="phone" type="tel" placeholder="+44 7...">
+    <input id="hphone" name="phone" type="tel">
     <label for="hcourse">Course</label>
     <select id="hcourse" name="course">
       <option value="beginner">Beginner</option>
@@ -271,394 +210,40 @@
     </select>
     <button type="submit">Get started</button>
   </form>
-
-  <div class="info-pill reveal" aria-hidden="true" style="margin-top: 16px; max-width: 400px;">
-    <strong>Why choose us</strong>
-    <p style="margin-top:8px;color:var(--muted)">High pass rate • Modern, branded learner cars • Flexible scheduling across the city.</p>
-  </div>
 </section>
 
-<main class="container" role="main">
-
-  <!-- COURSES -->
-  <section id="courses" class="section reveal">
+<!-- COURSES -->
+<main class="container">
+  <section id="courses" class="section">
     <div class="head">
       <div>
         <h3>Courses</h3>
-        <p class="lead">Choose a path that suits your level — structured lessons, measured progress.</p>
+        <p class="lead">Choose a path that suits your level.</p>
       </div>
-      <div class="muted">Need help choosing? <a href="#booking" class="btn-ghost">Contact us</a></div>
     </div>
-
     <div class="courses-grid">
-      <!-- BEGINNER -->
-      <article class="course reveal" aria-labelledby="beginnerTitle">
-        <div class="circle" aria-hidden="true">
-          <!-- custom book icon -->
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="4" width="7.5" height="15" rx="1.2" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
-            <rect x="13.5" y="4" width="7.5" height="15" rx="1.2" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
-            <path d="M3 9h18" stroke="#42291f" stroke-width="0.9" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h4 id="beginnerTitle">Beginner</h4>
-        <p class="muted">Foundations & confidence: vehicle controls, basic manoeuvres and road rules.</p>
-      </article>
-
-      <!-- INTERMEDIATE -->
-      <article class="course reveal" aria-labelledby="interTitle">
-        <div class="circle" aria-hidden="true">
-          <!-- custom steering icon -->
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="7.2" stroke="#42291f" stroke-width="1.1" fill="#fff"/>
-            <path d="M12 5v6l4 2" stroke="#42291f" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="12" cy="12" r="1.2" fill="#42291f"/>
-          </svg>
-        </div>
-        <h4 id="interTitle">Intermediate</h4>
-        <p class="muted">Refine road positioning, junctions, roundabouts and independent driving.</p>
-      </article>
-
-      <!-- ADVANCED -->
-      <article class="course reveal" aria-labelledby="advTitle">
-        <div class="circle" aria-hidden="true">
-          <!-- custom road icon -->
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="9.4" y="2.8" width="5.2" height="18" rx="1" fill="#fff" stroke="#42291f" stroke-width="0.9"/>
-            <path d="M12 6v2M12 10v2M12 14v2M12 18v2" stroke="#42291f" stroke-width="0.9" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h4 id="advTitle">Advanced</h4>
-        <p class="muted">Test preparation, motorway confidence and advanced safety maneuvers.</p>
+      <article class="course">
+        <div class="circle"></div>
+        <h4>Beginner</h4>
+        <p class="muted">Foundations & confidence.</p>
       </article>
     </div>
   </section>
-
-  <!-- PRICING -->
-  <section id="pricing" class="section reveal">
-    <div class="head">
-      <div>
-        <h3>Pricing</h3>
-        <p class="lead">Transparent pricing with clear value. Choose the plan that fits your learning goals.</p>
-      </div>
-      <div class="muted">Save on prepaid blocks — ask about discounts for students.</div>
-    </div>
-
-    <div class="pricing-grid">
-      <div class="price-card reveal">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700;color:var(--muted)">Starter</div>
-          <div class="badge">Popular</div>
-        </div>
-        <div class="price">£30</div>
-        <div class="muted">1 × 1 hour</div>
-        <div style="margin-top:12px"><a class="btn-ghost" href="#booking">Choose</a></div>
-      </div>
-
-      <div class="price-card reveal">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700;color:var(--muted)">Standard</div>
-          <div class="badge" style="background:linear-gradient(135deg,var(--choco),var(--bronze))">Best value</div>
-        </div>
-        <div class="price">£140</div>
-        <div class="muted">5 × 1 hour</div>
-        <div style="margin-top:12px"><a class="btn-primary" href="#booking">Choose</a></div>
-      </div>
-
-      <div class="price-card reveal">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700;color:var(--muted)">Complete</div>
-        </div>
-        <div class="price">£260</div>
-        <div class="muted">10 × 1 hour</div>
-        <div style="margin-top:12px"><a class="btn-ghost" href="#booking">Choose</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="testimonials" class="section reveal">
-    <div class="head">
-      <div>
-        <h3>Testimonials</h3>
-        <p class="lead">What our learners say about us.</p>
-      </div>
-      <div class="muted">Real learners, real progress.</div>
-    </div>
-
-    <div class="testimonials">
-      <div class="test-track" id="testTrack">
-        <div class="test-item">
-          <strong>Olivia P.</strong>
-          <p class="muted">"My instructor was calm and clear — I passed first time. Highly recommend the Standard package."</p>
-        </div>
-        <div class="test-item">
-          <strong>Hassan R.</strong>
-          <p class="muted">"Flexible scheduling made lessons fit around my work. Excellent cars and coaching."</p>
-        </div>
-        <div class="test-item">
-          <strong>Sophie K.</strong>
-          <p class="muted">"Patient, modern and professional. Great experience from first lesson to test day."</p>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
-        <button id="prevTest" aria-label="Previous testimonial" class="btn-ghost">‹</button>
-        <button id="nextTest" aria-label="Next testimonial" class="btn-ghost">›</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- INSTRUCTORS -->
-  <section class="section reveal">
-    <div class="head">
-      <div>
-        <h3>Instructors</h3>
-        <p class="lead">Qualified, insured and DBS-checked instructors.</p>
-      </div>
-    </div>
-
-    <div class="instructors">
-      <div class="inst reveal">
-        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">A.S</div>
-        <strong>Adam S.</strong>
-        <div class="muted" style="font-size:13px">Senior Instructor — 10 yrs experience</div>
-      </div>
-
-      <div class="inst reveal">
-        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">L.M</div>
-        <strong>Leah M.</strong>
-        <div class="muted" style="font-size:13px">Driver Trainer — patient & calm</div>
-      </div>
-
-      <div class="inst reveal">
-        <div style="height:120px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--sand));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--choco);margin-bottom:8px">R.T</div>
-        <strong>Ryan T.</strong>
-        <div class="muted" style="font-size:13px">Pass-rate specialist</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GEO / SERVICE AREA -->
-<section class="section reveal">
-  <div class="head">
-    <div>
-      <h3>Service area</h3>
-      <p class="lead">We cover the following towns and test centres.</p>
-      <img 
-        src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7084.png" 
-        alt="Service Area Map" 
-        style="max-width: 100%; height: auto; margin-top: 1rem;"
-      />
-    </div>
-  </div>
-
-    <div class="geo">
-      <div class="geo-map reveal" aria-hidden="true"></div>
-      <div class="geo-cards">
-        <div class="service-card reveal">
-          <h4>Central City</h4>
-          <p class="muted">Daily lessons and weekend intensive courses. Nearby test centre: Central Test Centre.</p>
-        </div>
-        <div class="service-card reveal">
-          <h4>Northside & Suburbs</h4>
-          <p class="muted">Flexible pick-up locations and block discounts for students in this area.</p>
-        </div>
-        <div class="service-card reveal">
-          <h4>Outskirts</h4>
-          <p class="muted">Motorway training and rural-road coaching; ideal for advanced learners.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BOOKING / CONTACT -->
-  <section id="booking" class="section reveal">
-    <div class="head">
-      <div>
-        <h3>Book a lesson</h3>
-        <p class="lead">Choose a time and tell us how we can help. We'll get back within 24 hours.</p>
-      </div>
-    </div>
-
-    <form id="mainBooking" style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <input id="fullName" placeholder="Full name" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
-      <input id="emailAddr" placeholder="Email address" type="email" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
-      <input id="phoneMain" placeholder="Phone number" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
-      <select id="courseSelect" required style="padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)">
-        <option value="">Choose a course</option>
-        <option value="beginner">Beginner</option>
-        <option value="intermediate">Intermediate</option>
-        <option value="advanced">Advanced</option>
-      </select>
-      <textarea id="notes" placeholder="Any notes or preferred days" style="grid-column:1 / -1;padding:12px;border-radius:10px;border:1px solid rgba(74,46,32,0.06)" rows="4"></textarea>
-      <div style="grid-column:1 / -1;display:flex;gap:12px;align-items:center">
-        <button type="submit" class="btn-primary">Request booking</button>
-        <div id="formMsg" class="muted"></div>
-      </div>
-    </form>
-  </section>
-
 </main>
 
-<!-- FLOATING CONTACT -->
-<div class="floating" aria-hidden="false">
-  <a class="float-btn" href="tel:+1234567890" aria-label="Call">📞</a>
-  <a class="float-btn" href="https://wa.me/441234567890" aria-label="WhatsApp">💬</a>
-</div>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div>
-      <strong style="display:block;color:var(--choco)">Driving School</strong>
+      <strong>Driving School</strong>
       <div class="muted">123 Anywhere St, City — <span id="year"></span></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <a class="socials" href="#" aria-label="facebook">f</a>
-      <a class="socials" href="#" aria-label="instagram">ig</a>
-     
-    
-  <div>© <span id="year"></span> Your Driving School</div>
-  <div class="socials">
-    <a href="https://facebook.com" target="_blank" aria-label="Facebook" rel="noopener noreferrer">
-      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M22 12a10 10 0 1 0-11.5 9.87v-6.98H8v-2.9h2.5v-2.2c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.6v1.9h2.9l-.5 2.9h-2.4v6.98A10 10 0 0 0 22 12"/>
-      </svg>
-    </a>
-    <a href="https://instagram.com" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
-      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M7 2C4.79 2 3 3.79 3 6v12c0 2.21 1.79 4 4 4h10c2.21 0 4-1.79 4-4V6c0-2.21-1.79-4-4-4H7zm10 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-5 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/>
-      </svg>
-    </a>
-    <a href="https://twitter.com" target="_blank" aria-label="Twitter" rel="noopener noreferrer">
-      <svg width="20" height="20" fill="currentColor" aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M23 3a10.9 10.9 0 0 1-3.14.86 4.48 4.48 0 0 0 1.95-2.48 9.17 9.17 0 0 1-2.88 1.1A4.48 4.48 0 0 0 16.66 2c-2.5 0-4.52 2.06-4.52 4.6 0 .36.04.7.12 1.03A12.87 12.87 0 0 1 3 4.1a4.5 4.5 0 0 0-.61 2.31c0 1.6.81 3.02 2.03 3.85a4.48 4.48 0 0 1-2.05-.58v.06c0 2.25 1.6 4.13 3.72 4.56a4.55 4.55 0 0 1-2.04.08 4.5 4.5 0 0 0 4.2 3.18A9 9 0 0 1 2 18.06a12.68 12.68 0 0 0 6.92 2.03c8.3 0 12.85-7.05 12.85-13.18 0-.2 0-.43-.02-.65A9.43 9.43 0 0 0 23 3z"/>
-      </svg>
-    </a>
-  </div>
-</div>
-      
-      <small class="muted">Built for premium conversions</small>
     </div>
   </div>
 </footer>
 
-<!-- MODAL -->
-<div id="modal" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;align-items:center;justify-content:center;">
-  <div style="background:var(--white);padding:22px;border-radius:12px;max-width:520px;text-align:center;box-shadow:var(--shadow-lg);">
-    <h4 style="margin:0;color:var(--choco)">Thanks — we received your request</h4>
-    <p class="muted" style="margin-top:8px">We'll contact you within 24 hours to confirm your lesson.</p>
-    <div style="margin-top:14px"><button id="closeModal" style="padding:10px 14px;border-radius:10px;border:0;background:var(--bronze);color:var(--white);font-weight:800">Close</button></div>
-  </div>
-</div>
+</div><!-- end scale-wrapper -->
 
 <script>
-/* ---------- Small utilities ---------- */
 document.getElementById('year').textContent = new Date().getFullYear();
-
-/* Mobile nav toggle */
-const mobileBtn = document.querySelector('.mobile-toggle');
-mobileBtn && mobileBtn.addEventListener('click', ()=>{
-  const nav = document.querySelector('nav.primary');
-  const shown = nav.style.display === 'flex';
-  nav.style.display = shown ? 'none' : 'flex';
-  mobileBtn.setAttribute('aria-expanded', String(!shown));
-});
-
-/* IntersectionObserver reveal animations */
-(function(){
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  },{threshold:0.08});
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-})();
-
-/* Hero subtle parallax effect (mouse) */
-(function(){
-  const hero = document.querySelector('.hero-bg');
-  const bg = hero?.querySelector('.img');
-  if(!hero || !bg) return;
-  hero.addEventListener('mousemove', (e)=>{
-    const r = hero.getBoundingClientRect();
-    const px = (e.clientX - r.left)/r.width - 0.5;
-    const py = (e.clientY - r.top)/r.height - 0.5;
-    bg.style.transform = `translate(${px*10}px, ${py*8}px) scale(1.06)`;
-  });
-  hero.addEventListener('mouseleave', ()=> bg.style.transform = 'scale(1.06)');
-})();
-
-/* Testimonials carousel (simple) */
-(function(){
-  const track = document.getElementById('testTrack');
-  const items = track?.children || [];
-  let idx = 0;
-  function show(i){
-    if(!track) return;
-    idx = (i + items.length) % items.length;
-    track.style.transform = `translateX(-${idx * 100}%)`;
-  }
-  document.getElementById('prevTest').addEventListener('click', ()=> show(idx-1));
-  document.getElementById('nextTest').addEventListener('click', ()=> show(idx+1));
-  // auto-advance
-  setInterval(()=> show(idx+1), 7000);
-})();
-
-/* ---------- Lead capture (localStorage) ---------- */
-function storeLead(obj){
-  const leads = JSON.parse(localStorage.getItem('ds_leads')||'[]');
-  obj.id = Date.now(); obj.created = new Date().toISOString();
-  leads.unshift(obj);
-  localStorage.setItem('ds_leads', JSON.stringify(leads));
-}
-
-/* hero quick form */
-document.getElementById('heroLead').addEventListener('submit', function(e){
-  e.preventDefault();
-  const name = this.querySelector('[name=name]').value.trim();
-  const email = this.querySelector('[name=email]').value.trim();
-  const phone = this.querySelector('[name=phone]').value.trim();
-  const course = this.querySelector('select')?.value || '';
-  if(!name || !email){ alert('Please provide name and email'); return; }
-  storeLead({name,email,phone,course,source:'hero'});
-  showModal();
-  this.reset();
-});
-
-/* main booking form */
-document.getElementById('mainBooking').addEventListener('submit', function(e){
-  e.preventDefault();
-  const name = document.getElementById('fullName').value.trim();
-  const email = document.getElementById('emailAddr').value.trim();
-  const phone = document.getElementById('phoneMain').value.trim();
-  const course = document.getElementById('courseSelect').value;
-  const notes = document.getElementById('notes').value.trim();
-  const msg = document.getElementById('formMsg');
-
-  if(!name || !email || !phone || !course){ msg.textContent = 'Please complete required fields.'; return; }
-  storeLead({name,email,phone,course,notes,source:'main'});
-  msg.textContent = 'Request saved — we will contact you shortly.';
-  this.reset();
-  setTimeout(()=> msg.textContent = '', 6000);
-});
-
-/* modal controls */
-function showModal(){ document.getElementById('modal').style.display = 'flex'; document.getElementById('modal').setAttribute('aria-hidden','false'); }
-document.getElementById('closeModal').addEventListener('click', ()=> { document.getElementById('modal').style.display = 'none'; });
-
-/* helper for developer: download leads */
-window.downloadLeads = function(){
-  const leads = JSON.parse(localStorage.getItem('ds_leads') || '[]');
-  const blob = new Blob([JSON.stringify(leads,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'driving-school-leads.json'; document.body.appendChild(a); a.click(); a.remove();
-};
-
-/* accessibility: close modal on ESC */
-document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ document.getElementById('modal').style.display='none'; } });
 </script>
-
 </body>
 </html>
