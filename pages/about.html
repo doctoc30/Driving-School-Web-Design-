@@ -160,14 +160,24 @@ nav.primary a{font-weight:700;padding:8px 10px;border-radius:8px;text-decoration
   }
 }
 
-    /* Remove scaling on portrait mobile */
+
+
+  /* Smaller scale on mobile */
 @media (max-width: 520px) {
   .scale-wrapper {
-    transform: none;
+    transform: scale(0.55);
+    transform-origin: top center;
+    width: 100%;
+  }
+  /* Let hero-bg break out of scale-wrapper and fill full viewport */
+  .hero-wrap {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
   .hero-bg {
-    width: 100vw;
-    height: 100vh; /* makes it full height of screen */
+    width: 100vw !important;
+    height: 320px; /* keep original mobile height */
   }
   .hero-bg .img {
     background-size: cover;
