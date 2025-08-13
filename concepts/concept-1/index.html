@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DriveSmart – Learn to Drive</title>
+  <!-- AOS Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <style>
     :root{
       --bg:#f6e9da;
@@ -17,7 +19,6 @@
       --container-padding:20px;
       --shadow: 0 10px 30px rgba(50,30,15,0.08);
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -26,8 +27,8 @@
       background:linear-gradient(180deg,var(--bg),#fff);
       color:var(--dark);
       line-height:1.4;
+      scroll-behavior:smooth;
     }
-
     .wrap{
       max-width:var(--maxwidth);
       margin:0 auto;
@@ -39,7 +40,13 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:8px 0 16px;
+      padding:12px 0 20px;
+      background:var(--card);
+      border-radius:0 0 20px 20px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.08);
+      position:sticky;
+      top:0;
+      z-index:1000;
     }
     .brand{
       display:flex;
@@ -49,13 +56,13 @@
       color:var(--dark);
     }
     .logo-mark{
-      width:46px;height:46px;border-radius:8px;
+      width:50px;height:50px;border-radius:12px;
       background:linear-gradient(135deg,var(--dark),var(--muted));
       display:flex;align-items:center;justify-content:center;color:var(--card);
-      font-weight:800;font-size:16px;
+      font-weight:800;font-size:18px;
       box-shadow:var(--shadow);
     }
-    .brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:0.6px}
+    .brand h1{font-size:18px;margin:0;font-weight:700;letter-spacing:0.6px}
     .brand p{margin:0;font-size:12px;color:var(--muted)}
 
     nav{display:flex;align-items:center;gap:20px}
@@ -66,40 +73,40 @@
       box-shadow: 0 6px 18px rgba(58,42,31,0.18);
     }
 
+    /* Hero */
     .hero{
       display:grid;
       grid-template-columns: 1fr 480px;
       gap:28px;
       align-items:start;
-      margin-top:8px;
+      margin-top:12px;
     }
-
     .hero-left{padding:20px 0}
-    .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
     .hero h2{
       margin:0 0 12px 0;
       font-size:48px;
-      line-height:1;
+      line-height:1.1;
       letter-spacing: -1px;
       color:var(--dark);
       font-weight:800;
     }
     .hero p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px;max-width:540px}
     .primary-cta{
-      display:inline-block;background:var(--cta);color:var(--card);padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;
+      display:inline-block;background:var(--cta);color:var(--card);padding:14px 20px;border-radius:12px;text-decoration:none;font-weight:700;
       box-shadow:0 10px 20px rgba(58,42,31,0.12)
     }
-
     .hero-right{
       position:relative; padding-top:10px;
       display:flex;flex-direction:column;gap:18px;align-items:flex-end;
     }
     .hero-image{
       width:100%;
-      border-radius:14px;
+      border-radius:16px;
       overflow:hidden;
       box-shadow:var(--shadow);
       background:#efe0cf;
+      transition:transform 0.4s;
     }
     .hero-image img{width:100%;height:auto;display:block;transform:translateY(6px)}
 
@@ -137,6 +144,7 @@
     .info-card h4{margin:0 0 8px 0;font-size:16px}
     .info-card p{margin:0;color:var(--muted);font-size:13px}
 
+    /* Sections */
     .section{padding:56px 0}
     .section h3{font-size:28px;margin:0 0 8px 0;text-align:center}
     .section p.intro{color:var(--muted);text-align:center;margin:8px auto 28px auto;max-width:780px}
@@ -161,50 +169,78 @@
       background:var(--card);padding:18px;border-radius:12px;width:220px;text-align:center;box-shadow:var(--shadow);
     }
 
+    /* FAQ Accordion */
+    .faq-item{
+      background:var(--card);
+      border-radius:12px;
+      margin:8px auto;
+      padding:12px 18px;
+      width:90%;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+    .faq-item h4{
+      margin:0;font-size:16px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .faq-content{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      margin-top:6px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* Footer */
     footer{
       margin-top:40px;padding:28px 0;border-top:1px solid rgba(0,0,0,0.04);
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
-    .socials a{margin-left:8px;text-decoration:none;color:var(--dark);font-weight:700}
+    .socials a{
+      margin-left:12px;
+      text-decoration:none;
+      color:var(--dark);
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+    }
+    .socials svg{
+      width:24px;
+      height:24px;
+      fill:var(--dark);
+    }
 
-  @media (max-width:880px){
-  .hero {
-    grid-template-columns: 1fr;
-    gap:12px;
-  }
-  .hero-right {
-    order:2;
-    align-items:center;
-  }
-  .hero-left {
-    order:1;
-  }
-}
-  @media (max-width:880px){
-  .lead-card {
-    position:relative;
-    left:auto;
-    transform:none;
-    top:auto;
-    width:100%;
-    margin-top:20px;
-  }
+    /* Static Bottom Bar */
+    .bottom-bar{
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      background:var(--cta);
+      color:var(--card);
+      display:flex;
+      justify-content:center;
+      gap:40px;
+      padding:12px 0;
+      font-weight:700;
+      z-index:999;
+      border-top-left-radius:16px;
+      border-top-right-radius:16px;
+      box-shadow:0 -4px 16px rgba(0,0,0,0.1);
+    }
 
-  .info-card {
-    position:relative;
-    right:auto;
-    top:auto;
-    width:100%;
-    margin-top:12px;
-  }
-
-  .hero-image img {
-    transform:none;
-  }
-}
+    @media (max-width:880px){
+      .hero {grid-template-columns:1fr; gap:12px;}
+      .hero-right {order:2;align-items:center;}
+      .hero-left {order:1;}
+      .lead-card, .info-card {position:relative;transform:none;width:100%;margin-top:20px;}
+      .hero-image img {transform:none;}
+    }
   </style>
 </head>
 <body>
+
   <div class="wrap">
 
     <!-- Header -->
@@ -228,23 +264,18 @@
       </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Hero -->
+    <section class="hero" data-aos="fade-up">
       <div class="hero-left">
         <div class="eyebrow">Your journey starts here</div>
         <h2>Learn to Drive with Confidence</h2>
         <p class="lead">Flexible lessons. Certified instructors. High success rate. Book your first lesson today.</p>
         <a href="#" class="primary-cta">Watch Lessons in Action</a>
       </div>
-
-      <div class="hero-right">
+      <div class="hero-right" data-aos="fade-left">
         <div class="hero-image">
           <img src="car-image.jpg" alt="Driving School Car" />
         </div>
-
-        <div class [A](https://github.com/Ronnie434/30-days-of-React/tree/22142106cb46f717a1259f84227cc90ed7fe50cc/02_Day_Introduction_to_React%2F02_introduction_to_react.md?copilot_analytics_metadata=eyJldmVudEluZm9fY2xpY2tEZXN0aW5hdGlvbiI6Imh0dHBzOlwvXC9naXRodWIuY29tXC9Sb25uaWU0MzRcLzMwLWRheXMtb2YtUmVhY3RcL3RyZWVcLzIyMTQyMTA2Y2I0NmY3MTdhMTI1OWY4NDIyN2NjOTBlZDdmZTUwY2NcLzAyX0RheV9JbnRyb2R1Y3Rpb25fdG9fUmVhY3QlMkYwMl9pbnRyb2R1Y3Rpb25fdG9fcmVhY3QubWQiLCJldmVudEluZm9fbWVzc2FnZUlkIjoiZnRuZXhrVXlWZUg0amRKUzJrekRUIiwiZXZlbnRJbmZvX2NvbnZlcnNhdGlvbklkIjoicERrVzRnVFpaOW5FRXo4clNyMkd5IiwiZXZlbnRJbmZvX2NsaWNrU291cmNlIjoiY2l0YXRpb25MaW5rIn0%3D&citationMarker=9F742443-6C92-4C44-BF58-8F5A7C53B6F1)
-
-<!-- Lead Capture Form -->
         <div class="lead-card">
           <h3>Request a Callback</h3>
           <label for="name">Your Name</label>
@@ -253,8 +284,6 @@
           <input type="email" id="email" placeholder="you@example.com" />
           <button type="submit">Request</button>
         </div>
-
-        <!-- Trust Badge Card -->
         <div class="info-card">
           <h4>Why Choose Us?</h4>
           <p>✅ 98% Pass Rate<br>✅ Certified Instructors<br>✅ Local Pickup<br>✅ Flexible Scheduling</p>
@@ -263,71 +292,59 @@
     </section>
 
     <!-- Courses Section -->
-    <section class="section">
+    <section class="section" data-aos="fade-up">
       <h3>Lesson Types</h3>
       <p class="intro">Choose the lesson that suits your level and goals. All courses are taught by certified instructors.</p>
       <div class="courses">
-        <div class="course">
-          <div class="icon">🚗</div>
-          <h4>Beginner Lessons</h4>
-          <p>Start from scratch with confidence and clarity.</p>
-        </div>
-        <div class="course">
-          <div class="icon">🔁</div>
-          <h4>Refresher Course</h4>
-          <p>Sharpen your skills and regain road confidence.</p>
-        </div>
-        <div class="course">
-          <div class="icon">📝</div>
-          <h4>Theory Prep</h4>
-          <p>Master the rules and pass your theory test.</p>
-        </div>
-        <div class="course">
-          <div class="icon">🎯</div>
-          <h4>Test Simulation</h4>
-          <p>Practice under real test conditions.</p>
-        </div>
-      </div>
-    </section>
+        <div class="course" data-aos="zoom-in"><div class="icon">🚗</div><h4>Beginner Lessons</h4>
 
-    <!-- Pricing Section -->
-    <section class="section">
-      <h3>Pricing Packages</h3>
-      <p class="intro">Transparent pricing for manual and automatic lessons. No hidden fees.</p>
-      <div class="pricing">
-        <div class="price-card">
-          <h4>Manual – Starter</h4>
-          <p>5 Lessons</p>
-          <p><strong>£120</strong></p>
-        </div>
-        <div class="price-card">
-          <h4>Manual – Pro</h4>
-          <p>10 Lessons + Test Prep</p>
-          <p><strong>£230</strong></p>
-        </div>
-        <div class="price-card">
-          <h4>Automatic – Starter</h4>
-          <p>5 Lessons</p>
-          <p><strong>£140</strong></p>
-        </div>
-        <div class="price-card">
-          <h4>Automatic – Pro</h4>
-          <p>10 Lessons + Test Prep</p>
-          <p><strong>£260</strong></p>
-        </div>
-      </div>
-    </section>
+  <!-- FAQ Section -->
+  <section class="section" id="faq">
+    <h3>Frequently Asked Questions</h3>
+    <p class="intro">Answers to the most common questions about learning to drive with DriveSmart.</p>
 
-    <!-- Footer -->
-    <footer>
-      <div>&copy; 2025 DriveSmart. All rights reserved.</div>
-      <div class="socials">
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="#">WhatsApp</a>
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question">What is the minimum age to start lessons?</div>
+        <div class="faq-answer">You can start lessons at 17 years old. Parental consent is required if under 18.</div>
       </div>
-    </footer>
+      <div class="faq-item">
+        <div class="faq-question">How long is each lesson?</div>
+        <div class="faq-answer">Lessons are typically 1 or 2 hours depending on your package.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Do I need my own car?</div>
+        <div class="faq-answer">No, our certified instructors provide a fully insured vehicle for your lessons.</div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Static Bottom Bar -->
+  <div class="bottom-bar">
+    <a href="mailto:info@drivesmart.com">✉ Email Us</a>
+    <a href="tel:+1234567890">📞 Call Now</a>
   </div>
+
+  <script>
+    // Scroll Animations using IntersectionObserver
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.hero-left, .course, .price-card, .faq-item').forEach(el => {
+      observer.observe(el);
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('active');
+      });
+    });
+  </script>
 </body>
 </html>
