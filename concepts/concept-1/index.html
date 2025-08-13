@@ -237,6 +237,16 @@
   /* small helpers */
   .muted{color:var(--muted)}
   .center{text-align:center}
+
+
+  @media (max-width: 430px) {
+  body {
+    transform: scale(0.3333); /* 1 / 3 */
+    transform-origin: top left;
+    width: 300%; /* keep layout from cutting off */
+    height: auto;
+  }
+}
 </style>
 </head>
 <body>
