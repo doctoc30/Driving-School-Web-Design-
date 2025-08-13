@@ -1,250 +1,463 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Start Your Journey — Driving School</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NDS Parking School</title>
 <style>
-  :root{
-    --bg:#f6e9da;            /* page background */
-    --accent:#e6caa6;        /* soft accent */
-    --dark:#3a2a1f;          /* dark brown */
-    --muted:#8b6f59;         /* muted brown */
-    --card:#fff4ea;          /* card bg */
-    --cta:#3a2a1f;           /* button bg */
-    --radius:12px;
-    --maxwidth:1100px;
-    --container-padding:20px;
-    --shadow: 0 10px 30px rgba(50,30,15,0.08);
+  /* === VARIABLES === */
+  :root {
+    --cta: #0078d7;
+    --card: #fff;
+    --bg: #f9f9f9;
+    --text: #333;
+    --muted: #777;
   }
 
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    background:linear-gradient(180deg,var(--bg),#fff);
-    color:var(--dark);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    line-height:1.4;
+  /* === BASE === */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  a {
+    color: var(--cta);
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    text-decoration: underline;
+  }
+  h1, h2, h3, h4 {
+    margin-top: 0;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
   }
 
-  /* page container */
-  .wrap{
-    max-width:var(--maxwidth);
-    margin:0 auto;
-    padding:var(--container-padding);
+  /* === FLOATING CONTACT === */
+  .floating-contact {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+  }
+  .float-btn {
+    display: inline-block;
+    font-size: 1.6rem;
+    padding: 0.4em 0.6em;
+    background: var(--cta);
+    color: var(--card);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease;
+  }
+  .float-btn:hover,
+  .float-btn:focus {
+    background-color: #005a9e;
+    outline: none;
+  }
+  .float-btn:focus {
+    outline: 3px solid #ffd54f;
+    outline-offset: 2px;
   }
 
-  /* Header */
-  header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    padding:8px 0 16px;
+  /* === HEADER === */
+  header.wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ddd;
   }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    text-decoration:none;
-    color:var(--dark);
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
   }
-  .logo-mark{
-    width:46px;height:46px;border-radius:8px;
-    background:linear-gradient(135deg,var(--dark),var(--muted));
-    display:flex;align-items:center;justify-content:center;color:var(--card);
-    font-weight:800;font-size:16px;
-    box-shadow:var(--shadow);
+  .logo-mark {
+    font-weight: 900;
+    font-size: 1.8rem;
+    background: var(--cta);
+    color: var(--card);
+    padding: 0.2em 0.5em;
+    border-radius: 6px;
+    user-select: none;
   }
-  .brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:0.6px}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
-
-  /* nav */
-  nav{display:flex;align-items:center;gap:20px}
-  .nav-links{display:flex;gap:18px}
-  .nav-links a{color:var(--dark);text-decoration:none;font-weight:600;font-size:14px}
-  .cta-btn{
-    background:var(--cta); color:var(--card); padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700;
-    box-shadow: 0 6px 18px rgba(58,42,31,0.18);
+  .brand h1 {
+    font-size: 1.2rem;
+    margin: 0;
   }
-
-  /* mobile menu toggle */
-  .menu-toggle{display:none;background:none;border:0;color:var(--dark);font-size:20px;padding:8px}
-
-  /* Hero section */
-  .hero{
-    display:grid;
-    grid-template-columns: 1fr 480px;
-    gap:28px;
-    align-items:start;
-    margin-top:8px;
-    background:transparent;
+  .brand p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
   }
 
-  .hero-left{
-    padding:20px 0;
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
-  .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px}
-  .hero h2{
-    margin:0 0 12px 0;
-    font-size:48px;
-    line-height:1;
-    letter-spacing: -1px;
-    color:var(--dark);
-    font-weight:800;
+  .nav-links {
+    display: flex;
+    gap: 20px;
   }
-  .hero p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px;max-width:540px}
-
-  .hero .primary-cta{display:inline-block;background:var(--cta);color:var(--card);padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 10px 20px rgba(58,42,31,0.12)}
-
-  /* hero right column (image + cards) */
-  .hero-right{
-    position:relative; padding-top:10px;
-    display:flex;flex-direction:column;gap:18px;align-items:flex-end;
+  .nav-links a {
+    padding: 0.3em 0.6em;
+    font-weight: 600;
   }
-  .hero-image{
-    width:100%;
-    border-radius:14px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    background:#efe0cf;
+  .cta-btn {
+    background: var(--cta);
+    color: var(--card);
+    padding: 0.6em 1em;
+    border-radius: 6px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
   }
-  .hero-image img{width:100%;height:auto;display:block;transform:translateY(6px)}
-
-  /* Form card overlay on the hero area (dark left) */
-  .lead-card{
-    position:absolute;
-    left:0;
-    transform:translateX(-10%);
-    top:60%;
-    background:var(--dark);
-    color:var(--card);
-    padding:22px;
-    width:260px;
-    border-radius:14px;
-    box-shadow:var(--shadow);
-  }
-  .lead-card h3{margin:0 0 10px 0;font-size:16px}
-  .lead-card label{display:block;margin-bottom:6px;font-size:13px;color:rgba(255,255,255,0.85)}
-  .lead-card input[type="text"], .lead-card input[type="email"]{
-    width:100%;padding:10px;border-radius:8px;border:0;margin-bottom:10px;font-size:14px;
-  }
-  .lead-card button{
-    width:100%;padding:10px;border-radius:8px;border:0;background:var(--card);color:var(--dark);font-weight:700;
+  .cta-btn:hover,
+  .cta-btn:focus {
+    background: #005a9e;
+    outline: none;
   }
 
-  /* info card on the right */
-  .info-card{
-    position:absolute;
-    right:-6%;
-    top:30%;
-    width:240px;
-    background:var(--card);
-    color:var(--dark);
-    padding:18px;border-radius:12px;box-shadow:var(--shadow);
-    border:1px solid rgba(0,0,0,0.03);
-  }
-  .info-card h4{margin:0 0 8px 0;font-size:16px}
-  .info-card p{margin:0;color:var(--muted);font-size:13px}
-
-  /* Circle floating contact buttons */
-  .floating-contact{
-    position:fixed;
-    right:18px;
-    bottom:18px;
-    display:flex;flex-direction:column;gap:12px;
-    z-index:100;
-  }
-  .float-btn{
-    width:56px;height:56px;border-radius:50%;background:var(--cta);display:flex;align-items:center;justify-content:center;color:var(--card);box-shadow:0 10px 30px rgba(58,42,31,0.18);border:6px solid rgba(255,255,255,0.06);
-    text-decoration:none;font-size:20px;
+  /* MENU TOGGLE BUTTON (mobile) */
+  .menu-toggle {
+    display: none;
+    font-size: 1.6rem;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 
-  /* Courses Section */
-  .section{padding:56px 0}
-  .section h3{font-size:28px;margin:0 0 8px 0;text-align:center}
-  .section p.intro{color:var(--muted);text-align:center;margin:8px auto 28px auto;max-width:780px}
-
-  .courses{
-    display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:18px;
+  /* === HERO === */
+  .hero {
+    display: flex;
+    gap: 2rem;
+    padding: 3rem 0;
+    align-items: center;
+    flex-wrap: wrap;
   }
-  .course{
-    width:220px;background:transparent;text-align:center;padding:18px;border-radius:12px;
+  .hero-left {
+    flex: 1 1 300px;
+    min-width: 280px;
   }
-  .course .icon{
-    width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto;
-    background:var(--card);box-shadow:var(--shadow);font-weight:800;font-size:22px;color:var(--cta)
+  .eyebrow {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
   }
-  .course h4{margin:6px 0 6px 0}
-  .course p{color:var(--muted);font-size:13px}
-
-  /* Pricing scaffold */
-  .pricing{
-    display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:22px;
+  .lead {
+    font-size: 1.15rem;
   }
-  .price-card{
-    background:var(--card);padding:18px;border-radius:12px;width:220px;text-align:center;box-shadow:var(--shadow);
+  .primary-cta {
+    background: var(--cta);
+    color: var(--card);
+    padding: 0.6em 1.2em;
+    border-radius: 6px;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
   }
-
-  /* Footer */
-  footer{
-    margin-top:40px;padding:28px 0;border-top:1px solid rgba(0,0,0,0.04);
-    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  .primary-cta:hover,
+  .primary-cta:focus {
+    background-color: #005a9e;
   }
-  .socials a{margin-left:8px;text-decoration:none;color:var(--dark);font-weight:700}
-
-  /* modal */
-  .modal{
-    position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:120;
+  .hero-right {
+    flex: 1 1 300px;
+    min-width: 280px;
+    position: relative;
   }
-  .modal .card{background:white;padding:26px;border-radius:12px;max-width:420px;text-align:center}
-
-  /* small displays / responsiveness */
-  @media (max-width:1000px){
-    .hero{grid-template-columns: 1fr 420px}
-    .hero h2{font-size:44px}
+  .hero-image img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    transform-origin: center center;
+    transition: transform 1.5s ease-out;
   }
-  @media (max-width:880px){
-    .hero{grid-template-columns: 1fr;gap:12px}
-    .hero-right{order:2;align-items:center}
-    .hero-left{order:1}
-    .lead-card{position:relative;left:auto;transform:none;top:auto;width:100%}
-    .info-card{position:relative;right:auto;top:auto;width:100%}
-    .hero-image img{transform:none}
-    nav .nav-links{display:none}
-    .menu-toggle{display:inline-block}
-    header{padding-bottom:6px}
+  .hero-image.reveal.active img {
+    transform: scale(1);
+    opacity: 1;
   }
-  @media (max-width:420px){
-    .hero h2{font-size:36px}
-    .lead-card{padding:16px}
-    .course{width:100%}
-    .price-card{width:100%}
-    .brand p{display:none}
+  .hero-image.reveal img {
+    transform: scale(1.1);
+    opacity: 0;
   }
 
-  /* Simple reveal animation styles */
-  .reveal{opacity:0;transform:translateY(12px);transition:all 650ms cubic-bezier(.2,.9,.2,1)}
-  .reveal.in{opacity:1;transform:none}
+  /* LEAD FORM CARD */
+  .lead-card {
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    background: var(--cta);
+    color: var(--card);
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    width: 270px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+  .lead-card h3 {
+    margin-top: 0;
+  }
+  .lead-card form {
+    display: flex;
+    flex-direction: column;
+  }
+  .lead-card label {
+    margin: 0.6rem 0 0.3rem 0;
+    font-weight: 600;
+  }
+  .lead-card input {
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 0.6rem;
+    font-size: 1rem;
+  }
+  .lead-card button {
+    background: var(--card);
+    color: var(--cta);
+    font-weight: 700;
+    border: none;
+    padding: 0.6em;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.4rem;
+  }
+  .lead-card button:hover,
+  .lead-card button:focus {
+    background: #f1f1f1;
+  }
 
-  /* small helpers */
-  .muted{color:var(--muted)}
-  .center{text-align:center}
+  /* INFO CARD */
+  .info-card {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    background: var(--card);
+    color: var(--text);
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    width: 270px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .info-card h4 {
+    margin-top: 0;
+    font-weight: 700;
+  }
+
+  /* === SECTIONS === */
+  .section {
+    padding: 3rem 0;
+  }
+  .section h3 {
+    font-size: 1.6rem;
+    text-align: left;
+    margin-bottom: 0.6rem;
+  }
+  .center {
+    text-align: center;
+  }
+  .intro {
+    color: var(--muted);
+    margin-bottom: 2rem;
+    max-width: 550px;
+  }
+
+  /* COURSES */
+  .courses {
+    display: flex;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+  }
+  .course {
+    background: var(--card);
+    flex: 1 1 200px;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    text-align: center;
+    cursor: default;
+  }
+  .course .icon {
+    font-size: 2.4rem;
+  }
+  .course h4 {
+    margin: 0.6rem 0 0.3rem 0;
+  }
+  .course p.muted {
+    color: var(--muted);
+  }
+
+  /* PRICING */
+  .pricing {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .price-card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    padding: 1.5rem 1.8rem;
+    flex: 1 1 220px;
+    text-align: center;
+  }
+  .price-card h4 {
+    margin-top: 0;
+  }
+  .price-card .muted {
+    margin: 0.3rem 0 1rem 0;
+  }
+  .price-card a.cta-btn {
+    display: inline-block;
+    margin-top: 1rem;
+  }
+
+  /* FOOTER */
+  footer.wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 0;
+    border-top: 1px solid #ddd;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer h3 {
+    margin: 0 0 6px 0;
+  }
+  footer p.muted {
+    margin: 0;
+    color: var(--muted);
+  }
+  .socials a {
+    margin-right: 1rem;
+    font-weight: 700;
+    color: var(--cta);
+    text-decoration: none;
+  }
+  .socials a:hover,
+  .socials a:focus {
+    text-decoration: underline;
+  }
+
+  /* === MODAL === */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .modal[aria-hidden="false"] {
+    display: flex;
+  }
+  .modal .card {
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* === REVEAL ANIMATIONS === */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 720px) {
+    .hero {
+      flex-direction: column;
+    }
+    .hero-right {
+      position: relative;
+      width: 100%;
+    }
+    .lead-card,
+    .info-card {
+      position: static;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+    .courses {
+      flex-direction: column;
+    }
+    .pricing {
+      flex-direction: column;
+    }
+    nav .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      min-width: 150px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      z-index: 1100;
+    }
+    nav .nav-links.open {
+      display: flex;
+    }
+    nav .nav-links a {
+      padding: 0.5rem 0;
+      font-weight: 600;
+    }
+    .menu-toggle {
+      display: block;
+      background: none;
+      border: none;
+      color: var(--text);
+    }
+  }
 </style>
 </head>
 <body>
 
 <!-- Floating contact buttons -->
 <div class="floating-contact" aria-hidden="false">
-  <a href="sms:+1234567890" class="float-btn" title="Message">💬</a>
-  <a href="tel:+1234567890" class="float-btn" title="Call">📞</a>
+  <a href="sms:+1234567890" class="float-btn" title="Message" aria-label="Send message">💬</a>
+  <a href="tel:+1234567890" class="float-btn" title="Call" aria-label="Call us">📞</a>
 </div>
 
 <header class="wrap" role="banner">
@@ -257,8 +470,8 @@
   </a>
 
   <nav aria-label="Main navigation">
-    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false">☰</button>
-    <div class="nav-links" id="main-nav">
+    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle menu">☰</button>
+    <div class="nav-links" id="main-nav" aria-expanded="false">
       <a href="#courses">Courses</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
@@ -281,9 +494,9 @@
     </div>
 
     <div class="hero-right">
-      <!-- large hero image: replace hero-cars.jpg with your file -->
+      <!-- large hero image -->
       <div class="hero-image reveal" style="width:100%;max-width:520px;">
-        <img src="hero-cars.jpg" alt="Learner cars with L badges — conceptual hero" />
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=520&q=80" alt="Learner cars with L badges — conceptual hero" />
       </div>
 
       <!-- absolute positioned dark lead form -->
@@ -326,165 +539,167 @@
       <div class="course reveal">
         <div class="icon">🚗</div>
         <h4>INTERMEDIATE</h4>
-        <p class="muted">Road positioning, manoeuvres, roundabouts, and confidence building.</p>
-      </div>
+        <p class="muted">Road positioning, manoeuvres, roundabouts, and confidence building.</p      </div>
 
       <div class="course reveal">
         <div class="icon">🛣️</div>
         <h4>ADVANCED</h4>
-        <p class="muted">Highway, advanced manoeuvres and pass preparation.</p>
+        <p class="muted">Highway driving, hazard awareness, and driving in challenging conditions.</p>
       </div>
     </div>
   </section>
 
-  <!-- PRICING (scaffold) -->
+  <!-- PRICING -->
   <section id="pricing" class="section">
-    <h3 class="reveal center">PRICING</h3>
-    <p class="intro reveal center">Clear pricing for packages — editable to match your offerings.</p>
+    <h3 class="reveal">PRICING</h3>
+    <p class="intro reveal">Affordable packages to suit your learning speed.</p>
 
     <div class="pricing">
       <div class="price-card reveal">
-        <h4>Starter</h4>
-        <p class="muted">1 x 1hr lesson</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£30</p>
-        <a href="#booking" class="cta-btn" style="background:transparent;color:var(--cta);border:2px solid var(--cta);">Book</a>
+        <h4>Starter Package</h4>
+        <p class="muted">5 lessons - £150</p>
+        <a href="#booking" class="cta-btn">Book Now</a>
       </div>
 
       <div class="price-card reveal">
-        <h4>Standard</h4>
-        <p class="muted">5 x 1hr lessons</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£140</p>
-        <a href="#booking" class="cta-btn" style="background:var(--cta);color:var(--card);">Book</a>
+        <h4>Standard Package</h4>
+        <p class="muted">10 lessons - £280</p>
+        <a href="#booking" class="cta-btn">Book Now</a>
       </div>
 
       <div class="price-card reveal">
-        <h4>Complete</h4>
-        <p class="muted">10 x 1hr lessons</p>
-        <p style="font-weight:800;font-size:18px;margin:12px 0;">£260</p>
-        <a href="#booking" class="cta-btn" style="background:transparent;color:var(--cta);border:2px solid var(--cta);">Book</a>
+        <h4>Premium Package</h4>
+        <p class="muted">20 lessons - £520</p>
+        <a href="#booking" class="cta-btn">Book Now</a>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT / FOOTER -->
-  <footer id="contact" class="wrap" role="contentinfo">
-    <div>
-      <h3 style="margin:0 0 6px 0">NDS Parking School</h3>
-      <p class="muted" style="margin:0">Professional driving lessons • Friendly instructors</p>
-    </div>
-
-    <div class="socials" aria-label="Social links">
-      <a href="#" aria-label="Instagram">IG</a>
-      <a href="#" aria-label="Facebook">FB</a>
-      <a href="#" aria-label="X">X</a>
-    </div>
-  </footer>
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <h3 class="reveal">CONTACT US</h3>
+    <p class="intro reveal">Have questions? Reach out via phone or message anytime.</p>
+    <p class="reveal">
+      Phone: <a href="tel:+1234567890">+1 234 567 890</a><br />
+      Email: <a href="mailto:info@ndsparking.com">info@ndsparking.com</a>
+    </p>
+  </section>
 </main>
 
-<!-- success modal -->
-<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+<footer class="wrap" role="contentinfo">
+  <div>
+    <h3>NDS Parking School</h3>
+    <p class="muted">&copy; 2025 NDS Parking School</p>
+  </div>
+  <div class="socials">
+    <a href="#" aria-label="Facebook">Facebook</a>
+    <a href="#" aria-label="Instagram">Instagram</a>
+    <a href="#" aria-label="Twitter">Twitter</a>
+  </div>
+</footer>
+
+<!-- Modal for form submission success -->
+<div class="modal" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDesc">
   <div class="card">
-    <h3>Thanks — we received your request</h3>
-    <p class="muted">We'll be in touch soon to confirm the lesson. Check your email for details.</p>
-    <div style="margin-top:16px;">
-      <button id="closeModal" class="cta-btn" style="background:var(--cta);color:var(--card);">Close</button>
-    </div>
+    <h2 id="modalTitle">Thank you!</h2>
+    <p id="modalDesc">Your booking request has been received. We will contact you shortly.</p>
+    <button id="closeModal">Close</button>
   </div>
 </div>
 
 <script>
-/* Responsive menu toggle */
-(function(){
-  const btn = document.querySelector('.menu-toggle');
-  const nav = document.getElementById('main-nav');
-  btn.addEventListener('click', ()=>{
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    nav.style.display = expanded ? 'none' : 'flex';
-  });
-  // ensure nav shows on resize for large screens
-  window.addEventListener('resize', ()=>{
-    if(window.innerWidth > 880){
-      nav.style.display = 'flex';
-      btn.setAttribute('aria-expanded','false');
-    } else {
-      nav.style.display = 'none';
-    }
-  });
-})();
+  // MENU TOGGLE for mobile
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
 
-/* Lead form handling - does lightweight validation, saves to localStorage and shows modal */
-(function(){
-  const form = document.getElementById('leadForm');
-  const modal = document.getElementById('modal');
-  const closeModal = document.getElementById('closeModal');
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const phone = form.phone.value.trim();
-
-    if(!name || !email){
-      alert('Please provide your name and email.');
-      return;
-    }
-
-    // save lead to localStorage (simple lead store)
-    const leads = JSON.parse(localStorage.getItem('nds_leads')||'[]');
-    leads.unshift({id: Date.now(), name, email, phone, template: 'DS-001', created: new Date().toISOString()});
-    localStorage.setItem('nds_leads', JSON.stringify(leads));
-
-    // reset & show modal
-    form.reset();
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden','false');
+  menuToggle.addEventListener('click', () => {
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+    menuToggle.setAttribute('aria-expanded', !expanded);
+    navLinks.classList.toggle('open');
+    navLinks.setAttribute('aria-expanded', !expanded);
   });
 
-  closeModal.addEventListener('click', () => {
-    const modal = document.getElementById('modal');
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
-  });
-})();
-
-/* Scroll reveal animations using IntersectionObserver */
-(function(){
-  const opts = {threshold: 0.08};
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('in');
-        obs.unobserve(entry.target);
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetID = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetID);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth' });
+        // Close menu if open on mobile
+        if(navLinks.classList.contains('open')){
+          navLinks.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', false);
+          navLinks.setAttribute('aria-expanded', false);
+        }
       }
     });
-  }, opts);
+  });
 
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-})();
+  // Scroll reveal animations
+  function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal');
+    const windowHeight = window.innerHeight;
+    const revealPoint = 150; // when to trigger reveal
 
-/* Small accessibility: close modal on ESC */
-document.addEventListener('keydown', (e)=>{
-  const modal = document.getElementById('modal');
-  if(e.key === 'Escape' && modal.style.display === 'flex'){
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
+    reveals.forEach(el => {
+      const elementTop = el.getBoundingClientRect().top;
+      if (elementTop < windowHeight - revealPoint) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
   }
-});
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
 
-/* -- Helpful debug: expose a function to download leads as JSON (for you to use in production) -- */
-window.ndsDownloadLeads = function(){
-  const leads = JSON.parse(localStorage.getItem('nds_leads') || '[]');
-  const blob = new Blob([JSON.stringify(leads, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'nds-leads.json'; document.body.appendChild(a); a.click(); a.remove();
-};
+  // Hero image zoom effect on load
+  const heroImage = document.querySelector('.hero-image');
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      heroImage.classList.add('active');
+    }, 300);
+  });
+
+  // Modal for form submission
+  const leadForm = document.getElementById('leadForm');
+  const modal = document.getElementById('modal');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  leadForm.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Here you would normally handle form submission via fetch/ajax
+    // For demo, just show modal on submit
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+
+    leadForm.reset();
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+  });
+
+  // Close modal on outside click
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+    }
+  });
+
+  // Accessibility: Close modal on Escape key
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+    }
+  });
 </script>
 
 </body>
 </html>
-
-
-
-
