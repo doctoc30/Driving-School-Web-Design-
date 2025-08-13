@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DriveSmart – Learn to Drive</title>
-  <!-- AOS Library -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <style>
     :root{
       --bg:#f6e9da;
@@ -19,6 +17,7 @@
       --container-padding:20px;
       --shadow: 0 10px 30px rgba(50,30,15,0.08);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -29,6 +28,7 @@
       line-height:1.4;
       scroll-behavior:smooth;
     }
+
     .wrap{
       max-width:var(--maxwidth);
       margin:0 auto;
@@ -40,12 +40,10 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:12px 0 20px;
-      background:var(--card);
-      border-radius:0 0 20px 20px;
-      box-shadow:0 4px 16px rgba(0,0,0,0.08);
+      padding:8px 0 16px;
       position:sticky;
       top:0;
+      background:var(--bg);
       z-index:1000;
     }
     .brand{
@@ -56,13 +54,13 @@
       color:var(--dark);
     }
     .logo-mark{
-      width:50px;height:50px;border-radius:12px;
+      width:46px;height:46px;border-radius:8px;
       background:linear-gradient(135deg,var(--dark),var(--muted));
       display:flex;align-items:center;justify-content:center;color:var(--card);
-      font-weight:800;font-size:18px;
+      font-weight:800;font-size:16px;
       box-shadow:var(--shadow);
     }
-    .brand h1{font-size:18px;margin:0;font-weight:700;letter-spacing:0.6px}
+    .brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:0.6px}
     .brand p{margin:0;font-size:12px;color:var(--muted)}
 
     nav{display:flex;align-items:center;gap:20px}
@@ -79,35 +77,39 @@
       grid-template-columns: 1fr 480px;
       gap:28px;
       align-items:start;
-      margin-top:12px;
+      margin-top:8px;
+      overflow:hidden;
     }
-    .hero-left{padding:20px 0}
-    .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+    .hero-left{padding:20px 0; opacity:0; transform:translateY(40px); transition: all 0.8s ease;}
+    .hero-left.visible{opacity:1; transform:translateY(0);}
+    .eyebrow{font-size:13px;color:var(--muted);margin-bottom:6px}
     .hero h2{
       margin:0 0 12px 0;
       font-size:48px;
-      line-height:1.1;
+      line-height:1;
       letter-spacing: -1px;
       color:var(--dark);
       font-weight:800;
     }
     .hero p.lead{margin:0 0 18px 0;color:var(--muted);font-size:16px;max-width:540px}
     .primary-cta{
-      display:inline-block;background:var(--cta);color:var(--card);padding:14px 20px;border-radius:12px;text-decoration:none;font-weight:700;
+      display:inline-block;background:var(--cta);color:var(--card);padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;
       box-shadow:0 10px 20px rgba(58,42,31,0.12)
     }
+
     .hero-right{
       position:relative; padding-top:10px;
       display:flex;flex-direction:column;gap:18px;align-items:flex-end;
     }
     .hero-image{
       width:100%;
-      border-radius:16px;
+      border-radius:14px;
       overflow:hidden;
       box-shadow:var(--shadow);
       background:#efe0cf;
-      transition:transform 0.4s;
+      opacity:0; transform:translateY(40px); transition: all 0.8s ease 0.2s;
     }
+    .hero-image.visible{opacity:1; transform:translateY(0);}
     .hero-image img{width:100%;height:auto;display:block;transform:translateY(6px)}
 
     .lead-card{
@@ -121,7 +123,10 @@
       width:260px;
       border-radius:14px;
       box-shadow:var(--shadow);
+      opacity:0; transform:translateY(40px);
+      transition: all 0.8s ease 0.4s;
     }
+    .lead-card.visible{opacity:1; transform:translateY(0);}
     .lead-card h3{margin:0 0 10px 0;font-size:16px}
     .lead-card label{display:block;margin-bottom:6px;font-size:13px;color:rgba(255,255,255,0.85)}
     .lead-card input{
@@ -140,7 +145,10 @@
       color:var(--dark);
       padding:18px;border-radius:12px;box-shadow:var(--shadow);
       border:1px solid rgba(0,0,0,0.03);
+      opacity:0; transform:translateY(40px);
+      transition: all 0.8s ease 0.6s;
     }
+    .info-card.visible{opacity:1; transform:translateY(0);}
     .info-card h4{margin:0 0 8px 0;font-size:16px}
     .info-card p{margin:0;color:var(--muted);font-size:13px}
 
@@ -149,6 +157,7 @@
     .section h3{font-size:28px;margin:0 0 8px 0;text-align:center}
     .section p.intro{color:var(--muted);text-align:center;margin:8px auto 28px auto;max-width:780px}
 
+    /* Courses */
     .courses{
       display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:18px;
     }
@@ -162,6 +171,7 @@
     .course h4{margin:6px 0 6px 0}
     .course p{color:var(--muted);font-size:13px}
 
+    /* Pricing */
     .pricing{
       display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:22px;
     }
@@ -170,26 +180,29 @@
     }
 
     /* FAQ Accordion */
-    .faq-item{
+    .faq{max-width:800px;margin:40px auto;}
+    .faq-item{margin-bottom:12px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+    .faq-item button{
+      width:100%;
+      text-align:left;
       background:var(--card);
-      border-radius:12px;
-      margin:8px auto;
-      padding:12px 18px;
-      width:90%;
-      box-shadow:var(--shadow);
+      border:none;
+      padding:16px;
+      font-size:16px;
+      font-weight:600;
       cursor:pointer;
-      transition:all 0.3s;
+      display:flex;justify-content:space-between;align-items:center;
     }
-    .faq-item h4{
-      margin:0;font-size:16px;display:flex;justify-content:space-between;align-items:center;
-    }
-    .faq-content{
+    .faq-item .answer{
       max-height:0;
       overflow:hidden;
-      transition:max-height 0.3s ease;
-      margin-top:6px;
-      font-size:14px;
-      color:var(--muted);
+      background:var(--card);
+      padding:0 16px;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq-item.open .answer{
+      max-height:200px;
+      padding:12px 16px;
     }
 
     /* Footer */
@@ -198,17 +211,10 @@
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
     .socials a{
-      margin-left:12px;
+      margin-left:8px;
       text-decoration:none;
+      font-size:20px;
       color:var(--dark);
-      font-weight:700;
-      display:inline-flex;
-      align-items:center;
-    }
-    .socials svg{
-      width:24px;
-      height:24px;
-      fill:var(--dark);
     }
 
     /* Static Bottom Bar */
@@ -217,30 +223,51 @@
       bottom:0;
       left:0;
       width:100%;
-      background:var(--cta);
+      background:var(--dark);
       color:var(--card);
       display:flex;
       justify-content:center;
       gap:40px;
-      padding:12px 0;
+      padding:14px 0;
       font-weight:700;
-      z-index:999;
-      border-top-left-radius:16px;
-      border-top-right-radius:16px;
-      box-shadow:0 -4px 16px rgba(0,0,0,0.1);
+      z-index:1001;
     }
 
     @media (max-width:880px){
-      .hero {grid-template-columns:1fr; gap:12px;}
-      .hero-right {order:2;align-items:center;}
-      .hero-left {order:1;}
-      .lead-card, .info-card {position:relative;transform:none;width:100%;margin-top:20px;}
-      .hero-image img {transform:none;}
+      .hero {
+        grid-template-columns: 1fr;
+        gap:12px;
+      }
+      .hero-right {
+        order:2;
+        align-items:center;
+      }
+      .hero-left {
+        order:1;
+      }
+      .lead-card {
+        position:relative;
+        left:auto;
+        transform:none;
+        top:auto;
+        width:100%;
+        margin-top:20px;
+      }
+      .info-card {
+        position:relative;
+        right:auto;
+        top:auto;
+        width:100%;
+        margin-top:12px;
+      }
+      .hero-image img {
+        transform:none;
+      }
     }
+
   </style>
 </head>
 <body>
-
   <div class="wrap">
 
     <!-- Header -->
@@ -264,18 +291,20 @@
       </nav>
     </header>
 
-    <!-- Hero -->
-    <section class="hero" data-aos="fade-up">
+    <!-- Hero Section -->
+    <section class="hero">
       <div class="hero-left">
         <div class="eyebrow">Your journey starts here</div>
         <h2>Learn to Drive with Confidence</h2>
         <p class="lead">Flexible lessons. Certified instructors. High success rate. Book your first lesson today.</p>
         <a href="#" class="primary-cta">Watch Lessons in Action</a>
       </div>
-      <div class="hero-right" data-aos="fade-left">
+
+      <div class="hero-right">
         <div class="hero-image">
           <img src="car-image.jpg" alt="Driving School Car" />
         </div>
+
         <div class="lead-card">
           <h3>Request a Callback</h3>
           <label for="name">Your Name</label>
@@ -284,6 +313,7 @@
           <input type="email" id="email" placeholder="you@example.com" />
           <button type="submit">Request</button>
         </div>
+
         <div class="info-card">
           <h4>Why Choose Us?</h4>
           <p>✅ 98% Pass Rate<br>✅ Certified Instructors<br>✅ Local Pickup<br>✅ Flexible Scheduling</p>
@@ -292,59 +322,94 @@
     </section>
 
     <!-- Courses Section -->
-    <section class="section" data-aos="fade-up">
+    <section class="section">
       <h3>Lesson Types</h3>
-      <p class="intro">Choose the lesson that suits your level and goals. All courses are taught by certified instructors.</p>
-      <div class="courses">
-        <div class="course" data-aos="zoom-in"><div class="icon">🚗</div><h4>Beginner Lessons</h4>
+      <p class="intro
 
-  <!-- FAQ Section -->
-  <section class="section" id="faq">
-    <h3>Frequently Asked Questions</h3>
-    <p class="intro">Answers to the most common questions about learning to drive with DriveSmart.</p>
-
-    <div class="faq-container">
-      <div class="faq-item">
-        <div class="faq-question">What is the minimum age to start lessons?</div>
-        <div class="faq-answer">You can start lessons at 17 years old. Parental consent is required if under 18.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">How long is each lesson?</div>
-        <div class="faq-answer">Lessons are typically 1 or 2 hours depending on your package.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Do I need my own car?</div>
-        <div class="faq-answer">No, our certified instructors provide a fully insured vehicle for your lessons.</div>
+<!-- FAQ Section -->
+<section class="section" id="faq">
+  <h3>Frequently Asked Questions</h3>
+  <p class="intro">Find answers to common questions about our driving courses.</p>
+  <div class="faq-container">
+    <div class="faq-item">
+      <button class="faq-question">What is included in a beginner lesson?</button>
+      <div class="faq-answer">
+        <p>Beginner lessons cover the basics of car control, road rules, and safe driving practices.</p>
       </div>
     </div>
-  </section>
-
-  <!-- Static Bottom Bar -->
-  <div class="bottom-bar">
-    <a href="mailto:info@drivesmart.com">✉ Email Us</a>
-    <a href="tel:+1234567890">📞 Call Now</a>
+    <div class="faq-item">
+      <button class="faq-question">Do you provide manual and automatic cars?</button>
+      <div class="faq-answer">
+        <p>Yes, we offer both manual and automatic lessons depending on your preference.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I schedule lessons online?</button>
+      <div class="faq-answer">
+        <p>Absolutely! You can book lessons through our website or request a callback.</p>
+      </div>
+    </div>
   </div>
+</section>
 
-  <script>
-    // Scroll Animations using IntersectionObserver
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.classList.add('animate');
-        }
-      });
-    }, { threshold: 0.15 });
+<!-- Static Bottom Bar -->
+<div class="bottom-bar">
+  <a href="mailto:info@drivesmart.com">📧 Email Us</a>
+  <a href="tel:+1234567890">📞 Call Us</a>
+</div>
 
-    document.querySelectorAll('.hero-left, .course, .price-card, .faq-item').forEach(el => {
-      observer.observe(el);
+<!-- JS for Scroll Animations & FAQ Accordion -->
+<script>
+  // Simple scroll animations
+  const sections = document.querySelectorAll('.section, .hero-left, .hero-right, .course, .price-card, .lead-card, .info-card');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('animate');
+      }
     });
+  }, { threshold: 0.2 });
+  sections.forEach(section => observer.observe(section));
 
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(q => {
-      q.addEventListener('click', () => {
-        q.parentElement.classList.toggle('active');
-      });
+  // FAQ Accordion
+  const faqItems = document.querySelectorAll('.faq-question');
+  faqItems.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const active = btn.classList.contains('active');
+      faqItems.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = null);
+      if(!active){
+        btn.classList.add('active');
+        const answer = btn.nextElementSibling;
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
     });
-  </script>
+  });
+</script>
+
+<style>
+/* Scroll Animation */
+.animate {opacity:1; transform: translateY(0); transition: all 0.8s ease-out;}
+.section, .hero-left, .hero-right, .course, .price-card, .lead-card, .info-card {opacity:0; transform: translateY(40px);}
+
+/* FAQ Accordion */
+.faq-container {max-width:700px;margin:0 auto;text-align:left;}
+.faq-item {border-bottom:1px solid rgba(0,0,0,0.05); margin-bottom:12px;}
+.faq-question {width:100%; padding:14px; background:var(--card); border:none; text-align:left; font-weight:600; cursor:pointer; border-radius:8px; box-shadow:var(--shadow);}
+.faq-question.active {background:var(--accent);}
+.faq-answer {max-height:0; overflow:hidden; transition:max-height 0.3s ease; padding:0 12px; color:var(--muted);}
+
+/* Social icons */
+.socials a {display:inline-block;margin-left:10px;text-decoration:none;}
+.socials a::before {content:""; display:inline-block; width:24px;height:24px; background-size:cover; vertical-align:middle; margin-right:6px;}
+.socials a[href*="instagram"]::before {background-image:url('icons/instagram.svg');}
+.socials a[href*="facebook"]::before {background-image:url('icons/facebook.svg');}
+.socials a[href*="whatsapp"]::before {background-image:url('icons/whatsapp.svg');}
+
+/* Bottom Bar */
+.bottom-bar {position:fixed;bottom:0;left:0;width:100%;background:var(--accent);display:flex;justify-content:space-around;padding:12px 0;box-shadow:0 -2px 8px rgba(0,0,0,0.1);}
+.bottom-bar a {color:var(--dark);font-weight:700;text-decoration:none;}
+</style>
+
 </body>
 </html>
