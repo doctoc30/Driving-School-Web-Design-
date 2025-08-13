@@ -237,16 +237,6 @@
   /* small helpers */
   .muted{color:var(--muted)}
   .center{text-align:center}
-
-
-  @media (max-width: 430px) {
-  body {
-    transform: scale(0.1666); /* 1 / 3 */
-    transform-origin: top left;
-    width: 600%; /* keep layout from cutting off */
-    height: auto;
-  }
-}
 </style>
 </head>
 <body>
@@ -279,17 +269,6 @@
 
 <main class="wrap">
   <!-- HERO -->
-
-  
-<div class="hero-right">
-  <!-- Large hero image: directly using GitHub raw image -->
-  <div class="hero-image reveal" style="width:100%;max-width:520px;">
-    <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7096.png" 
-         alt="Learner cars with L badges — conceptual hero" 
-         style="width:100%;height:auto;display:block;border-radius:8px;" />
-  </div>
-</div>
-  
   <section class="hero" aria-label="Hero">
     <div class="hero-left">
       <p class="eyebrow muted">START YOUR</p>
@@ -301,6 +280,11 @@
       </p>
     </div>
 
+    <div class="hero-right">
+      <!-- large hero image: replace hero-cars.jpg with your file -->
+      <div class="hero-image reveal" style="width:100%;max-width:520px;">
+        <img src="hero-cars.jpg" alt="Learner cars with L badges — conceptual hero" />
+      </div>
 
       <!-- absolute positioned dark lead form -->
       <div class="lead-card reveal" id="booking" style="z-index:10;">
@@ -352,28 +336,6 @@
       </div>
     </div>
   </section>
-
- <div class="courses">
-      <div class="course reveal">
-        <div class="icon">📘</div>
-        <h4>BEGINNER</h4>
-        <p class="muted">Introductory lessons, dual controls, basics of the road.</p>
-      </div>
-
-      <div class="course reveal">
-        <div class="icon">🚗</div>
-        <h4>INTERMEDIATE</h4>
-        <p class="muted">Road positioning, manoeuvres, roundabouts, and confidence building.</p>
-      </div>
-
-      <div class="course reveal">
-        <div class="icon">🛣️</div>
-        <h4>ADVANCED</h4>
-        <p class="muted">Highway, advanced manoeuvres and pass preparation.</p>
-      </div>
-    </div>
-  </section>
-  
 
   <!-- PRICING (scaffold) -->
   <section id="pricing" class="section">
