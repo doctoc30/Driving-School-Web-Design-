@@ -166,6 +166,42 @@
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
     .socials a{margin-left:8px;text-decoration:none;color:var(--dark);font-weight:700}
+
+  @media (max-width:880px){
+  .hero {
+    grid-template-columns: 1fr;
+    gap:12px;
+  }
+  .hero-right {
+    order:2;
+    align-items:center;
+  }
+  .hero-left {
+    order:1;
+  }
+}
+  @media (max-width:880px){
+  .lead-card {
+    position:relative;
+    left:auto;
+    transform:none;
+    top:auto;
+    width:100%;
+    margin-top:20px;
+  }
+
+  .info-card {
+    position:relative;
+    right:auto;
+    top:auto;
+    width:100%;
+    margin-top:12px;
+  }
+
+  .hero-image img {
+    transform:none;
+  }
+}
   </style>
 </head>
 <body>
