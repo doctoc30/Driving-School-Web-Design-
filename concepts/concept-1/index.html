@@ -257,14 +257,68 @@
 
 
 
+
+
 @media (max-width: 430px) {
-  body {
-    transform: scale(0.4);      /* slightly larger than 0.3333 */
-    transform-origin: top left;
-    width: 250%;                /* inverse of scale to keep layout in view */
-    height: auto;
+  /* Base font size increase */
+  html {
+    font-size: 18px; /* up from ~16px */
+  }
+
+  /* Headings bigger */
+  h1 {
+    font-size: 2.2em;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 1.8em;
+    line-height: 1.25;
+  }
+  h3 {
+    font-size: 1.4em;
+  }
+
+  /* Hero section adjustments */
+  .hero h2 {
+    font-size: 2.4em;
+  }
+  .hero p.lead {
+    font-size: 1.2em;
+  }
+  .hero-image img {
+    width: 115%; /* slightly bigger hero image */
+    max-width: none;
+  }
+
+  /* Buttons larger */
+  .cta-btn,
+  .primary-cta,
+  .secondary-cta {
+    padding: 14px 22px;
+    font-size: 1.1em;
+    border-radius: 8px;
+  }
+
+  /* Cards and icons slightly larger */
+  .course,
+  .price-card,
+  .lead-card,
+  .info-card {
+    transform: scale(1.08);
+    transform-origin: center;
+  }
+  .course .icon {
+    width: 110px;
+    height: 110px;
+    font-size: 28px;
+  }
+
+  /* Slightly more spacing for touch comfort */
+  .section {
+    padding: 2.2rem 1rem;
   }
 }
+  
 </style>
 </head>
 <body>
