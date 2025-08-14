@@ -254,15 +254,17 @@
   transform: translateY(6px);
 }
   
-@media (max-width: 430px) {
+
+
+
+  @media (max-width: 430px) {
   body {
-    transform: scale(0.3333); /* was 0.1666 → doubled */
+    transform: scale(0.3333); /* bigger than before */
     transform-origin: top left;
-    width: 300%; /* adjust proportionally so nothing cuts off */
+    width: 300%; /* matches inverse of scale */
     height: auto;
   }
 }
-
 </style>
 </head>
 <body>
