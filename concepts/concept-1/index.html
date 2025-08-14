@@ -239,6 +239,22 @@
   .center{text-align:center}
 
 
+.hero-image {
+  width: 100%;
+  border-radius: 0; /* no rounded corners */
+  overflow: visible; /* let transparent parts show naturally */
+  box-shadow: none; /* remove shadow */
+  background: transparent; /* remove box background */
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: translateY(6px);
+}
+  
+
   @media (max-width: 430px) {
   body {
     transform: scale(0.3333); /* 1 / 3 */
