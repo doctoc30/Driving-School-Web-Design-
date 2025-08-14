@@ -256,16 +256,25 @@
   
 
 
-
-
 @media (max-width: 430px) {
   body {
-    transform: scale(0.25); /* bigger than 0.1666 */
+    transform: scale(0.1666);
     transform-origin: top left;
-    width: 400%; /* 100 / 0.25 */
+    width: 600%;
     height: auto;
   }
+
+  body * {
+    font-size: 200% !important; /* make text twice as big before scaling */
+  }
+
+  img, svg {
+    transform: scale(2) !important; /* make graphics bigger before scaling */
+    transform-origin: center;
+  }
 }
+
+
 </style>
 </head>
 <body>
