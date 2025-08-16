@@ -695,6 +695,81 @@ button:hover {
   margin-top: 60px; /* this moves ONLY the 3 buttons further down */
 }
 
+
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9;
+    color: #333;
+  }
+  .form-screen { display: none; padding: 20px; text-align: center; }
+  .form-screen.active { display: block; }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  button, .buttons a {
+    padding: 10px 20px;
+    border: none;
+    background: #0073e6;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  button:hover, .buttons a:hover { background: #005bb5; }
+
+  /* Concept slider */
+  .concept-slider { overflow-x: auto; white-space: nowrap; padding: 10px; background: #fff; }
+  .slider-wrapper { display: flex; gap: 20px; }
+  .slide {
+    display: inline-block;
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fafafa;
+    text-align: center;
+    padding: 10px;
+  }
+  .slide img { max-width: 100%; border-radius: 5px; }
+  .buttons { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .buttons span { font-weight: bold; color: #444; }
+
+  /* Sticky bar */
+  .concept-sticky {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0073e6;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    z-index: 1000;
+  }
+
+  /* Progress bar */
+  .progress-bar { height: 5px; background: #ddd; margin-bottom: 20px; position: relative; }
+  .progress { height: 100%; width: 0; background: #0073e6; transition: width 0.3s ease; }
+
+  input, select {
+    display: block;
+    width: 80%;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+ 
 </style>
 
 </head>
@@ -727,7 +802,15 @@ button:hover {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+<!-- Sticky bar -->
+<div id="concept-sticky" class="concept-sticky">
+  Selected Concept Code: <span id="concept-code">None</span>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar"><div class="progress" id="progress"></div></div>
+
+<!-- Funnel Steps -->
 
 <!-- Step 1 -->
 <div class="form-screen active" id="main-intro-options">
@@ -739,23 +822,46 @@ button:hover {
   </div>
 </div>
 
- <!-- Step 2 (Design path start) -->
+<!-- Step 2 -->
 <div class="form-screen" id="design-start">
   <h2>Do you already have a design code from our library?</h2>
   <div class="button-row">
     <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">
-      No, show me templates
-    </button>
+    <button type="button" onclick="showScreen('concepts')">No, show me templates</button>
     <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
   </div>
 </div>
 
+<!-- Step 3: Concept Slider -->
+<div class="form-screen" id="concepts">
+  <h2>Choose your design concept</h2>
+  <div class="concept-slider">
+    <div class="slider-wrapper">
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept 1">
+        <div class="buttons">
+          <a href="#" target="_blank">View live link</a>
+          <span>Code: 1</span>
+          <a href="#" onclick="selectConcept('1')">I want this concept</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6926.png" alt="Concept 2">
+        <div class="buttons">
+          <a href="#" target="_blank">View live link</a>
+          <span>Code: 2</span>
+          <a href="#" onclick="selectConcept('2')">I want this concept</a>
+        </div>
+      </div>
+      <!-- Add more slides as needed -->
+    </div>
+  </div>
+</div>
 
 <!-- Step 3A: Enter Code -->
 <div class="form-screen" id="design-code">
   <h2>Enter your chosen design code</h2>
-  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
+  <input type="text" name="Design Code" placeholder="e.g. 1" required>
   <div class="button-row">
     <button type="button" onclick="next()">Continue</button>
   </div>
@@ -827,40 +933,21 @@ button:hover {
   </div>
 </div>
 
-<!-- Step 10: Redirect -->
+<!-- Step 10: Final -->
 <div class="form-screen" id="final">
   <h2>Great! You’re ready for the next step </h2>
   <p>Based on your answers, we’ll recommend the right package for you.</p>
-  <div class="button-row">
-    <button type="button" id="pricing-redirect">See Pricing Plans</button>
-  </div>
-</div>
+  <p id="final-concept" style="font-weight: bold; color: #333;"></p>
 
-
-  <div class="form-screen" id="q11">
-    <h2>Almost done! Please enter your details</h2>
-
-    <label>Full Name</label>
-    <input type="text" name="Full Name" required>
-
-    <label>Email Address</label>
-    <input type="email" name="Email" required>
-
-    <label>WhatsApp Number (optional)</label>
-    <input type="text" name="WhatsApp">
-
-    <label style="margin-top: 20px;">
-      <input type="checkbox" required name="GDPR Consent">
-      I consent to having this website store my submitted information so they can respond to my inquiry.
-    </label>
-
+  <form id="lead-form" action="https://formspree.io/f/YOUR_ID_HERE" method="POST">
+    <input type="text" name="Name" placeholder="Your Name" required>
+    <input type="email" name="Email" placeholder="Your Email" required>
+    <input type="hidden" name="Concept Code" id="concept-code-input">
     <div class="button-row">
-      <button type="button" onclick="prev()">Previous</button>
-      <button type="submit">Submit</button>
+      <button type="submit">Submit & See Pricing</button>
     </div>
-  </div>
-
-</form>
+  </form>
+</div>
 
 <a href="https://doctoc30.github.io/Faz-Designs/pages/about.html" 
    id="skipToPackages" class="skip-link" style="display: none;">
@@ -1054,6 +1141,47 @@ document.getElementById("pricing-redirect").addEventListener("click", function (
     window.location.href = "https://yourwebsite.com/pricing";
   }
 });
+
+  let selectedConcept = null;
+let currentScreen = document.querySelector('.form-screen.active');
+
+function showScreen(id) {
+  if (currentScreen) currentScreen.classList.remove('active');
+  currentScreen = document.getElementById(id);
+  currentScreen.classList.add('active');
+  updateProgress();
+}
+
+function updateProgress() {
+  const steps = document.querySelectorAll('.form-screen');
+  let index = Array.from(steps).indexOf(currentScreen) + 1;
+  let percent = (index / steps.length) * 100;
+  document.getElementById('progress').style.width = percent + '%';
+}
+
+function selectConcept(code) {
+  selectedConcept = code;
+  document.getElementById('concept-code').textContent = code;
+  document.getElementById('concept-sticky').style.display = 'block';
+  document.getElementById('concept-code-input').value = code;
+
+  // Redirect to full concepts page
+  window.location.href = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
+}
+
+function next() {
+  const screens = Array.from(document.querySelectorAll('.form-screen'));
+  let idx = screens.indexOf(currentScreen);
+  if (idx < screens.length - 1) {
+    showScreen(screens[idx + 1].id);
+  }
+}
+
+function setPath(type) {
+  console.log('User path:', type); // store if needed
+  next();
+}
+
 
 </script>
 </body>
