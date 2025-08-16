@@ -729,97 +729,112 @@ button:hover {
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-<div id="progress"><div id="progress-bar"></div></div>
-
-<form id="formWrapper">
-
-  <!-- Step 1 -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-start')">Website Design (New Site)</button>
-      <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
-      <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
-    </div>
+<!-- Step 1 -->
+<div class="form-screen active" id="main-intro-options">
+  <h2>What do you need help with today?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-start')">Website Design (New Site)</button>
+    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
+    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
   </div>
+</div>
 
-  <!-- Step 2 (Design path start) -->
-  <div class="form-screen" id="design-start">
-    <h2>Do you already have a design code from our library?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">
-        No, show me templates
-      </button>
-      <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
-    </div>
+ <!-- Step 2 (Design path start) -->
+<div class="form-screen" id="design-start">
+  <h2>Do you already have a design code from our library?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">
+      No, show me templates
+    </button>
+    <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
   </div>
+</div>
 
-  <!-- Step 3A: Enter Code -->
-  <div class="form-screen" id="design-code">
-    <h2>Enter your chosen design code</h2>
-    <input type="text" name="Design Code" placeholder="e.g. Code: 1" required>
-    <div class="button-row">
-      <button type="button" onclick="next()">Continue</button>
-    </div>
-  </div>
 
-  <!-- Step 4 -->
-  <div class="form-screen" id="q1">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor')">Solo Instructor</button>
-      <button type="button" onclick="setPath('school')">Driving School</button>
-    </div>
+<!-- Step 3A: Enter Code -->
+<div class="form-screen" id="design-code">
+  <h2>Enter your chosen design code</h2>
+  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
+  <div class="button-row">
+    <button type="button" onclick="next()">Continue</button>
   </div>
+</div>
 
-  <!-- Step 5 -->
-  <div class="form-screen" id="q2">
-    <h2>Do you want students to be able to book & pay online?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setBooking(true)">Yes, booking + payments</button>
-      <button type="button" onclick="setBooking(false)">No, just contact form</button>
-    </div>
+<!-- Step 4 -->
+<div class="form-screen" id="q1">
+  <h2>Are you a solo driving instructor or a driving school?</h2>
+  <div class="button-row">
+    <button type="button" onclick="setPath('instructor')">Solo Instructor</button>
+    <button type="button" onclick="setPath('school')">Driving School</button>
   </div>
+</div>
 
-  <!-- Step 6 -->
-  <div class="form-screen" id="q3">
-    <h2>Do you have a logo & brand colors?</h2>
-    <div class="button-row">
-      <button type="button" onclick="next()">Yes, I’ll provide them</button>
-      <button type="button" onclick="next()">No, I need help with branding</button>
-    </div>
+<!-- Step 5 -->
+<div class="form-screen" id="q2">
+  <h2>Do you want students to be able to book & pay online?</h2>
+  <div class="button-row">
+    <button type="button" onclick="next()">Yes, booking + payments</button>
+    <button type="button" onclick="next()">No, just contact form</button>
   </div>
+</div>
 
-  <!-- Step 7 -->
-  <div class="form-screen" id="q4">
-    <h2>How soon do you want your website live?</h2>
-    <select name="Timeline">
-      <option>Within 2 weeks</option>
-      <option>Within 1 month</option>
-      <option>2–3 months</option>
-      <option>Flexible</option>
-    </select>
-    <div class="button-row">
-      <button type="button" onclick="next()">Next</button>
-    </div>
+<!-- Step 6 -->
+<div class="form-screen" id="q3">
+  <h2>Do you have a logo & brand colors?</h2>
+  <div class="button-row">
+    <button type="button" onclick="next()">Yes, I’ll provide them</button>
+    <button type="button" onclick="next()">No, I need help with branding</button>
   </div>
+</div>
 
-  <!-- Step 8 -->
-  <div class="form-screen" id="q5">
-    <h2>Do you already have content (text & images)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="next()">Yes, I’m ready</button>
-      <button type="button" onclick="next()">I need help with content</button>
-      <button type="button" onclick="next()">Some, but not all</button>
-    </div>
+<!-- Step 7 -->
+<div class="form-screen" id="q4">
+  <h2>How soon do you want your website live?</h2>
+  <select name="Timeline">
+    <option>Within 2 weeks</option>
+    <option>Within 1 month</option>
+    <option>2–3 months</option>
+    <option>Flexible</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
   </div>
+</div>
 
-  <!-- Step 9: Final -->
-  <div class="form-screen" id="final">
-    <h2>Great! Here’s your recommended package 🎉</h2>
-    <div id="package-output"></div>
+<!-- Step 8 -->
+<div class="form-screen" id="q5">
+  <h2>What’s your budget range?</h2>
+  <select name="Budget">
+    <option>$500 – $1,000</option>
+    <option>$1,000 – $2,500</option>
+    <option>$2,500 – $5,000</option>
+    <option>$5,000+</option>
+    <option>Not Sure</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
   </div>
+</div>
+
+<!-- Step 9 -->
+<div class="form-screen" id="q6">
+  <h2>Do you already have content (text & images)?</h2>
+  <div class="button-row">
+    <button type="button" onclick="next()">Yes, I’m ready</button>
+    <button type="button" onclick="next()">I need help with content</button>
+    <button type="button" onclick="next()">Some, but not all</button>
+  </div>
+</div>
+
+<!-- Step 10: Redirect -->
+<div class="form-screen" id="final">
+  <h2>Great! You’re ready for the next step </h2>
+  <p>Based on your answers, we’ll recommend the right package for you.</p>
+  <div class="button-row">
+    <button type="button" id="pricing-redirect">See Pricing Plans</button>
+  </div>
+</div>
 
 
   <div class="form-screen" id="q11">
@@ -1039,75 +1054,6 @@ document.getElementById("pricing-redirect").addEventListener("click", function (
     window.location.href = "https://yourwebsite.com/pricing";
   }
 });
-
-
-
-    const screens = document.querySelectorAll('.form-screen');
-  let current = 0;
-  let userPath = "";
-  let bookingNeeded = false;
-
-  function showScreen(id) {
-    screens.forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    updateProgress();
-  }
-
-  function next() {
-    if (current < screens.length - 1) {
-      screens[current].classList.remove('active');
-      current++;
-      screens[current].classList.add('active');
-      updateProgress();
-    }
-    if (screens[current].id === "final") showPackage();
-  }
-
-  function setPath(path) {
-    userPath = path;
-    next();
-  }
-
-  function setBooking(value) {
-    bookingNeeded = value;
-    next();
-  }
-
-  function updateProgress() {
-    const total = screens.length;
-    const activeIndex = [...screens].findIndex(s => s.classList.contains('active'));
-    const percent = ((activeIndex + 1) / total) * 100;
-    document.getElementById("progress-bar").style.width = percent + "%";
-  }
-
-  function showPackage() {
-    let packageHtml = "";
-    if (userPath === "instructor" && !bookingNeeded) {
-      packageHtml = `
-        <div class="package-box">
-          <h3>Starter Package</h3>
-          <p>Perfect for solo instructors who just need a simple website.</p>
-          <button onclick="window.location.href='#starter'">Buy Now</button>
-        </div>`;
-    } else if (userPath === "instructor" && bookingNeeded) {
-      packageHtml = `
-        <div class="package-box">
-          <h3>Growth Package</h3>
-          <p>Ideal for instructors who want online booking & payments.</p>
-          <button onclick="window.location.href='#growth'">Buy Now</button>
-        </div>`;
-    } else if (userPath === "school") {
-      packageHtml = `
-        <div class="package-box">
-          <h3>Premium Package</h3>
-          <p>Designed for driving schools with multiple instructors & features.</p>
-          <button onclick="window.location.href='#premium'">Buy Now</button>
-        </div>`;
-    }
-    document.getElementById("package-output").innerHTML = packageHtml;
-  }
-
-  updateProgress();
 
 </script>
 </body>
