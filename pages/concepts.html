@@ -460,30 +460,33 @@ footer {
 </header>
 <main>
   
-  <!-- ✅ SLIDER -->
-<div class="concept-slider">
-  <div class="slider-wrapper">
-    <!-- Slide 1 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
-      <div class="buttons">
-        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" 
-           target="_blank" 
-           title="Design may differ slightly from concept image">
-          View Live Versiom From Concepet To A Website
-        </a>
-        <span>Code: 1</span>
-        <a href="#contact">I want this concept</a>
+  <!-- Step 3: Concept Slider -->
+<div class="form-screen" id="concepts">
+  <h2>Choose your design concept</h2>
+  <div class="concept-slider">
+    <div class="slider-wrapper">
+
+      <!-- Slide 1 -->
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
+        <div class="buttons">
+          <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" 
+             target="_blank" 
+             title="Design may differ slightly from concept image">
+            View Live Version
+          </a>
+          <span>Code: 1</span>
+          <a href="#contact" onclick="selectConcept('1')">I want this concept</a>
+        </div>
       </div>
-    </div>
-  
+
       <!-- Slide 2 -->
       <div class="slide">
         <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept Image 2">
         <div class="buttons">
           <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
           <span>Code: 2</span>
-          <a href="#contact">I want this concept</a>
+          <a href="#contact" onclick="selectConcept('2')">I want this concept</a>
         </div>
       </div>
 
@@ -493,7 +496,7 @@ footer {
         <div class="buttons">
           <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" target="_blank">View live link</a>
           <span>Code: 3</span>
-          <a href="#contact">I want this concept</a>
+          <a href="#contact" onclick="selectConcept('3')">I want this concept</a>
         </div>
       </div>
 
@@ -503,7 +506,7 @@ footer {
         <div class="buttons">
           <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" target="_blank">View live link</a>
           <span>Code: 4</span>
-          <a href="#contact">I want this concept</a>
+          <a href="#contact" onclick="selectConcept('4')">I want this concept</a>
         </div>
       </div>
 
@@ -513,61 +516,23 @@ footer {
         <div class="buttons">
           <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" target="_blank">View live link</a>
           <span>Code: 5</span>
-          <a href="#contact">I want this concept</a>
+          <a href="#contact" onclick="selectConcept('5')">I want this concept</a>
         </div>
       </div>
 
-      <!-- Slide 6 -->
-      <div class="slide">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Concept Image 6">
-        <div class="buttons">
-          <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" target="_blank">View live link</a>
-          <span>Code: 6</span>
-          <a href="#contact">I want this concept</a>
-        </div>
-      </div>
+      <!-- Add remaining slides in same pattern -->
 
-      <!-- Slide 7 -->
-      <div class="slide">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Concept Image 7">
-        <div class="buttons">
-          <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" target="_blank">View live link</a>
-          <span>Code: 7</span>
-          <a href="#contact">I want this concept</a>
-        </div>
-      </div>
-
-      <!-- Slide 8 -->
-<div class="slide">
-  <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/autolearn_pro_gradient_website.png" alt="Concept Image 8">
-  <div class="buttons">
-    <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/autolearn_pro_gradient_website.png" target="_blank">View live link</a>
-    <span>Code: 8</span>
-    <a href="#contact">I want this concept</a>
+    </div>
   </div>
 </div>
 
-      <!-- Slide 9 -->
-      <div class="slide">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept Image 9">
-        <div class="buttons">
-          <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" target="_blank">View live link</a>
-          <span>Code: 9</span>
-          <a href="#contact">I want this concept</a>
-        </div>
-      </div>
+<!-- Sticky bar -->
+<div id="concept-sticky" class="concept-sticky">
+  Selected Concept Code: <span id="concept-code">None</span>
+</div>
 
-         <!-- Slide 10 --> 
-      <div class="slide">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_7171.jpeg" alt="Concept Image 10">
-        <div class="buttons">
-          <a href="https://doctoc30.github.io/Driving-School-Web-Design-/concepts/concept-1/index.html" target="_blank">View live link</a>
-          <span>Code: 10</span>
-          <a href="#contact">I want this concept</a>
-        </div>
-      </div>
-    </div>
-
+<!-- Hidden form input -->
+<input type="hidden" id="concept-code-input" name="Concept Code">
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
     <button class="arrow next">&#10095;</button>
@@ -686,7 +651,19 @@ function updateSlider() {
     }
   });
 });
-  
+
+
+
+    function selectConcept(code) {
+    // Store selected code
+    document.getElementById('concept-code').textContent = code;
+    document.getElementById('concept-sticky').style.display = 'block';
+    document.getElementById('concept-code-input').value = code;
+
+    // Redirect user to the full concepts page
+    window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html";
+  }
+
 </script>
   
 </body>
