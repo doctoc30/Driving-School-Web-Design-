@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -731,6 +731,8 @@ button:hover {
 
 <div id="progress"><div id="progress-bar"></div></div>
 
+<form id="formWrapper">
+
   <!-- Step 1 -->
   <div class="form-screen active" id="main-intro-options">
     <h2>What do you need help with today?</h2>
@@ -854,7 +856,6 @@ button:hover {
 
  <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ---------- TYPEWRITER ----------
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -884,8 +885,10 @@ document.addEventListener("DOMContentLoaded", () => {
             introScreen.style.display = 'block';
             introScreen.classList.add('active');
           }
+
           const skipBtn = document.getElementById('skipToPackages');
           if (skipBtn) skipBtn.style.display = 'block';
+
         }, 2000);
       }, 1000);
       return;
@@ -935,11 +938,8 @@ document.addEventListener("DOMContentLoaded", () => {
   el.style.opacity = 1;
   typeChar();
 
-  // ---------- FORM FLOW ----------
+  // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
-  let current = 0;
-  let userPath = "";
-  let bookingNeeded = false;
 
   function hideAllScreens() {
     screens.forEach(screen => {
@@ -948,6 +948,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ✅ Single, consistent showScreen function
   window.showScreen = function (screenId) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
@@ -955,46 +956,128 @@ document.addEventListener("DOMContentLoaded", () => {
       screen.classList.add("active");
       screen.style.display = "block";
     }
-    updateProgress();
+
+    const skipBtn = document.getElementById("skipToPackages");
+    if (skipBtn) {
+      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
+    }
+  };
+
+  // ✅ Fixed goToDesign
+  window.goToDesign = function () {
+    showScreen("design-start");
   };
 
   window.next = function () {
-    if (current < screens.length - 1) {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i >= 0 && i < allScreens.length - 1) {
       hideAllScreens();
-      current++;
-      screens[current].classList.add('active');
-      screens[current].style.display = 'block';
-      updateProgress();
+      allScreens[i + 1].classList.add('active');
+      allScreens[i + 1].style.display = "block";
     }
-    if (screens[current].id === "final") showPackage();
   };
 
   window.prev = function () {
-    if (current > 0) {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i > 0) {
       hideAllScreens();
-      current--;
-      screens[current].classList.add('active');
-      screens[current].style.display = 'block';
-      updateProgress();
+      allScreens[i - 1].classList.add('active');
+      allScreens[i - 1].style.display = "block";
     }
   };
 
-  window.setPath = function (path) {
+  hideAllScreens();
+
+  // ------------------ HAMBURGER MENU ---------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+
+  function toggleMenu() {
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+});
+
+// ------------------ FORM PATH + REDIRECT ---------------------
+let userPath = "";
+
+function setPath(path) {
+  userPath = path;
+  next();
+}
+
+document.getElementById("pricing-redirect").addEventListener("click", function () {
+  if (userPath === "instructor") {
+    window.location.href = "https://yourwebsite.com/pricing-instructor";
+  } else if (userPath === "school") {
+    window.location.href = "https://yourwebsite.com/pricing-school";
+  } else {
+    window.location.href = "https://yourwebsite.com/pricing";
+  }
+});
+
+
+
+    const screens = document.querySelectorAll('.form-screen');
+  let current = 0;
+  let userPath = "";
+  let bookingNeeded = false;
+
+  function showScreen(id) {
+    screens.forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    updateProgress();
+  }
+
+  function next() {
+    if (current < screens.length - 1) {
+      screens[current].classList.remove('active');
+      current++;
+      screens[current].classList.add('active');
+      updateProgress();
+    }
+    if (screens[current].id === "final") showPackage();
+  }
+
+  function setPath(path) {
     userPath = path;
     next();
-  };
+  }
 
-  window.setBooking = function (value) {
+  function setBooking(value) {
     bookingNeeded = value;
     next();
-  };
+  }
 
   function updateProgress() {
     const total = screens.length;
     const activeIndex = [...screens].findIndex(s => s.classList.contains('active'));
     const percent = ((activeIndex + 1) / total) * 100;
-    const bar = document.getElementById("progress-bar");
-    if (bar) bar.style.width = percent + "%";
+    document.getElementById("progress-bar").style.width = percent + "%";
   }
 
   function showPackage() {
@@ -1021,42 +1104,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <button onclick="window.location.href='#premium'">Buy Now</button>
         </div>`;
     }
-    const output = document.getElementById("package-output");
-    if (output) output.innerHTML = packageHtml;
+    document.getElementById("package-output").innerHTML = packageHtml;
   }
 
-  hideAllScreens();
-  showScreen('main-intro-options');
-
-  // ---------- HAMBURGER MENU ----------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMenu();
-    });
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-});
-
+  updateProgress();
 
 </script>
 </body>
