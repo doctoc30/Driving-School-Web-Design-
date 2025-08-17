@@ -761,9 +761,9 @@ button:hover {
 <!-- Step 4: Enter code -->
 <div class="form-screen" id="design-code">
   <h2>Enter your chosen design code</h2>
-  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
+  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
   <div class="button-row">
-    <button type="button" onclick="next()">Continue</button>
+    <button type="button" onclick="goToConcept()">Continue</button>
   </div>
 </div>
 
@@ -1109,6 +1109,14 @@ document.getElementById("pricing-redirect").addEventListener("click", function (
     else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
     document.getElementById('recommended-plan').innerText = plan;
   }
+
+
+  function goToConcept() {
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+  if (code) {
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+  }
+}
 
 </script>
 </body>
