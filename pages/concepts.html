@@ -759,7 +759,23 @@ function updateSlider() {
   }
 });
 
-  
+
+
+
+  // Add confirmation button with funnel styling
+const confirmRow = document.createElement("div");
+confirmRow.classList.add("button-row");
+
+const confirmBtn = document.createElement("button");
+confirmBtn.textContent = "Confirm this template";
+confirmBtn.onclick = () => {
+  alert(`You have selected ${code}`);
+  // Optionally redirect to booking/contact
+  // window.location.href = "/pages/about.html#booking";
+};
+
+confirmRow.appendChild(confirmBtn);
+slide.appendChild(confirmRow);
 </script>
   
 </body>
