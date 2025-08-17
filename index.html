@@ -977,7 +977,7 @@ button:hover {
 
  <script>
 
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -999,20 +999,15 @@ button:hover {
   function typeChar() {
     if (currentLine >= lines.length) {
       cursor.remove();
+
+      // ✅ Show first screen reliably after typewriter
       setTimeout(() => {
         el.style.animation = 'rocketRise 2s ease forwards';
-        setTimeout(() => {
-          const introScreen = document.getElementById('main-intro-options');
-          if (introScreen) {
-            introScreen.style.display = 'block';
-            introScreen.classList.add('active');
-          }
-
-          const skipBtn = document.getElementById('skipToPackages');
-          if (skipBtn) skipBtn.style.display = 'block';
-
-        }, 2000);
+        showScreen("main-intro-options");
+        const skipBtn = document.getElementById('skipToPackages');
+        if (skipBtn) skipBtn.style.display = 'block';
       }, 1000);
+
       return;
     }
 
@@ -1062,7 +1057,6 @@ button:hover {
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
-  let userPath = "";
 
   function hideAllScreens() {
     screens.forEach(screen => {
@@ -1071,12 +1065,15 @@ button:hover {
     });
   }
 
-  window.showScreen = function(screenId) {
+  window.showScreen = function (screenId) {
+    console.log("Showing screen:", screenId);
     hideAllScreens();
     const screen = document.getElementById(screenId);
     if (screen) {
       screen.classList.add("active");
       screen.style.display = "block";
+    } else {
+      console.warn("Screen not found:", screenId);
     }
 
     const skipBtn = document.getElementById("skipToPackages");
@@ -1085,16 +1082,7 @@ button:hover {
     }
   };
 
-  window.goToDesign = function() {
-    showScreen("design-start");
-  };
-
-  // Path-aware next/prev
-  window.next = function(nextScreenId = null) {
-    if (nextScreenId) {
-      showScreen(nextScreenId);
-      return;
-    }
+  window.next = function () {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
@@ -1103,27 +1091,12 @@ button:hover {
     }
   };
 
-  window.prev = function(prevScreenId = null) {
-    if (prevScreenId) {
-      showScreen(prevScreenId);
-      return;
-    }
+  window.prev = function () {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
     if (i > 0) {
       showScreen(allScreens[i - 1].id);
-    }
-  };
-
-  // Set path and start correct first screen
-  window.setPath = function(path) {
-    userPath = path;
-
-    if (path === "instructor") {
-      showScreen("instructor-q1"); // first instructor screen
-    } else if (path === "school") {
-      showScreen("school-q1"); // first school screen
     }
   };
 
@@ -1159,17 +1132,25 @@ button:hover {
   }
 
   // ------------------ FORM PATH + REDIRECT ---------------------
-  document.getElementById("pricing-redirect").addEventListener("click", function () {
-    if (userPath === "instructor") {
-      window.location.href = "https://yourwebsite.com/pricing-instructor";
-    } else if (userPath === "school") {
-      window.location.href = "https://yourwebsite.com/pricing-school";
-    } else {
-      window.location.href = "https://yourwebsite.com/pricing";
-    }
-  });
-});
+  let userPath = "";
+  window.setPath = function(path) {
+    userPath = path;
+    next();
+  };
 
+  const pricingBtn = document.getElementById("pricing-redirect");
+  if (pricingBtn) {
+    pricingBtn.addEventListener("click", function () {
+      if (userPath === "instructor") {
+        window.location.href = "https://yourwebsite.com/pricing-instructor";
+      } else if (userPath === "school") {
+        window.location.href = "https://yourwebsite.com/pricing-school";
+      } else {
+        window.location.href = "https://yourwebsite.com/pricing";
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
