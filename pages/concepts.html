@@ -719,6 +719,46 @@ function updateSlider() {
     }
   });
 });
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (code) {
+    const slides = document.querySelectorAll(".slide");
+    let found = false;
+
+    slides.forEach(slide => {
+      const span = slide.querySelector("span");
+      if (span && span.textContent.trim().toUpperCase() === code) {
+        slide.style.display = "block";
+        found = true;
+
+        // Add confirmation button
+        const confirmBtn = document.createElement("button");
+        confirmBtn.textContent = "✅ Confirm this template";
+        confirmBtn.style.marginTop = "10px";
+        confirmBtn.onclick = () => {
+          alert(`You have selected ${code}`);
+          // 👉 Here you could redirect to booking/contact
+          // window.location.href = "/pages/about.html#booking";
+        };
+        slide.appendChild(confirmBtn);
+      } else {
+        slide.style.display = "none";
+      }
+    });
+
+    if (!found) {
+      alert("Sorry, no template found for code " + code);
+    }
+
+    // Hide arrows since only one slide is shown
+    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
+  }
+});
+
   
 </script>
   
