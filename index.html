@@ -729,131 +729,254 @@ button:hover {
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-<!-- Step 1 -->
-<div class="form-screen active" id="main-intro-options">
-  <h2>What do you need help with today?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('design-start')">Website Design (New Site)</button>
-    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
-    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
+  <!-- Step 1 -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('design-start')">Website Design (New Site)</button>
+      <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
+      <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
+    </div>
   </div>
-</div>
 
- <!-- Step 2 (Design path start) -->
-<div class="form-screen" id="design-start">
-  <h2>Do you already have a design code from our library?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">
-      No, show me templates
-    </button>
-    <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
+  <!-- Step 2 -->
+  <div class="form-screen" id="design-start">
+    <h2>Do you already have a design code from our library?</h2>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">
+        No, show me templates
+      </button>
+      <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
+    </div>
   </div>
-</div>
 
-
-<!-- Step 3A: Enter Code -->
-<div class="form-screen" id="design-code">
-  <h2>Enter your chosen design code</h2>
-  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
-  <div class="button-row">
-    <button type="button" onclick="next()">Continue</button>
+  <!-- Step 3: Enter Code -->
+  <div class="form-screen" id="design-code">
+    <h2>Enter your chosen design code</h2>
+    <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
+    <div class="button-row">
+      <button type="button" onclick="next()">Continue</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 4 -->
-<div class="form-screen" id="q1">
-  <h2>Are you a solo driving instructor or a driving school?</h2>
-  <div class="button-row">
-    <button type="button" onclick="setPath('instructor')">Solo Instructor</button>
-    <button type="button" onclick="setPath('school')">Driving School</button>
+  <!-- Step 4: Branch -->
+  <div class="form-screen" id="q1">
+    <h2>Are you a solo driving instructor or a driving school?</h2>
+    <div class="button-row">
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Solo Instructor</button>
+      <button type="button" onclick="setPath('school'); showScreen('school-q1')">Driving School</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 5 -->
-<div class="form-screen" id="q2">
-  <h2>Do you want students to be able to book & pay online?</h2>
-  <div class="button-row">
-    <button type="button" onclick="next()">Yes, booking + payments</button>
-    <button type="button" onclick="next()">No, just contact form</button>
+  <!-- ========== SOLO INSTRUCTOR PATH ========== -->
+
+  <div class="form-screen" id="instructor-q1">
+    <h2>Do you want students to book & pay online, or just request a lesson?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Booking + payments</button>
+      <button type="button" onclick="next()">Booking only</button>
+      <button type="button" onclick="next()">Contact form only</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 6 -->
-<div class="form-screen" id="q3">
-  <h2>Do you have a logo & brand colors?</h2>
-  <div class="button-row">
-    <button type="button" onclick="next()">Yes, I’ll provide them</button>
-    <button type="button" onclick="next()">No, I need help with branding</button>
+  <div class="form-screen" id="instructor-q2">
+    <h2>Would you like your website to appear on Google when people search “driving lessons near me”?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, local SEO</button>
+      <button type="button" onclick="next()">No, simple site only</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 7 -->
-<div class="form-screen" id="q4">
-  <h2>How soon do you want your website live?</h2>
-  <select name="Timeline">
-    <option>Within 2 weeks</option>
-    <option>Within 1 month</option>
-    <option>2–3 months</option>
-    <option>Flexible</option>
-  </select>
-  <div class="button-row">
-    <button type="button" onclick="next()">Next</button>
+  <div class="form-screen" id="instructor-q3">
+    <h2>Do you want to showcase reviews from past students on your site?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">Maybe later</button>
+      <button type="button" onclick="next()">Not needed</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 8 -->
-<div class="form-screen" id="q5">
-  <h2>What’s your budget range?</h2>
-  <select name="Budget">
-    <option>$500 – $1,000</option>
-    <option>$1,000 – $2,500</option>
-    <option>$2,500 – $5,000</option>
-    <option>$5,000+</option>
-    <option>Not Sure</option>
-  </select>
-  <div class="button-row">
-    <button type="button" onclick="next()">Next</button>
+  <div class="form-screen" id="instructor-q4">
+    <h2>How do you usually get new students today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Word of mouth</button>
+      <button type="button" onclick="next()">Google / Search</button>
+      <button type="button" onclick="next()">Social Media</button>
+      <button type="button" onclick="next()">Other</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 9 -->
-<div class="form-screen" id="q6">
-  <h2>Do you already have content (text & images)?</h2>
-  <div class="button-row">
-    <button type="button" onclick="next()">Yes, I’m ready</button>
-    <button type="button" onclick="next()">I need help with content</button>
-    <button type="button" onclick="next()">Some, but not all</button>
+  <div class="form-screen" id="instructor-q5">
+    <h2>Do you want social media integrated into your site?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 10: Redirect -->
-<div class="form-screen" id="final">
-  <h2>Great! You’re ready for the next step </h2>
-  <p>Based on your answers, we’ll recommend the right package for you.</p>
-  <div class="button-row">
-    <button type="button" id="pricing-redirect">See Pricing Plans</button>
+  <div class="form-screen" id="instructor-q6">
+    <h2>Do you want to offer lesson packages (e.g. 5 or 10 lessons) online?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, packages</button>
+      <button type="button" onclick="next()">No, single lessons only</button>
+    </div>
   </div>
-</div>
 
+  <div class="form-screen" id="instructor-q7">
+    <h2>Would you like a professional email address (e.g. info@yourdrivingschool.com)?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, I need one</button>
+      <button type="button" onclick="next()">I already have one</button>
+      <button type="button" onclick="next()">Not needed</button>
+    </div>
+  </div>
 
+  <div class="form-screen" id="instructor-q8">
+    <h2>Do you already have a logo & brand colors?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, I’ll provide</button>
+      <button type="button" onclick="next()">No, I need branding help</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q9">
+    <h2>How soon do you want your website live?</h2>
+    <select name="Instructor Timeline">
+      <option>Within 2 weeks</option>
+      <option>Within 1 month</option>
+      <option>2–3 months</option>
+      <option>Flexible</option>
+    </select>
+    <div class="button-row">
+      <button type="button" onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q10">
+    <h2>Do you already have content (text & images)?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, I’m ready</button>
+      <button type="button" onclick="next()">Some, but not all</button>
+      <button type="button" onclick="next()">I need help with content</button>
+    </div>
+  </div>
+
+  <!-- ========== DRIVING SCHOOL PATH ========== -->
+
+  <div class="form-screen" id="school-q1">
+    <h2>How many instructors does your school currently have?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Just me</button>
+      <button type="button" onclick="next()">2–5</button>
+      <button type="button" onclick="next()">6–10</button>
+      <button type="button" onclick="next()">10+</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q2">
+    <h2>Do you want students to book specific instructors online?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">No, assign manually</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q3">
+    <h2>Do you want to accept online payments & deposits?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, both</button>
+      <button type="button" onclick="next()">Payments only</button>
+      <button type="button" onclick="next()">No, just bookings</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q4">
+    <h2>Do you offer multiple lesson packages or courses?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q5">
+    <h2>Do you want a student progress dashboard?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">Maybe later</button>
+      <button type="button" onclick="next()">Not needed</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q6">
+    <h2>Do you need a page to showcase all your instructors?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">Maybe</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q7">
+    <h2>Would you like a system to manage leads & inquiries (CRM)?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">Maybe later</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q8">
+    <h2>Do you want your website to rank in multiple locations?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes, multiple areas</button>
+      <button type="button" onclick="next()">No, single area</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q9">
+    <h2>Do you already have a logo & brand colors?</h2>
+    <div class="button-row">
+      <button type="button" onclick="next()">Yes</button>
+      <button type="button" onclick="next()">No, I need help</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="school-q10">
+    <h2>How soon do you want your new website live?</h2>
+    <select name="School Timeline">
+      <option>Within 2 weeks</option>
+      <option>Within 1 month</option>
+      <option>2–3 months</option>
+      <option>Flexible</option>
+    </select>
+    <div class="button-row">
+      <button type="button" onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <!-- FINAL STEP -->
+  <div class="form-screen" id="final">
+    <h2>Great! You’re ready for the next step</h2>
+    <p>Based on your answers, we’ll recommend the right package for you.</p>
+    <div class="button-row">
+      <button type="button" id="pricing-redirect">See Pricing Plans</button>
+    </div>
+  </div>
+
+  <!-- Contact Step -->
   <div class="form-screen" id="q11">
     <h2>Almost done! Please enter your details</h2>
-
     <label>Full Name</label>
     <input type="text" name="Full Name" required>
-
     <label>Email Address</label>
     <input type="email" name="Email" required>
-
     <label>WhatsApp Number (optional)</label>
     <input type="text" name="WhatsApp">
-
     <label style="margin-top: 20px;">
       <input type="checkbox" required name="GDPR Consent">
       I consent to having this website store my submitted information so they can respond to my inquiry.
     </label>
-
     <div class="button-row">
       <button type="button" onclick="prev()">Previous</button>
       <button type="submit">Submit</button>
