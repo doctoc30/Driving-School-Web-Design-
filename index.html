@@ -695,6 +695,11 @@ button:hover {
   margin-top: 60px; /* this moves ONLY the 3 buttons further down */
 }
 
+   /* Hide the form initially */
+  #formWrapper {
+    display: none;
+  }
+
 </style>
 
 </head>
@@ -1151,6 +1156,56 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+  
+  /* Hide the form initially */
+  #formWrapper {
+    display: none;
+  }
+</style>
+
+<script>
+  // Typewriter text (your existing logic)
+  const typewriterText = "Skyrocket your driving school website!";
+  const typewriter = document.getElementById("typewriter");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < typewriterText.length) {
+      typewriter.innerHTML += typewriterText.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100);
+    } else {
+      // After typewriter finishes, show the form
+      document.getElementById("formWrapper").style.display = "block";
+      showScreen("step1"); // Make sure Step 1 is active
+    }
+  }
+
+  typeWriter();
+
+  // Helper to show a form screen
+  function showScreen(id) {
+    const screens = document.querySelectorAll(".form-screen");
+    screens.forEach(screen => screen.classList.remove("active"));
+    const activeScreen = document.getElementById(id);
+    if (activeScreen) activeScreen.classList.add("active");
+  }
+
+  // Optional: If you have next/prev buttons
+  function next(nextId) {
+    if (nextId) {
+      showScreen(nextId);
+    } else {
+      // Go to final step or keep current behavior
+    }
+  }
+
+  function prev(prevId) {
+    if (prevId) showScreen(prevId);
+  }
+
 </script>
 </body>
 </html>
