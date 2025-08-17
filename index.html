@@ -976,7 +976,8 @@ button:hover {
 
 
  <script>
-document.addEventListener("DOMContentLoaded", () => {
+
+  document.addEventListener("DOMContentLoaded", () => {
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -1061,6 +1062,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
+  let userPath = "";
 
   function hideAllScreens() {
     screens.forEach(screen => {
@@ -1069,8 +1071,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Single, consistent showScreen function
-  window.showScreen = function (screenId) {
+  window.showScreen = function(screenId) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
     if (screen) {
@@ -1084,30 +1085,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Fixed goToDesign
-  window.goToDesign = function () {
+  window.goToDesign = function() {
     showScreen("design-start");
   };
 
-  window.next = function () {
+  // Path-aware next/prev
+  window.next = function(nextScreenId = null) {
+    if (nextScreenId) {
+      showScreen(nextScreenId);
+      return;
+    }
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
     if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
+      showScreen(allScreens[i + 1].id);
     }
   };
 
-  window.prev = function () {
+  window.prev = function(prevScreenId = null) {
+    if (prevScreenId) {
+      showScreen(prevScreenId);
+      return;
+    }
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
     if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
+      showScreen(allScreens[i - 1].id);
+    }
+  };
+
+  // Set path and start correct first screen
+  window.setPath = function(path) {
+    userPath = path;
+
+    if (path === "instructor") {
+      showScreen("instructor-q1"); // first instructor screen
+    } else if (path === "school") {
+      showScreen("school-q1"); // first school screen
     }
   };
 
@@ -1141,24 +1157,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-// ------------------ FORM PATH + REDIRECT ---------------------
-let userPath = "";
-
-function setPath(path) {
-  userPath = path;
-  next();
-}
-
-document.getElementById("pricing-redirect").addEventListener("click", function () {
-  if (userPath === "instructor") {
-    window.location.href = "https://yourwebsite.com/pricing-instructor";
-  } else if (userPath === "school") {
-    window.location.href = "https://yourwebsite.com/pricing-school";
-  } else {
-    window.location.href = "https://yourwebsite.com/pricing";
-  }
+  // ------------------ FORM PATH + REDIRECT ---------------------
+  document.getElementById("pricing-redirect").addEventListener("click", function () {
+    if (userPath === "instructor") {
+      window.location.href = "https://yourwebsite.com/pricing-instructor";
+    } else if (userPath === "school") {
+      window.location.href = "https://yourwebsite.com/pricing-school";
+    } else {
+      window.location.href = "https://yourwebsite.com/pricing";
+    }
+  });
 });
 
 </script>
