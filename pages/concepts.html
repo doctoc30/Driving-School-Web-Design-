@@ -774,6 +774,61 @@ prevBtn.addEventListener('click', () => {
 window.addEventListener('resize', updateSlider);
 updateSlider();
 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (code) {
+    const slides = document.querySelectorAll(".slide");
+    let found = false;
+
+    slides.forEach(slide => {
+      const span = slide.querySelector("span");
+
+      if (span && span.textContent.trim().toUpperCase() === code) {
+        slide.style.display = "block";
+        found = true;
+
+        // 🚫 Remove "I want this concept"
+        const wantBtn = slide.querySelector("a[href='#contact']");
+        if (wantBtn) wantBtn.remove();
+
+        // ✅ Add confirmation button styled like funnel buttons
+        const confirmRow = document.createElement("div");
+        confirmRow.classList.add("button-row"); // centers the button like funnel
+
+        const confirmBtn = document.createElement("button");
+        confirmBtn.textContent = "Confirm this template";
+        confirmBtn.onclick = () => {
+          alert(`You have selected ${code}`);
+          // 👉 You can replace this with redirect:
+          // window.location.href = "/pages/about.html#booking";
+        };
+
+        confirmRow.appendChild(confirmBtn);
+
+        // Place confirm button BELOW the existing .buttons div
+        const buttonsDiv = slide.querySelector(".buttons");
+        if (buttonsDiv) {
+          buttonsDiv.insertAdjacentElement("afterend", confirmRow);
+        }
+      } else {
+        slide.style.display = "none";
+      }
+    });
+
+    if (!found) {
+      alert("Sorry, no template found for code " + code);
+    }
+
+    // 🚫 Disable slider & arrows when code is used
+    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
+    const wrapper = document.querySelector('.slider-wrapper');
+    if (wrapper) wrapper.style.transform = "none";
+  }
+});
 </script>
   
 </body>
