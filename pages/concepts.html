@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -567,6 +567,39 @@ footer {
     </div>
   </div>
 
+  <!-- Arrows -->
+  <button class="arrow prev">&#10094;</button>
+  <button class="arrow next">&#10095;</button>
+</div>
+
+<!-- ✅ Core slider JS -->
+<script>
+const sliderWrapper = document.querySelector('.slider-wrapper');
+const slides = document.querySelectorAll('.slide');
+const prevBtn = document.querySelector('.arrow.prev');
+const nextBtn = document.querySelector('.arrow.next');
+let currentIndex = 0;
+
+function updateSlider() {
+  const slideWidth = slides[0].clientWidth;
+  sliderWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < slides.length - 1) currentIndex++;
+  else currentIndex = 0;
+  updateSlider();
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) currentIndex--;
+  else currentIndex = slides.length - 1;
+  updateSlider();
+});
+
+window.addEventListener('resize', updateSlider);
+updateSlider();
+</script>
 
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
@@ -686,149 +719,7 @@ function updateSlider() {
     }
   });
 });
-
-
-  document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-
-  if (code) {
-    const slides = document.querySelectorAll(".slide");
-    let found = false;
-
-    slides.forEach(slide => {
-      const span = slide.querySelector("span");
-      if (span && span.textContent.trim().toUpperCase() === code) {
-        slide.style.display = "block";
-        found = true;
-
-        // Add confirmation button
-        const confirmBtn = document.createElement("button");
-        confirmBtn.textContent = "✅ Confirm this template";
-        confirmBtn.style.marginTop = "10px";
-        confirmBtn.onclick = () => {
-          alert(`You have selected ${code}`);
-          // 👉 Here you could redirect to booking/contact
-          // window.location.href = "/pages/about.html#booking";
-        };
-        slide.appendChild(confirmBtn);
-      } else {
-        slide.style.display = "none";
-      }
-    });
-
-    if (!found) {
-      alert("Sorry, no template found for code " + code);
-    }
-
-    // Hide arrows since only one slide is shown
-    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
-  }
-});
-
-
-
-
-  // Add confirmation button with funnel styling
-const confirmRow = document.createElement("div");
-confirmRow.classList.add("button-row");
-
-const confirmBtn = document.createElement("button");
-confirmBtn.textContent = "Confirm this template";
-confirmBtn.onclick = () => {
-  alert(`You have selected ${code}`);
-  // Optionally redirect to booking/contact
-  // window.location.href = "/pages/about.html#booking";
-};
-
-confirmRow.appendChild(confirmBtn);
-slide.appendChild(confirmRow);
-
-
-
-<!-- ✅ Core slider JS -->
-
-const sliderWrapper = document.querySelector('.slider-wrapper');
-const slides = document.querySelectorAll('.slide');
-const prevBtn = document.querySelector('.arrow.prev');
-const nextBtn = document.querySelector('.arrow.next');
-let currentIndex = 0;
-
-function updateSlider() {
-  const slideWidth = slides[0].clientWidth;
-  sliderWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-}
-
-nextBtn.addEventListener('click', () => {
-  if (currentIndex < slides.length - 1) currentIndex++;
-  else currentIndex = 0;
-  updateSlider();
-});
-
-prevBtn.addEventListener('click', () => {
-  if (currentIndex > 0) currentIndex--;
-  else currentIndex = slides.length - 1;
-  updateSlider();
-});
-
-window.addEventListener('resize', updateSlider);
-updateSlider();
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-
-  if (code) {
-    const slides = document.querySelectorAll(".slide");
-    let found = false;
-
-    slides.forEach(slide => {
-      const span = slide.querySelector("span");
-
-      if (span && span.textContent.trim().toUpperCase() === code) {
-        slide.style.display = "block";
-        found = true;
-
-        // 🚫 Remove "I want this concept"
-        const wantBtn = slide.querySelector("a[href='#contact']");
-        if (wantBtn) wantBtn.remove();
-
-        // ✅ Add confirmation button styled like funnel buttons
-        const confirmRow = document.createElement("div");
-        confirmRow.classList.add("button-row"); // centers the button like funnel
-
-        const confirmBtn = document.createElement("button");
-        confirmBtn.textContent = "Confirm this template";
-        confirmBtn.onclick = () => {
-          alert(`You have selected ${code}`);
-          // 👉 You can replace this with redirect:
-          // window.location.href = "/pages/about.html#booking";
-        };
-
-        confirmRow.appendChild(confirmBtn);
-
-        // Place confirm button BELOW the existing .buttons div
-        const buttonsDiv = slide.querySelector(".buttons");
-        if (buttonsDiv) {
-          buttonsDiv.insertAdjacentElement("afterend", confirmRow);
-        }
-      } else {
-        slide.style.display = "none";
-      }
-    });
-
-    if (!found) {
-      alert("Sorry, no template found for code " + code);
-    }
-
-    // 🚫 Disable slider & arrows when code is used
-    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
-    const wrapper = document.querySelector('.slider-wrapper');
-    if (wrapper) wrapper.style.transform = "none";
-  }
-});
+  
 </script>
   
 </body>
