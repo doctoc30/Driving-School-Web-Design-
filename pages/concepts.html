@@ -774,84 +774,62 @@ prevBtn.addEventListener('click', () => {
 window.addEventListener('resize', updateSlider);
 updateSlider();
 
-// Remove old overlay button(s)
-document.querySelectorAll('.old-overlay-btn').forEach(btn => btn.remove());
 
-// Create new confirm button
-const confirmBtn = document.createElement('button');
-confirmBtn.textContent = "Confirm";
 
-// Add the exact class from index.html (or a custom class if needed)
-confirmBtn.classList.add('index-btn'); // replace 'index-btn' with actual class if any
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
 
-// Optional: force inline styles if needed (fallback)
-confirmBtn.style.cursor = "pointer";
+  if (code) {
+    const slides = document.querySelectorAll(".slide");
+    let found = false;
 
-// Append to container
-const container = document.querySelector('#button-container');
-if (container) {
-    container.appendChild(confirmBtn);
-} else {
-    console.warn('Container for confirm button not found.');
-}
+    slides.forEach(slide => {
+      const span = slide.querySelector("span");
 
-// Add click functionality
-confirmBtn.addEventListener('click', () => {
-    alert('Button clicked!');
+      if (span && span.textContent.trim().toUpperCase() === code) {
+        slide.style.display = "block";
+        found = true;
+
+        // 🚫 Remove "I want this concept"
+        const wantBtn = slide.querySelector("a[href='#contact']");
+        if (wantBtn) wantBtn.remove();
+
+        // ✅ Add confirmation button styled like funnel buttons
+        const confirmRow = document.createElement("div");
+        confirmRow.classList.add("button-row"); // centers the button like funnel
+
+        const confirmBtn = document.createElement("button");
+        confirmBtn.textContent = "Confirm this template";
+        confirmBtn.onclick = () => {
+          alert(`You have selected ${code}`);
+          // 👉 You can replace this with redirect:
+          // window.location.href = "/pages/about.html#booking";
+        };
+
+        confirmRow.appendChild(confirmBtn);
+
+        // Place confirm button BELOW the existing .buttons div
+        const buttonsDiv = slide.querySelector(".buttons");
+        if (buttonsDiv) {
+          buttonsDiv.insertAdjacentElement("afterend", confirmRow);
+        }
+      } else {
+        slide.style.display = "none";
+      }
+    });
+
+    if (!found) {
+      alert("Sorry, no template found for code " + code);
+    }
+
+    // 🚫 Disable slider & arrows when code is used
+    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
+    const wrapper = document.querySelector('.slider-wrapper');
+    if (wrapper) wrapper.style.transform = "none";
+  }
 });
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  // 1. Remove the "I want this concept" button
-const removeBtn = document.querySelector('.i-want-this-concept'); // Replace with actual class if different
-if (removeBtn) removeBtn.remove();
-
-// 2. Center-align remaining overlay buttons
-const overlayContainer = document.querySelector('.overlay-buttons'); // Replace with actual container class
-if (overlayContainer) {
-    overlayContainer.style.display = "flex";
-    overlayContainer.style.justifyContent = "center";
-    overlayContainer.style.gap = "10px"; // optional spacing between buttons
-}
-
-// 3. Create the branded confirm button
-const confirmBtn = document.createElement('button');
-confirmBtn.textContent = "Confirm"; // Change text if needed
-
-// Apply index.html styles
-confirmBtn.style.padding = "1rem 2rem";
-confirmBtn.style.fontSize = "1rem";
-confirmBtn.style.border = "none";
-confirmBtn.style.borderRadius = "8px";
-confirmBtn.style.background = "white";
-confirmBtn.style.color = "#33a7d4";
-confirmBtn.style.fontWeight = "bold";
-confirmBtn.style.margin = "0.5rem";
-confirmBtn.style.cursor = "pointer";
-
-// 4. Add click event
-confirmBtn.addEventListener('click', () => {
-    alert('Confirm button clicked!'); // Replace with your actual logic
-});
-
-// 5. Append Confirm button below the overlay buttons
-if (overlayContainer) {
-    overlayContainer.parentNode.insertBefore(confirmBtn, overlayContainer.nextSibling);
-} else {
-    // fallback: append to body if overlay container not found
-    document.body.appendChild(confirmBtn);
-}
-
 </script>
+  
 </body>
 </html>
