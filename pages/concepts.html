@@ -774,8 +774,43 @@ prevBtn.addEventListener('click', () => {
 window.addEventListener('resize', updateSlider);
 updateSlider();
 
+// Remove old overlay button(s)
+document.querySelectorAll('.old-overlay-btn').forEach(btn => btn.remove());
+
+// Create new confirm button
+const confirmBtn = document.createElement('button');
+confirmBtn.textContent = "Confirm";
+
+// Add the exact class from index.html (or a custom class if needed)
+confirmBtn.classList.add('index-btn'); // replace 'index-btn' with actual class if any
+
+// Optional: force inline styles if needed (fallback)
+confirmBtn.style.cursor = "pointer";
+
+// Append to container
+const container = document.querySelector('#button-container');
+if (container) {
+    container.appendChild(confirmBtn);
+} else {
+    console.warn('Container for confirm button not found.');
+}
+
+// Add click functionality
+confirmBtn.addEventListener('click', () => {
+    alert('Button clicked!');
+});
 
 
+
+
+
+
+
+
+
+
+
+  
 
   // 1. Remove the "I want this concept" button
 const removeBtn = document.querySelector('.i-want-this-concept'); // Replace with actual class if different
