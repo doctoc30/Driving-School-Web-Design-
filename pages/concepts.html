@@ -776,60 +776,78 @@ updateSlider();
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
+  
+(function() {
   const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
+  const code = params.get("code")?.toUpperCase();
 
-  if (code) {
+  if (!code) return;
+
+  console.log("Template code from URL:", code);
+
+  // Function to process slides
+  function processSlides() {
     const slides = document.querySelectorAll(".slide");
+    if (!slides.length) return false; // no slides yet
+
+    console.log("Found slides:", slides.length);
+
     let found = false;
 
     slides.forEach(slide => {
       const span = slide.querySelector("span");
+      if (!span) return;
 
-      if (span && span.textContent.trim().toUpperCase() === code) {
+      if (span.textContent.trim().toUpperCase() === code) {
         slide.style.display = "block";
         found = true;
 
-        // 🚫 Remove "I want this concept"
+        // Remove "I want this concept" button
         const wantBtn = slide.querySelector("a[href='#contact']");
         if (wantBtn) wantBtn.remove();
 
-        // ✅ Add confirmation button styled like funnel buttons
+        // Add confirmation button styled like funnel buttons
         const confirmRow = document.createElement("div");
-        confirmRow.classList.add("button-row"); // centers the button like funnel
+        confirmRow.classList.add("button-row"); // centers button
 
         const confirmBtn = document.createElement("button");
         confirmBtn.textContent = "Confirm this template";
-        confirmBtn.onclick = () => {
-          alert(`You have selected ${code}`);
-          // 👉 You can replace this with redirect:
-          // window.location.href = "/pages/about.html#booking";
-        };
+        confirmBtn.classList.add("funnel-btn"); // ✅ same design as funnel
+        confirmBtn.onclick = () => alert(`You selected ${code}`);
 
         confirmRow.appendChild(confirmBtn);
 
-        // Place confirm button BELOW the existing .buttons div
         const buttonsDiv = slide.querySelector(".buttons");
-        if (buttonsDiv) {
-          buttonsDiv.insertAdjacentElement("afterend", confirmRow);
-        }
+        if (buttonsDiv) buttonsDiv.insertAdjacentElement("afterend", confirmRow);
+
       } else {
         slide.style.display = "none";
       }
     });
 
-    if (!found) {
-      alert("Sorry, no template found for code " + code);
-    }
+    if (!found) alert("Sorry, no template found for code " + code);
 
-    // 🚫 Disable slider & arrows when code is used
+    // Hide arrows & reset slider transform
     document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
-    const wrapper = document.querySelector('.slider-wrapper');
+    const wrapper = document.querySelector(".slider-wrapper");
     if (wrapper) wrapper.style.transform = "none";
+
+    return true; // processed
   }
-});
+
+  // Try immediately in case slides already exist
+  if (!processSlides()) {
+    // Use MutationObserver to wait for slides to be added dynamically
+    const observer = new MutationObserver(() => {
+      if (processSlides()) observer.disconnect();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+})();
 </script>
+
+
   
 </body>
 </html>
