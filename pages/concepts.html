@@ -775,79 +775,40 @@ window.addEventListener('resize', updateSlider);
 updateSlider();
 
 
+// Function to replace old buttons with the styled confirm button
+function replaceConfirmButton() {
+    // 1. Detect old overlay buttons (adjust selector if needed)
+    const oldButtons = document.querySelectorAll('.old-overlay-btn, .overlay-btn'); // Add any other old classes
+    oldButtons.forEach(btn => btn.remove());
 
+    // 2. Create new confirm button
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = "Confirm"; // Change text if needed
+
+    // 3. Apply index.html button styles
+    confirmBtn.style.padding = "1rem 2rem";
+    confirmBtn.style.fontSize = "1rem";
+    confirmBtn.style.border = "none";
+    confirmBtn.style.borderRadius = "8px";
+    confirmBtn.style.background = "white";
+    confirmBtn.style.color = "#33a7d4";
+    confirmBtn.style.fontWeight = "bold";
+    confirmBtn.style.margin = "0.5rem";
+    confirmBtn.style.cursor = "pointer";
+
+    // 4. Add click event
+    confirmBtn.addEventListener('click', () => {
+        alert('Confirm button clicked!'); // Replace with your actual logic
+    });
+
+    // 5. Append to parent of old button, or body if none
+    let container = document.querySelector('.old-overlay-btn, .overlay-btn')?.parentNode || document.body;
+    container.appendChild(confirmBtn);
+}
+
+// Run the function automatically
+replaceConfirmButton();
   
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code")?.toUpperCase();
-
-  if (!code) return;
-
-  console.log("Template code from URL:", code);
-
-  // Function to process slides
-  function processSlides() {
-    const slides = document.querySelectorAll(".slide");
-    if (!slides.length) return false; // no slides yet
-
-    console.log("Found slides:", slides.length);
-
-    let found = false;
-
-    slides.forEach(slide => {
-      const span = slide.querySelector("span");
-      if (!span) return;
-
-      if (span.textContent.trim().toUpperCase() === code) {
-        slide.style.display = "block";
-        found = true;
-
-        // Remove "I want this concept" button
-        const wantBtn = slide.querySelector("a[href='#contact']");
-        if (wantBtn) wantBtn.remove();
-
-        // Add confirmation button styled like funnel buttons
-        const confirmRow = document.createElement("div");
-        confirmRow.classList.add("button-row"); // centers button
-
-        const confirmBtn = document.createElement("button");
-        confirmBtn.textContent = "Confirm this template";
-        confirmBtn.classList.add("funnel-btn"); // ✅ same design as funnel
-        confirmBtn.onclick = () => alert(`You selected ${code}`);
-
-        confirmRow.appendChild(confirmBtn);
-
-        const buttonsDiv = slide.querySelector(".buttons");
-        if (buttonsDiv) buttonsDiv.insertAdjacentElement("afterend", confirmRow);
-
-      } else {
-        slide.style.display = "none";
-      }
-    });
-
-    if (!found) alert("Sorry, no template found for code " + code);
-
-    // Hide arrows & reset slider transform
-    document.querySelectorAll(".arrow").forEach(btn => btn.style.display = "none");
-    const wrapper = document.querySelector(".slider-wrapper");
-    if (wrapper) wrapper.style.transform = "none";
-
-    return true; // processed
-  }
-
-  // Try immediately in case slides already exist
-  if (!processSlides()) {
-    // Use MutationObserver to wait for slides to be added dynamically
-    const observer = new MutationObserver(() => {
-      if (processSlides()) observer.disconnect();
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-})();
 </script>
-
-
-  
 </body>
 </html>
