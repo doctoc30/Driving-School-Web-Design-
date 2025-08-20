@@ -727,46 +727,47 @@ button:hover {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-<!-- What do you need help with today? -->
-<div class="form-screen active" id="main-intro-options">
-  <h2>What do you need help with today?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('branch')">Website Design (New Site)</button>
-    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
-    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
+ <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+
+  <!-- Step 1: Main intro options -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" data-screen="branch" data-path="">Website Design (New Site)</button>
+      <button type="button" data-screen="redesign-start" data-path="">Website Redesign</button>
+      <button type="button" data-screen="maintenance-start" data-path="">Website Maintenance</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 2: Branch -->
-<div class="form-screen" id="branch">
-  <h2>Are you a solo driving instructor or a driving school?</h2>
-  <div class="button-row">
-    <button type="button" onclick="setPath('instructor'); showScreen('design-start')">Solo Instructor</button>
-    <button type="button" onclick="setPath('school'); alert('School funnel coming soon!')">Driving School</button>
+  <!-- Step 2: Branch -->
+  <div class="form-screen" id="branch">
+    <h2>Are you a solo driving instructor or a driving school?</h2>
+    <div class="button-row">
+      <button type="button" data-path="instructor" data-screen="design-start">Solo Instructor</button>
+      <button type="button" data-path="school">Driving School</button>
+    </div>
   </div>
-</div>
 
-<!-- Step 3: Design selection -->
-<div class="form-screen" id="design-start">
-  <h2>Do you already have a design code from our library?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">No, show me templates</button>
-    <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
+  <!-- Step 3: Design selection -->
+  <div class="form-screen" id="design-start">
+    <h2>Do you already have a design code from our library?</h2>
+    <div class="button-row">
+      <button type="button" data-screen="design-code">Yes, I have a code</button>
+      <button type="button" data-href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html">No, show me templates</button>
+      <button type="button" data-screen="custom-request">I need a custom design</button>
+    </div>
   </div>
-</div>
 
+  <!-- Step 4: Enter Design Code -->
+  <div class="form-screen" id="design-code" style="display:none; text-align:center; margin:30px 0;">
+    <h2>Enter your Design Code</h2>
+    <input type="text" id="codeInput" placeholder="e.g. SDI-1" style="padding:10px; font-size:16px; margin-top:10px;" />
+    <br><br>
+    <button type="button" id="confirmCode" style="padding:10px 20px; font-size:16px; cursor:pointer;">Confirm</button>
+    <div id="previewMessage" style="margin-top:15px; color: #555;"></div>
+  </div>
 
- <!-- Step 4: Enter Design Code -->
-<div class="form-screen" id="design-code" style="display:none; text-align:center; margin:30px 0;">
-  <h2>Enter your Design Code</h2>
-  <input type="text" id="codeInput" placeholder="e.g. SDI-1" style="padding:10px; font-size:16px; margin-top:10px;" />
-  <br><br>
-  <button type="button" onclick="goToConcept()" style="padding:10px 20px; font-size:16px; cursor:pointer;">Confirm</button>
-  <div id="previewMessage" style="margin-top:15px; color: #555;"></div>
-</div>
 
 
 
