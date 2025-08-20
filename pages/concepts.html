@@ -569,24 +569,6 @@ footer {
   </div>
 </div>
 
-<script>
-function chooseConcept(code) {
-    // Fill the design code input
-    const designInput = document.getElementById('designInput');
-    if (designInput) designInput.value = code;
-
-    // Hide all screens
-    document.querySelectorAll('.form-screen').forEach(screen => screen.style.display = 'none');
-
-    // Show Step 5: first instructor question
-    const step5 = document.getElementById('instructor-q1');
-    if (step5) step5.style.display = 'block';
-
-    // Scroll to the form
-    document.getElementById('formWrapper').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
-
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
     <button class="arrow next">&#10095;</button>
