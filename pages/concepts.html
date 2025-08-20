@@ -459,20 +459,20 @@ footer {
   </nav>
 </header>
 <main>
-  <!-- ✅ SLIDER -->
+
+<!-- ✅ SLIDER -->
 <div class="concept-slider">
   <div class="slider-wrapper">
+
     <!-- Slide 1 -->
     <div class="slide">
       <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
       <div class="buttons">
-        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" 
-           target="_blank" 
-           title="Design may differ slightly from concept image">
-          View Live Version From Concept To A Website
+        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank" title="Design may differ slightly from concept image">
+          View Live Version
         </a>
         <span>SDI-1</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-1')">I want this concept</button>
       </div>
     </div>
 
@@ -482,7 +482,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
         <span>SDI-2</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-2')">I want this concept</button>
       </div>
     </div>
 
@@ -492,7 +492,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" target="_blank">View live link</a>
         <span>SDI-3</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-3')">I want this concept</button>
       </div>
     </div>
 
@@ -502,7 +502,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" target="_blank">View live link</a>
         <span>SDI-4</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-4')">I want this concept</button>
       </div>
     </div>
 
@@ -512,7 +512,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" target="_blank">View live link</a>
         <span>SDI-5</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-5')">I want this concept</button>
       </div>
     </div>
 
@@ -522,7 +522,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" target="_blank">View live link</a>
         <span>SDI-6</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-6')">I want this concept</button>
       </div>
     </div>
 
@@ -532,7 +532,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" target="_blank">View live link</a>
         <span>SDI-7</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-7')">I want this concept</button>
       </div>
     </div>
 
@@ -542,17 +542,17 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" target="_blank">View live link</a>
         <span>SDI-8</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-8')">I want this concept</button>
       </div>
     </div>
 
-    <!-- Slide 9 --> 
+    <!-- Slide 9 -->
     <div class="slide">
       <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept Image 9">
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" target="_blank">View live link</a>
         <span>SDI-9</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-9')">I want this concept</button>
       </div>
     </div>
 
@@ -562,11 +562,30 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" target="_blank">View live link</a>
         <span>SDI-10</span>
-        <a href="#contact">I want this concept</a>
+        <button type="button" onclick="chooseConcept('SDI-10')">I want this concept</button>
       </div>
     </div>
-  </div>
 
+  </div>
+</div>
+
+<script>
+function chooseConcept(code) {
+    // Fill the design code input
+    const designInput = document.getElementById('designInput');
+    if (designInput) designInput.value = code;
+
+    // Hide all screens
+    document.querySelectorAll('.form-screen').forEach(screen => screen.style.display = 'none');
+
+    // Show Step 5: first instructor question
+    const step5 = document.getElementById('instructor-q1');
+    if (step5) step5.style.display = 'block';
+
+    // Scroll to the form
+    document.getElementById('formWrapper').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
 
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
@@ -737,6 +756,22 @@ prevBtn.addEventListener('click', () => {
 window.addEventListener('resize', updateSlider);
 updateSlider();
 </script>
-  
+
+
+  function chooseConcept(code) {
+    // Fill the design code input
+    const designInput = document.getElementById('designInput');
+    if (designInput) designInput.value = code;
+
+    // Hide all screens
+    document.querySelectorAll('.form-screen').forEach(screen => screen.style.display = 'none');
+
+    // Show Step 5: first instructor question
+    const step5 = document.getElementById('instructor-q1');
+    if (step5) step5.style.display = 'block';
+
+    // Scroll to the form
+    document.getElementById('formWrapper').scrollIntoView({ behavior: 'smooth' });
+  }
 </body>
 </html>
