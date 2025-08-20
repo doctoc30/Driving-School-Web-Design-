@@ -1191,6 +1191,47 @@ document.addEventListener('DOMContentLoaded', function() {
     window.scrollTo(0, 0);
 }
 
+
+  
+
+
+  function goToConcept() {
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+
+  // Save the code into the form (so it gets submitted later)
+  document.querySelector("input[name='Design Code']").value = code;
+
+  // ✅ Show preview screen for the design
+  const previewHtml = `
+    <div class="form-screen active" id="design-preview">
+      <h2>Your Selected Design: ${code}</h2>
+      <p>Here’s a preview of your chosen template.</p>
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png" 
+           alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
+      <div class="button-row">
+        <button type="button" onclick="goToInstructorFunnel()">I want this concept</button>
+      </div>
+    </div>
+  `;
+
+  // Replace current screen with preview
+  document.getElementById("design-code").classList.remove("active");
+  document.getElementById("design-code").insertAdjacentHTML("afterend", previewHtml);
+}
+
+
+  function goToInstructorFunnel() {
+  // Hide preview
+  document.getElementById("design-preview").classList.remove("active");
+
+  // ✅ Skip branch choice and go directly to step 5 (Solo Instructor q1)
+  showScreen("instructor-q1");
+}
 </script>
 </body>
 </html>
