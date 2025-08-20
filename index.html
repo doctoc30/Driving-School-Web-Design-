@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="en"> 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
 
-<style> 
+<style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -727,49 +727,45 @@ button:hover {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
+<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
- <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
-
-  <!-- Step 1: Main intro options -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" data-screen="branch" data-path="">Website Design (New Site)</button>
-      <button type="button" data-screen="redesign-start" data-path="">Website Redesign</button>
-      <button type="button" data-screen="maintenance-start" data-path="">Website Maintenance</button>
-    </div>
+<!-- What do you need help with today? -->
+<div class="form-screen active" id="main-intro-options">
+  <h2>What do you need help with today?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('branch')">Website Design (New Site)</button>
+    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
+    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
   </div>
+</div>
 
-  <!-- Step 2: Branch -->
-  <div class="form-screen" id="branch">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-      <button type="button" data-path="instructor" data-screen="design-start">Solo Instructor</button>
-      <button type="button" data-path="school">Driving School</button>
-    </div>
+<!-- Step 2: Branch -->
+<div class="form-screen" id="branch">
+  <h2>Are you a solo driving instructor or a driving school?</h2>
+  <div class="button-row">
+    <button type="button" onclick="setPath('instructor'); showScreen('design-start')">Solo Instructor</button>
+    <button type="button" onclick="setPath('school'); alert('School funnel coming soon!')">Driving School</button>
   </div>
+</div>
 
-  <!-- Step 3: Design selection -->
-  <div class="form-screen" id="design-start">
-    <h2>Do you already have a design code from our library?</h2>
-    <div class="button-row">
-      <button type="button" data-screen="design-code">Yes, I have a code</button>
-      <button type="button" data-href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html">No, show me templates</button>
-      <button type="button" data-screen="custom-request">I need a custom design</button>
-    </div>
+<!-- Step 3: Design selection -->
+<div class="form-screen" id="design-start">
+  <h2>Do you already have a design code from our library?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">No, show me templates</button>
+    <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
   </div>
+</div>
 
-  <!-- Step 4: Enter Design Code -->
-  <div class="form-screen" id="design-code" style="display:none; text-align:center; margin:30px 0;">
-    <h2>Enter your Design Code</h2>
-    <input type="text" id="codeInput" placeholder="e.g. SDI-1" style="padding:10px; font-size:16px; margin-top:10px;" />
-    <br><br>
-    <button type="button" id="confirmCode" style="padding:10px 20px; font-size:16px; cursor:pointer;">Confirm</button>
-    <div id="previewMessage" style="margin-top:15px; color: #555;"></div>
+<!-- Step 4: Enter code -->
+<div class="form-screen" id="design-code">
+  <h2>Enter your chosen design code</h2>
+  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
+  <div class="button-row">
+    <button type="button" onclick="next()">Continue</button>
   </div>
-
-
-
+</div>
 
 <!-- Step 5: Solo Instructor Questions -->
 
@@ -1060,175 +1056,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ------------------ FORM PATH + REDIRECT ---------------------
+let userPath = "";
 
+function setPath(path) {
+  userPath = path;
+  next();
+}
 
-  document.addEventListener("DOMContentLoaded", () => {
-
-  // ------------------ TYPEWRITER --------------------
-  const el = document.getElementById('typewriter');
-  let lines = [];
-  const typingSpeed = 100;
-  const lineDelay = 500;
-  let currentLine = 0;
-  let currentChar = 0;
-  let lineEl = null;
-
-  const cursor = document.createElement('span');
-  cursor.classList.add('cursor');
-  el.appendChild(cursor);
-
-  function setLinesByOrientation() {
-    lines = window.matchMedia("(orientation: landscape)").matches
-      ? ["We build", "your website.", "You approve,", "then pay."]
-      : ["We build", "your", "website.", "You approve,", "then pay."];
+document.getElementById("pricing-redirect").addEventListener("click", function () {
+  if (userPath === "instructor") {
+    window.location.href = "https://yourwebsite.com/pricing-instructor";
+  } else if (userPath === "school") {
+    window.location.href = "https://yourwebsite.com/pricing-school";
+  } else {
+    window.location.href = "https://yourwebsite.com/pricing";
   }
-
-  function typeChar() {
-    if (currentLine >= lines.length) {
-      cursor.remove();
-      setTimeout(() => {
-        el.style.animation = 'rocketRise 2s ease forwards';
-        setTimeout(() => {
-          const introScreen = document.getElementById('main-intro-options');
-          if (introScreen) {
-            introScreen.style.display = 'block';
-            introScreen.classList.add('active');
-          }
-        }, 2000);
-      }, 1000);
-      return;
-    }
-
-    const text = lines[currentLine];
-    if (!lineEl) {
-      lineEl = document.createElement('div');
-      lineEl.classList.add('typed-line');
-      el.appendChild(lineEl);
-      lineEl.appendChild(cursor);
-    }
-
-    if (currentChar < text.length) {
-      const char = document.createTextNode(text[currentChar]);
-      lineEl.insertBefore(char, cursor);
-      currentChar++;
-      setTimeout(typeChar, typingSpeed);
-    } else {
-      currentLine++;
-      currentChar = 0;
-      lineEl = null;
-      setTimeout(typeChar, lineDelay);
-    }
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  window.addEventListener('resize', debounce(() => {
-    currentLine = 0;
-    currentChar = 0;
-    lineEl = null;
-    el.textContent = '';
-    el.appendChild(cursor);
-    setLinesByOrientation();
-    el.style.opacity = 1;
-    typeChar();
-  }, 300));
-
-  setLinesByOrientation();
-  el.style.opacity = 1;
-  typeChar();
-
-  // ------------------ FORM SCREENS --------------------
-  const screens = document.querySelectorAll(".form-screen");
-
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
-  }
-
-  window.showScreen = function(screenId) {
-    hideAllScreens();
-    const screen = document.getElementById(screenId);
-    if(screen) {
-      screen.classList.add("active");
-      screen.style.display = "block";
-    }
-  };
-
-  window.next = function() {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if(i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
-    }
-  };
-
-  window.prev = function() {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if(i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
-    }
-  };
-
-  hideAllScreens();
-
-  // ------------------ USER PATH --------------------
-  window.userPath = "";
-  window.setPath = function(path) {
-    window.userPath = path;
-    next();
-  };
-
-  // ------------------ CONCEPT REDIRECT --------------------
-  window.goToConcept = function() {
-    const code = document.getElementById('codeInput').value.trim().toUpperCase();
-    const preview = document.getElementById('previewMessage');
-    if(!code) {
-      preview.style.color = 'red';
-      preview.innerText = 'Please enter a design code.';
-      return;
-    }
-
-    const slides = document.querySelectorAll('.concept-slider .slide');
-    let found = false;
-
-    slides.forEach(slide => {
-      const span = slide.querySelector('.buttons span');
-      const link = slide.querySelector('.buttons a');
-      if(span && link && span.textContent.trim().toUpperCase() === code) {
-        preview.style.color = '#555';
-        preview.innerText = `Redirecting to concept ${code}...`;
-        found = true;
-        setTimeout(() => {
-          window.open(link.href, '_blank');
-        }, 800);
-      }
-    });
-
-    if(!found) {
-      preview.style.color = 'red';
-      preview.innerText = 'Invalid code. Please check and try again.';
-    }
-  };
-
 });
 
+    const features = [];
 
+  function setPath(path) {
+    window.userPath = path;
+  }
 
+  function showScreen(id) {
+    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function next() {
+    const screens = Array.from(document.querySelectorAll('.form-screen'));
+    const currentIndex = screens.findIndex(s => s.classList.contains('active'));
+    const nextScreen = screens[currentIndex + 1];
+    if (nextScreen) {
+      showScreen(nextScreen.id);
+      if(nextScreen.id === 'plan-recommendation') {
+        recommendPlan();
+      }
+    }
+  }
+
+  function recordFeature(feature) {
+    if(!features.includes(feature)) features.push(feature);
+  }
+
+  function recommendPlan() {
+    let plan = '';
+    const count = features.length;
+    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    document.getElementById('recommended-plan').innerText = plan;
+  }
 
 </script>
 </body>
