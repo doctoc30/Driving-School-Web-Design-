@@ -758,14 +758,14 @@ button:hover {
   </div>
 </div>
 
-<!-- Step 4: Enter code -->
-<div class="form-screen" id="design-code">
-  <h2>Enter your chosen design code</h2>
-  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-  <div class="button-row">
-    <button type="button" onclick="goToConcept()">Continue</button>
-  </div>
+ <!-- Step 4: Enter Design Code -->
+<div class="form-screen" id="design-code" style="display:none;">
+  <h2>Enter your design code</h2>
+  <input type="text" id="codeInput" placeholder="e.g. SDI-1" />
+  <button type="button" onclick="showConcept()">Confirm</button>
+  <div id="conceptResult" style="margin-top:20px;"></div>
 </div>
+
 
 <!-- Step 5: Solo Instructor Questions -->
 
