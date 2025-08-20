@@ -1,6 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en"> 
-<head> 
+<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
@@ -726,7 +726,6 @@ button:hover {
 
 <div class="color-rise"></div>
 <div id="typewriter"></div>
- 
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
@@ -762,9 +761,9 @@ button:hover {
 <!-- Step 4: Enter code -->
 <div class="form-screen" id="design-code">
   <h2>Enter your chosen design code</h2>
-  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+  <input type="text" name="Design Code" placeholder="e.g. DS-12" required>
   <div class="button-row">
-    <button type="button" onclick="goToConcept()">Continue</button>
+    <button type="button" onclick="next()">Continue</button>
   </div>
 </div>
 
@@ -1110,14 +1109,6 @@ document.getElementById("pricing-redirect").addEventListener("click", function (
     else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
     document.getElementById('recommended-plan').innerText = plan;
   }
-
-
-  function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  }
-}
 
 </script>
 </body>
