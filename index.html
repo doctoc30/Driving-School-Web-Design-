@@ -758,12 +758,13 @@ button:hover {
   </div>
 </div>
 
- <!-- Step 4: Enter Design Code -->
-<div class="form-screen" id="design-code" style="display:none;">
-  <h2>Enter your design code</h2>
-  <input type="text" id="codeInput" placeholder="e.g. SDI-1" />
-  <button type="button" onclick="showConcept()">Confirm</button>
-  <div id="conceptResult" style="margin-top:20px;"></div>
+<!-- Step 4: Enter Design Code -->
+<div class="form-screen" id="design-code" style="display:none; text-align:center; margin:30px 0;">
+  <h2>Enter your Design Code</h2>
+  <input type="text" id="codeInput" placeholder="e.g. SDI-1" style="padding:10px; font-size:16px; margin-top:10px;" />
+  <br><br>
+  <button type="button" onclick="goToConcept()" style="padding:10px 20px; font-size:16px; cursor:pointer;">Confirm</button>
+  <div id="previewMessage" style="margin-top:15px; color: #555;"></div>
 </div>
 
 
@@ -1211,6 +1212,26 @@ function confirmConcept(code) {
 function retryConcept() {
   document.getElementById("codeInput").value = "";
   document.getElementById("conceptResult").innerHTML = "";
+}
+
+
+  function goToConcept() {
+  const code = document.getElementById('codeInput').value.trim();
+  const preview = document.getElementById('previewMessage');
+
+  if (!code) {
+    preview.style.color = 'red';
+    preview.innerText = 'Please enter a design code.';
+    return;
+  }
+
+  preview.style.color = '#555';
+  preview.innerText = `Redirecting to concept ${code}...`;
+
+  // Example: redirect after 1 second (adjust URL pattern as needed)
+  setTimeout(() => {
+    window.location.href = `/concepts/${code}`;
+  }, 1000);
 }
 </script>
 </body>
