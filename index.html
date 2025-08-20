@@ -1242,6 +1242,56 @@ let selectedFeatures = [];
 function recordFeature(feature) {
   selectedFeatures.push(feature);
 }
+
+  
+
+
+  // Create container
+  const container = document.createElement('div');
+  container.style.margin = '20px 0';
+
+  // Create label
+  const label = document.createElement('label');
+  label.textContent = 'Enter Concept Code:';
+  label.style.display = 'block';
+  label.style.marginBottom = '5px';
+
+  // Create input
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'e.g., SDI-5';
+  input.style.padding = '5px';
+  input.style.width = '200px';
+  input.style.marginBottom = '10px';
+
+  // Create image preview
+  const previewImg = document.createElement('img');
+  previewImg.src = 'images/placeholder.png';
+  previewImg.alt = 'Concept Preview';
+  previewImg.style.maxWidth = '300px';
+  previewImg.style.display = 'block';
+
+  // Append elements
+  container.appendChild(label);
+  container.appendChild(input);
+  container.appendChild(previewImg);
+  document.body.appendChild(container);
+
+  // Update image on input
+  input.addEventListener('input', () => {
+    const code = input.value.trim();
+    if (code === '') {
+      previewImg.src = 'images/placeholder.png';
+      return;
+    }
+    previewImg.src = `images/${code}.png`;
+
+    // Fallback if image doesn't exist
+    previewImg.onerror = () => {
+      previewImg.src = 'images/placeholder.png';
+    };
+  });
+
 </script>
 </body>
 </html>
