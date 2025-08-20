@@ -1060,96 +1060,174 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ------------------ FORM PATH + REDIRECT ---------------------
-let userPath = "";
 
-function setPath(path) {
-  userPath = path;
-  next();
-}
 
-document.getElementById("pricing-redirect").addEventListener("click", function () {
-  if (userPath === "instructor") {
-    window.location.href = "https://yourwebsite.com/pricing-instructor";
-  } else if (userPath === "school") {
-    window.location.href = "https://yourwebsite.com/pricing-school";
-  } else {
-    window.location.href = "https://yourwebsite.com/pricing";
+  document.addEventListener("DOMContentLoaded", () => {
+
+  // ------------------ TYPEWRITER --------------------
+  const el = document.getElementById('typewriter');
+  let lines = [];
+  const typingSpeed = 100;
+  const lineDelay = 500;
+  let currentLine = 0;
+  let currentChar = 0;
+  let lineEl = null;
+
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  el.appendChild(cursor);
+
+  function setLinesByOrientation() {
+    lines = window.matchMedia("(orientation: landscape)").matches
+      ? ["We build", "your website.", "You approve,", "then pay."]
+      : ["We build", "your", "website.", "You approve,", "then pay."];
   }
+
+  function typeChar() {
+    if (currentLine >= lines.length) {
+      cursor.remove();
+      setTimeout(() => {
+        el.style.animation = 'rocketRise 2s ease forwards';
+        setTimeout(() => {
+          const introScreen = document.getElementById('main-intro-options');
+          if (introScreen) {
+            introScreen.style.display = 'block';
+            introScreen.classList.add('active');
+          }
+        }, 2000);
+      }, 1000);
+      return;
+    }
+
+    const text = lines[currentLine];
+    if (!lineEl) {
+      lineEl = document.createElement('div');
+      lineEl.classList.add('typed-line');
+      el.appendChild(lineEl);
+      lineEl.appendChild(cursor);
+    }
+
+    if (currentChar < text.length) {
+      const char = document.createTextNode(text[currentChar]);
+      lineEl.insertBefore(char, cursor);
+      currentChar++;
+      setTimeout(typeChar, typingSpeed);
+    } else {
+      currentLine++;
+      currentChar = 0;
+      lineEl = null;
+      setTimeout(typeChar, lineDelay);
+    }
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  window.addEventListener('resize', debounce(() => {
+    currentLine = 0;
+    currentChar = 0;
+    lineEl = null;
+    el.textContent = '';
+    el.appendChild(cursor);
+    setLinesByOrientation();
+    el.style.opacity = 1;
+    typeChar();
+  }, 300));
+
+  setLinesByOrientation();
+  el.style.opacity = 1;
+  typeChar();
+
+  // ------------------ FORM SCREENS --------------------
+  const screens = document.querySelectorAll(".form-screen");
+
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
+  }
+
+  window.showScreen = function(screenId) {
+    hideAllScreens();
+    const screen = document.getElementById(screenId);
+    if(screen) {
+      screen.classList.add("active");
+      screen.style.display = "block";
+    }
+  };
+
+  window.next = function() {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if(i >= 0 && i < allScreens.length - 1) {
+      hideAllScreens();
+      allScreens[i + 1].classList.add('active');
+      allScreens[i + 1].style.display = "block";
+    }
+  };
+
+  window.prev = function() {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if(i > 0) {
+      hideAllScreens();
+      allScreens[i - 1].classList.add('active');
+      allScreens[i - 1].style.display = "block";
+    }
+  };
+
+  hideAllScreens();
+
+  // ------------------ USER PATH --------------------
+  window.userPath = "";
+  window.setPath = function(path) {
+    window.userPath = path;
+    next();
+  };
+
+  // ------------------ CONCEPT REDIRECT --------------------
+  window.goToConcept = function() {
+    const code = document.getElementById('codeInput').value.trim().toUpperCase();
+    const preview = document.getElementById('previewMessage');
+    if(!code) {
+      preview.style.color = 'red';
+      preview.innerText = 'Please enter a design code.';
+      return;
+    }
+
+    const slides = document.querySelectorAll('.concept-slider .slide');
+    let found = false;
+
+    slides.forEach(slide => {
+      const span = slide.querySelector('.buttons span');
+      const link = slide.querySelector('.buttons a');
+      if(span && link && span.textContent.trim().toUpperCase() === code) {
+        preview.style.color = '#555';
+        preview.innerText = `Redirecting to concept ${code}...`;
+        found = true;
+        setTimeout(() => {
+          window.open(link.href, '_blank');
+        }, 800);
+      }
+    });
+
+    if(!found) {
+      preview.style.color = 'red';
+      preview.innerText = 'Invalid code. Please check and try again.';
+    }
+  };
+
 });
 
-    const features = [];
 
-  function setPath(path) {
-    window.userPath = path;
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function next() {
-    const screens = Array.from(document.querySelectorAll('.form-screen'));
-    const currentIndex = screens.findIndex(s => s.classList.contains('active'));
-    const nextScreen = screens[currentIndex + 1];
-    if (nextScreen) {
-      showScreen(nextScreen.id);
-      if(nextScreen.id === 'plan-recommendation') {
-        recommendPlan();
-      }
-    }
-  }
-
-  function recordFeature(feature) {
-    if(!features.includes(feature)) features.push(feature);
-  }
-
-  function recommendPlan() {
-    let plan = '';
-    const count = features.length;
-    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-    document.getElementById('recommended-plan').innerText = plan;
-  }
-
-function goToConcept() {
-  const code = document.getElementById('codeInput').value.trim().toUpperCase();
-  const preview = document.getElementById('previewMessage');
-
-  if (!code) {
-    preview.style.color = 'red';
-    preview.innerText = 'Please enter a design code.';
-    return;
-  }
-
-  // Get all slides
-  const slides = document.querySelectorAll('.concept-slider .slide');
-  let found = false;
-
-  slides.forEach(slide => {
-    // Get the <span> inside .buttons
-    const span = slide.querySelector('.buttons span');
-    // Get the first <a> inside .buttons (live link)
-    const link = slide.querySelector('.buttons a');
-
-    if (span && link && span.textContent.trim().toUpperCase() === code) {
-      preview.style.color = '#555';
-      preview.innerText = `Redirecting to concept ${code}...`;
-      found = true;
-
-      setTimeout(() => {
-        window.open(link.href, '_blank'); // open in new tab
-      }, 800);
-    }
-  });
-
-  if (!found) {
-    preview.style.color = 'red';
-    preview.innerText = 'Invalid code. Please check and try again.';
-  }
-}
 
 
 </script>
