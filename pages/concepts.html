@@ -567,39 +567,6 @@ footer {
     </div>
   </div>
 
-  <!-- Arrows -->
-  <button class="arrow prev">&#10094;</button>
-  <button class="arrow next">&#10095;</button>
-</div>
-
-<!-- ✅ Core slider JS -->
-<script>
-const sliderWrapper = document.querySelector('.slider-wrapper');
-const slides = document.querySelectorAll('.slide');
-const prevBtn = document.querySelector('.arrow.prev');
-const nextBtn = document.querySelector('.arrow.next');
-let currentIndex = 0;
-
-function updateSlider() {
-  const slideWidth = slides[0].clientWidth;
-  sliderWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-}
-
-nextBtn.addEventListener('click', () => {
-  if (currentIndex < slides.length - 1) currentIndex++;
-  else currentIndex = 0;
-  updateSlider();
-});
-
-prevBtn.addEventListener('click', () => {
-  if (currentIndex > 0) currentIndex--;
-  else currentIndex = slides.length - 1;
-  updateSlider();
-});
-
-window.addEventListener('resize', updateSlider);
-updateSlider();
-</script>
 
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
@@ -719,7 +686,35 @@ function updateSlider() {
     }
   });
 });
-  
+
+
+
+  <!-- ✅ Core slider JS -->
+const sliderWrapper = document.querySelector('.slider-wrapper');
+const slides = document.querySelectorAll('.slide');
+const prevBtn = document.querySelector('.arrow.prev');
+const nextBtn = document.querySelector('.arrow.next');
+let currentIndex = 0;
+
+function updateSlider() {
+  const slideWidth = slides[0].clientWidth;
+  sliderWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+}
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < slides.length - 1) currentIndex++;
+  else currentIndex = 0;
+  updateSlider();
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) currentIndex--;
+  else currentIndex = slides.length - 1;
+  updateSlider();
+});
+
+window.addEventListener('resize', updateSlider);
+updateSlider();
 </script>
   
 </body>
