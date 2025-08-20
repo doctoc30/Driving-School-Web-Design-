@@ -695,6 +695,17 @@ button:hover {
   margin-top: 60px; /* this moves ONLY the 3 buttons further down */
 }
 
+ /* Hide all form screens by default */
+.form-screen {
+    display: none;
+}
+
+/* Hide slider arrows when showing only one concept */
+.single-concept .prev,
+.single-concept .next {
+    display: none;
+}
+
 </style>
 
 </head>
@@ -1118,6 +1129,49 @@ document.getElementById("pricing-redirect").addEventListener("click", function (
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
   }
 }
+
+
+
+// Run when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code'); // e.g., ?code=1
+
+    const slides = document.querySelectorAll('.slide'); // replace .slide with your slide class
+    const sliderContainer = document.querySelector('.slider-container'); // replace with your slider wrapper
+
+    if (code && slides.length > 0) {
+        // Hide all slides
+        slides.forEach(slide => slide.style.display = 'none');
+
+        // Show only the slide that matches the code
+        const chosenSlide = document.querySelector(`.slide[data-code="${code}"]`);
+        if (chosenSlide) {
+            chosenSlide.style.display = 'block';
+        }
+
+        // Add class to body to hide arrows
+        document.body.classList.add('single-concept');
+    }
+
+    // Attach "I want this concept" button
+    const chooseButtons = document.querySelectorAll('.choose-concept');
+    chooseButtons.forEach(btn => {
+        btn.addEventListener('click', startStep5);
+    });
+
+    function startStep5() {
+        // Hide slider
+        if (sliderContainer) sliderContainer.style.display = 'none';
+
+        // Show first Step 5 question
+        const step5 = document.getElementById('instructor-q1');
+        if (step5) step5.style.display = 'block';
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+});
 
 </script>
 </body>
