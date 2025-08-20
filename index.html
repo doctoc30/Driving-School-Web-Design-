@@ -1174,63 +1174,73 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-  function startStep5() {
-    // Hide the design templates container
-    const slider = document.querySelector('.slider-container'); // replace with your slider wrapper class
-    if (slider) slider.style.display = 'none';
 
-    // Hide any other form screens that might be visible
-    const screens = document.querySelectorAll('.form-screen');
-    screens.forEach(s => s.style.display = 'none');
-
-    // Show Step 5 first question
-    const step5 = document.getElementById('instructor-q1');
-    if (step5) step5.style.display = 'block';
-
-    // Scroll to top
-    window.scrollTo(0, 0);
-}
 
 
   
 
 
-  function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
 
+  // Show a specific screen
+function showScreen(id) {
+  document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// Track which path is chosen
+let path = "";
+function setPath(p) {
+  path = p;
+}
+
+// Move forward to the next screen
+function next() {
+  const active = document.querySelector(".form-screen.active");
+  const nextScreen = active.nextElementSibling;
+  if (nextScreen) {
+    active.classList.remove("active");
+    nextScreen.classList.add("active");
+  }
+}
+
+// Move back to the previous screen
+function prev() {
+  const active = document.querySelector(".form-screen.active");
+  const prevScreen = active.previousElementSibling;
+  if (prevScreen) {
+    active.classList.remove("active");
+    prevScreen.classList.add("active");
+  }
+}
+
+// Step 4: User enters code
+function goToConcept() {
+  const code = document.getElementById("designInput").value.trim();
   if (!code) {
     alert("Please enter a design code.");
     return;
   }
 
-  // Save the code into the form (so it gets submitted later)
-  document.querySelector("input[name='Design Code']").value = code;
-
-  // ✅ Show preview screen for the design
-  const previewHtml = `
-    <div class="form-screen active" id="design-preview">
-      <h2>Your Selected Design: ${code}</h2>
-      <p>Here’s a preview of your chosen template.</p>
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png" 
-           alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
-      <div class="button-row">
-        <button type="button" onclick="goToInstructorFunnel()">I want this concept</button>
-      </div>
-    </div>
+  // Show preview of chosen concept
+  const previewContainer = document.getElementById("recommended-plan");
+  previewContainer.innerHTML = `
+    <p>You selected: <strong>${code}</strong></p>
+    <button type="button" onclick="goToInstructorFunnel()">I want this concept</button>
   `;
 
-  // Replace current screen with preview
-  document.getElementById("design-code").classList.remove("active");
-  document.getElementById("design-code").insertAdjacentHTML("afterend", previewHtml);
+  // Switch to preview/confirmation screen
+  showScreen("plan-recommendation");
 }
 
-
-  function goToInstructorFunnel() {
-  // Hide preview
-  document.getElementById("design-preview").classList.remove("active");
-
-  // ✅ Skip branch choice and go directly to step 5 (Solo Instructor q1)
+// Step 5: Continue funnel for Solo Instructor
+function goToInstructorFunnel() {
   showScreen("instructor-q1");
+}
+
+// Record chosen features (optional, can be expanded)
+let selectedFeatures = [];
+function recordFeature(feature) {
+  selectedFeatures.push(feature);
 }
 </script>
 </body>
