@@ -1173,6 +1173,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
+  function startStep5() {
+    // Hide the design templates container
+    const slider = document.querySelector('.slider-container'); // replace with your slider wrapper class
+    if (slider) slider.style.display = 'none';
+
+    // Hide any other form screens that might be visible
+    const screens = document.querySelectorAll('.form-screen');
+    screens.forEach(s => s.style.display = 'none');
+
+    // Show Step 5 first question
+    const step5 = document.getElementById('instructor-q1');
+    if (step5) step5.style.display = 'block';
+
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
 </script>
 </body>
 </html>
