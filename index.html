@@ -902,6 +902,7 @@ button:hover {
 
  <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ TYPEWRITER --------------------
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -926,15 +927,8 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         el.style.animation = 'rocketRise 2s ease forwards';
         setTimeout(() => {
-          const introScreen = document.getElementById('main-intro-options');
-          if (introScreen) {
-            introScreen.style.display = 'block';
-            introScreen.classList.add('active');
-          }
-
-          const skipBtn = document.getElementById('skipToPackages');
-          if (skipBtn) skipBtn.style.display = 'block';
-
+          showScreen('main-intro-options');
+          document.getElementById('skipToPackages')?.style.display = 'block';
         }, 2000);
       }, 1000);
       return;
@@ -984,61 +978,122 @@ document.addEventListener("DOMContentLoaded", () => {
   el.style.opacity = 1;
   typeChar();
 
+
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
+  let features = [];
+  let userPath = "";
 
   function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
+    screens.forEach(s => {
+      s.classList.remove("active");
+      s.style.display = "none";
     });
   }
 
-  // ✅ Single, consistent showScreen function
-  window.showScreen = function (screenId) {
+  function showScreen(id) {
     hideAllScreens();
-    const screen = document.getElementById(screenId);
+    const screen = document.getElementById(id);
     if (screen) {
       screen.classList.add("active");
       screen.style.display = "block";
     }
-
     const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
-    }
-  };
+    if (skipBtn) skipBtn.style.display = (id === "plan-recommendation") ? "none" : "block";
+  }
 
-  // ✅ Fixed goToDesign
-  window.goToDesign = function () {
-    showScreen("design-start");
-  };
-
-  window.next = function () {
+  function next() {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
     if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
+      showScreen(allScreens[i + 1].id);
+      if(allScreens[i + 1].id === 'plan-recommendation') recommendPlan();
     }
-  };
+  }
 
-  window.prev = function () {
+  function prev() {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
     const i = allScreens.indexOf(current);
-    if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
-    }
-  };
+    if (i > 0) showScreen(allScreens[i - 1].id);
+  }
+
+  function setPath(path) {
+    userPath = path;
+    next();
+  }
+
+  function recordFeature(feature) {
+    if (!features.includes(feature)) features.push(feature);
+  }
+
+  function recommendPlan() {
+    let plan = '';
+    const count = features.length;
+    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    document.getElementById('recommended-plan').innerText = plan;
+  }
 
   hideAllScreens();
 
-  // ------------------ HAMBURGER MENU ---------------------
+
+  // ------------------ CONCEPT PREVIEW --------------------
+  const conceptInput = document.getElementById("designInput");
+  const previewImg = document.getElementById("previewImg");
+
+  if(conceptInput && previewImg) {
+    conceptInput.addEventListener('input', () => {
+      const code = conceptInput.value.trim().toUpperCase();
+      previewImg.src = code ? `images/${code}.png` : "images/placeholder.png";
+      previewImg.onerror = () => { previewImg.src = "images/placeholder.png"; };
+    });
+  }
+
+  function goToInstructorFunnel() {
+    showScreen("instructor-q1");
+  }
+
+  function goToConcept() {
+    const code = conceptInput.value.trim().toUpperCase();
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
+    // Show confirmation preview
+    const previewContainer = document.getElementById("recommended-plan");
+    previewContainer.innerHTML = `
+      <p>You selected: <strong>${code}</strong></p>
+      <button type="button" onclick="goToInstructorFunnel()">I want this concept</button>
+    `;
+    showScreen("plan-recommendation");
+  }
+
+  // ------------------ CONCEPT SLIDER --------------------
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+  const slides = document.querySelectorAll('.slide');
+  const sliderContainer = document.querySelector('.slider-container');
+
+  if (code && slides.length > 0) {
+    slides.forEach(slide => slide.style.display = 'none');
+    const chosenSlide = document.querySelector(`.slide[data-code="${code}"]`);
+    if (chosenSlide) chosenSlide.style.display = 'block';
+    document.body.classList.add('single-concept');
+  }
+
+  document.querySelectorAll('.choose-concept').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(sliderContainer) sliderContainer.style.display = 'none';
+      showScreen('instructor-q1');
+      window.scrollTo(0, 0);
+    });
+  });
+
+
+  // ------------------ HAMBURGER MENU --------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
@@ -1051,13 +1106,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (hamburger && menu) {
-    hamburger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      toggleMenu();
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+    hamburger.addEventListener('click', e => { e.stopPropagation(); toggleMenu(); });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
         hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
@@ -1066,232 +1117,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-// ------------------ FORM PATH + REDIRECT ---------------------
-let userPath = "";
-
-function setPath(path) {
-  userPath = path;
-  next();
-}
-
-document.getElementById("pricing-redirect").addEventListener("click", function () {
-  if (userPath === "instructor") {
-    window.location.href = "https://yourwebsite.com/pricing-instructor";
-  } else if (userPath === "school") {
-    window.location.href = "https://yourwebsite.com/pricing-school";
-  } else {
-    window.location.href = "https://yourwebsite.com/pricing";
-  }
-});
-
-    const features = [];
-
-  function setPath(path) {
-    window.userPath = path;
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function next() {
-    const screens = Array.from(document.querySelectorAll('.form-screen'));
-    const currentIndex = screens.findIndex(s => s.classList.contains('active'));
-    const nextScreen = screens[currentIndex + 1];
-    if (nextScreen) {
-      showScreen(nextScreen.id);
-      if(nextScreen.id === 'plan-recommendation') {
-        recommendPlan();
-      }
-    }
-  }
-
-  function recordFeature(feature) {
-    if(!features.includes(feature)) features.push(feature);
-  }
-
-  function recommendPlan() {
-    let plan = '';
-    const count = features.length;
-    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-    document.getElementById('recommended-plan').innerText = plan;
-  }
-
-
-  function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  }
-}
-
-
-
-// Run when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code'); // e.g., ?code=1
-
-    const slides = document.querySelectorAll('.slide'); // replace .slide with your slide class
-    const sliderContainer = document.querySelector('.slider-container'); // replace with your slider wrapper
-
-    if (code && slides.length > 0) {
-        // Hide all slides
-        slides.forEach(slide => slide.style.display = 'none');
-
-        // Show only the slide that matches the code
-        const chosenSlide = document.querySelector(`.slide[data-code="${code}"]`);
-        if (chosenSlide) {
-            chosenSlide.style.display = 'block';
-        }
-
-        // Add class to body to hide arrows
-        document.body.classList.add('single-concept');
-    }
-
-    // Attach "I want this concept" button
-    const chooseButtons = document.querySelectorAll('.choose-concept');
-    chooseButtons.forEach(btn => {
-        btn.addEventListener('click', startStep5);
-    });
-
-    function startStep5() {
-        // Hide slider
-        if (sliderContainer) sliderContainer.style.display = 'none';
-
-        // Show first Step 5 question
-        const step5 = document.getElementById('instructor-q1');
-        if (step5) step5.style.display = 'block';
-
-        // Scroll to top
-        window.scrollTo(0, 0);
-    }
-});
-
-
-
-
-
-  
-
-
-
-  // Show a specific screen
-function showScreen(id) {
-  document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// Track which path is chosen
-let path = "";
-function setPath(p) {
-  path = p;
-}
-
-// Move forward to the next screen
-function next() {
-  const active = document.querySelector(".form-screen.active");
-  const nextScreen = active.nextElementSibling;
-  if (nextScreen) {
-    active.classList.remove("active");
-    nextScreen.classList.add("active");
-  }
-}
-
-// Move back to the previous screen
-function prev() {
-  const active = document.querySelector(".form-screen.active");
-  const prevScreen = active.previousElementSibling;
-  if (prevScreen) {
-    active.classList.remove("active");
-    prevScreen.classList.add("active");
-  }
-}
-
-// Step 4: User enters code
-function goToConcept() {
-  const code = document.getElementById("designInput").value.trim();
-  if (!code) {
-    alert("Please enter a design code.");
-    return;
-  }
-
-  // Show preview of chosen concept
-  const previewContainer = document.getElementById("recommended-plan");
-  previewContainer.innerHTML = `
-    <p>You selected: <strong>${code}</strong></p>
-    <button type="button" onclick="goToInstructorFunnel()">I want this concept</button>
-  `;
-
-  // Switch to preview/confirmation screen
-  showScreen("plan-recommendation");
-}
-
-// Step 5: Continue funnel for Solo Instructor
-function goToInstructorFunnel() {
-  showScreen("instructor-q1");
-}
-
-// Record chosen features (optional, can be expanded)
-let selectedFeatures = [];
-function recordFeature(feature) {
-  selectedFeatures.push(feature);
-}
-
-  
-
-
-  // Create container
-  const container = document.createElement('div');
-  container.style.margin = '20px 0';
-
-  // Create label
-  const label = document.createElement('label');
-  label.textContent = 'Enter Concept Code:';
-  label.style.display = 'block';
-  label.style.marginBottom = '5px';
-
-  // Create input
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.placeholder = 'e.g., SDI-5';
-  input.style.padding = '5px';
-  input.style.width = '200px';
-  input.style.marginBottom = '10px';
-
-  // Create image preview
-  const previewImg = document.createElement('img');
-  previewImg.src = 'images/placeholder.png';
-  previewImg.alt = 'Concept Preview';
-  previewImg.style.maxWidth = '300px';
-  previewImg.style.display = 'block';
-
-  // Append elements
-  container.appendChild(label);
-  container.appendChild(input);
-  container.appendChild(previewImg);
-  document.body.appendChild(container);
-
-  // Update image on input
-  input.addEventListener('input', () => {
-    const code = input.value.trim();
-    if (code === '') {
-      previewImg.src = 'images/placeholder.png';
-      return;
-    }
-    previewImg.src = `images/${code}.png`;
-
-    // Fallback if image doesn't exist
-    previewImg.onerror = () => {
-      previewImg.src = 'images/placeholder.png';
-    };
+  // ------------------ REDIRECT --------------------
+  document.getElementById("pricing-redirect")?.addEventListener("click", () => {
+    if (userPath === "instructor") window.location.href = "https://yourwebsite.com/pricing-instructor";
+    else if (userPath === "school") window.location.href = "https://yourwebsite.com/pricing-school";
+    else window.location.href = "https://yourwebsite.com/pricing";
   });
-
+});
 </script>
 </body>
 </html>
