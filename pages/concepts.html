@@ -600,6 +600,27 @@ footer {
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Get code from URL
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    if (!code) return; // show full slider if no code provided
+
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach(slide => {
+        const slideCode = slide.querySelector('.buttons span').textContent.trim();
+        if (slideCode !== code) {
+            slide.style.display = 'none'; // hide slides that don't match
+        } else {
+            slide.style.display = 'flex'; // show only the matching slide
+        }
+    });
+});
+
+
+  
   // Initialize AOS animation
   AOS.init();
 
