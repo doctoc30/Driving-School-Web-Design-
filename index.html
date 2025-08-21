@@ -888,8 +888,9 @@ button:hover {
   </div>
 
 
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ TYPEWRITER ------------------
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -919,10 +920,8 @@ document.addEventListener("DOMContentLoaded", () => {
             introScreen.style.display = 'block';
             introScreen.classList.add('active');
           }
-
           const skipBtn = document.getElementById('skipToPackages');
           if (skipBtn) skipBtn.style.display = 'block';
-
         }, 2000);
       }, 1000);
       return;
@@ -972,61 +971,7 @@ document.addEventListener("DOMContentLoaded", () => {
   el.style.opacity = 1;
   typeChar();
 
-  // ------------------ FORM FLOW --------------------
-  const screens = document.querySelectorAll(".form-screen");
-
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
-  }
-
-  // ✅ Single, consistent showScreen function
-  window.showScreen = function (screenId) {
-    hideAllScreens();
-    const screen = document.getElementById(screenId);
-    if (screen) {
-      screen.classList.add("active");
-      screen.style.display = "block";
-    }
-
-    const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
-    }
-  };
-
-  // ✅ Fixed goToDesign
-  window.goToDesign = function () {
-    showScreen("design-start");
-  };
-
-  window.next = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
-    }
-  };
-
-  window.prev = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
-    }
-  };
-
-  hideAllScreens();
-
-  // ------------------ HAMBURGER MENU ---------------------
+  // ------------------ HAMBURGER MENU ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
@@ -1054,69 +999,84 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-// ------------------ FORM PATH + REDIRECT ---------------------
-let userPath = "";
-
-function setPath(path) {
-  userPath = path;
-  next();
-}
-
-document.getElementById("pricing-redirect").addEventListener("click", function () {
-  if (userPath === "instructor") {
-    window.location.href = "https://yourwebsite.com/pricing-instructor";
-  } else if (userPath === "school") {
-    window.location.href = "https://yourwebsite.com/pricing-school";
-  } else {
-    window.location.href = "https://yourwebsite.com/pricing";
-  }
-});
-
-    const features = [];
+  // ------------------ FORM PATH + FEATURE TRACKING ------------------
+  let userPath = "";
+  const features = [];
 
   function setPath(path) {
-    window.userPath = path;
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function next() {
-    const screens = Array.from(document.querySelectorAll('.form-screen'));
-    const currentIndex = screens.findIndex(s => s.classList.contains('active'));
-    const nextScreen = screens[currentIndex + 1];
-    if (nextScreen) {
-      showScreen(nextScreen.id);
-      if(nextScreen.id === 'plan-recommendation') {
-        recommendPlan();
-      }
-    }
+    userPath = path;
+    next();
   }
 
   function recordFeature(feature) {
-    if(!features.includes(feature)) features.push(feature);
+    if (!features.includes(feature)) features.push(feature);
   }
 
+  // ------------------ SCREEN NAVIGATION ------------------
+  const screens = document.querySelectorAll(".form-screen");
+
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
+  }
+
+  function showScreen(screenId) {
+    hideAllScreens();
+    const screen = document.getElementById(screenId);
+    if (screen) {
+      screen.classList.add("active");
+      screen.style.display = "block";
+    }
+
+    const skipBtn = document.getElementById("skipToPackages");
+    if (skipBtn) skipBtn.style.display = (screenId === "q11") ? "none" : "block";
+  }
+
+  function next() {
+    const screensArr = Array.from(screens);
+    const currentIndex = screensArr.findIndex(s => s.classList.contains('active'));
+    const nextScreen = screensArr[currentIndex + 1];
+    if (nextScreen) {
+      showScreen(nextScreen.id);
+      if (nextScreen.id === 'plan-recommendation') recommendPlan();
+    }
+  }
+
+  function prev() {
+    const screensArr = Array.from(screens);
+    const currentIndex = screensArr.findIndex(s => s.classList.contains('active'));
+    const prevScreen = screensArr[currentIndex - 1];
+    if (prevScreen) showScreen(prevScreen.id);
+  }
+
+  // ------------------ PLAN RECOMMENDATION ------------------
   function recommendPlan() {
     let plan = '';
     const count = features.length;
-    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
     else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
     document.getElementById('recommended-plan').innerText = plan;
   }
 
-
+  // ------------------ DESIGN CODE HANDLING ------------------
   function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+    const code = document.getElementById("designInput").value.trim().toUpperCase();
+    if (code) {
+      window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+    } else {
+      alert("Please enter a design code first.");
+    }
   }
-}
+
+  // Initialize first screen
+  hideAllScreens();
+  showScreen('main-intro-options');
+});
+</script>
 
 </script>
 </body>
