@@ -901,9 +901,7 @@ button:hover {
 
 
  <script>
-
 document.addEventListener("DOMContentLoaded", () => {
-  // ---------------- TYPEWRITER ----------------
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -933,8 +931,10 @@ document.addEventListener("DOMContentLoaded", () => {
             introScreen.style.display = 'block';
             introScreen.classList.add('active');
           }
+
           const skipBtn = document.getElementById('skipToPackages');
           if (skipBtn) skipBtn.style.display = 'block';
+
         }, 2000);
       }, 1000);
       return;
@@ -984,8 +984,7 @@ document.addEventListener("DOMContentLoaded", () => {
   el.style.opacity = 1;
   typeChar();
 
-
-  // ---------------- FORM FLOW ----------------
+  // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
 
   function hideAllScreens() {
@@ -1007,6 +1006,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (skipBtn) {
       skipBtn.style.display = (screenId === "q11") ? "none" : "block";
     }
+  };
+
+  window.goToDesign = function () {
+    showScreen("design-start");
   };
 
   window.next = function () {
@@ -1033,8 +1036,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   hideAllScreens();
 
-
-  // ---------------- HAMBURGER ----------------
+  // ------------------ HAMBURGER MENU ---------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
@@ -1062,80 +1064,84 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-
-  // ---------------- PATH + REDIRECT ----------------
-  let userPath = "";
-  const features = [];
-
-  window.setPath = function(path) {
-    userPath = path;
-    next();
-  };
-
-  document.getElementById("pricing-redirect").addEventListener("click", function () {
-    if (userPath === "instructor") {
-      window.location.href = "https://yourwebsite.com/pricing-instructor";
-    } else if (userPath === "school") {
-      window.location.href = "https://yourwebsite.com/pricing-school";
-    } else {
-      window.location.href = "https://yourwebsite.com/pricing";
-    }
-  });
-
-  window.recordFeature = function(feature) {
-    if(!features.includes(feature)) features.push(feature);
-  };
-
-  window.recommendPlan = function() {
-    let plan = '';
-    const count = features.length;
-    if(count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if(count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-    document.getElementById('recommended-plan').innerText = plan;
-  };
-
-
-  // ---------------- DESIGN CODE PREVIEW ----------------
-  window.goToConcept = function () {
-    const code = document.getElementById("designInput").value.trim().toUpperCase();
-
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-
-    // Save the code into the form
-    const hiddenField = document.querySelector("input[name='Design Code']");
-    if (hiddenField) hiddenField.value = code;
-
-    // Replace screen with preview
-    const previewHtml = `
-      <div class="form-screen active" id="design-preview">
-        <h2>Your Selected Design: ${code}</h2>
-        <p>Here’s a preview of your chosen template.</p>
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png" 
-             alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
-        <div class="button-row">
-          <button type="button" onclick="startStep5()">I want this concept</button>
-        </div>
-      </div>
-    `;
-
-    document.getElementById("design-code").classList.remove("active");
-    document.getElementById("design-code").insertAdjacentHTML("afterend", previewHtml);
-  };
-
-  window.startStep5 = function () {
-    hideAllScreens();
-    const step5 = document.getElementById('instructor-q1');
-    if (step5) step5.style.display = 'block';
-    window.scrollTo(0, 0);
-  };
-
 });
 
+// ------------------ FORM PATH + REDIRECT ---------------------
+let userPath = "";
+const features = [];
+
+function setPath(path) {
+  userPath = path;
+  next();
+}
+
+document.getElementById("pricing-redirect").addEventListener("click", function () {
+  if (userPath === "instructor") {
+    window.location.href = "https://yourwebsite.com/pricing-instructor";
+  } else if (userPath === "school") {
+    window.location.href = "https://yourwebsite.com/pricing-school";
+  } else {
+    window.location.href = "https://yourwebsite.com/pricing";
+  }
+});
+
+function recordFeature(feature) {
+  if (!features.includes(feature)) features.push(feature);
+}
+
+function recommendPlan() {
+  let plan = '';
+  const count = features.length;
+  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+  document.getElementById('recommended-plan').innerText = plan;
+}
+
+// ------------------ DESIGN CODE PREVIEW ---------------------
+function goToConcept() {
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+
+  // Save the code into the form
+  const hiddenInput = document.querySelector("input[name='Design Code']");
+  if (hiddenInput) hiddenInput.value = code;
+
+  // ✅ Show inline preview
+  const previewHtml = `
+    <div class="form-screen active" id="design-preview">
+      <h2>Your Selected Design: ${code}</h2>
+      <p>Here’s a preview of your chosen template.</p>
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png" 
+           alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
+      <div class="button-row">
+        <button type="button" onclick="startStep5()">I want this concept</button>
+      </div>
+    </div>
+  `;
+
+  // Replace current screen with preview
+  const designScreen = document.getElementById("design-code");
+  if (designScreen) {
+    designScreen.classList.remove("active");
+    designScreen.insertAdjacentHTML("afterend", previewHtml);
+  }
+}
+
+// ------------------ STEP 5 START ---------------------
+function startStep5() {
+  const screens = document.querySelectorAll('.form-screen');
+  screens.forEach(s => s.style.display = 'none');
+
+  const step5 = document.getElementById('instructor-q1');
+  if (step5) step5.style.display = 'block';
+
+  window.scrollTo(0, 0);
+}
 </script>
 </body>
 </html>
