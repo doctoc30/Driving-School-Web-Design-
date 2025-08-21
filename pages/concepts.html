@@ -7,7 +7,6 @@
 
 
   <style>
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -16,6 +15,7 @@ body {
   color: white;
   overflow-x: hidden;
 }
+
 /* ===== HEADER ===== */
 header {
   position: fixed; top: 0; left: 0; right: 0;
@@ -463,14 +463,13 @@ footer {
 <!-- ✅ SLIDER -->
 <div class="concept-slider">
   <div class="slider-wrapper">
+
     <!-- Slide 1 -->
     <div class="slide">
       <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
       <div class="buttons">
-        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" 
-           target="_blank" 
-           title="Design may differ slightly from concept image">
-          View Live Version From Concept To A Website
+        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank" title="Design may differ slightly from concept image">
+          View Live Version
         </a>
         <span>SDI-1</span>
         <button type="button" onclick="chooseConcept('SDI-1')">I want this concept</button>
@@ -566,6 +565,7 @@ footer {
         <button type="button" onclick="chooseConcept('SDI-10')">I want this concept</button>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -711,7 +711,7 @@ function updateSlider() {
 
 
 
-  <!-- ✅ Core slider JS --> 
+  <!-- ✅ Core slider JS -->
 const sliderWrapper = document.querySelector('.slider-wrapper');
 const slides = document.querySelectorAll('.slide');
 const prevBtn = document.querySelector('.arrow.prev');
@@ -739,5 +739,21 @@ window.addEventListener('resize', updateSlider);
 updateSlider();
 </script>
 
+
+  function chooseConcept(code) {
+    // Fill the design code input
+    const designInput = document.getElementById('designInput');
+    if (designInput) designInput.value = code;
+
+    // Hide all screens
+    document.querySelectorAll('.form-screen').forEach(screen => screen.style.display = 'none');
+
+    // Show Step 5: first instructor question
+    const step5 = document.getElementById('instructor-q1');
+    if (step5) step5.style.display = 'block';
+
+    // Scroll to the form
+    document.getElementById('formWrapper').scrollIntoView({ behavior: 'smooth' });
+  }
 </body>
 </html>
