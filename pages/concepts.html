@@ -8,7 +8,14 @@
 
   <style>
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #33a7d4;
+  color: white;
+  overflow-x: hidden;
+}
 /* ===== HEADER ===== */
 header {
   position: fixed; top: 0; left: 0; right: 0;
@@ -704,7 +711,7 @@ function updateSlider() {
 
 
 
-  <!-- ✅ Core slider JS -->
+  <!-- ✅ Core slider JS --> 
 const sliderWrapper = document.querySelector('.slider-wrapper');
 const slides = document.querySelectorAll('.slide');
 const prevBtn = document.querySelector('.arrow.prev');
