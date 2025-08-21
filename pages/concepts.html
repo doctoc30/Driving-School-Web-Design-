@@ -602,163 +602,148 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
-
-
-
-
-
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-
 window.addEventListener('DOMContentLoaded', () => {
-    // Get code from URL
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
+  // -------------------------
+  // 1️⃣ Read URL code (if any) and filter slides
+  // -------------------------
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
 
-    if (!code) return; // show full slider if no code provided
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach(slide => {
+    const slideCodeElem = slide.querySelector('.buttons span');
+    if (!slideCodeElem) return;
+    const slideCode = slideCodeElem.textContent.trim();
+    if (code && slideCode !== code) {
+      slide.style.display = 'none';
+    } else {
+      slide.style.display = 'flex';
+    }
+  });
 
-    const slides = document.querySelectorAll('.slide');
-    slides.forEach(slide => {
-        const slideCode = slide.querySelector('.buttons span').textContent.trim();
-        if (slideCode !== code) {
-            slide.style.display = 'none'; // hide slides that don't match
-        } else {
-            slide.style.display = 'flex'; // show only the matching slide
-        }
-    });
-});
-
-
-  
-  // Initialize AOS animation
+  // -------------------------
+  // 2️⃣ Initialize AOS animation
+  // -------------------------
   AOS.init();
 
-  // Hamburger Menu and Search Filter
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.querySelector('.hamburger');
-    const menu = document.querySelector('nav.menu');
-    
-    function toggleMenu() {
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+  // -------------------------
+  // 3️⃣ Hamburger menu toggle
+  // -------------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+
+  function toggleMenu() {
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  hamburger.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  document.addEventListener('click', e => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', false);
+      menu.setAttribute('aria-hidden', true);
+      document.body.style.overflow = '';
     }
+  });
 
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMenu();
-    });
+  // -------------------------
+  // 4️⃣ Search filter
+  // -------------------------
+  const searchInput = document.getElementById("search");
+  const items = document.querySelectorAll(".item");
 
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-
-    // Search filter
-    const searchInput = document.getElementById("search");
-    const items = document.querySelectorAll(".item");
-    
+  if (searchInput) {
     searchInput.addEventListener("keyup", () => {
       const term = searchInput.value.toLowerCase();
       items.forEach(item => {
-        const code = item.querySelector(".code").textContent.toLowerCase();
-        item.style.display = code.includes(term) ? "block" : "none";
+        const codeElem = item.querySelector(".code");
+        if (!codeElem) return;
+        const itemCode = codeElem.textContent.toLowerCase();
+        item.style.display = itemCode.includes(term) ? "block" : "none";
       });
+    });
+  }
+
+  // -------------------------
+  // 5️⃣ Slider logic (portrait swipe / landscape grid)
+  // -------------------------
+  const sliderWrapper = document.querySelector('.slider-wrapper');
+  const nextBtn = document.querySelector('.arrow.next');
+  const prevBtn = document.querySelector('.arrow.prev');
+  let currentIndex = 0;
+
+  function updateSlider() {
+    if (!sliderWrapper) return;
+
+    if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
+      // Swipe mode: translate by 100% per slide
+      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    } else {
+      // Grid mode: no translate
+      sliderWrapper.style.transform = "none";
+    }
+  }
+
+  if (nextBtn) nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlider();
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlider();
+  });
+
+  // Swipe support
+  let startX = 0;
+  if (sliderWrapper) {
+    sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    sliderWrapper.addEventListener('touchend', e => {
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextBtn.click();
+      else if (endX - startX > 50) prevBtn.click();
+    });
+  }
+
+  window.addEventListener('resize', updateSlider);
+  updateSlider();
+
+  // -------------------------
+  // 6️⃣ “I want this concept” button
+  // -------------------------
+  const conceptButtons = document.querySelectorAll('.want-concept');
+  conceptButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const codeElem = btn.parentElement.querySelector('span');
+      if (!codeElem) return;
+      const code = codeElem.textContent.trim();
+      // Redirect to index.html Step 5 with code
+      window.location.href = `index.html?code=${code}`;
     });
   });
 
-
-  
-document.addEventListener("DOMContentLoaded", () => {
-  const wrapper = document.querySelector('.slider-wrapper');
-  const slides = document.querySelectorAll('.slide');
-  const nextBtn = document.querySelector('.arrow.next');
-  const prevBtn = document.querySelector('.arrow.prev');
-  let current = 0;
-
-function updateSlider() {
-  if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
-    wrapper.style.transform = `translateX(-${current * 100}%)`; // swipe mode
-  } else {
-    wrapper.style.transform = "none"; // grid mode
-  }
-}
-
-  nextBtn.addEventListener('click', () => {
-    current = (current + 1) % slides.length;
-    updateSlider();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    current = (current - 1 + slides.length) % slides.length;
-    updateSlider();
-  });
-
-  // Swipe Support
-  let startX = 0;
-  wrapper.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  });
-
-  wrapper.addEventListener('touchend', e => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      nextBtn.click();
-    } else if (endX - startX > 50) {
-      prevBtn.click();
-    }
-  });
-});
-
-
-
-  <!-- ✅ Core slider JS -->
-const sliderWrapper = document.querySelector('.slider-wrapper');
-const slides = document.querySelectorAll('.slide');
-const prevBtn = document.querySelector('.arrow.prev');
-const nextBtn = document.querySelector('.arrow.next');
-let currentIndex = 0;
-
-function updateSlider() {
-  const slideWidth = slides[0].clientWidth;
-  sliderWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-}
-
-nextBtn.addEventListener('click', () => {
-  if (currentIndex < slides.length - 1) currentIndex++;
-  else currentIndex = 0;
-  updateSlider();
-});
-
-prevBtn.addEventListener('click', () => {
-  if (currentIndex > 0) currentIndex--;
-  else currentIndex = slides.length - 1;
-  updateSlider();
-});
-
-window.addEventListener('resize', updateSlider);
-updateSlider();
-
-  
-
+  // -------------------------
+  // 7️⃣ Optional: Jump to Step 5 in concept.html (if needed)
+  // -------------------------
   function goToStep5() {
-  // Hide the slider
-  document.getElementById('slider-container').style.display = 'none';
+    const sliderContainer = document.getElementById('slider-container');
+    const step5 = document.getElementById('instructor-q1');
+    if (sliderContainer) sliderContainer.style.display = 'none';
+    if (step5) step5.style.display = 'block';
+  }
 
-  // Show Step 5 (Solo Instructor Questions)
-  document.getElementById('instructor-q1').style.display = 'block';
-}
-
+});
 </script>
-
-
 </body>
 </html>
