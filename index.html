@@ -900,8 +900,9 @@ button:hover {
   </div>
 
 
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ TYPEWRITER --------------------
   const el = document.getElementById('typewriter');
   let lines = [];
   const typingSpeed = 100;
@@ -934,7 +935,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const skipBtn = document.getElementById('skipToPackages');
           if (skipBtn) skipBtn.style.display = 'block';
-
         }, 2000);
       }, 1000);
       return;
@@ -1003,9 +1003,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
-    }
+    if (skipBtn) skipBtn.style.display = (screenId === "q11") ? "none" : "block";
   };
 
   window.goToDesign = function () {
@@ -1098,37 +1096,51 @@ function recommendPlan() {
   document.getElementById('recommended-plan').innerText = plan;
 }
 
-// ------------------ DESIGN CODE PREVIEW ---------------------
-function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
+// ------------------ DESIGN CODE PREVIEW (HANDS-OFF) ---------------------
+async function goToConcept() {
+  const inputEl = document.getElementById("designInput");
+  const code = inputEl.value.trim().toUpperCase();
 
   if (!code) {
     alert("Please enter a design code.");
     return;
   }
 
-  // Save the code into the form
-  const hiddenInput = document.querySelector("input[name='Design Code']");
-  if (hiddenInput) hiddenInput.value = code;
+  const imgUrl = `https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png`;
 
-  // ✅ Show inline preview
-  const previewHtml = `
-    <div class="form-screen active" id="design-preview">
-      <h2>Your Selected Design: ${code}</h2>
-      <p>Here’s a preview of your chosen template.</p>
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png" 
-           alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
-      <div class="button-row">
-        <button type="button" onclick="startStep5()">I want this concept</button>
+  try {
+    const response = await fetch(imgUrl, { method: 'HEAD' });
+    if (!response.ok) throw new Error("Image not found");
+
+    // Save the code into the form
+    const hiddenInput = document.querySelector("input[name='Design Code']");
+    if (hiddenInput) hiddenInput.value = code;
+
+    // Remove previous preview if exists
+    const oldPreview = document.getElementById("design-preview");
+    if (oldPreview) oldPreview.remove();
+
+    // ✅ Show inline preview
+    const previewHtml = `
+      <div class="form-screen active" id="design-preview">
+        <h2>Your Selected Design: ${code}</h2>
+        <p>Here’s a preview of your chosen template.</p>
+        <img src="${imgUrl}" alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
+        <div class="button-row">
+          <button type="button" onclick="startStep5()">I want this concept</button>
+        </div>
       </div>
-    </div>
-  `;
+    `;
 
-  // Replace current screen with preview
-  const designScreen = document.getElementById("design-code");
-  if (designScreen) {
-    designScreen.classList.remove("active");
-    designScreen.insertAdjacentHTML("afterend", previewHtml);
+    const designScreen = document.getElementById("design-code");
+    if (designScreen) {
+      designScreen.classList.remove("active");
+      designScreen.insertAdjacentHTML("afterend", previewHtml);
+    }
+
+  } catch (err) {
+    alert(`Design code "${code}" not found. Please check your code.`);
+    inputEl.focus();
   }
 }
 
