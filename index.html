@@ -1096,8 +1096,11 @@ function recommendPlan() {
   document.getElementById('recommended-plan').innerText = plan;
 }
 
-// ------------------ DESIGN CODE PREVIEW (HANDS-OFF) ---------------------
-async function goToConcept() {
+
+
+
+
+ function goToConcept() {
   const inputEl = document.getElementById("designInput");
   const code = inputEl.value.trim().toUpperCase();
 
@@ -1108,51 +1111,34 @@ async function goToConcept() {
 
   const imgUrl = `https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/${code}.png`;
 
-  try {
-    const response = await fetch(imgUrl, { method: 'HEAD' });
-    if (!response.ok) throw new Error("Image not found");
+  // Remove previous preview if exists
+  const oldPreview = document.getElementById("design-preview");
+  if (oldPreview) oldPreview.remove();
 
-    // Save the code into the form
-    const hiddenInput = document.querySelector("input[name='Design Code']");
-    if (hiddenInput) hiddenInput.value = code;
+  // Save the code into the form
+  const hiddenInput = document.querySelector("input[name='Design Code']");
+  if (hiddenInput) hiddenInput.value = code;
 
-    // Remove previous preview if exists
-    const oldPreview = document.getElementById("design-preview");
-    if (oldPreview) oldPreview.remove();
-
-    // ✅ Show inline preview
-    const previewHtml = `
-      <div class="form-screen active" id="design-preview">
-        <h2>Your Selected Design: ${code}</h2>
-        <p>Here’s a preview of your chosen template.</p>
-        <img src="${imgUrl}" alt="Preview of ${code}" style="max-width:100%;border:1px solid #ccc;">
-        <div class="button-row">
-          <button type="button" onclick="startStep5()">I want this concept</button>
-        </div>
+  // ✅ Show inline preview with error handling
+  const previewHtml = `
+    <div class="form-screen active" id="design-preview">
+      <h2>Your Selected Design: ${code}</h2>
+      <p>Here’s a preview of your chosen template.</p>
+      <img src="${imgUrl}" 
+           alt="Preview of ${code}" 
+           style="max-width:100%;border:1px solid #ccc;"
+           onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400?text=Design+Not+Found';alert('Design code ${code} not found.');">
+      <div class="button-row">
+        <button type="button" onclick="startStep5()">I want this concept</button>
       </div>
-    `;
+    </div>
+  `;
 
-    const designScreen = document.getElementById("design-code");
-    if (designScreen) {
-      designScreen.classList.remove("active");
-      designScreen.insertAdjacentHTML("afterend", previewHtml);
-    }
-
-  } catch (err) {
-    alert(`Design code "${code}" not found. Please check your code.`);
-    inputEl.focus();
+  const designScreen = document.getElementById("design-code");
+  if (designScreen) {
+    designScreen.classList.remove("active");
+    designScreen.insertAdjacentHTML("afterend", previewHtml);
   }
-}
-
-// ------------------ STEP 5 START ---------------------
-function startStep5() {
-  const screens = document.querySelectorAll('.form-screen');
-  screens.forEach(s => s.style.display = 'none');
-
-  const step5 = document.getElementById('instructor-q1');
-  if (step5) step5.style.display = 'block';
-
-  window.scrollTo(0, 0);
 }
 </script>
 </body>
