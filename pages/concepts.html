@@ -719,30 +719,17 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
+
+
   // -------------------------
-  // 6️⃣ “I want this concept” button
-  // -------------------------
-  const conceptButtons = document.querySelectorAll('.want-concept');
-  conceptButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const codeElem = btn.parentElement.querySelector('span');
-      if (!codeElem) return;
-      const code = codeElem.textContent.trim();
-      // Redirect to index.html Step 5 with code
-      window.location.href = `index.html?code=${code}`;
-    });
+// “I want this concept” button redirect
+// -------------------------
+document.querySelectorAll('.want-concept').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.getAttribute('data-code');
+    // Redirect to index.html Step 5 with code
+    window.location.href = `../index.html?code=${code}&step=5`;
   });
-
-  // -------------------------
-  // 7️⃣ Optional: Jump to Step 5 in concept.html (if needed)
-  // -------------------------
-  function goToStep5() {
-    const sliderContainer = document.getElementById('slider-container');
-    const step5 = document.getElementById('instructor-q1');
-    if (sliderContainer) sliderContainer.style.display = 'none';
-    if (step5) step5.style.display = 'block';
-  }
-
 });
 </script>
 </body>
