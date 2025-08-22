@@ -602,6 +602,7 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
+
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', () => {
@@ -642,20 +643,22 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
-  hamburger.addEventListener('click', e => {
-    e.stopPropagation();
-    toggleMenu();
-  });
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleMenu();
+    });
 
-  document.addEventListener('click', e => {
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', false);
-      menu.setAttribute('aria-hidden', true);
-      document.body.style.overflow = '';
-    }
-  });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
 
   // -------------------------
   // 4️⃣ Search filter
@@ -719,18 +722,16 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-
-
-
-
-  document.addEventListener("DOMContentLoaded", () => {
+  // -------------------------
+  // 6️⃣ “I want this concept” button redirect
+  // -------------------------
   document.querySelectorAll('.want-concept').forEach(btn => {
     btn.addEventListener('click', () => {
       const code = btn.getAttribute('data-code');
-      // Adjust path depending on your folder structure
       window.location.href = `../index.html?code=${code}&step=5`;
     });
   });
+
 });
 </script>
 </body>
