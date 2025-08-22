@@ -695,6 +695,13 @@ button:hover {
   margin-top: 60px; /* this moves ONLY the 3 buttons further down */
 }
 
+
+
+ #typewriter { display: none; }
+#typewriter.active { display: block; }
+
+.color-rise { display: none; transition: none; }
+.color-rise.active { display: block; transition: background-color 2s ease; }
 </style>
 
 </head>
@@ -888,30 +895,31 @@ button:hover {
   </div>
 
 
-
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
   const step = params.get("step");
 
-  // ------------------ TYPEWRITER ELEMENT VISIBILITY ------------------
+  // ------------------ TYPEWRITER AND BACKGROUND CONTROL ------------------
   const typewriterEl = document.getElementById('typewriter');
-  if (step || code) {
-    // Hide typewriter if coming via URL params (midway funnel)
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  if (!step && !code) {
+    // Fresh landing → show both
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    // Mid-funnel → hide both completely
     if (typewriterEl) {
-      typewriterEl.style.display = 'none';
+      typewriterEl.classList.remove('active');
       typewriterEl.classList.remove('rocketRise');
     }
-  } else {
-    if (typewriterEl) typewriterEl.style.display = 'block';
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
   // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
-  if (!step && !code) {  // Only run on fresh landing
-    startTypewriterAnimation();
-  }
-
   function startTypewriterAnimation() {
     const el = document.getElementById('typewriter');
     let lines = [];
