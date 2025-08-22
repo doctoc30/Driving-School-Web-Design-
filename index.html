@@ -886,11 +886,26 @@ button:hover {
   Skip Questions For Now →
 </a>
   </div>
-<script>
+
+
+
+ <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
   const step = params.get("step");
+
+  // ------------------ TYPEWRITER ELEMENT VISIBILITY ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  if (step || code) {
+    // Hide typewriter if coming via URL params (midway funnel)
+    if (typewriterEl) {
+      typewriterEl.style.display = 'none';
+      typewriterEl.classList.remove('rocketRise');
+    }
+  } else {
+    if (typewriterEl) typewriterEl.style.display = 'block';
+  }
 
   // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
   if (!step && !code) {  // Only run on fresh landing
@@ -1103,7 +1118,6 @@ function goToConcept() {
   }
 }
 </script>
-
 
 </body>
 </html>
