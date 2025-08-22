@@ -480,8 +480,7 @@ footer {
           View Live Version
         </a>
         <span>SDI-1</span>
-        <button class="want-this" onclick="goToStep5()">I want this concept</button>
-
+        <button class="want-concept" data-code="SDI-1">I want this concept</button>
       </div>
     </div>
 
@@ -491,7 +490,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
         <span>SDI-2</span>
-        <button type="button" onclick="chooseConcept('SDI-2')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-2">I want this concept</button>
       </div>
     </div>
 
@@ -501,7 +500,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" target="_blank">View live link</a>
         <span>SDI-3</span>
-        <button type="button" onclick="chooseConcept('SDI-3')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-3">I want this concept</button>
       </div>
     </div>
 
@@ -511,7 +510,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" target="_blank">View live link</a>
         <span>SDI-4</span>
-        <button type="button" onclick="chooseConcept('SDI-4')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-4">I want this concept</button>
       </div>
     </div>
 
@@ -521,7 +520,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" target="_blank">View live link</a>
         <span>SDI-5</span>
-        <button type="button" onclick="chooseConcept('SDI-5')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-5">I want this concept</button>
       </div>
     </div>
 
@@ -531,7 +530,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" target="_blank">View live link</a>
         <span>SDI-6</span>
-        <button type="button" onclick="chooseConcept('SDI-6')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-6">I want this concept</button>
       </div>
     </div>
 
@@ -541,7 +540,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" target="_blank">View live link</a>
         <span>SDI-7</span>
-        <button type="button" onclick="chooseConcept('SDI-7')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-7">I want this concept</button>
       </div>
     </div>
 
@@ -551,7 +550,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" target="_blank">View live link</a>
         <span>SDI-8</span>
-        <button type="button" onclick="chooseConcept('SDI-8')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-8">I want this concept</button>
       </div>
     </div>
 
@@ -561,7 +560,7 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" target="_blank">View live link</a>
         <span>SDI-9</span>
-        <button type="button" onclick="chooseConcept('SDI-9')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-9">I want this concept</button>
       </div>
     </div>
 
@@ -571,13 +570,14 @@ footer {
       <div class="buttons">
         <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" target="_blank">View live link</a>
         <span>SDI-10</span>
-        <button type="button" onclick="chooseConcept('SDI-10')">I want this concept</button>
+        <button class="want-concept" data-code="SDI-10">I want this concept</button>
       </div>
     </div>
 
   </div>
 </div>
 
+  
     <!-- Arrows -->
     <button class="arrow prev">&#10094;</button>
     <button class="arrow next">&#10095;</button>
@@ -721,14 +721,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // -------------------------
-// “I want this concept” button redirect
-// -------------------------
-document.querySelectorAll('.want-concept').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const code = btn.getAttribute('data-code');
-    // Redirect to index.html Step 5 with code
-    window.location.href = `../index.html?code=${code}&step=5`;
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.want-concept').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const code = btn.getAttribute('data-code');
+      // Adjust path depending on your folder structure
+      window.location.href = `../index.html?code=${code}&step=5`;
+    });
   });
 });
 </script>
