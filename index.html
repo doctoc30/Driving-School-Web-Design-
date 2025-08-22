@@ -888,63 +888,87 @@ button:hover {
   </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const el = document.getElementById('typewriter');
-  let lines = [];
-  const typingSpeed = 100;
-  const lineDelay = 500;
-  let currentLine = 0;
-  let currentChar = 0;
-  let lineEl = null;
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const step = params.get("step");
 
-  const cursor = document.createElement('span');
-  cursor.classList.add('cursor');
-  el.appendChild(cursor);
-
-  function setLinesByOrientation() {
-    lines = window.matchMedia("(orientation: landscape)").matches
-      ? ["We build", "your website.", "You approve,", "then pay."]
-      : ["We build", "your", "website.", "You approve,", "then pay."];
+  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
+  if (!step && !code) {  // Only run on fresh landing
+    startTypewriterAnimation();
   }
 
-  function typeChar() {
-    if (currentLine >= lines.length) {
-      cursor.remove();
-      setTimeout(() => {
-        el.style.animation = 'rocketRise 2s ease forwards';
+  function startTypewriterAnimation() {
+    const el = document.getElementById('typewriter');
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    el.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
         setTimeout(() => {
-          const introScreen = document.getElementById('main-intro-options');
-          if (introScreen) {
-            introScreen.style.display = 'block';
-            introScreen.classList.add('active');
-          }
+          el.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => {
+            const introScreen = document.getElementById('main-intro-options');
+            if (introScreen) {
+              introScreen.style.display = 'block';
+              introScreen.classList.add('active');
+            }
+            const skipBtn = document.getElementById('skipToPackages');
+            if (skipBtn) skipBtn.style.display = 'block';
+          }, 2000);
+        }, 1000);
+        return;
+      }
 
-          const skipBtn = document.getElementById('skipToPackages');
-          if (skipBtn) skipBtn.style.display = 'block';
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        el.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
 
-        }, 2000);
-      }, 1000);
-      return;
+      if (currentChar < text.length) {
+        const char = document.createTextNode(text[currentChar]);
+        lineEl.insertBefore(char, cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
     }
 
-    const text = lines[currentLine];
-    if (!lineEl) {
-      lineEl = document.createElement('div');
-      lineEl.classList.add('typed-line');
-      el.appendChild(lineEl);
-      lineEl.appendChild(cursor);
-    }
+    setLinesByOrientation();
+    el.style.opacity = 1;
+    typeChar();
 
-    if (currentChar < text.length) {
-      const char = document.createTextNode(text[currentChar]);
-      lineEl.insertBefore(char, cursor);
-      currentChar++;
-      setTimeout(typeChar, typingSpeed);
-    } else {
-      currentLine++;
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
       currentChar = 0;
       lineEl = null;
-      setTimeout(typeChar, lineDelay);
-    }
+      el.textContent = '';
+      el.appendChild(cursor);
+      setLinesByOrientation();
+      el.style.opacity = 1;
+      typeChar();
+    }, 300));
   }
 
   function debounce(func, wait) {
@@ -954,21 +978,6 @@ document.addEventListener("DOMContentLoaded", () => {
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-
-  window.addEventListener('resize', debounce(() => {
-    currentLine = 0;
-    currentChar = 0;
-    lineEl = null;
-    el.textContent = '';
-    el.appendChild(cursor);
-    setLinesByOrientation();
-    el.style.opacity = 1;
-    typeChar();
-  }, 300));
-
-  setLinesByOrientation();
-  el.style.opacity = 1;
-  typeChar();
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
@@ -980,7 +989,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Single, consistent showScreen function
   window.showScreen = function (screenId) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
@@ -1056,18 +1064,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ AUTO JUMP FROM concepts.html ---------------------
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const step = params.get("step");
-
   if (code) {
     const input = document.getElementById("designInput");
-    if (input) input.value = code; // Pre-fill design code
+    if (input) input.value = code.toUpperCase();
   }
 
   if (step === "5") {
-    setPath("instructor");        // Pretend they chose Solo Instructor
-    showScreen("instructor-q1");  // Jump directly to Step 5
+    setPath("instructor");
+    showScreen("instructor-q1");
   }
 });
 
