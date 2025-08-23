@@ -741,6 +741,45 @@ button:hover {
 
 
 
+
+/* Cookie consent styles */
+#cookie-consent {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: #222;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 9999;
+  animation: slideUp 0.5s ease-in-out;
+}
+#cookie-consent p {
+  margin: 0;
+  font-size: 14px;
+}
+#cookie-consent button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+#cookie-consent button:hover {
+  background: #0056b3;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 </style>
 
 </head>
@@ -936,6 +975,13 @@ button:hover {
   Skip Questions For Now →
 </a>
  
+
+<!-- ✅ Cookie Consent Popup -->
+<div id="cookie-consent">
+  <p>We use cookies to improve your experience on our site. By continuing, you agree to our cookie policy.</p>
+  <button id="accept-cookies">Accept</button>
+</div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1182,6 +1228,25 @@ function goToConcept() {
   const code = document.getElementById("designInput").value.trim().toUpperCase();
   if (code) window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
 }
+
+
+
+ 
+// ✅ Cookie consent logic
+document.addEventListener("DOMContentLoaded", function() {
+  const consentPopup = document.getElementById("cookie-consent");
+  const acceptBtn = document.getElementById("accept-cookies");
+
+  if (localStorage.getItem("cookieAccepted")) {
+    consentPopup.style.display = "none";
+  }
+
+  acceptBtn.addEventListener("click", function() {
+    localStorage.setItem("cookieAccepted", "true");
+    consentPopup.style.display = "none";
+  });
+});
+
 </script>
 </body>
 </html>
