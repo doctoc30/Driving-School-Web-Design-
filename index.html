@@ -706,45 +706,49 @@ button:hover {
 
 
 
- /* ---------- PROGRESS BAR ---------- */
+/* ------------------ PROGRESS BAR ------------------ */
 #progress-container {
-  position: relative;
-  width: 100%;
-  height: 12px;
+  width: 90%;
+  max-width: 500px;
+  height: 20px;
   background: #e0e0e0;
-  border-radius: 6px;
-  margin-bottom: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
   overflow: hidden;
+  display: none; /* hidden by default, JS will show when needed */
+  position: relative;
 }
 
 #progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #007bff, #00d4ff, #28a745);
-  border-radius: 6px;
-  transition: width 0.4s ease;
-  position: relative;
+  background: #007bff;
+  transition: width 0.3s ease, background 0.3s ease;
+  border-radius: 10px;
 }
 
 #progress-label {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 14px;
-  color: #fff;
-  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  left: 0;
+  font-size: 12px;
+  line-height: 20px;
+  color: #000;
+  font-weight: bold;
   pointer-events: none;
 }
 
-/* ---------- MOBILE PORTRAIT ---------- */
+/* MOBILE PORTRAIT FRIENDLY */
 @media (max-width: 600px) {
   #progress-container {
-    height: 10px;
+    height: 16px;
+    margin: 15px auto;
   }
-
   #progress-label {
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 16px;
   }
 }
 </style>
@@ -942,6 +946,7 @@ button:hover {
   Skip Questions For Now →
 </a>
  
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -1051,6 +1056,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
+  const progressBar = document.getElementById('progress-bar');
+  const progressLabel = document.getElementById('progress-label');
 
   function hideAllScreens() {
     screens.forEach(screen => {
@@ -1058,10 +1065,6 @@ document.addEventListener("DOMContentLoaded", () => {
       screen.style.display = "none";
     });
   }
-
-  // Progress bar elements
-  const progressBar = document.getElementById('progress-bar');
-  const progressLabel = document.getElementById('progress-label');
 
   function updateProgress() {
     const allScreens = Array.from(screens).filter(s => s.id.startsWith('instructor-q'));
@@ -1072,23 +1075,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const progressPercent = ((index + 1) / allScreens.length) * 100;
       progressBar.style.width = progressPercent + '%';
       progressLabel.textContent = `Step ${index + 1} of ${allScreens.length}`;
-
-      // Dynamic color gradient
-      if (progressPercent < 33) {
-        progressBar.style.background = '#007bff'; // blue
-      } else if (progressPercent < 66) {
-        progressBar.style.background = '#00d4ff'; // cyan
-      } else {
-        progressBar.style.background = '#28a745'; // green
-      }
+      progressBar.style.background = (progressPercent < 33) ? '#007bff' :
+                                    (progressPercent < 66) ? '#00d4ff' : '#28a745';
+      progressBar.parentElement.style.display = 'block';
     } else {
       progressBar.style.width = '0%';
       progressLabel.textContent = '';
-      progressBar.style.background = '#007bff';
+      progressBar.parentElement.style.display = 'none';
     }
   }
 
-  window.showScreen = function (screenId) {
+  window.showScreen = function(screenId) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
     if (screen) {
@@ -1103,11 +1100,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
   };
 
-  window.goToDesign = function () {
+  window.goToDesign = function() {
     showScreen("design-start");
   };
 
-  const originalNext = window.next;
   window.next = function() {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
@@ -1116,14 +1112,11 @@ document.addEventListener("DOMContentLoaded", () => {
       hideAllScreens();
       allScreens[i + 1].classList.add('active');
       allScreens[i + 1].style.display = "block";
-      if (allScreens[i + 1].id === 'plan-recommendation') {
-        recommendPlan();
-      }
+      if (allScreens[i + 1].id === 'plan-recommendation') recommendPlan();
       updateProgress();
     }
   };
 
-  const originalPrev = window.prev;
   window.prev = function() {
     const current = document.querySelector('.form-screen.active');
     const allScreens = Array.from(screens);
@@ -1152,12 +1145,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (hamburger && menu) {
-    hamburger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      toggleMenu();
-    });
-
-    document.addEventListener('click', (event) => {
+    hamburger.addEventListener('click', event => { event.stopPropagation(); toggleMenu(); });
+    document.addEventListener('click', event => {
       if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
         menu.classList.remove('open');
         hamburger.classList.remove('active');
@@ -1184,17 +1173,15 @@ document.addEventListener("DOMContentLoaded", () => {
 let userPath = "";
 const features = [];
 
-function setPath(path) {
-  userPath = path;
-}
+function setPath(path) { userPath = path; }
 
 function recordFeature(feature) {
   if (!features.includes(feature)) features.push(feature);
 }
 
 function recommendPlan() {
-  let plan = '';
   const count = features.length;
+  let plan = '';
   if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
   else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
   else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
@@ -1203,11 +1190,8 @@ function recommendPlan() {
 
 function goToConcept() {
   const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  }
+  if (code) window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
 }
 </script>
-
 </body>
 </html>
