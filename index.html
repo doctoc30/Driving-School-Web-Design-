@@ -894,6 +894,7 @@ button:hover {
 </a>
   </div>
 
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -905,149 +906,225 @@ document.addEventListener("DOMContentLoaded", () => {
   const colorRiseEl = document.querySelector('.color-rise');
 
   if (!step && !code) {
+    // Fresh landing → show both
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriter();
+    startTypewriterAnimation();
   } else {
-    if (typewriterEl) { typewriterEl.classList.remove('active'); typewriterEl.classList.remove('rocketRise'); }
+    // Mid-funnel → hide both completely
+    if (typewriterEl) {
+      typewriterEl.classList.remove('active');
+      typewriterEl.classList.remove('rocketRise');
+    }
     if (colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
-  function startTypewriter() {
+  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
+  function startTypewriterAnimation() {
     const el = document.getElementById('typewriter');
-    let lines = window.matchMedia("(orientation: landscape)").matches
-      ? ["We build","your website.","You approve,","then pay."]
-      : ["We build","your","website.","You approve,","then pay."];
-    let currentLine=0, currentChar=0, lineEl=null;
-    const typingSpeed=100, lineDelay=500;
-    const cursor=document.createElement('span'); cursor.classList.add('cursor'); el.appendChild(cursor);
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
 
-    function typeChar(){
-      if(currentLine>=lines.length){
-        cursor.remove();
-        setTimeout(()=>{
-          el.style.animation='rocketRise 2s ease forwards';
-          setTimeout(()=>{
-            showScreen('main-intro-options');
-            const skipBtn = document.getElementById('skipToPackages');
-            if(skipBtn) skipBtn.style.display='block';
-          },2000);
-        },1000);
-        return;
-      }
-      const text = lines[currentLine];
-      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); el.appendChild(lineEl); lineEl.appendChild(cursor); }
-      if(currentChar<text.length){ lineEl.insertBefore(document.createTextNode(text[currentChar]),cursor); currentChar++; setTimeout(typeChar,typingSpeed); }
-      else { currentLine++; currentChar=0; lineEl=null; setTimeout(typeChar,lineDelay); }
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    el.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
     }
 
-    el.style.opacity=1; typeChar();
-    window.addEventListener('resize', debounce(()=>{
-      currentLine=0; currentChar=0; lineEl=null; el.textContent=''; el.appendChild(cursor); el.style.opacity=1; typeChar();
-    },300));
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          el.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => {
+            const introScreen = document.getElementById('main-intro-options');
+            if (introScreen) {
+              introScreen.style.display = 'block';
+              introScreen.classList.add('active');
+            }
+            const skipBtn = document.getElementById('skipToPackages');
+            if (skipBtn) skipBtn.style.display = 'block';
+          }, 2000);
+        }, 1000);
+        return;
+      }
+
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        el.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+
+      if (currentChar < text.length) {
+        const char = document.createTextNode(text[currentChar]);
+        lineEl.insertBefore(char, cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    el.style.opacity = 1;
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      el.textContent = '';
+      el.appendChild(cursor);
+      setLinesByOrientation();
+      el.style.opacity = 1;
+      typeChar();
+    }, 300));
   }
 
-  function debounce(func, wait){ let timeout; return function(...args){ clearTimeout(timeout); timeout=setTimeout(()=>func.apply(this,args),wait); }; }
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
-  function hideAllScreens(){ screens.forEach(s=>{ s.classList.remove('active'); s.style.display='none'; }); }
 
-  window.showScreen = function(id){
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
+  }
+
+  window.showScreen = function (screenId) {
     hideAllScreens();
-    const s=document.getElementById(id);
-    if(s){ s.classList.add('active'); s.style.display='block'; }
-    const skipBtn = document.getElementById("skipToPackages");
-    if(skipBtn) skipBtn.style.display=(id==='q11')?'none':'block';
-  }
-
-  window.goToDesign = function(){ showScreen('design-start'); }
-
-  window.next = function(){
-    const c = document.querySelector('.form-screen.active');
-    const a = Array.from(screens); const i = a.indexOf(c);
-    if(i>=0 && i<a.length-1){
-      hideAllScreens(); a[i+1].classList.add('active'); a[i+1].style.display='block';
-      if(a[i+1].id==='plan-recommendation') showRecommendation();
+    const screen = document.getElementById(screenId);
+    if (screen) {
+      screen.classList.add("active");
+      screen.style.display = "block";
     }
-  }
 
-  window.prev = function(){
-    const c = document.querySelector('.form-screen.active');
-    const a = Array.from(screens); const i = a.indexOf(c);
-    if(i>0){ hideAllScreens(); a[i-1].classList.add('active'); a[i-1].style.display='block'; }
-  }
+    const skipBtn = document.getElementById("skipToPackages");
+    if (skipBtn) {
+      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
+    }
+  };
+
+  window.goToDesign = function () {
+    showScreen("design-start");
+  };
+
+  window.next = function () {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i >= 0 && i < allScreens.length - 1) {
+      hideAllScreens();
+      allScreens[i + 1].classList.add('active');
+      allScreens[i + 1].style.display = "block";
+      if (allScreens[i + 1].id === 'plan-recommendation') {
+        recommendPlan();
+      }
+    }
+  };
+
+  window.prev = function () {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i > 0) {
+      hideAllScreens();
+      allScreens[i - 1].classList.add('active');
+      allScreens[i - 1].style.display = "block";
+    }
+  };
 
   hideAllScreens();
 
   // ------------------ HAMBURGER MENU ---------------------
-  const hamburger=document.querySelector('.hamburger');
-  const menu=document.querySelector('nav.menu');
-  function toggleMenu(){
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+
+  function toggleMenu() {
     const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
     hamburger.setAttribute('aria-expanded', isOpen);
     menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen?'hidden':'';
-  }
-  if(hamburger && menu){
-    hamburger.addEventListener('click', e=>{ e.stopPropagation(); toggleMenu(); });
-    document.addEventListener('click', e=>{ if(!menu.contains(e.target) && !hamburger.contains(e.target)){ menu.classList.remove('open'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', false); menu.setAttribute('aria-hidden', true); document.body.style.overflow=''; }});
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
-  // ------------------ AUTO JUMP ---------------------
-  if(code){ const input = document.getElementById("designInput"); if(input) input.value = code.toUpperCase(); }
-  if(step==='5'){ setPath('instructor'); showScreen('instructor-q1'); }
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleMenu();
+    });
 
-  // ------------------ FEATURES + PLAN LOGIC ---------------------
-  let userPath=""; const features=[];
-  function setPath(path){ userPath=path; }
-  function recordFeature(f){ if(!features.includes(f)) features.push(f); }
-
-  const planPrices = { starter:{buy:299, managed:49}, standard:{buy:599, managed:79}, premium:{buy:999, managed:129} };
-
-  function getCurrentPlan(){
-    let points={starter:0, standard:0, premium:0};
-    const count = features.length;
-    if(count<=3) points.starter=1;
-    else if(count<=6) points.standard=1;
-    else points.premium=1;
-    let maxPoints = Math.max(points.starter, points.standard, points.premium);
-    if(maxPoints===points.premium) return 'premium';
-    if(maxPoints===points.standard) return 'standard';
-    return 'starter';
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
   }
 
-  function showRecommendation(){
-    const recDiv = document.getElementById('recommended-plan');
-    const plan = getCurrentPlan();
-    let buyPrice = planPrices[plan].buy;
-    let managedPrice = planPrices[plan].managed;
-
-    if(plan==='premium'){ recDiv.textContent=`Premium Plan (50 revisions included)`; }
-    else if(plan==='standard'){ recDiv.textContent=`Standard Plan (10 revisions included)`; }
-    else { recDiv.textContent=`Starter Plan (5 revisions included)`; }
-
-    const buyBtn=document.getElementById('buy-now-btn');
-    const managedBtn=document.getElementById('managed-btn');
-    buyBtn.textContent=`Buy Outright — $${buyPrice}`; buyBtn.onclick=()=> window.location.href=`https://your-buy-link.com/${plan}`;
-    managedBtn.textContent=`Managed Plan — $${managedPrice}/month`; managedBtn.onclick=()=> window.location.href=`https://your-managed-link.com/${plan}`;
-    showScreen('plan-recommendation');
+  // ------------------ AUTO JUMP FROM concepts.html ---------------------
+  if (code) {
+    const input = document.getElementById("designInput");
+    if (input) input.value = code.toUpperCase();
   }
 
-  // ------------------ COOKIE CONSENT ---------------------
-  const consentPopup = document.getElementById("cookie-consent");
-  const acceptBtn = document.getElementById("accept-cookies");
-  if(localStorage.getItem("cookieAccepted")) consentPopup.style.display="none";
-  if(acceptBtn) acceptBtn.addEventListener('click', ()=>{ localStorage.setItem("cookieAccepted","true"); consentPopup.style.display="none"; });
-
-  // ------------------ DESIGN CONCEPT JUMP ---------------------
-  window.goToConcept = function(){ 
-    const code = document.getElementById("designInput").value.trim().toUpperCase();
-    if(code) window.location.href=`https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+  if (step === "5") {
+    setPath("instructor");
+    showScreen("instructor-q1");
   }
-
 });
+
+// ------------------ FORM PATH + PLAN LOGIC ---------------------
+let userPath = "";
+const features = [];
+
+function setPath(path) {
+  userPath = path;
+}
+
+function recordFeature(feature) {
+  if (!features.includes(feature)) features.push(feature);
+}
+
+function recommendPlan() {
+  let plan = '';
+  const count = features.length;
+  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+  document.getElementById('recommended-plan').innerText = plan;
+}
+
+function goToConcept() {
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+  if (code) {
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+  }
+}
 </script>
 
 </body>
