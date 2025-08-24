@@ -702,84 +702,6 @@ button:hover {
 
 .color-rise { display: none; transition: none; }
 .color-rise.active { display: block; transition: background-color 2s ease; }
-
-
-
-
- 
-#progress-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: #e0e0e0;
-  border-radius: 0;
-  margin: 0;
-  overflow: hidden;
-  z-index: 1000;
-  display: none; /* stays hidden until q1 */
-}
-
-#progress-bar {
-  height: 100%;
-  width: 0%;
-  background: #007bff;
-  transition: width 0.3s ease, background 0.3s ease;
-}
-
-#progress-label {
-  position: absolute;
-  top: -18px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  color: #000;
-}
-
-
-
-
-/* Cookie consent styles */
-#cookie-consent {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: #222;
-  color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  z-index: 9999;
-  animation: slideUp 0.5s ease-in-out;
-}
-#cookie-consent p {
-  margin: 0;
-  font-size: 14px;
-}
-#cookie-consent button {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-#cookie-consent button:hover {
-  background: #0056b3;
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 </style>
 
 </head>
@@ -805,177 +727,148 @@ button:hover {
 <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
   </ul>
 </nav>
+ 
+</header> 
 
- </header> 
 
-<!-- Background skyrocket/color rise -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<!-- Progress Bar -->
-<div id="progress-container">
-  <div id="progress-bar"></div>
-  <div id="progress-label"></div>
-</div>
-
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <!-- Step 1: Intro -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('branch')">Website Design (New Site)</button>
-      <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
-      <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
-    </div>
+<!-- What do you need help with today? -->
+<div class="form-screen active" id="main-intro-options">
+  <h2>What do you need help with today?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('branch')">Website Design (New Site)</button>
+    <button type="button" onclick="showScreen('redesign-start')">Website Redesign</button>
+    <button type="button" onclick="showScreen('maintenance-start')">Website Maintenance</button>
   </div>
+</div>
 
-  <!-- Step 2: Branch -->
-  <div class="form-screen" id="branch">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Solo Instructor</button>
-      <button type="button" onclick="setPath('school'); alert('School funnel coming soon!')">Driving School</button>
-    </div>
+<!-- Step 2: Branch -->
+<div class="form-screen" id="branch">
+  <h2>Are you a solo driving instructor or a driving school?</h2>
+  <div class="button-row">
+    <button type="button" onclick="setPath('instructor'); showScreen('design-start')">Solo Instructor</button>
+    <button type="button" onclick="setPath('school'); alert('School funnel coming soon!')">Driving School</button>
   </div>
+</div>
 
-  <!-- Solo Instructor Questions (12 questions) -->
-  <div class="form-screen" id="instructor-q1">
-    <h2>Do you want students to book & pay online, or just request a lesson?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('booking-payment'); next()">Booking + payments</button>
-      <button type="button" onclick="recordFeature('booking-only'); next()">Booking only</button>
-      <button type="button" onclick="recordFeature('contact-form'); next()">Contact form only</button>
-    </div>
+<!-- Step 3: Design selection -->
+<div class="form-screen" id="design-start">
+  <h2>Do you already have a design code from our library?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html'">No, show me templates</button>
+    <button type="button" onclick="showScreen('custom-request')">I need a custom design</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you want social media integrated into your site?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
+<!-- Step 4: Enter code -->
+<div class="form-screen" id="design-code">
+  <h2>Enter your chosen design code</h2>
+  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+  <div class="button-row">
+    <button type="button" onclick="goToConcept()">Continue</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q3">
-    <h2>Do you want to showcase reviews from past students on your site?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="next()">Maybe later</button>
-      <button type="button" onclick="next()">Not needed</button>
-    </div>
-  </div>
+<!-- Step 5: Solo Instructor Questions -->
 
-  <div class="form-screen" id="instructor-q4">
-    <h2>Do you want to offer lesson packages online (5 or 10 lessons)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('lesson-packages'); next()">Yes, packages</button>
-      <button type="button" onclick="next()">No, single lessons only</button>
-    </div>
+<div class="form-screen" id="instructor-q1">
+  <h2>Do you want students to book & pay online, or just request a lesson?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('booking-payment'); next()">Booking + payments</button>
+    <button type="button" onclick="recordFeature('booking-only'); next()">Booking only</button>
+    <button type="button" onclick="recordFeature('contact-form'); next()">Contact form only</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q5">
-    <h2>Do you already have a logo & brand colors?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('branding'); next()">Yes, I’ll provide</button>
-      <button type="button" onclick="recordFeature('branding-help'); next()">No, I need branding help</button>
-    </div>
+<div class="form-screen" id="instructor-q2">
+  <h2>Would you like your website to appear on Google when people search “driving lessons near me”?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('local-seo'); next()">Yes, local SEO</button>
+    <button type="button" onclick="next()">No, simple site only</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q6">
-    <h2>Do you already have content (text & images)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('content-ready'); next()">Yes, I’m ready</button>
-      <button type="button" onclick="recordFeature('content-partial'); next()">Some, but not all</button>
-      <button type="button" onclick="recordFeature('content-help'); next()">I need help with content</button>
-    </div>
+<div class="form-screen" id="instructor-q3">
+  <h2>Do you want to showcase reviews from past students on your site?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
+    <button type="button" onclick="next()">Maybe later</button>
+    <button type="button" onclick="next()">Not needed</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q7">
-    <h2>Would you like a professional email address (e.g. info@yourdrivingschool.com)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes, I need one</button>
-      <button type="button" onclick="next()">I already have one</button>
-      <button type="button" onclick="next()">Not needed</button>
-    </div>
+<div class="form-screen" id="instructor-q4">
+  <h2>Do you want social media integrated into your site?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('social'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q8">
-    <h2>Do you want custom visual theme adjustments (colors, layout tweaks)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('custom-theme'); next()">Yes, full customizations</button>
-      <button type="button" onclick="next()">Minimal adjustments only</button>
-    </div>
+<div class="form-screen" id="instructor-q5">
+  <h2>Do you want to offer lesson packages (e.g. 5 or 10 lessons) online?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('lesson-packages'); next()">Yes, packages</button>
+    <button type="button" onclick="next()">No, single lessons only</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q9">
-    <h2>How soon do you want your website live?</h2>
-    <select name="Instructor Timeline" id="timeline">
-      <option value="2weeks">Within 2 weeks</option>
-      <option value="1month">Within 1 month</option>
-      <option value="2-3months">2–3 months</option>
-      <option value="flexible">Flexible</option>
-    </select>
-    <div class="button-row">
-      <button type="button" onclick="next()">Next</button>
-    </div>
+<div class="form-screen" id="instructor-q6">
+  <h2>Would you like a professional email address (e.g. info@yourdrivingschool.com)?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('email'); next()">Yes, I need one</button>
+    <button type="button" onclick="next()">I already have one</button>
+    <button type="button" onclick="next()">Not needed</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q10">
-    <h2>Do you want any pre-built page templates or just a single-page website?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('multi-page'); next()">Multiple pages</button>
-      <button type="button" onclick="next()">Single page only</button>
-    </div>
+<div class="form-screen" id="instructor-q7">
+  <h2>Do you already have a logo & brand colors?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('branding'); next()">Yes, I’ll provide</button>
+    <button type="button" onclick="recordFeature('branding-help'); next()">No, I need branding help</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q11">
-    <h2>Do you want us to manage hosting & maintenance monthly, or just buy outright?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('managed'); next()">Managed monthly</button>
-      <button type="button" onclick="recordFeature('buy'); next()">Buy outright</button>
-    </div>
+<div class="form-screen" id="instructor-q8">
+  <h2>Do you already have content (text & images)?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('content-ready'); next()">Yes, I’m ready</button>
+    <button type="button" onclick="recordFeature('content-partial'); next()">Some, but not all</button>
+    <button type="button" onclick="recordFeature('content-help'); next()">I need help with content</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q12">
-    <h2>Any additional visual features you want (gallery, sliders, animations)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('advanced-visuals'); next()">Yes, include them</button>
-      <button type="button" onclick="next()">No, keep it simple</button>
-    </div>
+<div class="form-screen" id="instructor-q9">
+  <h2>How soon do you want your website live?</h2>
+  <select name="Instructor Timeline" id="timeline">
+    <option value="2weeks">Within 2 weeks</option>
+    <option value="1month">Within 1 month</option>
+    <option value="2-3months">2–3 months</option>
+    <option value="flexible">Flexible</option>
+  </select>
+  <div class="button-row">
+    <button type="button" onclick="next()">Next</button>
   </div>
+</div>
 
-  <!-- Step 13: Plan Recommendation -->
-  <div class="form-screen" id="plan-recommendation">
-    <h2>Your Recommended Solo Instructor Plan</h2>
-    <div id="recommended-plan-wrapper" style="border:2px solid #007bff; padding:15px; border-radius:8px; margin-bottom:15px; background:#f0f8ff; position:relative;">
-      <div id="recommended-badge" style="position:absolute; top:-10px; right:-10px; background:#28a745; color:white; padding:5px 10px; border-radius:5px; font-size:0.85em; font-weight:bold; display:none;">
-        Recommended
-      </div>
-      <div id="recommended-plan" style="font-weight:bold; font-size:1.2em; margin-bottom:10px;"></div>
-      <div class="button-row" style="margin-top:10px;">
-        <div style="display:inline-block; margin-right:10px; text-align:center;">
-          <button type="button" id="buy-now-btn" style="font-weight:bold;"></button>
-          <div style="font-size:0.85em; color:#555; margin-top:4px;">
-            One-time purchase, you get full access + included revisions
-          </div>
-        </div>
-        <div style="display:inline-block; text-align:center;">
-          <button type="button" id="managed-btn" style="font-weight:bold;"></button>
-          <div style="font-size:0.85em; color:#555; margin-top:4px;">
-            Hands-off monthly plan, we manage updates & support
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:20px;">
-      <button type="button" onclick="prev()">Previous</button>
-      <button type="submit">Submit Inquiry</button>
-    </div>
+<!-- Step 6: Plan Recommendation -->
+<div class="form-screen" id="plan-recommendation">
+  <h2>Your Recommended Solo Instructor Plan</h2>
+  <div id="recommended-plan"></div>
+  <div class="button-row">
+    <button type="button" onclick="window.location.href='https://your-payment-link.com'">Select Plan</button>
   </div>
+</div>
+
 
   <!-- Contact Step -->
-  <div class="form-screen" id="contact-step">
+  <div class="form-screen" id="q11">
     <h2>Almost done! Please enter your details</h2>
     <label>Full Name</label>
     <input type="text" name="Full Name" required>
@@ -999,40 +892,46 @@ button:hover {
    id="skipToPackages" class="skip-link" style="display: none;">
   Skip Questions For Now →
 </a>
- 
-
-<!-- ✅ Cookie Consent Popup -->
-<div id="cookie-consent">
-  <p>We use cookies to improve your experience on our site. By continuing, you agree to our cookie policy.</p>
-  <button id="accept-cookies">Accept</button>
-</div>
+  </div>
 
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ------------------ URL PARAMETERS ------------------
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
   const step = params.get("step");
 
-  // ------------------ TYPEWRITER & BACKGROUND ------------------
+  // ------------------ TYPEWRITER AND BACKGROUND CONTROL ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
   if (!step && !code) {
+    // Fresh landing → show both
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    if (typewriterEl) typewriterEl.classList.remove('active','rocketRise');
+    // Mid-funnel → hide both completely
+    if (typewriterEl) {
+      typewriterEl.classList.remove('active');
+      typewriterEl.classList.remove('rocketRise');
+    }
     if (colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
+  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
   function startTypewriterAnimation() {
     const el = document.getElementById('typewriter');
-    let lines = [], currentLine = 0, currentChar = 0, lineEl = null;
-    const typingSpeed = 100, lineDelay = 500;
-    const cursor = document.createElement('span'); cursor.classList.add('cursor'); el.appendChild(cursor);
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    el.appendChild(cursor);
 
     function setLinesByOrientation() {
       lines = window.matchMedia("(orientation: landscape)").matches
@@ -1047,118 +946,186 @@ document.addEventListener("DOMContentLoaded", () => {
           el.style.animation = 'rocketRise 2s ease forwards';
           setTimeout(() => {
             const introScreen = document.getElementById('main-intro-options');
-            if (introScreen) { introScreen.style.display = 'block'; introScreen.classList.add('active'); }
-            const skipBtn = document.getElementById('skipToPackages'); if(skipBtn) skipBtn.style.display='block';
-          },2000);
-        },1000);
+            if (introScreen) {
+              introScreen.style.display = 'block';
+              introScreen.classList.add('active');
+            }
+            const skipBtn = document.getElementById('skipToPackages');
+            if (skipBtn) skipBtn.style.display = 'block';
+          }, 2000);
+        }, 1000);
         return;
       }
+
       const text = lines[currentLine];
-      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); el.appendChild(lineEl); lineEl.appendChild(cursor);}
-      if(currentChar<text.length){ lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor); currentChar++; setTimeout(typeChar,typingSpeed);}
-      else{ currentLine++; currentChar=0; lineEl=null; setTimeout(typeChar,lineDelay);}
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        el.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+
+      if (currentChar < text.length) {
+        const char = document.createTextNode(text[currentChar]);
+        lineEl.insertBefore(char, cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
     }
 
-    setLinesByOrientation(); el.style.opacity=1; typeChar();
-    window.addEventListener('resize', debounce(()=>{ currentLine=0; currentChar=0; lineEl=null; el.textContent=''; el.appendChild(cursor); setLinesByOrientation(); el.style.opacity=1; typeChar(); },300));
+    setLinesByOrientation();
+    el.style.opacity = 1;
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      el.textContent = '';
+      el.appendChild(cursor);
+      setLinesByOrientation();
+      el.style.opacity = 1;
+      typeChar();
+    }, 300));
   }
 
-  function debounce(func, wait){
+  function debounce(func, wait) {
     let timeout;
-    return function(...args){ clearTimeout(timeout); timeout=setTimeout(()=>func.apply(this,args), wait); }
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
   }
 
   // ------------------ FORM FLOW --------------------
   const screens = document.querySelectorAll(".form-screen");
 
-  function hideAllScreens() { screens.forEach(s=>{s.classList.remove('active'); s.style.display='none';}); }
-  window.showScreen = function(screenId){ hideAllScreens(); const screen=document.getElementById(screenId); if(screen){screen.classList.add('active'); screen.style.display='block';} }
-
-  window.next = function(){
-    const current=document.querySelector('.form-screen.active');
-    const allScreens=Array.from(screens); const i=allScreens.indexOf(current);
-    if(i>=0 && i<allScreens.length-1){ showScreen(allScreens[i+1].id); if(allScreens[i+1].id==='plan-recommendation') showRecommendation(); }
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
   }
 
-  window.prev = function(){
-    const current=document.querySelector('.form-screen.active');
-    const allScreens=Array.from(screens); const i=allScreens.indexOf(current);
-    if(i>0) showScreen(allScreens[i-1].id);
-  }
-
-  hideAllScreens(); showScreen('main-intro-options');
-
-  // ------------------ PLAN LOGIC --------------------
-  let userPath=""; const features=[]; const points={starter:0, standard:0, premium:0};
-  const planPrices={starter:{buy:299,managed:49}, standard:{buy:599,managed:79}, premium:{buy:999,managed:129}};
-
-  window.setPath = function(path){ userPath=path; }
-  window.recordFeature = function(feature){
-    if(!features.includes(feature)) features.push(feature);
-
-    switch(feature){
-      case 'booking-payment': case 'booking-only': case 'contact-form': points.starter+=1; points.standard+=1; points.premium+=2; break;
-      case 'social': case 'reviews': case 'email': points.standard+=1; points.premium+=2; break;
-      case 'branding-help': case 'content-partial': case 'content-help': case 'lesson-packages': case 'advanced-visuals': points.premium+=2; break;
-      case 'multi-page': points.standard+=1; points.premium+=2; break;
-      case 'managed': points.premium+=2; break;
-      case 'buy': points.starter+=1; points.standard+=1; points.premium+=1; break;
-      case 'custom-theme': points.standard+=1; points.premium+=2; break;
+  window.showScreen = function (screenId) {
+    hideAllScreens();
+    const screen = document.getElementById(screenId);
+    if (screen) {
+      screen.classList.add("active");
+      screen.style.display = "block";
     }
-  }
 
-  function getCurrentPlan(){
-    const maxPoints = Math.max(points.starter, points.standard, points.premium);
-    if(maxPoints===points.premium) return 'premium';
-    if(maxPoints===points.standard) return 'standard';
-    return 'starter';
-  }
+    const skipBtn = document.getElementById("skipToPackages");
+    if (skipBtn) {
+      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
+    }
+  };
 
-  window.showRecommendation = function(){
-    const recDiv = document.getElementById('recommended-plan');
-    const plan=getCurrentPlan();
-    const buyPrice=planPrices[plan].buy; const managedPrice=planPrices[plan].managed;
-    const buyBtn=document.getElementById('buy-now-btn');
-    const managedBtn=document.getElementById('managed-btn');
+  window.goToDesign = function () {
+    showScreen("design-start");
+  };
 
-    if(plan==='premium') recDiv.textContent=`Premium Plan (50 revisions included)`;
-    else if(plan==='standard') recDiv.textContent=`Standard Plan (10 revisions included)`;
-    else recDiv.textContent=`Starter Plan (5 revisions included)`;
+  window.next = function () {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i >= 0 && i < allScreens.length - 1) {
+      hideAllScreens();
+      allScreens[i + 1].classList.add('active');
+      allScreens[i + 1].style.display = "block";
+      if (allScreens[i + 1].id === 'plan-recommendation') {
+        recommendPlan();
+      }
+    }
+  };
 
-    buyBtn.textContent=`Buy Outright — $${buyPrice}`; buyBtn.onclick=()=>window.location.href=`https://your-buy-link.com/${plan}`;
-    managedBtn.textContent=`Managed Plan — $${managedPrice}/month`; managedBtn.onclick=()=>window.location.href=`https://your-managed-link.com/${plan}`;
+  window.prev = function () {
+    const current = document.querySelector('.form-screen.active');
+    const allScreens = Array.from(screens);
+    const i = allScreens.indexOf(current);
+    if (i > 0) {
+      hideAllScreens();
+      allScreens[i - 1].classList.add('active');
+      allScreens[i - 1].style.display = "block";
+    }
+  };
 
-    showScreen('plan-recommendation');
-  }
+  hideAllScreens();
 
-  // ------------------ CONCEPT AUTO-JUMP ---------------------
-  if(code){ const input=document.getElementById("designInput"); if(input) input.value=code.toUpperCase(); }
-  if(step==="5"){ setPath("instructor"); showScreen("instructor-q1"); }
+  // ------------------ HAMBURGER MENU ---------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
 
-  // ------------------ COOKIE CONSENT ---------------------
-  const consentPopup = document.getElementById("cookie-consent");
-  const acceptBtn = document.getElementById("accept-cookies");
-  if(consentPopup && acceptBtn){
-    if(localStorage.getItem("cookieAccepted")) consentPopup.style.display="none";
-    acceptBtn.addEventListener("click", ()=>{ localStorage.setItem("cookieAccepted","true"); consentPopup.style.display="none"; });
-  }
-
-  // ------------------ HAMBURGER ---------------------
-  const hamburger=document.querySelector('.hamburger');
-  const menu=document.querySelector('nav.menu');
-  if(hamburger && menu){
-    hamburger.addEventListener('click', e=>{ e.stopPropagation(); toggleMenu(); });
-    document.addEventListener('click', e=>{ if(!menu.contains(e.target) && !hamburger.contains(e.target)){ menu.classList.remove('open'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', false); menu.setAttribute('aria-hidden', true); document.body.style.overflow=''; }});
-  }
-  function toggleMenu(){
-    const isOpen=menu.classList.toggle('open');
+  function toggleMenu() {
+    const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded',isOpen);
-    menu.setAttribute('aria-hidden',!isOpen);
-    document.body.style.overflow=isOpen?'hidden':'';
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ------------------ AUTO JUMP FROM concepts.html ---------------------
+  if (code) {
+    const input = document.getElementById("designInput");
+    if (input) input.value = code.toUpperCase();
+  }
+
+  if (step === "5") {
+    setPath("instructor");
+    showScreen("instructor-q1");
   }
 });
 
+// ------------------ FORM PATH + PLAN LOGIC ---------------------
+let userPath = "";
+const features = [];
+
+function setPath(path) {
+  userPath = path;
+}
+
+function recordFeature(feature) {
+  if (!features.includes(feature)) features.push(feature);
+}
+
+function recommendPlan() {
+  let plan = '';
+  const count = features.length;
+  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+  document.getElementById('recommended-plan').innerText = plan;
+}
+
+function goToConcept() {
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+  if (code) {
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+  }
+}
 </script>
+
 </body>
 </html>
