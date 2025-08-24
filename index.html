@@ -818,10 +818,16 @@ button:hover {
   <div id="progress-label"></div>
 </div>
 
+
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
+  <!-- Progress Counter -->
+  <div id="progress" style="text-align:center; margin-bottom:10px; font-size:14px; font-weight:bold;">
+    Step <span id="currentStep">1</span> of 13
+  </div>
+
   <!-- Step 1: Intro -->
-  <div class="form-screen active" id="main-intro-options">
+  <div class="form-screen active" id="main-intro-options" data-step="1">
     <h2>What do you need help with today?</h2>
     <div class="button-row">
       <button type="button" onclick="showScreen('branch')">Website Design (New Site)</button>
@@ -831,7 +837,7 @@ button:hover {
   </div>
 
   <!-- Step 2: Branch -->
-  <div class="form-screen" id="branch">
+  <div class="form-screen" id="branch" data-step="2">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
       <button type="button" onclick="setPath('instructor'); showScreen('design-start')">Solo Instructor</button>
@@ -840,7 +846,7 @@ button:hover {
   </div>
 
   <!-- Step 3: Design selection -->
-  <div class="form-screen" id="design-start">
+  <div class="form-screen" id="design-start" data-step="3">
     <h2>Do you already have a design code from our library?</h2>
     <div class="button-row">
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
@@ -850,7 +856,7 @@ button:hover {
   </div>
 
   <!-- Step 4: Enter code -->
-  <div class="form-screen" id="design-code">
+  <div class="form-screen" id="design-code" data-step="4">
     <h2>Enter your chosen design code</h2>
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
     <div class="button-row">
@@ -858,8 +864,8 @@ button:hover {
     </div>
   </div>
 
-  <!-- Step 5: Solo Instructor Questions -->
-  <div class="form-screen" id="instructor-q1">
+  <!-- Step 5–13: Solo Instructor Questions -->
+  <div class="form-screen" id="instructor-q1" data-step="5">
     <h2>Do you want students to book & pay online, or just request a lesson?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking-payment'); next()">Booking + payments</button>
@@ -868,15 +874,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q2">
-    <h2>Would you like your website to appear on Google when people search “driving lessons near me”?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('local-seo'); next()">Yes, local SEO</button>
-      <button type="button" onclick="next()">No, simple site only</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q3">
+  <div class="form-screen" id="instructor-q2" data-step="6">
     <h2>Do you want to showcase reviews from past students on your site?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
@@ -885,7 +883,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q4">
+  <div class="form-screen" id="instructor-q3" data-step="7">
     <h2>Do you want social media integrated into your site?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
@@ -893,7 +891,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q5">
+  <div class="form-screen" id="instructor-q4" data-step="8">
     <h2>Do you want to offer lesson packages (e.g. 5 or 10 lessons) online?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('lesson-packages'); next()">Yes, packages</button>
@@ -901,7 +899,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q6">
+  <div class="form-screen" id="instructor-q5" data-step="9">
     <h2>Would you like a professional email address (e.g. info@yourdrivingschool.com)?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes, I need one</button>
@@ -910,7 +908,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q7">
+  <div class="form-screen" id="instructor-q6" data-step="10">
     <h2>Do you already have a logo & brand colors?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes, I’ll provide</button>
@@ -918,7 +916,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q8">
+  <div class="form-screen" id="instructor-q7" data-step="11">
     <h2>Do you already have content (text & images)?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content-ready'); next()">Yes, I’m ready</button>
@@ -927,7 +925,7 @@ button:hover {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q9">
+  <div class="form-screen" id="instructor-q8" data-step="12">
     <h2>How soon do you want your website live?</h2>
     <select name="Instructor Timeline" id="timeline">
       <option value="2weeks">Within 2 weeks</option>
@@ -940,17 +938,30 @@ button:hover {
     </div>
   </div>
 
-  <!-- Step 6: Plan Recommendation -->
-  <div class="form-screen" id="plan-recommendation">
+  <!-- Step 13: Plan Recommendation -->
+  <div class="form-screen" id="plan-recommendation" data-step="13">
     <h2>Your Recommended Solo Instructor Plan</h2>
-    <div id="recommended-plan"></div>
-    <div class="button-row">
-      <button type="button" onclick="window.location.href='https://your-payment-link.com'">Select Plan</button>
+    <div id="recommended-plan" style="margin-bottom:20px;"></div>
+
+    <div>
+      <h3>Buy Outright</h3>
+      <p>One-time payment. You own the site. Self-managed.</p>
+      <button type="button" id="buy-now-btn"></button>
+    </div>
+
+    <div style="margin-top:20px;">
+      <h3>Managed Plan</h3>
+      <p>Monthly plan. Hands-off. We manage everything for you.</p>
+      <button type="button" id="managed-btn"></button>
+    </div>
+
+    <div class="button-row" style="margin-top:20px;">
+      <button type="button" onclick="prev()">Previous</button>
     </div>
   </div>
 
-  <!-- Contact Step -->
-  <div class="form-screen" id="q11">
+  <!-- Final Contact Step -->
+  <div class="form-screen" id="q11" data-step="14">
     <h2>Almost done! Please enter your details</h2>
     <label>Full Name</label>
     <input type="text" name="Full Name" required>
@@ -1246,6 +1257,55 @@ document.addEventListener("DOMContentLoaded", function() {
     consentPopup.style.display = "none";
   });
 });
+
+
+
+ // Plan logic
+const planPrices = {
+  starter: {buy: 299, managed: 49},
+  standard: {buy: 599, managed: 79},
+  premium: {buy: 999, managed: 129}
+};
+
+function getCurrentPlan(){
+  let maxPoints = Math.max(points.starter, points.standard, points.premium);
+  if(maxPoints === points.premium) return 'premium';
+  if(maxPoints === points.standard) return 'standard';
+  return 'starter';
+}
+
+function showRecommendation(){
+  const recDiv = document.getElementById('recommended-plan');
+  const plan = getCurrentPlan();
+  let buyPrice = planPrices[plan].buy;
+  let managedPrice = planPrices[plan].managed;
+
+  if(plan === 'premium'){
+    recDiv.textContent = `Premium Plan (50 revisions included)`;
+  } else if(plan === 'standard'){
+    recDiv.textContent = `Standard Plan (10 revisions included)`;
+  } else {
+    recDiv.textContent = `Starter Plan (5 revisions included)`;
+  }
+
+  const buyBtn = document.getElementById('buy-now-btn');
+  const managedBtn = document.getElementById('managed-btn');
+
+  buyBtn.textContent = `Buy Outright — $${buyPrice}`;
+  buyBtn.onclick = () => window.location.href=`https://your-buy-link.com/${plan}`;
+
+  managedBtn.textContent = `Managed Plan — $${managedPrice}/month`;
+  managedBtn.onclick = () => window.location.href=`https://your-managed-link.com/${plan}`;
+
+  showScreen('plan-recommendation');
+}
+
+// Step Counter
+function updateProgress(id){
+  const stepEl = document.getElementById(id);
+  const stepNum = stepEl.getAttribute("data-step");
+  document.getElementById("currentStep").textContent = stepNum;
+}
 
 </script>
 </body>
