@@ -973,41 +973,35 @@ button:hover {
 </a>
   </div>
 
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  // -------- URL PARAMS --------
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
   const step = params.get("step");
 
-  // ------------------ TYPEWRITER AND BACKGROUND CONTROL ------------------
+  // -------- TYPEWRITER + BACKGROUND --------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
   if (!step && !code) {
-    // Fresh landing → show both
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
+    if(typewriterEl) typewriterEl.classList.add('active');
+    if(colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    // Mid-funnel → hide both completely
-    if (typewriterEl) {
-      typewriterEl.classList.remove('active');
-      typewriterEl.classList.remove('rocketRise');
-    }
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if(typewriterEl) { typewriterEl.classList.remove('active'); typewriterEl.classList.remove('rocketRise'); }
+    if(colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
-  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
   function startTypewriterAnimation() {
-    const el = document.getElementById('typewriter');
+    const el = typewriterEl;
     let lines = [];
     let currentLine = 0;
     let currentChar = 0;
     let lineEl = null;
     const typingSpeed = 100;
     const lineDelay = 500;
-
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
     el.appendChild(cursor);
@@ -1019,233 +1013,99 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function typeChar() {
-      if (currentLine >= lines.length) {
+      if(currentLine >= lines.length){
         cursor.remove();
-        setTimeout(() => {
-          el.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => {
-            const introScreen = document.getElementById('main-intro-options');
-            if (introScreen) {
-              introScreen.style.display = 'block';
-              introScreen.classList.add('active');
-            }
-            const skipBtn = document.getElementById('skipToPackages');
-            if (skipBtn) skipBtn.style.display = 'block';
+        setTimeout(()=>{
+          el.style.animation='rocketRise 2s ease forwards';
+          setTimeout(()=>{
+            showScreen('main-intro-options');
+            const skipBtn=document.getElementById('skipToPackages');
+            if(skipBtn) skipBtn.style.display='block';
           }, 2000);
-        }, 1000);
+        },1000);
         return;
       }
-
       const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        el.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-
-      if (currentChar < text.length) {
-        const char = document.createTextNode(text[currentChar]);
-        lineEl.insertBefore(char, cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
+      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); el.appendChild(lineEl); lineEl.appendChild(cursor); }
+      if(currentChar<text.length){ 
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor); 
+        currentChar++; 
+        setTimeout(typeChar, typingSpeed); 
       } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
+        currentLine++; currentChar=0; lineEl=null; setTimeout(typeChar, lineDelay);
       }
     }
 
     setLinesByOrientation();
-    el.style.opacity = 1;
+    el.style.opacity=1;
     typeChar();
 
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      el.textContent = '';
-      el.appendChild(cursor);
-      setLinesByOrientation();
-      el.style.opacity = 1;
-      typeChar();
-    }, 300));
+    window.addEventListener('resize', debounce(()=>{
+      currentLine=0; currentChar=0; lineEl=null; el.textContent=''; el.appendChild(cursor); 
+      setLinesByOrientation(); el.style.opacity=1; typeChar();
+    },300));
   }
 
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
+  function debounce(func, wait){ let timeout; return function(...args){ clearTimeout(timeout); timeout=setTimeout(()=>func.apply(this,args), wait); } }
 
-  // ------------------ FORM FLOW --------------------
+  // -------- FORM FLOW --------
   const screens = document.querySelectorAll(".form-screen");
 
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
+  function hideAllScreens(){ screens.forEach(s => { s.classList.remove("active"); s.style.display="none"; }); }
+
+  window.showScreen = function(id){ hideAllScreens(); const s=document.getElementById(id); if(s){ s.classList.add('active'); s.style.display='block'; } }
+
+  window.next = function(){
+    const current=document.querySelector('.form-screen.active');
+    const i=Array.from(screens).indexOf(current);
+    if(i>=0 && i<screens.length-1){
+      hideAllScreens();
+      screens[i+1].classList.add('active'); screens[i+1].style.display='block';
+      if(screens[i+1].id==='plan-recommendation') recommendPlan();
+    }
   }
 
-  window.showScreen = function (screenId) {
-    hideAllScreens();
-    const screen = document.getElementById(screenId);
-    if (screen) {
-      screen.classList.add("active");
-      screen.style.display = "block";
-    }
+  window.prev = function(){
+    const current=document.querySelector('.form-screen.active');
+    const i=Array.from(screens).indexOf(current);
+    if(i>0){ hideAllScreens(); screens[i-1].classList.add('active'); screens[i-1].style.display='block'; }
+  }
 
-    const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
-    }
-  };
-
-  window.goToDesign = function () {
-    showScreen("design-start");
-  };
-
-  window.next = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
-      if (allScreens[i + 1].id === 'plan-recommendation') {
-        recommendPlan();
-      }
-    }
-  };
-
-  window.prev = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
-    }
-  };
-
-  hideAllScreens();
-
-  // ------------------ HAMBURGER MENU ---------------------
+  // -------- HAMBURGER MENU --------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      toggleMenu();
+  if(hamburger && menu){
+    hamburger.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow=isOpen?'hidden':'';
     });
-
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
+    document.addEventListener('click', (e)=>{
+      if(!menu.contains(e.target) && !hamburger.contains(e.target)){
+        menu.classList.remove('open'); hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
         menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+        document.body.style.overflow='';
       }
     });
   }
 
-  // ------------------ AUTO JUMP FROM concepts.html ---------------------
-  if (code) {
-    const input = document.getElementById("designInput");
-    if (input) input.value = code.toUpperCase();
-  }
+  // -------- AUTO CODE FILL --------
+  if(code){ const input=document.getElementById("designInput"); if(input) input.value=code.toUpperCase(); }
+  if(step==="5"){ setPath("instructor"); showScreen("instructor-q1"); }
 
-  if (step === "5") {
-    setPath("instructor");
-    showScreen("instructor-q1");
-  }
-});
-
-// ------------------ FORM PATH + PLAN LOGIC ---------------------
-let userPath = "";
-const features = [];
-
-function setPath(path) {
-  userPath = path;
-}
-
-function recordFeature(feature) {
-  if (!features.includes(feature)) features.push(feature);
-}
-
-function recommendPlan() {
-  let plan = '';
-  const count = features.length;
-  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-  document.getElementById('recommended-plan').innerText = plan;
-}
-
-function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  }
-}
-
- document.addEventListener("DOMContentLoaded", () => {
-  const screens = document.querySelectorAll(".form-screen");
-
-  function hideAllScreens() {
-    screens.forEach(s => { s.classList.remove("active"); s.style.display="none"; });
-  }
-
-  window.showScreen = function(id) {
-    hideAllScreens();
-    const s = document.getElementById(id);
-    if(s){ s.classList.add("active"); s.style.display="block"; }
-  }
-
-  window.next = function() {
-    const current = document.querySelector('.form-screen.active');
-    const i = Array.from(screens).indexOf(current);
-    if(i>=0 && i<screens.length-1){
-      hideAllScreens();
-      screens[i+1].classList.add('active');
-      screens[i+1].style.display="block";
-      if(screens[i+1].id==='plan-recommendation'){ recommendPlan(); }
-    }
-  }
-
-  window.prev = function() {
-    const current = document.querySelector('.form-screen.active');
-    const i = Array.from(screens).indexOf(current);
-    if(i>0){
-      hideAllScreens();
-      screens[i-1].classList.add('active');
-      screens[i-1].style.display="block";
-    }
-  }
-
-  hideAllScreens();
+  // Show intro
   showScreen('main-intro-options');
 });
 
-// -------------- PLAN LOGIC ---------------
-let userPath=""; const features=[];
-function setPath(p){userPath=p;}
+// -------- FEATURE & PLAN LOGIC --------
+let userPath="", features=[];
+
+function setPath(p){ userPath=p; }
 function recordFeature(f){ if(!features.includes(f)) features.push(f); }
 
 function recommendPlan(){
@@ -1270,8 +1130,6 @@ function goToConcept(){
   const code=document.getElementById("designInput").value.trim().toUpperCase();
   if(code) window.location.href=`https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
 }
-
 </script>
-
 </body>
 </html>
