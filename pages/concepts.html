@@ -577,12 +577,11 @@ footer {
   </div>
 </div>
 
-  
-    <!-- Arrows -->
-    <button class="arrow prev">&#10094;</button>
-    <button class="arrow next">&#10095;</button>
-  </div>
-</main>
+<!-- Arrows -->
+<button class="arrow prev">&#10094;</button>
+<button class="arrow next">&#10095;</button>
+
+
 
   <!-- ✅ SOCIAL ICONS (now correctly after the slider) -->
   <div class="social-icons" aria-label="Social media links">
@@ -622,7 +621,7 @@ document.addEventListener("DOMContentLoaded", () => {
   slides.forEach((slide, index) => {
     const slideCodeElem = slide.querySelector('.buttons span');
     if (!slideCodeElem) return;
-    const slideCode = slideCodeElem.textContent.trim();
+    const slideCode = slideCodeElem.textContent.trim().toUpperCase();
     if (code && slideCode !== code.toUpperCase()) {
       slide.style.display = 'none';
     } else {
@@ -632,22 +631,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // -------------------------------
-  // 2️⃣ Initialize AOS
+  // 2️⃣ Initialize AOS (Animate on Scroll)
   // -------------------------------
-  AOS.init();
+  if (AOS) AOS.init();
 
   // -------------------------------
   // 3️⃣ Update slider position (portrait swipe)
   // -------------------------------
   function updateSlider() {
     if (!sliderWrapper) return;
-    if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
+    if (isPortrait) {
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      sliderWrapper.style.transform = "none"; // grid view
+      sliderWrapper.style.transform = "none"; // show all slides in grid
     }
   }
 
+  // -------------------------------
+  // 4️⃣ Navigation buttons
+  // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -658,28 +661,35 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support
+  // -------------------------------
+  // 5️⃣ Swipe support for mobile
+  // -------------------------------
   let startX = 0;
   if (sliderWrapper) {
     sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
     sliderWrapper.addEventListener('touchend', e => {
       const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) nextBtn.click();
-      else if (endX - startX > 50) prevBtn.click();
+      if (startX - endX > 50 && nextBtn) nextBtn.click();
+      else if (endX - startX > 50 && prevBtn) prevBtn.click();
     });
   }
 
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-// Handle "I want this concept" buttons
-document.querySelectorAll('.want-concept').forEach(button => {
-  button.addEventListener('click', () => {
-    const code = button.dataset.code; // e.g. SDI-5
-    // Redirect back to funnel index.html at step 4
-    window.location.href = `../index.html?code=${encodeURIComponent(code)}&step=4`;
+  // -------------------------------
+  // 6️⃣ "I want this concept" buttons → funnel step 4
+  // -------------------------------
+  document.querySelectorAll('.want-concept').forEach(button => {
+    button.addEventListener('click', () => {
+      const selectedCode = button.dataset.code; // e.g., SDI-5
+      if (selectedCode) {
+        window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+      }
+    });
   });
 });
+</script>
 
 </body>
 </html>
