@@ -722,16 +722,28 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // -------------------------
-  // 6️⃣ “I want this concept” button redirect
-  // -------------------------
-  document.querySelectorAll('.want-concept').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const code = btn.getAttribute('data-code');
-      window.location.href = `../index.html?code=${code}&step=5`;
+
+
+
+  
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromFunnel = params.has("fromFunnel");
+
+  // Add click to all concept buttons
+  document.querySelectorAll(".want-concept").forEach(button => {
+    button.addEventListener("click", () => {
+      const code = button.dataset.code;
+
+      if (fromFunnel) {
+        // Send back into funnel at step 3 with chosen code
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${code}&step=3`;
+      } else {
+        // Normal standalone behavior
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+      }
     });
   });
-
 });
 </script>
 </body>
