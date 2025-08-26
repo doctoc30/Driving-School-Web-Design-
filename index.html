@@ -1261,6 +1261,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // Default start: first screen
   screens[0].classList.add("active");
 });
+
+
+
+ document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const step = params.get("step");
+
+  if (code) {
+    // Pre-fill design code input
+    const designInput = document.getElementById("designInput");
+    if (designInput) {
+      designInput.value = code;
+    }
+    // Record it immediately
+    if (typeof recordFeature === "function") {
+      recordFeature(code);
+    }
+  }
+
+  if (step) {
+    // Jump straight to that step
+    showScreen(`instructor-q${step}`);
+  }
+});
 </script>
 </body>
 </html>
