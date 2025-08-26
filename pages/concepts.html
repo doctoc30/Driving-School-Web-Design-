@@ -605,96 +605,46 @@ footer {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-window.addEventListener('DOMContentLoaded', () => {
-  // -------------------------
-  // 1️⃣ Read URL code (if any) and filter slides
-  // -------------------------
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
+  const fromFunnel = params.has("fromFunnel");
 
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach(slide => {
-    const slideCodeElem = slide.querySelector('.buttons span');
-    if (!slideCodeElem) return;
-    const slideCode = slideCodeElem.textContent.trim();
-    if (code && slideCode !== code) {
-      slide.style.display = 'none';
-    } else {
-      slide.style.display = 'flex';
-    }
-  });
-
-  // -------------------------
-  // 2️⃣ Initialize AOS animation
-  // -------------------------
-  AOS.init();
-
-  // -------------------------
-  // 3️⃣ Hamburger menu toggle
-  // -------------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      toggleMenu();
-    });
-
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  // -------------------------
-  // 4️⃣ Search filter
-  // -------------------------
-  const searchInput = document.getElementById("search");
-  const items = document.querySelectorAll(".item");
-
-  if (searchInput) {
-    searchInput.addEventListener("keyup", () => {
-      const term = searchInput.value.toLowerCase();
-      items.forEach(item => {
-        const codeElem = item.querySelector(".code");
-        if (!codeElem) return;
-        const itemCode = codeElem.textContent.toLowerCase();
-        item.style.display = itemCode.includes(term) ? "block" : "none";
-      });
-    });
-  }
-
-  // -------------------------
-  // 5️⃣ Slider logic (portrait swipe / landscape grid)
-  // -------------------------
+  const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
   const nextBtn = document.querySelector('.arrow.next');
   const prevBtn = document.querySelector('.arrow.prev');
   let currentIndex = 0;
 
+  // -------------------------------
+  // 1️⃣ Filter slides if code param exists
+  // -------------------------------
+  slides.forEach((slide, index) => {
+    const slideCodeElem = slide.querySelector('.buttons span');
+    if (!slideCodeElem) return;
+    const slideCode = slideCodeElem.textContent.trim();
+    if (code && slideCode !== code.toUpperCase()) {
+      slide.style.display = 'none';
+    } else {
+      slide.style.display = 'flex';
+      if (code) currentIndex = index; // start on chosen slide
+    }
+  });
+
+  // -------------------------------
+  // 2️⃣ Initialize AOS
+  // -------------------------------
+  AOS.init();
+
+  // -------------------------------
+  // 3️⃣ Update slider position (portrait swipe)
+  // -------------------------------
   function updateSlider() {
     if (!sliderWrapper) return;
-
     if (window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768) {
-      // Swipe mode: translate by 100% per slide
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Grid mode: no translate
-      sliderWrapper.style.transform = "none";
+      sliderWrapper.style.transform = "none"; // grid view
     }
   }
 
@@ -722,25 +672,18 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-
-
-
-  
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const fromFunnel = params.has("fromFunnel");
-
-  // Add click to all concept buttons
-  document.querySelectorAll(".want-concept").forEach(button => {
-    button.addEventListener("click", () => {
-      const code = button.dataset.code;
-
+  // -------------------------------
+  // 4️⃣ “I want this concept” buttons
+  // -------------------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chosenCode = btn.dataset.code;
       if (fromFunnel) {
-        // Send back into funnel at step 3 with chosen code
-        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${code}&step=3`;
+        // return to funnel step 3
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${chosenCode}&step=3`;
       } else {
-        // Normal standalone behavior
-        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+        // just reload concepts page with chosen code
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${chosenCode}`;
       }
     });
   });
