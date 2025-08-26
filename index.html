@@ -980,39 +980,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const code = params.get("code");
   const step = params.get("step");
 
-  // ------------------ AUTO REDIRECT TO CONCEPT IF CODE IS VALID ------------------
-  if (code && /^SDI-(?:[1-9]|10)$/i.test(code)) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code.toUpperCase()}`;
-    return; // stop loading the rest of the funnel
-  }
-
-  // ------------------ TYPEWRITER AND BACKGROUND CONTROL ------------------
+  const screens = document.querySelectorAll(".form-screen");
+  let currentScreen = 0;
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
 
+  const features = [];
+  let userPath = "";
+
+  // ------------------ AUTO REDIRECT TO CONCEPT ------------------
+  if (code && /^SDI-(?:[1-9]|10)$/i.test(code)) {
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code.toUpperCase()}`;
+    return;
+  }
+
+  // ------------------ TYPEWRITER + BACKGROUND ------------------
   if (!step && !code) {
-    // Fresh landing → show both
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    // Mid-funnel → hide both completely
-    if (typewriterEl) {
-      typewriterEl.classList.remove('active');
-      typewriterEl.classList.remove('rocketRise');
-    }
+    if (typewriterEl) typewriterEl.classList.remove('active','rocketRise');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
-  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
   function startTypewriterAnimation() {
-    const el = document.getElementById('typewriter');
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
+    const el = typewriterEl;
+    let lines = [], currentLine = 0, currentChar = 0, lineEl = null;
+    const typingSpeed = 100, lineDelay = 500;
 
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
@@ -1030,15 +1027,11 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           el.style.animation = 'rocketRise 2s ease forwards';
           setTimeout(() => {
-            const introScreen = document.getElementById('main-intro-options');
-            if (introScreen) {
-              introScreen.style.display = 'block';
-              introScreen.classList.add('active');
-            }
+            showScreen('main-intro-options');
             const skipBtn = document.getElementById('skipToPackages');
-            if (skipBtn) skipBtn.style.display = 'block';
-          }, 2000);
-        }, 1000);
+            if(skipBtn) skipBtn.style.display='block';
+          },2000);
+        },1000);
         return;
       }
 
@@ -1051,240 +1044,128 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (currentChar < text.length) {
-        const char = document.createTextNode(text[currentChar]);
-        lineEl.insertBefore(char, cursor);
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
         currentChar++;
         setTimeout(typeChar, typingSpeed);
       } else {
         currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
+        currentChar=0;
+        lineEl=null;
+        setTimeout(typeChar,lineDelay);
       }
     }
 
     setLinesByOrientation();
-    el.style.opacity = 1;
+    el.style.opacity=1;
     typeChar();
 
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      el.textContent = '';
-      el.appendChild(cursor);
-      setLinesByOrientation();
-      el.style.opacity = 1;
-      typeChar();
-    }, 300));
+    window.addEventListener('resize', debounce(()=>{
+      currentLine=0; currentChar=0; lineEl=null;
+      el.textContent=''; el.appendChild(cursor);
+      setLinesByOrientation(); el.style.opacity=1; typeChar();
+    },300));
   }
 
   function debounce(func, wait) {
     let timeout;
-    return function (...args) {
+    return function(...args){
       clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
+      timeout=setTimeout(()=>func.apply(this,args),wait);
     };
   }
 
-  // ------------------ FORM FLOW --------------------
-  const screens = document.querySelectorAll(".form-screen");
-
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
+  // ------------------ FORM FLOW ------------------
+  function hideAllScreens(){
+    screens.forEach(screen => { screen.classList.remove('active'); screen.style.display='none'; });
   }
 
-  window.showScreen = function (screenId) {
+  window.showScreen = function(screenId){
     hideAllScreens();
-    const screen = document.getElementById(screenId);
-    if (screen) {
-      screen.classList.add("active");
-      screen.style.display = "block";
-    }
-
+    const screen=document.getElementById(screenId);
+    if(screen){ screen.classList.add('active'); screen.style.display='block'; }
     const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
-    }
-  };
+    if(skipBtn) skipBtn.style.display=(screenId==='q11')?'none':'block';
+  }
 
-  window.goToDesign = function () {
-    showScreen("design-code");
-  };
-
-  window.next = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
-      if (allScreens[i + 1].id === 'plan-recommendation') {
-        recommendPlan();
-      }
+  window.next=function(){
+    if(currentScreen<screens.length-1){
+      screens[currentScreen].classList.remove('active');
+      currentScreen++;
+      screens[currentScreen].classList.add('active');
+      screens[currentScreen].style.display='block';
+      if(screens[currentScreen].id==='plan-recommendation') recommendPlan();
     }
-  };
+  }
 
-  window.prev = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
+  window.prev=function(){
+    if(currentScreen>0){
+      screens[currentScreen].classList.remove('active');
+      currentScreen--;
+      screens[currentScreen].classList.add('active');
+      screens[currentScreen].style.display='block';
     }
-  };
+  }
+
+  window.goToDesign=function(){ showScreen('design-code'); }
+
+  window.goToConcept=function(){
+    const input = document.getElementById("designInput");
+    if(!input) return;
+    const code = input.value.trim().toUpperCase();
+    if(code && /^SDI-(?:[1-9]|10)$/.test(code)){
+      // Redirect to index step 4 after concepts
+      window.location.href = `index.html?code=${code}&step=4`;
+    } else alert("Please enter a valid design code (SDI-1 to SDI-10).");
+  }
 
   hideAllScreens();
 
-  // ------------------ HAMBURGER MENU ---------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-
-  function toggleMenu() {
+  // ------------------ HAMBURGER MENU ------------------
+  function toggleMenu(){
     const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
     hamburger.setAttribute('aria-expanded', isOpen);
     menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    document.body.style.overflow=isOpen?'hidden':'';
   }
 
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      toggleMenu();
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
+  if(hamburger && menu){
+    hamburger.addEventListener('click', e=>{ e.stopPropagation(); toggleMenu(); });
+    document.addEventListener('click', e=>{
+      if(!menu.contains(e.target)&&!hamburger.contains(e.target)){
+        menu.classList.remove('open'); hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
         menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+        document.body.style.overflow='';
       }
     });
   }
 
-  // ------------------ AUTO STEP JUMP ---------------------
-  if (step === "5") {
-    setPath("instructor");
-    showScreen("instructor-q1");
-  }
-});
-
-// ------------------ FORM PATH + PLAN LOGIC ---------------------
-let userPath = "";
-const features = [];
-
-function setPath(path) {
-  userPath = path;
-}
-
-function recordFeature(feature) {
-  if (!features.includes(feature)) features.push(feature);
-}
-
-function recommendPlan() {
-  let plan = '';
-  const count = features.length;
-  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-  document.getElementById('recommended-plan').innerText = plan;
-}
-
-// ------------------ DESIGN CODE HANDLER ---------------------
-function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code && /^SDI-(?:[1-9]|10)$/.test(code)) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  } else {
-    alert("Please enter a valid design code (SDI-1 to SDI-10).");
-  }
-}
-
- 
-let currentScreen = 0;
-const screens = document.querySelectorAll(".form-screen");
-
-// Show specific funnel screen
-function showScreen(id) {
-  screens.forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// Move forward in funnel
-function next() {
-  if (currentScreen < screens.length - 1) {
-    screens[currentScreen].classList.remove("active");
-    currentScreen++;
-    screens[currentScreen].classList.add("active");
-  }
-}
-
-// Handle code entry manually (Q3)
-function goToConcept(){
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if(code && /^SDI-\d{1,2}$/.test(code)) { 
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  } else {
-    alert("Please enter a valid design code (e.g., SDI-1 to SDI-10).");
-  }
-}
-
-// ---------- Handle URL Parameters ----------
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const step = params.get("step");
-
-  if (code && /^SDI-\d{1,2}$/.test(code)) {
-    // If code came from concepts.html
-    const input = document.getElementById("designInput");
-    if (input) {
-      input.value = code; // pre-fill input
-    }
-
-    if (step === "3") {
-      // Jump straight to Q3 (after design selection)
-      showScreen("instructor-q3");
-      return;
-    }
-  }
-
-  // Default start: first screen
-  screens[0].classList.add("active");
-});
-
-
-
- document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const step = params.get("step");
-
-  if (code) {
-    // Pre-fill design code input
-    const designInput = document.getElementById("designInput");
-    if (designInput) {
-      designInput.value = code;
-    }
-    // Record it immediately
-    if (typeof recordFeature === "function") {
-      recordFeature(code);
-    }
-  }
-
-  if (step) {
-    // Jump straight to that step
+  // ------------------ AUTO STEP JUMP ------------------
+  if(step) {
     showScreen(`instructor-q${step}`);
+    currentScreen = step-1;
+  } else screens[0].classList.add('active');
+
+  // ------------------ URL PARAM PREFILL ------------------
+  if(code){
+    const input = document.getElementById("designInput");
+    if(input) input.value = code;
+    recordFeature(code);
   }
+
+  // ------------------ FORM PATH + PLAN LOGIC ------------------
+  function setPath(path){ userPath=path; }
+  function recordFeature(f){ if(!features.includes(f)) features.push(f); }
+  function recommendPlan(){
+    let plan='';
+    const count = features.length;
+    if(count<=3) plan='Basic Plan: Simple website + booking/contact';
+    else if(count<=6) plan='Standard Plan: Booking, payments, SEO, branding help';
+    else plan='Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    document.getElementById('recommended-plan').innerText = plan;
+  }
+
 });
 </script>
 </body>
