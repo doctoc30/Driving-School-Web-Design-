@@ -672,16 +672,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-
-
-  // Handle "I want this concept" buttons
+// Handle "I want this concept" buttons
 document.querySelectorAll('.want-concept').forEach(button => {
   button.addEventListener('click', () => {
     const code = button.dataset.code; // e.g. SDI-5
-    // Redirect to index.html with the code and step=4
+    // Redirect back to funnel index.html at step 4
     window.location.href = `../index.html?code=${encodeURIComponent(code)}&step=4`;
   });
 });
-</script>
+
 </body>
 </html>
