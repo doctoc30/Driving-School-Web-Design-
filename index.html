@@ -1043,57 +1043,115 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.setPath = setPath;
   window.recordFeature = recordFeature;
+  window.recommendPlan = recommendPlan;
 
-  // ------------------ Design Code Handling (Q3) ------------------
-  function goToConcept() {
-    const input = document.getElementById("designInput");
-    if (!input) return;
-    const code = input.value.trim().toUpperCase();
-    if (/^SDI-(?:[1-9]|10)$/.test(code)) {
-      window.location.href = `pages/concepts.html?code=${code}`;
-    } else {
-      alert("Please enter a valid design code (SDI-1 to SDI-10).");
+  // ------------------ Typewriter + Skyrocket Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+
+    const typingSpeed = 100;
+    const lineDelay = 500;
+
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
     }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
-  window.goToConcept = goToConcept;
 
-  // ------------------ Initialize Funnel ------------------
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Initialize Funnel & Typewriter ------------------
   hideAllScreens();
-
-  if (codeParam && /^SDI-(?:[1-9]|10)$/.test(codeParam)) {
-    // pre-fill design code if coming back from concept
-    const designInput = document.getElementById("designInput");
-    if (designInput) designInput.value = codeParam;
-
-    // jump to a step if specified
-    if (stepParam) {
-      showScreen(`instructor-q${stepParam}`);
-    } else {
-      showScreen("instructor-q2"); // default to Q2 if code exists
-    }
-  } else if (stepParam) {
-    showScreen(`instructor-q${stepParam}`);
+  if (!codeParam && !stepParam) {
+    // Fresh landing → show typewriter
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
   } else {
-    showScreen(screens[0].id); // first funnel screen
+    // Mid-funnel → skip typewriter
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
   }
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-
   if (hamburger && menu) {
     hamburger.addEventListener('click', (e) => {
       e.stopPropagation();
-      toggleMenu();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
+
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
@@ -1104,17 +1162,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
-
-// ------------------ Handle Slider "I want this concept" ------------------
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.want-concept').forEach(button => {
-    button.addEventListener('click', () => {
-      const code = button.dataset.code;
-      // redirect to index.html step 4 (booking)
-      window.location.href = `../index.html?code=${encodeURIComponent(code)}&step=4`;
-    });
-  });
 });
 </script>
 </body>
