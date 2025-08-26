@@ -726,7 +726,7 @@ button:hover {
 <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
 <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
   </ul>
-</nav> 
+</nav>
  
 </header> 
 
@@ -767,7 +767,9 @@ button:hover {
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
     <div class="button-row">
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="next()">Show me templates</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">
+  Show me concepts
+</button>
       <button type="button" onclick="next()">Custom design</button>
     </div>
   </div>
@@ -1206,6 +1208,59 @@ function goToConcept() {
     alert("Please enter a valid design code (SDI-1 to SDI-10).");
   }
 }
+
+ 
+let currentScreen = 0;
+const screens = document.querySelectorAll(".form-screen");
+
+// Show specific funnel screen
+function showScreen(id) {
+  screens.forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// Move forward in funnel
+function next() {
+  if (currentScreen < screens.length - 1) {
+    screens[currentScreen].classList.remove("active");
+    currentScreen++;
+    screens[currentScreen].classList.add("active");
+  }
+}
+
+// Handle code entry manually (Q3)
+function goToConcept(){
+  const code = document.getElementById("designInput").value.trim().toUpperCase();
+  if(code && /^SDI-\d{1,2}$/.test(code)) { 
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
+  } else {
+    alert("Please enter a valid design code (e.g., SDI-1 to SDI-10).");
+  }
+}
+
+// ---------- Handle URL Parameters ----------
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const step = params.get("step");
+
+  if (code && /^SDI-\d{1,2}$/.test(code)) {
+    // If code came from concepts.html
+    const input = document.getElementById("designInput");
+    if (input) {
+      input.value = code; // pre-fill input
+    }
+
+    if (step === "3") {
+      // Jump straight to Q3 (after design selection)
+      showScreen("instructor-q3");
+      return;
+    }
+  }
+
+  // Default start: first screen
+  screens[0].classList.add("active");
+});
 </script>
 </body>
 </html>
