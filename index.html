@@ -976,44 +976,38 @@ button:hover {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const step = params.get("step");
-
-  // ------------------ AUTO REDIRECT TO CONCEPT IF CODE IS VALID ------------------
-  if (code && /^SDI-(?:[1-9]|10)$/i.test(code)) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code.toUpperCase()}`;
-    return; // stop loading the rest of the funnel
-  }
-
-  // ------------------ TYPEWRITER AND BACKGROUND CONTROL ------------------
+  // -------------------------------
+  // 0️⃣ State
+  // -------------------------------
+  const screens = document.querySelectorAll(".form-screen");
+  let currentScreen = 0;
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
+  const stepParam = params.get("step");
 
-  if (!step && !code) {
-    // Fresh landing → show both
+  // -------------------------------
+  // 1️⃣ Typewriter
+  // -------------------------------
+  if (!stepParam && !codeParam) {
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    // Mid-funnel → hide both completely
-    if (typewriterEl) {
-      typewriterEl.classList.remove('active');
-      typewriterEl.classList.remove('rocketRise');
-    }
+    if (typewriterEl) typewriterEl.classList.remove('active');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
   }
 
-  // ------------------ TYPEWRITER + ROCKET ANIMATION ------------------
   function startTypewriterAnimation() {
-    const el = document.getElementById('typewriter');
+    const el = typewriterEl;
+    if (!el) return;
     let lines = [];
     let currentLine = 0;
     let currentChar = 0;
     let lineEl = null;
     const typingSpeed = 100;
     const lineDelay = 500;
-
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
     el.appendChild(cursor);
@@ -1041,7 +1035,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000);
         return;
       }
-
       const text = lines[currentLine];
       if (!lineEl) {
         lineEl = document.createElement('div');
@@ -1049,7 +1042,6 @@ document.addEventListener("DOMContentLoaded", () => {
         el.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
-
       if (currentChar < text.length) {
         const char = document.createTextNode(text[currentChar]);
         lineEl.insertBefore(char, cursor);
@@ -1087,81 +1079,90 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // ------------------ FORM FLOW --------------------
-  const screens = document.querySelectorAll(".form-screen");
-
+  // -------------------------------
+  // 2️⃣ Form navigation
+  // -------------------------------
   function hideAllScreens() {
     screens.forEach(screen => {
-      screen.classList.remove("active");
       screen.style.display = "none";
+      screen.classList.remove("active");
     });
   }
 
-  window.showScreen = function (screenId) {
+  function showScreen(id) {
     hideAllScreens();
-    const screen = document.getElementById(screenId);
-    if (screen) {
-      screen.classList.add("active");
-      screen.style.display = "block";
+    const s = document.getElementById(id);
+    if (s) {
+      s.style.display = "block";
+      s.classList.add("active");
+      currentScreen = Array.from(screens).indexOf(s);
     }
-
     const skipBtn = document.getElementById("skipToPackages");
-    if (skipBtn) {
-      skipBtn.style.display = (screenId === "q11") ? "none" : "block";
+    if (skipBtn) skipBtn.style.display = (id === "q11") ? "none" : "block";
+  }
+
+  window.showScreen = showScreen;
+
+  window.next = function() {
+    if (currentScreen < screens.length - 1) {
+      showScreen(screens[currentScreen + 1].id);
+      if (screens[currentScreen].id === 'plan-recommendation') recommendPlan();
     }
   };
 
-  window.goToDesign = function () {
-    showScreen("design-code");
-  };
-
-  window.next = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i >= 0 && i < allScreens.length - 1) {
-      hideAllScreens();
-      allScreens[i + 1].classList.add('active');
-      allScreens[i + 1].style.display = "block";
-      if (allScreens[i + 1].id === 'plan-recommendation') {
-        recommendPlan();
-      }
-    }
-  };
-
-  window.prev = function () {
-    const current = document.querySelector('.form-screen.active');
-    const allScreens = Array.from(screens);
-    const i = allScreens.indexOf(current);
-    if (i > 0) {
-      hideAllScreens();
-      allScreens[i - 1].classList.add('active');
-      allScreens[i - 1].style.display = "block";
+  window.prev = function() {
+    if (currentScreen > 0) {
+      showScreen(screens[currentScreen - 1].id);
     }
   };
 
   hideAllScreens();
 
-  // ------------------ HAMBURGER MENU ---------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
+  // -------------------------------
+  // 3️⃣ Handle Design Code
+  // -------------------------------
+  window.goToConcept = function() {
+    const input = document.getElementById("designInput");
+    if (!input) return;
+    const code = input.value.trim().toUpperCase();
+    if (/^SDI-(?:[1-9]|10)$/.test(code)) {
+      sessionStorage.setItem("chosenConcept", code);
+      window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}&fromFunnel=1`;
+    } else {
+      alert("Please enter a valid design code (SDI-1 to SDI-10).");
+    }
+  };
 
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+  // -------------------------------
+  // 4️⃣ Handle return from concepts.html
+  // -------------------------------
+  if (codeParam && stepParam === "3" && params.has("fromFunnel")) {
+    sessionStorage.setItem("chosenConcept", codeParam.toUpperCase());
+    showScreen("instructor-q3"); // jump to next funnel step
+  } else {
+    screens[0].style.display = "block";
+    screens[0].classList.add("active");
   }
 
+  // -------------------------------
+  // 5️⃣ Hamburger menu
+  // -------------------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
-    hamburger.addEventListener('click', (event) => {
-      event.stopPropagation();
+    function toggleMenu() {
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
       toggleMenu();
     });
-
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
         hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
@@ -1171,95 +1172,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ AUTO STEP JUMP ---------------------
-  if (step === "5") {
-    setPath("instructor");
-    showScreen("instructor-q1");
-  }
-});
-
-// ------------------ FORM PATH + PLAN LOGIC ---------------------
-let userPath = "";
-const features = [];
-
-function setPath(path) {
-  userPath = path;
-}
-
-function recordFeature(feature) {
-  if (!features.includes(feature)) features.push(feature);
-}
-
-function recommendPlan() {
-  let plan = '';
-  const count = features.length;
-  if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-  else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-  else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-  document.getElementById('recommended-plan').innerText = plan;
-}
-
-// ------------------ DESIGN CODE HANDLER ---------------------
-function goToConcept() {
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if (code && /^SDI-(?:[1-9]|10)$/.test(code)) {
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  } else {
-    alert("Please enter a valid design code (SDI-1 to SDI-10).");
-  }
-}
-
- 
-let currentScreen = 0;
-const screens = document.querySelectorAll(".form-screen");
-
-// Show specific funnel screen
-function showScreen(id) {
-  screens.forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// Move forward in funnel
-function next() {
-  if (currentScreen < screens.length - 1) {
-    screens[currentScreen].classList.remove("active");
-    currentScreen++;
-    screens[currentScreen].classList.add("active");
-  }
-}
-
-// Handle code entry manually (Q3)
-function goToConcept(){
-  const code = document.getElementById("designInput").value.trim().toUpperCase();
-  if(code && /^SDI-\d{1,2}$/.test(code)) { 
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${code}`;
-  } else {
-    alert("Please enter a valid design code (e.g., SDI-1 to SDI-10).");
-  }
-}
-
-// ---------- Handle URL Parameters ----------
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const step = params.get("step");
-
-  if (code && /^SDI-\d{1,2}$/.test(code)) {
-    // If code came from concepts.html
-    const input = document.getElementById("designInput");
-    if (input) {
-      input.value = code; // pre-fill input
-    }
-
-    if (step === "3") {
-      // Jump straight to Q3 (after design selection)
-      showScreen("instructor-q3");
-      return;
-    }
-  }
-
-  // Default start: first screen
-  screens[0].classList.add("active");
+  // -------------------------------
+  // 6️⃣ Plan recommendation
+  // -------------------------------
+  let features = [];
+  window.recordFeature = function(feature) {
+    if (!features.includes(feature)) features.push(feature);
+  };
+  window.recommendPlan = function() {
+    let plan = '';
+    const count = features.length;
+    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    const el = document.getElementById('recommended-plan');
+    if (el) el.innerText = plan;
+  };
 });
 </script>
 </body>
