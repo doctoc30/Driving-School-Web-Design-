@@ -761,18 +761,21 @@ button:hover {
     </div>
   </div>
 
-  <!-- Q2: Design Selection -->
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">
-  Show me concepts
-</button>
-      <button type="button" onclick="next()">Custom design</button>
-    </div>
+ <!-- Q2: Design Selection -->
+<div class="form-screen" id="instructor-q2">
+  <h2>Do you have a design concept in mind?</h2>
+  <p>You can enter a design code, choose from templates, or request a custom design.</p>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    
+    <!-- Accessible link button -->
+    <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1" class="button-link">
+      Show me concepts
+    </a>
+    
+    <button type="button" onclick="next()">Custom design</button>
   </div>
+</div>
 
   <!-- Q3 (Updated): Design Code Entry -->
   <div class="form-screen" id="design-code">
