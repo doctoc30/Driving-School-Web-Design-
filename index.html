@@ -1175,6 +1175,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+ // ------------------ Step 3: Go to Concepts ------------------
+window.goToConcept = function(fromCodeEntry = true) {
+  let code = "";
+  if (fromCodeEntry) {
+    const input = document.getElementById("designInput");
+    if (!input) return;
+    code = input.value.trim().toUpperCase();
+    if (code && !/^SDI-(?:[1-9]|10)$/.test(code)) {
+      return alert("Enter a valid design code SDI-1 to SDI-10");
+    }
+  }
+
+  // Use relative path (works on GitHub Pages)
+  const conceptURL = 'pages/concepts.html'; // relative path from index.html
+  let fullURL = conceptURL + '?fromFunnel=1';
+  if (code) fullURL += `&code=${encodeURIComponent(code)}`;
+
+  window.location.href = fullURL;
+};
+
+// ------------------ "Show me concepts" button ------------------
+document.querySelectorAll("button").forEach(btn => {
+  if (btn.textContent.includes("Show me concepts")) {
+    btn.addEventListener('click', () => {
+      // Don't pass code, just show all concepts
+      window.goToConcept(false);
+    });
+  }
+});
 </script>
 </body>
 </html>
