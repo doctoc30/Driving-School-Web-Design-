@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
 
-<style> 
+<style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -973,12 +973,13 @@ button:hover {
 </a>
   </div>
 
- <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  const fromFunnel = params.has("fromFunnel");
 
   // ------------------ Funnel Screens ------------------
   const screens = document.querySelectorAll(".form-screen");
@@ -1028,12 +1029,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
     else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
     planEl.innerText = plan;
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    if(hiddenPlan) hiddenPlan.value = plan;
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if(hiddenFeatures) hiddenFeatures.value = features.join(', ');
   }
-
   window.setPath = setPath;
   window.recordFeature = recordFeature;
   window.recommendPlan = recommendPlan;
@@ -1125,7 +1121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Redirect to concepts.html with optional code
-    const conceptURL = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
+    const conceptURL = '/pages/concepts.html'; // adjust path if needed
     const fullURL = code ? `${conceptURL}?code=${encodeURIComponent(code)}&fromFunnel=1` : `${conceptURL}?fromFunnel=1`;
     window.location.href = fullURL;
   };
@@ -1138,6 +1134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (codeParam) {
     const input = document.getElementById("designInput");
     if (input) input.value = codeParam.toUpperCase();
+    // automatic redirect to concepts.html if code is in URL
     goToConcept(true);
   }
 
