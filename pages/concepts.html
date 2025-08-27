@@ -572,7 +572,23 @@ footer {
     padding: 8px 12px;
   }
 }
-  
+
+
+        .arrow {
+  position: absolute;
+  top: 50%;                  /* vertical center relative to slider wrapper */
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow.prev { left: 10px; }
+.arrow.next { right: 10px; }
   </style>
 </head>
 <body>
