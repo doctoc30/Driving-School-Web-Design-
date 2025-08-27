@@ -729,6 +729,17 @@ window.addEventListener('load', centerSliderArrows);
 
 // Re-center on resize
 window.addEventListener('resize', centerSliderArrows);
+
+document.querySelectorAll('.want-concept').forEach(button => {
+  button.addEventListener('click', () => {
+    const selectedCode = button.dataset.code; // e.g., SDI-5
+    if (!selectedCode) return;
+
+    // Always continue to funnel question
+    window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4&fromFunnel=1`;
+  });
+});
+
 </script>
 </body>
 </html>
