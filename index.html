@@ -792,11 +792,13 @@ body header + .form-screen {
   display: flex;
 }
 
-/* Nudge the very first question further down */
-#instructor-q1 {
-  padding-top: 120px;   /* adjust this value until it looks right */
-  box-sizing: border-box;
+
+ #main-intro-options {
+  justify-content: center !important; /* center vertically */
+  min-height: 100vh;                   /* full viewport height */
+  padding-top: 0 !important;           /* remove any extra top spacing */
 }
+
 </style>
 
 </head>
