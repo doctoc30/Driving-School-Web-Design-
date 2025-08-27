@@ -980,7 +980,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  const fromFunnel = params.has("fromFunnel");
 
   // ------------------ Funnel Screens ------------------
   const screens = document.querySelectorAll(".form-screen");
@@ -1019,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ FORM PATH + PLAN ------------------
+  // ------------------ Form Path + Plan ------------------
   let userPath = "";
   const features = [];
 
@@ -1133,13 +1132,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const slideCodeElem = slide.querySelector('.buttons span');
       if (!slideCodeElem) return;
       const slideCode = slideCodeElem.textContent.trim().toUpperCase();
-      if (code && slideCode !== code) slide.style.display = "none";
-      else slide.style.display = "flex";
+      slide.style.display = code && slideCode !== code ? "none" : "flex";
     });
 
     showScreen('design-code');
 
-    // Slider functionality
+    // Slider navigation
     let currentIndex = slides.findIndex(slide => slide.style.display === "flex");
     const nextBtn = document.querySelector('.arrow.next');
     const prevBtn = document.querySelector('.arrow.prev');
@@ -1168,6 +1166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateSlider();
 
+    // Automatically continue funnel on "I want this concept"
     document.querySelectorAll('.want-concept').forEach(btn => {
       btn.onclick = () => {
         const selectedCode = btn.dataset.code;
@@ -1177,11 +1176,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // ---------- "Show me concepts" button ----------
+  // ---------- Show concepts button ----------
   const showConceptsBtn = document.querySelector("button[onclick*='Show me concepts']");
   if (showConceptsBtn) showConceptsBtn.onclick = () => goToConcept(false);
 
-  // ---------- Handle page load with ?code=SDI-x ----------
+  // ---------- Pre-fill if ?code=SDI-x ----------
   if (codeParam) {
     const input = document.getElementById("designInput");
     if (input) input.value = codeParam.toUpperCase();
