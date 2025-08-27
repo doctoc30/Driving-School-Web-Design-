@@ -792,20 +792,15 @@ body header + .form-screen {
   display: flex;
 }
 
-/* Nudge the very first question further down */
-#instructor-q1 {
-  padding-top: 120px;   /* adjust this value until it looks right */
-  box-sizing: border-box;
-}
-
-
- #instructor-q1 {
+#main-intro-options {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* start from top */
   align-items: center;
-  min-height: calc(100vh - 80px); /* 80px = header height */
+  min-height: 100vh;
+  padding-top: 200px; /* 👈 this number pushes it down */
   box-sizing: border-box;
+  text-align: center;
 }
 </style>
 
