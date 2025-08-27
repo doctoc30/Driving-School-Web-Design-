@@ -601,7 +601,6 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -644,23 +643,30 @@ document.addEventListener("DOMContentLoaded", () => {
     visibleSlides = slides;
   }
 
-  currentIndex = slides.findIndex(slide => slide.style.display === 'flex');
+  // -------------------------------
+  // 2️⃣ Start at first visible slide
+  // -------------------------------
+  currentIndex = 0;
 
   // -------------------------------
-  // 2️⃣ Initialize AOS
+  // 3️⃣ Initialize AOS
   // -------------------------------
   if (AOS) AOS.init();
 
   // -------------------------------
-  // 3️⃣ Slider position update
+  // 4️⃣ Slider position update
   // -------------------------------
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
-    sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
+    if (isPortrait && visibleSlides.length > 1) {
+      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    } else {
+      sliderWrapper.style.transform = "none";
+    }
   }
 
   // -------------------------------
-  // 4️⃣ Navigation arrows
+  // 5️⃣ Navigation arrows
   // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % visibleSlides.length;
@@ -673,7 +679,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // -------------------------------
-  // 5️⃣ Swipe support
+  // 6️⃣ Swipe support
   // -------------------------------
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
@@ -687,14 +693,14 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
   // -------------------------------
-  // 6️⃣ "I want this concept" button → continue funnel
+  // 7️⃣ "I want this concept" button → continue funnel
   // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
       const selectedCode = button.dataset.code; // e.g., SDI-5
       if (selectedCode) {
         if (fromFunnel) {
-          // If coming from the funnel → continue funnel step
+          // Continue funnel step
           window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
         } else {
           // Just show code in URL
