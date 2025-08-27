@@ -601,7 +601,7 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -615,11 +615,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sliderWrapper || slides.length === 0) return;
 
-  // -------------------------------
-  // Handle ?code= in URL
-  // -------------------------------
+  // Show all slides
   slides.forEach(slide => slide.style.display = 'flex'); 
 
+  // Jump to slide if ?code= in URL
   if (codeParam) {
     const match = slides.find(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
@@ -628,19 +627,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // -------------------------------
   // Initialize AOS
-  // -------------------------------
   if (AOS) AOS.init();
 
-  // -------------------------------
   // Slider positioning
-  // -------------------------------
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
     sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
+  // Navigation arrows
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -663,14 +659,12 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // -------------------------------
-  // "I want this concept" button → redirect to index funnel Q4
-  // -------------------------------
+  // "I want this concept" → straight to funnel
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code;
+      const selectedCode = button.dataset.code; // SDI-1 ... SDI-10
       if (selectedCode) {
-        window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
       }
     });
   });
