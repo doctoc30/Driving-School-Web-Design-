@@ -602,12 +602,10 @@ footer {
   </div>
 
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code');       // e.g. SDI-5
-  const fromFunnel = params.has("fromFunnel");
+  const codeParam = params.get('code'); // e.g. SDI-5
 
   const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
@@ -618,53 +616,42 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!sliderWrapper || slides.length === 0) return;
 
   // -------------------------------
-  // 1️⃣ Handle code param
+  // Handle ?code= in URL
   // -------------------------------
-  let visibleSlides = slides;
-  slides.forEach(slide => slide.style.display = 'flex'); // always show all
+  slides.forEach(slide => slide.style.display = 'flex'); 
 
   if (codeParam) {
-    // Find the matching slide
     const match = slides.find(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
       return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
     });
-
-    // Jump directly to it if found
-    if (match) {
-      currentIndex = slides.indexOf(match);
-    }
+    if (match) currentIndex = slides.indexOf(match);
   }
 
   // -------------------------------
-  // 2️⃣ Initialize AOS
+  // Initialize AOS
   // -------------------------------
   if (AOS) AOS.init();
 
   // -------------------------------
-  // 3️⃣ Slider position update
+  // Slider positioning
   // -------------------------------
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
     sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
-  // -------------------------------
-  // 4️⃣ Navigation arrows
-  // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % visibleSlides.length;
+    currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
   });
 
   if (prevBtn) prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + visibleSlides.length) % visibleSlides.length;
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     updateSlider();
   });
 
-  // -------------------------------
-  // 5️⃣ Swipe support
-  // -------------------------------
+  // Swipe support
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -677,19 +664,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
   // -------------------------------
-  // 6️⃣ "I want this concept" button → continue funnel
+  // "I want this concept" button → redirect to index funnel Q4
   // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code; // e.g., SDI-5
+      const selectedCode = button.dataset.code;
       if (selectedCode) {
-        if (fromFunnel) {
-          // If coming from the funnel → continue funnel step
-          window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
-        } else {
-          // Just show code in URL
-          window.location.href = `concepts.html?code=${encodeURIComponent(selectedCode)}`;
-        }
+        window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
       }
     });
   });
