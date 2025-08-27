@@ -447,151 +447,10 @@ footer {
   display: inline-block;
 }
 
-
-
-
-  
-  
-  /* ------------------------ */
-/* General funnel screen styling */
-/* ------------------------ */
-.form-screen {
-  display: none;              /* hidden by default */
-  flex-direction: column;     /* stack content vertically */
-  justify-content: center;    /* vertical centering */
-  align-items: center;        /* horizontal centering */
-  min-height: calc(100vh - 100px); /* full viewport minus header */
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-/* Active screen */
-.form-screen.active {
-  display: flex;
-}
-
-/* Buttons row styling */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-/* First question specific adjustment */
-#instructor-q1 {
-  padding-top: 180px;  /* adjust to nudge the first question down */
-  box-sizing: border-box;
-}
-
-/* ------------------------ */
-/* Tablet adjustments */
-/* ------------------------ */
-@media (min-width: 768px) {
-  .form-screen {
-    min-height: calc(100vh - 100px);
-    padding: 40px;
-  }
-  #instructor-q1 {
-    padding-top: 160px;  /* slightly less for tablet landscape */
-  }
-}
-
-/* ------------------------ */
-/* Desktop adjustments */
-/* ------------------------ */
-@media (min-width: 1024px) {
-  .form-screen {
-    min-height: calc(100vh - 120px);
-    padding: 60px;
-  }
-  #instructor-q1 {
-    padding-top: 140px;
-  }
-}
-
-/* ------------------------ */
-/* Slider wrapper and slides */
-/* ------------------------ */
-.concept-slider {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.slider-wrapper {
-  display: flex;
-  transition: transform 0.4s ease;
-}
-
-.slide {
-  min-width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.slide img {
-  width: 100%;
-  max-height: calc(100vh - 120px); /* avoid overlapping header */
-  object-fit: contain;
-}
-
-/* ------------------------ */
-/* Slider arrows */
-/* ------------------------ */
-.arrow {
-  position: absolute;
-  top: 50%;  /* vertical center */
-  transform: translateY(-50%);
-  font-size: 2rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: none;
-  cursor: pointer;
-  padding: 10px 15px;
-  z-index: 10;
-}
-
-.arrow.prev {
-  left: 10px;
-}
-
-.arrow.next {
-  right: 10px;
-}
-
-/* Optional: smaller arrows on mobile */
-@media (max-width: 767px) {
-  .arrow {
-    font-size: 1.5rem;
-    padding: 8px 12px;
-  }
-}
-
-
-        .arrow {
-  position: absolute;
-  top: 50%;                  /* vertical center relative to slider wrapper */
-  transform: translateY(-50%);
-  z-index: 10;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.arrow.prev { left: 10px; }
-.arrow.next { right: 10px; }
-  </style>
+</style>
 </head>
 <body>
+
 <header>
   <div class="logo">D S W D</div>
   <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
@@ -609,14 +468,17 @@ footer {
 </header>
 <main>
 
-  <div class="concept-slider" data-aos="fade-up">
+<!-- ✅ SLIDER -->
+<div class="concept-slider">
   <div class="slider-wrapper">
 
     <!-- Slide 1 -->
     <div class="slide">
       <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
       <div class="buttons">
-        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank">View Live Version</a>
+        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank" title="Design may differ slightly from concept image">
+          View Live Version
+        </a>
         <span>SDI-1</span>
         <button class="want-concept" data-code="SDI-1">I want this concept</button>
       </div>
@@ -719,22 +581,32 @@ footer {
 <button class="arrow prev">&#10094;</button>
 <button class="arrow next">&#10095;</button>
 
-<!-- Social icons -->
-<div class="social-icons">
-  <a href="https://x.com/yourprofile" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X"></a>
-  <a href="https://facebook.com/yourpage" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
-  <a href="https://instagram.com/yourhandle" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
-</div>
 
-<!-- Footer -->
-<div class="footer-inner" data-aos="fade-up">
-  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
-</div>
 
+  <!-- ✅ SOCIAL ICONS (now correctly after the slider) -->
+  <div class="social-icons" aria-label="Social media links">
+    <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+    </a>
+    <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+    </a>
+    <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+    </a>
+  </div>
+
+  <!-- ✅ FOOTER -->
+  <div class="footer-inner" data-aos="fade-up">
+    <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+  </div>
+
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code'); 
+  const codeParam = params.get('code');       // e.g. SDI-5
   const fromFunnel = params.has("fromFunnel");
 
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -746,63 +618,52 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!sliderWrapper || slides.length === 0) return;
 
   // -------------------------------
-  // Filter slides by code (if any)
+  // 1️⃣ Handle code param
   // -------------------------------
-  let visibleSlides = [];
+  let visibleSlides = slides;
+  slides.forEach(slide => slide.style.display = 'flex'); // always show all
+
   if (codeParam) {
-    slides.forEach(slide => {
+    // Find the matching slide
+    const match = slides.find(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
-      if (!slideCodeElem) return;
-      const slideCode = slideCodeElem.textContent.trim().toUpperCase();
-      if (slideCode === codeParam.toUpperCase()) {
-        slide.style.display = 'flex';
-        visibleSlides.push(slide);
-      } else {
-        slide.style.display = 'none';
-      }
+      return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
     });
-    if (visibleSlides.length === 0) {
-      slides.forEach(slide => slide.style.display = 'flex');
-      visibleSlides = slides;
+
+    // Jump directly to it if found
+    if (match) {
+      currentIndex = slides.indexOf(match);
     }
-  } else {
-    slides.forEach(slide => slide.style.display = 'flex');
-    visibleSlides = slides;
   }
 
-  currentIndex = 0;
-
   // -------------------------------
-  // Initialize AOS
+  // 2️⃣ Initialize AOS
   // -------------------------------
   if (AOS) AOS.init();
 
   // -------------------------------
-  // Update slider position
+  // 3️⃣ Slider position update
   // -------------------------------
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
-    if (!isPortrait) return;
-    sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
   // -------------------------------
-  // Arrow navigation
+  // 4️⃣ Navigation arrows
   // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
-    if (visibleSlides.length <= 1) return;
     currentIndex = (currentIndex + 1) % visibleSlides.length;
     updateSlider();
   });
 
   if (prevBtn) prevBtn.addEventListener('click', () => {
-    if (visibleSlides.length <= 1) return;
     currentIndex = (currentIndex - 1 + visibleSlides.length) % visibleSlides.length;
     updateSlider();
   });
 
   // -------------------------------
-  // Swipe support
+  // 5️⃣ Swipe support
   // -------------------------------
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
@@ -812,44 +673,26 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (endX - startX > 50 && prevBtn) prevBtn.click();
   });
 
-  // -------------------------------
-  // Center arrows vertically
-  // -------------------------------
-  function centerSliderArrows() {
-    const sliderHeight = sliderWrapper.offsetHeight;
-    document.querySelectorAll('.arrow').forEach(arrow => {
-      arrow.style.top = sliderHeight / 2 + 'px';
-      arrow.style.transform = 'translateY(-50%)';
-    });
-  }
-  window.addEventListener('load', centerSliderArrows);
-  window.addEventListener('resize', centerSliderArrows);
+  window.addEventListener('resize', updateSlider);
+  updateSlider();
 
   // -------------------------------
-  // "I want this concept" button → funnel redirect
+  // 6️⃣ "I want this concept" button → continue funnel
   // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code;
-      if (!selectedCode || selectedCode.trim() === '') return;
-
-      // Determine the root path dynamically to prevent 404
-      let rootPath = window.location.origin;
-      const pathSegments = window.location.pathname.split('/').filter(Boolean);
-      if (pathSegments.length > 1) {
-        pathSegments.pop(); // remove current file
-        rootPath += '/' + pathSegments.join('/');
+      const selectedCode = button.dataset.code; // e.g., SDI-5
+      if (selectedCode) {
+        if (fromFunnel) {
+          // If coming from the funnel → continue funnel step
+          window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        } else {
+          // Just show code in URL
+          window.location.href = `concepts.html?code=${encodeURIComponent(selectedCode)}`;
+        }
       }
-
-      // Redirect to index.html funnel step
-      window.location.href = `${rootPath}/index.html?code=${encodeURIComponent(selectedCode)}&step=4&fromFunnel=1`;
     });
   });
-
-  // -------------------------------
-  // Initial slider position
-  // -------------------------------
-  updateSlider();
 });
 </script>
 </body>
