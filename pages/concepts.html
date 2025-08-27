@@ -448,23 +448,30 @@ footer {
 }
 
 
-    /* Slider arrows vertical centering */
+/* Ensure slider wrapper uses relative positioning */
+.slider-wrapper {
+  position: relative; /* arrows are absolute inside */
+  display: flex;      /* slides aligned horizontally */
+  overflow: hidden;
+}
+
+/* Arrows */
 .arrow {
   position: absolute;
-  top: 50%;                  /* move to middle */
-  transform: translateY(-50%); /* adjust to true center */
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 10;
   cursor: pointer;
+  width: 40px;       /* adjust as needed */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Positioning left/right arrows */
-.arrow.prev {
-  left: 15px;   /* adjust distance from left edge */
-}
-
-.arrow.next {
-  right: 15px;  /* adjust distance from right edge */
-}
+/* Left/right positioning */
+.arrow.prev { left: 10px; }
+.arrow.next { right: 10px; }
 </style>
 </head>
 <body>
