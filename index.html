@@ -1030,6 +1030,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
     planEl.innerText = plan;
   }
+
   window.setPath = setPath;
   window.recordFeature = recordFeature;
   window.recommendPlan = recommendPlan;
@@ -1117,18 +1118,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const input = document.getElementById("designInput");
       if (!input) return;
       code = input.value.trim().toUpperCase();
-      if (code && !/^SDI-(?:[1-9]|10)$/.test(code)) return alert("Enter a valid design code SDI-1 to SDI-10");
+      if (code && !/^SDI-(?:[1-9]|10)$/.test(code)) {
+        return alert("Enter a valid design code SDI-1 to SDI-10");
+      }
     }
 
-    // Redirect to concepts.html with optional code
-    const conceptURL = '/pages/concepts.html'; // adjust path if needed
-    const fullURL = code ? `${conceptURL}?code=${encodeURIComponent(code)}&fromFunnel=1` : `${conceptURL}?fromFunnel=1`;
+    // Correct relative path
+    const conceptURL = 'pages/concepts.html';
+    let fullURL = conceptURL + '?fromFunnel=1';
+    if (code) fullURL += `&code=${encodeURIComponent(code)}`;
+
     window.location.href = fullURL;
   };
 
-  // ------------------ "Show me concepts" button ------------------
-  const showConceptsBtn = document.querySelector("button[onclick*='Show me concepts']");
-  if (showConceptsBtn) showConceptsBtn.onclick = () => goToConcept(false);
+  // Bind "Show me concepts" buttons
+  document.querySelectorAll("button").forEach(btn => {
+    if (btn.textContent.includes("Show me concepts")) {
+      btn.addEventListener('click', () => window.goToConcept(false));
+    }
+  });
 
   // ------------------ Handle page load with ?code=SDI-x ------------------
   if (codeParam) {
@@ -1172,36 +1180,6 @@ document.addEventListener("DOMContentLoaded", () => {
         menu.setAttribute('aria-hidden', true);
         document.body.style.overflow = '';
       }
-    });
-  }
-});
-
- // ------------------ Step 3: Go to Concepts ------------------
-window.goToConcept = function(fromCodeEntry = true) {
-  let code = "";
-  if (fromCodeEntry) {
-    const input = document.getElementById("designInput");
-    if (!input) return;
-    code = input.value.trim().toUpperCase();
-    if (code && !/^SDI-(?:[1-9]|10)$/.test(code)) {
-      return alert("Enter a valid design code SDI-1 to SDI-10");
-    }
-  }
-
-  // Use relative path (works on GitHub Pages)
-  const conceptURL = 'pages/concepts.html'; // relative path from index.html
-  let fullURL = conceptURL + '?fromFunnel=1';
-  if (code) fullURL += `&code=${encodeURIComponent(code)}`;
-
-  window.location.href = fullURL;
-};
-
-// ------------------ "Show me concepts" button ------------------
-document.querySelectorAll("button").forEach(btn => {
-  if (btn.textContent.includes("Show me concepts")) {
-    btn.addEventListener('click', () => {
-      // Don't pass code, just show all concepts
-      window.goToConcept(false);
     });
   }
 });
