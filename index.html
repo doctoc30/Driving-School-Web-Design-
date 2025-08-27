@@ -1192,6 +1192,61 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
+
+
+ /* ------------------------ */
+/* General funnel screen styling */
+/* ------------------------ */
+.form-screen {
+  display: none;              /* hidden by default */
+  flex-direction: column;     /* stack content vertically */
+  justify-content: center;    /* vertical centering */
+  align-items: center;        /* horizontal centering */
+  min-height: 80vh;           /* fill most of viewport height */
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* Buttons row styling */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* ------------------------ */
+/* Tablet / landscape adjustments */
+/* ------------------------ */
+@media (min-width: 768px) {
+  .form-screen {
+    min-height: 70vh;
+    padding: 40px;
+  }
+}
+
+/* ------------------------ */
+/* Desktop adjustments */
+/* ------------------------ */
+@media (min-width: 1024px) {
+  .form-screen {
+    min-height: 60vh;
+    padding: 60px;
+  }
+}
+
+/* Optional: adjust for fixed header */
+body header + .form-screen {
+  padding-top: 80px;
+}
 </script>
 </body>
 </html>
