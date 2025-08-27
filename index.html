@@ -1163,6 +1163,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+   // Step 3: Redirect to concepts.html with entered design code
+  function goToConcept() {
+    const code = document.getElementById('designInput').value.trim();
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
+    // Redirect to concept page with code and funnel flag
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  }
+
+  // Optional: If returning from concepts.html with a selected code
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const codeParam = params.get("code");
+    const stepParam = params.get("step");
+
+    if (codeParam && stepParam && stepParam === "4") {
+      // Auto-fill the code input
+      const inputEl = document.getElementById("designInput");
+      if (inputEl) inputEl.value = codeParam;
+
+      // Jump to next funnel step
+      if (typeof showScreen === "function") {
+        showScreen(`instructor-q4`);
+      }
+    }
+  });
 </script>
 </body>
 </html>
