@@ -854,6 +854,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------
   updateSlider();
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.want-concept').forEach(button => {
+    button.addEventListener('click', () => {
+      const selectedCode = button.dataset.code;
+      if (!selectedCode || selectedCode.trim() === '') return;
+
+      // Determine the root folder dynamically
+      let rootPath = window.location.origin;
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+
+      // If index.html is inside a folder like /pages/, keep that folder in path
+      if (pathSegments.length > 1) {
+        pathSegments.pop(); // remove current file
+        rootPath += '/' + pathSegments.join('/');
+      }
+
+      // Redirect to index.html in the determined folder
+      window.location.href = `${rootPath}/index.html?code=${encodeURIComponent(selectedCode)}&step=4&fromFunnel=1`;
+    });
+  });
+});
 </script>
 </body>
 </html>
