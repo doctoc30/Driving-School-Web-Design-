@@ -707,30 +707,27 @@ button:hover {
 
 
 
- /* ------------------------ */
+/* ------------------------ */
 /* General funnel screen styling */
 /* ------------------------ */
 .form-screen {
-  display: none;                /* hidden by default */
-  flex-direction: column;       /* stack content vertically */
-  justify-content: center;      /* vertical centering */
-  align-items: center;          /* horizontal centering */
-  height: calc(100vh - 80px);   /* full viewport minus fixed header height */
-  padding: 20px;                /* spacing inside screen */
+  display: none;              /* hidden by default */
+  flex-direction: column;     /* stack content vertically */
+  justify-content: center;    /* vertical centering */
+  align-items: center;        /* horizontal centering */
+  min-height: 100vh;          /* full viewport height */
+  padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  transition: opacity 0.4s ease;
-  opacity: 0;
+  transition: all 0.3s ease;
 }
 
+/* Active screen */
 .form-screen.active {
   display: flex;
-  opacity: 1;
 }
 
-/* ------------------------ */
 /* Buttons row styling */
-/* ------------------------ */
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -740,89 +737,41 @@ button:hover {
 }
 
 /* ------------------------ */
-/* Input and text styling */
+/* First screen adjustment */
 /* ------------------------ */
-input[type="text"], input[type="email"] {
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
-  text-align: center;
+#main-intro-options {
+  padding-top: 120px;   /* ⬅️ adjust this number to move down */
 }
 
 /* ------------------------ */
-/* Tablet adjustments (768px - 1023px) */
+/* Tablet / landscape adjustments */
 /* ------------------------ */
 @media (min-width: 768px) {
   .form-screen {
     padding: 40px;
-    height: calc(100vh - 80px);
   }
-  input[type="text"], input[type="email"] {
-    max-width: 400px;
+  #main-intro-options {
+    padding-top: 140px; /* slightly lower on tablet */
   }
 }
 
 /* ------------------------ */
-/* Desktop adjustments (1024px+) */
+/* Desktop adjustments */
 /* ------------------------ */
 @media (min-width: 1024px) {
   .form-screen {
     padding: 60px;
-    height: calc(100vh - 80px);
   }
-  input[type="text"], input[type="email"] {
-    max-width: 450px;
-  }
-}
-
-/* ------------------------ */
-/* Optional: fixed header offset for all screens */
-/* ------------------------ */
-body header.fixed + .form-screen {
-  height: calc(100vh - 80px); /* adjust 80px to match your header height */
-}
-
-/* ------------------------ */
-/* Optional: checkbox styling */
-/* ------------------------ */
-input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* ------------------------ */
-/* Optional: small adjustments for mobile */
-/* ------------------------ */
-@media (max-width: 480px) {
-  .button-row {
-    flex-direction: column;
-  }
-  input[type="text"], input[type="email"] {
-    width: 90%;
+  #main-intro-options {
+    padding-top: 160px; /* even lower on desktop */
   }
 }
 
- /* ------------------------ */
-/* First welcome screen - full center */
-#main-intro-options {
-  min-height: 100vh;             /* full viewport */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;        /* vertical center */
-  align-items: center;            /* horizontal center */
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-
-#typewriter {
-  position: absolute;   /* so it overlays without pushing content */
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ------------------------ */
+/* Optional: adjust for fixed header */
+/* ------------------------ */
+body header + .form-screen {
+  padding-top: 80px;
 }
 </style>
 
