@@ -606,7 +606,7 @@ footer {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
+  const codeParam = params.get('code');       // e.g. SDI-5
   const fromFunnel = params.has("fromFunnel");
 
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -615,18 +615,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevBtn = document.querySelector('.arrow.prev');
   let currentIndex = 0;
 
+  if (!sliderWrapper || slides.length === 0) return;
+
   // -------------------------------
-  // 1️⃣ Filter slides by code (or show all if no match)
+  // 1️⃣ Filter slides by code
   // -------------------------------
   let visibleSlides = [];
-  if (code) {
-    slides.forEach((slide, index) => {
+  if (codeParam) {
+    slides.forEach(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
       if (!slideCodeElem) return;
       const slideCode = slideCodeElem.textContent.trim().toUpperCase();
-      if (slideCode === code.toUpperCase()) {
+      if (slideCode === codeParam.toUpperCase()) {
         slide.style.display = 'flex';
-        currentIndex = 0; // start at this one
         visibleSlides.push(slide);
       } else {
         slide.style.display = 'none';
@@ -635,14 +636,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // if no match → show all
     if (visibleSlides.length === 0) {
-      slides.forEach(s => s.style.display = 'flex');
+      slides.forEach(slide => slide.style.display = 'flex');
       visibleSlides = slides;
     }
   } else {
-    // no code param → show all
-    slides.forEach(s => s.style.display = 'flex');
+    slides.forEach(slide => slide.style.display = 'flex');
     visibleSlides = slides;
   }
+
+  currentIndex = slides.findIndex(slide => slide.style.display === 'flex');
 
   // -------------------------------
   // 2️⃣ Initialize AOS
@@ -650,20 +652,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (AOS) AOS.init();
 
   // -------------------------------
-  // 3️⃣ Update slider position
+  // 3️⃣ Slider position update
   // -------------------------------
   function updateSlider() {
-    if (!sliderWrapper) return;
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
-    if (isPortrait) {
-      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    } else {
-      sliderWrapper.style.transform = "none"; // show all in grid
-    }
+    sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
   // -------------------------------
-  // 4️⃣ Arrows navigation
+  // 4️⃣ Navigation arrows
   // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % visibleSlides.length;
@@ -679,26 +676,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5️⃣ Swipe support
   // -------------------------------
   let startX = 0;
-  if (sliderWrapper) {
-    sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    sliderWrapper.addEventListener('touchend', e => {
-      const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50 && nextBtn) nextBtn.click();
-      else if (endX - startX > 50 && prevBtn) prevBtn.click();
-    });
-  }
+  sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  sliderWrapper.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50 && nextBtn) nextBtn.click();
+    else if (endX - startX > 50 && prevBtn) prevBtn.click();
+  });
 
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
   // -------------------------------
-  // 6️⃣ "I want this concept" buttons → funnel step 4
+  // 6️⃣ "I want this concept" button → continue funnel
   // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code; // e.g. SDI-5
+      const selectedCode = button.dataset.code; // e.g., SDI-5
       if (selectedCode) {
-        window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        if (fromFunnel) {
+          // If coming from the funnel → continue funnel step
+          window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        } else {
+          // Just show code in URL
+          window.location.href = `concepts.html?code=${encodeURIComponent(selectedCode)}`;
+        }
       }
     });
   });
