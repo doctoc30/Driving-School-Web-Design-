@@ -447,6 +447,24 @@ footer {
   display: inline-block;
 }
 
+
+    /* Slider arrows vertical centering */
+.arrow {
+  position: absolute;
+  top: 50%;                  /* move to middle */
+  transform: translateY(-50%); /* adjust to true center */
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Positioning left/right arrows */
+.arrow.prev {
+  left: 15px;   /* adjust distance from left edge */
+}
+
+.arrow.next {
+  right: 15px;  /* adjust distance from right edge */
+}
 </style>
 </head>
 <body>
