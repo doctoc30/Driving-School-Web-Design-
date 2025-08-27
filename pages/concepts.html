@@ -448,25 +448,138 @@ footer {
 }
 
 
-    .arrow {
-  position: absolute;
-  top: 50%;                  /* vertical center relative to slider wrapper */
-  transform: translateY(-50%);
-  z-index: 10;
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
+
+
+  
+  
+  /* ------------------------ */
+/* General funnel screen styling */
+/* ------------------------ */
+.form-screen {
+  display: none;              /* hidden by default */
+  flex-direction: column;     /* stack content vertically */
+  justify-content: center;    /* vertical centering */
+  align-items: center;        /* horizontal centering */
+  min-height: calc(100vh - 100px); /* full viewport minus header */
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Active screen */
+.form-screen.active {
   display: flex;
+}
+
+/* Buttons row styling */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* First question specific adjustment */
+#instructor-q1 {
+  padding-top: 180px;  /* adjust to nudge the first question down */
+  box-sizing: border-box;
+}
+
+/* ------------------------ */
+/* Tablet adjustments */
+/* ------------------------ */
+@media (min-width: 768px) {
+  .form-screen {
+    min-height: calc(100vh - 100px);
+    padding: 40px;
+  }
+  #instructor-q1 {
+    padding-top: 160px;  /* slightly less for tablet landscape */
+  }
+}
+
+/* ------------------------ */
+/* Desktop adjustments */
+/* ------------------------ */
+@media (min-width: 1024px) {
+  .form-screen {
+    min-height: calc(100vh - 120px);
+    padding: 60px;
+  }
+  #instructor-q1 {
+    padding-top: 140px;
+  }
+}
+
+/* ------------------------ */
+/* Slider wrapper and slides */
+/* ------------------------ */
+.concept-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.slide {
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.arrow.prev { left: 10px; }
-.arrow.next { right: 10px; }
-</style>
+.slide img {
+  width: 100%;
+  max-height: calc(100vh - 120px); /* avoid overlapping header */
+  object-fit: contain;
+}
+
+/* ------------------------ */
+/* Slider arrows */
+/* ------------------------ */
+.arrow {
+  position: absolute;
+  top: 50%;  /* vertical center */
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  z-index: 10;
+}
+
+.arrow.prev {
+  left: 10px;
+}
+
+.arrow.next {
+  right: 10px;
+}
+
+/* Optional: smaller arrows on mobile */
+@media (max-width: 767px) {
+  .arrow {
+    font-size: 1.5rem;
+    padding: 8px 12px;
+  }
+}
+  
+  </style>
 </head>
 <body>
 
+
+
+  
 <header>
   <div class="logo">D S W D</div>
   <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
@@ -617,7 +730,6 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -632,7 +744,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sliderWrapper || slides.length === 0) return;
 
-  // Filter slides by code
+  // -------------------------------
+  // Filter slides by code (if any)
+  // -------------------------------
   let visibleSlides = [];
   if (codeParam) {
     slides.forEach(slide => {
@@ -658,26 +772,35 @@ document.addEventListener("DOMContentLoaded", () => {
   currentIndex = visibleSlides.findIndex(slide => slide.style.display === 'flex');
   if (currentIndex === -1) currentIndex = 0;
 
+  // -------------------------------
   // Initialize AOS
+  // -------------------------------
   if (AOS) AOS.init();
 
-  // Update slider
+  // -------------------------------
+  // Update slider position
+  // -------------------------------
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
     sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
+  // -------------------------------
   // Arrow navigation
+  // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % visibleSlides.length;
     updateSlider();
   });
+
   if (prevBtn) prevBtn.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + visibleSlides.length) % visibleSlides.length;
     updateSlider();
   });
 
-  // Swipe
+  // -------------------------------
+  // Swipe support
+  // -------------------------------
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -686,7 +809,9 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (endX - startX > 50 && prevBtn) prevBtn.click();
   });
 
+  // -------------------------------
   // Center arrows vertically
+  // -------------------------------
   function centerSliderArrows() {
     const sliderHeight = sliderWrapper.offsetHeight;
     document.querySelectorAll('.arrow').forEach(arrow => {
@@ -697,7 +822,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('load', centerSliderArrows);
   window.addEventListener('resize', centerSliderArrows);
 
+  // -------------------------------
   // "I want this concept" button → funnel redirect
+  // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
       const selectedCode = button.dataset.code;
@@ -706,10 +833,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // -------------------------------
   // Initial slider position
+  // -------------------------------
   updateSlider();
 });
 </script>
-
 </body>
 </html>
