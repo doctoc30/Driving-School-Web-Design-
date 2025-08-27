@@ -617,12 +617,11 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code');       // e.g. SDI-5
+  const codeParam = params.get('code'); 
   const fromFunnel = params.has("fromFunnel");
 
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -633,54 +632,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sliderWrapper || slides.length === 0) return;
 
-  // -------------------------------
-  // 1️⃣ Handle code param
-  // -------------------------------
-  let visibleSlides = slides;
-  slides.forEach(slide => slide.style.display = 'flex'); // always show all
-
+  // Filter slides by code
+  let visibleSlides = [];
   if (codeParam) {
-    // Find the matching slide
-    const match = slides.find(slide => {
+    slides.forEach(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
-      return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
+      if (!slideCodeElem) return;
+      const slideCode = slideCodeElem.textContent.trim().toUpperCase();
+      if (slideCode === codeParam.toUpperCase()) {
+        slide.style.display = 'flex';
+        visibleSlides.push(slide);
+      } else {
+        slide.style.display = 'none';
+      }
     });
-
-    // Jump directly to it if found
-    if (match) {
-      currentIndex = slides.indexOf(match);
+    if (visibleSlides.length === 0) {
+      slides.forEach(slide => slide.style.display = 'flex');
+      visibleSlides = slides;
     }
+  } else {
+    slides.forEach(slide => slide.style.display = 'flex');
+    visibleSlides = slides;
   }
 
-  // -------------------------------
-  // 2️⃣ Initialize AOS
-  // -------------------------------
+  currentIndex = visibleSlides.findIndex(slide => slide.style.display === 'flex');
+  if (currentIndex === -1) currentIndex = 0;
+
+  // Initialize AOS
   if (AOS) AOS.init();
 
-  // -------------------------------
-  // 3️⃣ Slider position update
-  // -------------------------------
+  // Update slider
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
     sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
-  // -------------------------------
-  // 4️⃣ Navigation arrows
-  // -------------------------------
+  // Arrow navigation
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % visibleSlides.length;
     updateSlider();
   });
-
   if (prevBtn) prevBtn.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + visibleSlides.length) % visibleSlides.length;
     updateSlider();
   });
 
-  // -------------------------------
-  // 5️⃣ Swipe support
-  // -------------------------------
+  // Swipe
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -689,57 +686,30 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (endX - startX > 50 && prevBtn) prevBtn.click();
   });
 
-  window.addEventListener('resize', updateSlider);
-  updateSlider();
+  // Center arrows vertically
+  function centerSliderArrows() {
+    const sliderHeight = sliderWrapper.offsetHeight;
+    document.querySelectorAll('.arrow').forEach(arrow => {
+      arrow.style.top = sliderHeight / 2 + 'px';
+      arrow.style.transform = 'translateY(-50%)';
+    });
+  }
+  window.addEventListener('load', centerSliderArrows);
+  window.addEventListener('resize', centerSliderArrows);
 
-  // -------------------------------
-  // 6️⃣ "I want this concept" button → continue funnel
-  // -------------------------------
+  // "I want this concept" button → funnel redirect
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code; // e.g., SDI-5
-      if (selectedCode) {
-        if (fromFunnel) {
-          // If coming from the funnel → continue funnel step
-          window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
-        } else {
-          // Just show code in URL
-          window.location.href = `concepts.html?code=${encodeURIComponent(selectedCode)}`;
-        }
-      }
+      const selectedCode = button.dataset.code;
+      if (!selectedCode || selectedCode.trim() === '') return;
+      window.location.href = `/index.html?code=${encodeURIComponent(selectedCode)}&step=4&fromFunnel=1`;
     });
   });
+
+  // Initial slider position
+  updateSlider();
 });
-
-  function centerSliderArrows() {
-  const slider = document.querySelector('.slider-wrapper');
-  const arrows = document.querySelectorAll('.arrow');
-
-  if (!slider || arrows.length === 0) return;
-
-  const sliderHeight = slider.offsetHeight;
-  arrows.forEach(arrow => {
-    arrow.style.top = sliderHeight / 2 + 'px';
-    arrow.style.transform = 'translateY(-50%)';
-  });
-}
-
-// Run after window fully loads
-window.addEventListener('load', centerSliderArrows);
-
-// Re-center on resize
-window.addEventListener('resize', centerSliderArrows);
-
-document.querySelectorAll('.want-concept').forEach(button => {
-  button.addEventListener('click', () => {
-    const selectedCode = button.dataset.code; // e.g., SDI-5
-    if (!selectedCode) return;
-
-    // Always continue to funnel question
-    window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4&fromFunnel=1`;
-  });
-});
-
 </script>
+
 </body>
 </html>
