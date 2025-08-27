@@ -773,7 +773,7 @@ button:hover {
 body header + .form-screen {
   padding-top: 80px;
 }
- 
+
 
  /* Funnel screen global */
 .form-screen {
@@ -792,15 +792,10 @@ body header + .form-screen {
   display: flex;
 }
 
-#main-intro-options {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* start from top */
-  align-items: center;
-  min-height: 100vh;
-  padding-top: 50px; /* 👈 this number pushes it down */
+/* Nudge the very first question further down */
+#instructor-q1 {
+  padding-top: 120px;   /* adjust this value until it looks right */
   box-sizing: border-box;
-  text-align: center;
 }
 </style>
 
