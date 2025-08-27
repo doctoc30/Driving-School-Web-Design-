@@ -616,27 +616,41 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   // -------------------------------
-  // 1️⃣ Filter slides if code param exists
+  // 1️⃣ Filter slides by code (or show all if no match)
   // -------------------------------
-  slides.forEach((slide, index) => {
-    const slideCodeElem = slide.querySelector('.buttons span');
-    if (!slideCodeElem) return;
-    const slideCode = slideCodeElem.textContent.trim().toUpperCase();
-    if (code && slideCode !== code.toUpperCase()) {
-      slide.style.display = 'none';
-    } else {
-      slide.style.display = 'flex';
-      if (code) currentIndex = index; // start on chosen slide
+  let visibleSlides = [];
+  if (code) {
+    slides.forEach((slide, index) => {
+      const slideCodeElem = slide.querySelector('.buttons span');
+      if (!slideCodeElem) return;
+      const slideCode = slideCodeElem.textContent.trim().toUpperCase();
+      if (slideCode === code.toUpperCase()) {
+        slide.style.display = 'flex';
+        currentIndex = 0; // start at this one
+        visibleSlides.push(slide);
+      } else {
+        slide.style.display = 'none';
+      }
+    });
+
+    // if no match → show all
+    if (visibleSlides.length === 0) {
+      slides.forEach(s => s.style.display = 'flex');
+      visibleSlides = slides;
     }
-  });
+  } else {
+    // no code param → show all
+    slides.forEach(s => s.style.display = 'flex');
+    visibleSlides = slides;
+  }
 
   // -------------------------------
-  // 2️⃣ Initialize AOS (Animate on Scroll)
+  // 2️⃣ Initialize AOS
   // -------------------------------
   if (AOS) AOS.init();
 
   // -------------------------------
-  // 3️⃣ Update slider position (portrait swipe)
+  // 3️⃣ Update slider position
   // -------------------------------
   function updateSlider() {
     if (!sliderWrapper) return;
@@ -644,25 +658,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isPortrait) {
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      sliderWrapper.style.transform = "none"; // show all slides in grid
+      sliderWrapper.style.transform = "none"; // show all in grid
     }
   }
 
   // -------------------------------
-  // 4️⃣ Navigation buttons
+  // 4️⃣ Arrows navigation
   // -------------------------------
   if (nextBtn) nextBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % slides.length;
+    currentIndex = (currentIndex + 1) % visibleSlides.length;
     updateSlider();
   });
 
   if (prevBtn) prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    currentIndex = (currentIndex - 1 + visibleSlides.length) % visibleSlides.length;
     updateSlider();
   });
 
   // -------------------------------
-  // 5️⃣ Swipe support for mobile
+  // 5️⃣ Swipe support
   // -------------------------------
   let startX = 0;
   if (sliderWrapper) {
@@ -682,7 +696,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code; // e.g., SDI-5
+      const selectedCode = button.dataset.code; // e.g. SDI-5
       if (selectedCode) {
         window.location.href = `../index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
       }
@@ -690,6 +704,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 </body>
 </html>
