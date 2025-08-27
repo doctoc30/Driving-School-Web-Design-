@@ -980,6 +980,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  const fromFunnel = params.has("fromFunnel");
 
   // ------------------ Funnel Screens ------------------
   const screens = document.querySelectorAll(".form-screen");
@@ -1018,7 +1019,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ Form Path + Plan ------------------
+  // ------------------ FORM PATH + PLAN ------------------
   let userPath = "";
   const features = [];
 
@@ -1114,77 +1115,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // ------------------ Step 3: Design Code / Concepts ------------------
-  window.goToConcept = function(fromCodeEntry = true) {
-    const sliderWrapper = document.querySelector('.slider-wrapper');
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    if (!sliderWrapper || slides.length === 0) return alert("No concept slides found.");
+  // ------------------ Step 3: Design Code Entry ------------------
+  window.goToConcept = function() {
+    const codeInput = document.getElementById("designInput");
+    if (!codeInput) return;
+    const code = codeInput.value.trim().toUpperCase();
+    if (!/^SDI-(?:[1-9]|10)$/.test(code)) return alert("Enter a valid design code SDI-1 to SDI-10");
 
-    let code = "";
-    if (fromCodeEntry) {
-      const codeInput = document.getElementById("designInput");
-      if (!codeInput) return;
-      code = codeInput.value.trim().toUpperCase();
-      if (!/^SDI-(?:[1-9]|10)$/.test(code)) return alert("Please enter a valid design code (SDI-1 to SDI-10).");
-    }
-
-    slides.forEach(slide => {
-      const slideCodeElem = slide.querySelector('.buttons span');
-      if (!slideCodeElem) return;
-      const slideCode = slideCodeElem.textContent.trim().toUpperCase();
-      slide.style.display = code && slideCode !== code ? "none" : "flex";
-    });
-
-    showScreen('design-code');
-
-    // Slider navigation
-    let currentIndex = slides.findIndex(slide => slide.style.display === "flex");
-    const nextBtn = document.querySelector('.arrow.next');
-    const prevBtn = document.querySelector('.arrow.prev');
-
-    function updateSlider() {
-      const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
-      sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
-    }
-
-    if (nextBtn) nextBtn.onclick = () => { 
-      currentIndex = (currentIndex + 1) % slides.length; 
-      updateSlider(); 
-    };
-    if (prevBtn) prevBtn.onclick = () => { 
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length; 
-      updateSlider(); 
-    };
-
-    let startX = 0;
-    sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    sliderWrapper.addEventListener('touchend', e => {
-      const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50 && nextBtn) nextBtn.click();
-      else if (endX - startX > 50 && prevBtn) prevBtn.click();
-    });
-
-    updateSlider();
-
-    // Automatically continue funnel on "I want this concept"
-    document.querySelectorAll('.want-concept').forEach(btn => {
-      btn.onclick = () => {
-        const selectedCode = btn.dataset.code;
-        sessionStorage.setItem("chosenConcept", selectedCode);
-        showScreen('instructor-q4'); // next funnel step
-      };
-    });
+    // Redirect to concepts.html with code in URL
+    window.location.href = `concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   };
 
-  // ---------- Show concepts button ----------
+  // ------------------ "Show me concepts" button ------------------
   const showConceptsBtn = document.querySelector("button[onclick*='Show me concepts']");
-  if (showConceptsBtn) showConceptsBtn.onclick = () => goToConcept(false);
+  if (showConceptsBtn) showConceptsBtn.onclick = () => window.location.href = "concepts.html?fromFunnel=1";
 
-  // ---------- Pre-fill if ?code=SDI-x ----------
+  // ------------------ Handle page load with ?code=SDI-x ------------------
   if (codeParam) {
     const input = document.getElementById("designInput");
     if (input) input.value = codeParam.toUpperCase();
-    goToConcept(true);
+    // If you want automatic redirect when landing with code:
+    window.goToConcept();
   }
 
   // ------------------ Initialize Funnel & Typewriter ------------------
