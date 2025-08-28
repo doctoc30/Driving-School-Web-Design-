@@ -447,7 +447,21 @@ footer {
   display: inline-block;
 }
 
- 
+ @media (min-width: 768px) {
+  .slider-wrapper {
+    display: grid !important;                /* switch to grid in landscape */
+    grid-template-columns: repeat(3, 1fr);   /* 3 per row */
+    grid-auto-rows: auto;                    /* rows height auto */
+    gap: 20px 20px;                          /* vertical & horizontal gap */
+    transform: none !important;              /* disable sliding translation */
+  }
+
+  .slide {
+    width: 100%;                             /* fill each grid cell */
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>
 </head>
 <body>
