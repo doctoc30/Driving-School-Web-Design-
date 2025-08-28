@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
 
-<style>
+
+  <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -196,6 +197,21 @@ main {
 .arrow.prev { left: 10px; }
 .arrow.next { right: 10px; }
 
+/* Fullscreen Portrait Fix (Updated) */
+@media (orientation: portrait) and (max-width: 768px) {
+  .concept-slider {
+    position: relative;
+    background: #000;
+    z-index: 1;
+    margin-bottom: 30px;
+  }
+
+  .slide img {
+    max-height: 100vh;
+    object-fit: contain;
+  }
+}
+
 /* Footer layout */
 footer {
   flex-direction: column;
@@ -259,48 +275,52 @@ footer {
   padding-top: 10px;
 }
 
-/* Slider: Landscape grid with vertical lines */
-@media (min-width: 1024px) and (orientation: landscape) {
-  .slider-wrapper {
-    display: flex !important;
-    flex-wrap: wrap;
-    gap: 30px 30px; /* vertical 30px, horizontal 30px */
-    justify-content: flex-start;
-    transform:
+/* iPhone landscape fix */
+@media (orientation: landscape) and (max-device-width: 812px) {
+  footer {
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
+  }
+}
 
-    none !important;
+
+    /* Landscape view: Grid with 3 images per row, no arrows */
+@media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    transform: none !important;
   }
 
   .slide {
     flex: 0 0 calc(33.333% - 20px);
-    display: flex;
-    flex-direction: column;
-    border-right: 2px solid rgba(255,255,255,0.2); /* vertical line between slides */
-    padding-right: 15px;
-    box-sizing: border-box;
+    max-width: calc(33.333% - 20px);
+    position: relative;
+    margin-bottom: 20px;
   }
 
-  /* Remove right border for the last column in each row */
-  .slide:nth-child(3n) {
-    border-right: none;
+  .arrow {
+    display: none !important;
   }
 }
 
-/* Portrait single-slide view */
-@media (max-width: 1023px), (orientation: portrait) {
+
+    /* Portrait (single image swipe view) */
+@media (orientation: portrait), (max-width: 767px) {
   .slider-wrapper {
-    display: flex;
     flex-wrap: nowrap;
-    gap: 0;
-    transform: translateX(0);
   }
 
   .slide {
-    flex: 0 0 100%;
     min-width: 100%;
     max-width: 100%;
-    margin-bottom: 0;
-    border-right: none; /* remove vertical line in portrait */
+    flex: 0 0 100%;
+  }
+
+  .slide img {
+    max-height: 100vh;
+    object-fit: contain;
   }
 
   .arrow {
@@ -308,16 +328,125 @@ footer {
   }
 }
 
-/* Button styling */
+/* Landscape (grid view with 3 images per row) */
+@media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .slide {
+    min-width: unset;
+    max-width: calc(33.333% - 20px);
+    flex: 0 0 calc(33.333% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 300px;
+    border-radius: 8px;
+  }
+
+  .arrow {
+    display: none !important;
+  }
+}
+
+
+   /* FINAL — Force slider to be single row in portrait */
+@media screen and (orientation: portrait) {
+  .concept-slider .slider-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    transform: translateX(0); /* start at first slide */
+  }
+
+  .concept-slider .slide {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  .concept-slider .slide img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+
+    @media (orientation: portrait) {
+  .slide {
+    width: 100vw;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #33a7d4; /* match your template background */
+  }
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* keep full image visible */
+    display: block;
+    background-color: #33a7d4; /* fill behind transparent areas */
+  }
+}
+
+@media only screen and (orientation: landscape) {
+  .slider-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-x: visible !important; /* stop horizontal scroll */
+    transform: none !important; /* remove swipe translate */
+  }
+  .slider-container .slide {
+    min-width: auto !important; /* reset 100vw from portrait */
+    width: 100% !important;
+    height: auto !important;
+    flex-shrink: 1 !important; /* allow shrinking in grid */
+  }
+}
+
+
+
+.vertical-spacer {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .vertical-spacer {
+    display: block;
+    height: 20px;
+  }
+}
+
 .buttons a.want-concept {
   color: #fff !important;
-  background: #007bff;
+  background: #007bff; /* blue CTA */
   text-decoration: none !important;
   font-weight: bold;
   padding: 8px 14px;
   border-radius: 6px;
   display: inline-block;
 }
+
 </style>
 </head>
 <body>
@@ -337,31 +466,124 @@ footer {
     </ul>
   </nav>
 </header>
-
 <main>
-  <div class="concept-slider">
-    <div class="slider-wrapper">
 
-      <!-- Example Slide -->
-      <div class="slide">
-        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
-        <div class="buttons">
-          <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank">View Live Version</a>
-          <span>SDI-1</span>
-          <button class="want-concept" data-code="SDI-1">I want this concept</button>
-        </div>
+<!-- ✅ SLIDER -->
+<div class="concept-slider">
+  <div class="slider-wrapper">
+
+    <!-- Slide 1 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
+      <div class="buttons">
+        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank" title="Design may differ slightly from concept image">
+          View Live Version
+        </a>
+        <span>SDI-1</span>
+        <button class="want-concept" data-code="SDI-1">I want this concept</button>
       </div>
-
-      <!-- Add more slides here, same structure -->
-      
     </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept Image 2">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
+        <span>SDI-2</span>
+        <button class="want-concept" data-code="SDI-2">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" alt="Concept Image 3">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" target="_blank">View live link</a>
+        <span>SDI-3</span>
+        <button class="want-concept" data-code="SDI-3">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" alt="Concept Image 4">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" target="_blank">View live link</a>
+        <span>SDI-4</span>
+        <button class="want-concept" data-code="SDI-4">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" alt="Concept Image 5">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" target="_blank">View live link</a>
+        <span>SDI-5</span>
+        <button class="want-concept" data-code="SDI-5">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Concept Image 6">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" target="_blank">View live link</a>
+        <span>SDI-6</span>
+        <button class="want-concept" data-code="SDI-6">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Concept Image 7">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" target="_blank">View live link</a>
+        <span>SDI-7</span>
+        <button class="want-concept" data-code="SDI-7">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" alt="Concept Image 8">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" target="_blank">View live link</a>
+        <span>SDI-8</span>
+        <button class="want-concept" data-code="SDI-8">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept Image 9">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" target="_blank">View live link</a>
+        <span>SDI-9</span>
+        <button class="want-concept" data-code="SDI-9">I want this concept</button>
+      </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide">
+      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" alt="Concept Image 10">
+      <div class="buttons">
+        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" target="_blank">View live link</a>
+        <span>SDI-10</span>
+        <button class="want-concept" data-code="SDI-10">I want this concept</button>
+      </div>
+    </div>
+
   </div>
+</div>
 
-  <!-- Arrows -->
-  <button class="arrow prev">&#10094;</button>
-  <button class="arrow next">&#10095;</button>
+<!-- Arrows -->
+<button class="arrow prev">&#10094;</button>
+<button class="arrow next">&#10095;</button>
 
-  <!-- Social Icons -->
+
+
+  <!-- ✅ SOCIAL ICONS (now correctly after the slider) -->
   <div class="social-icons" aria-label="Social media links">
     <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
       <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
@@ -374,16 +596,16 @@ footer {
     </a>
   </div>
 
+  <!-- ✅ FOOTER -->
   <div class="footer-inner" data-aos="fade-up">
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
-</main>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code');
+  const codeParam = params.get('code'); // e.g. SDI-5
 
   const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
@@ -392,28 +614,29 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   if (!sliderWrapper || slides.length === 0) return;
-  slides.forEach(slide => slide.style.display = 'flex');
 
+  // Show all slides
+  slides.forEach(slide => slide.style.display = 'flex'); 
+
+  // Jump to slide if ?code= in URL
   if (codeParam) {
-    const match = slides.find(slide => slide.querySelector('.buttons span')?.textContent.trim().toUpperCase() === codeParam.toUpperCase());
+    const match = slides.find(slide => {
+      const slideCodeElem = slide.querySelector('.buttons span');
+      return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
+    });
     if (match) currentIndex = slides.indexOf(match);
   }
 
+  // Initialize AOS
   if (AOS) AOS.init();
 
+  // Slider positioning
   function updateSlider() {
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 1024;
-    if (isPortrait) {
-      sliderWrapper.style.flexWrap = "nowrap";
-      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-      sliderWrapper.style.gap = "0";
-    } else {
-      sliderWrapper.style.flexWrap = "wrap";
-      sliderWrapper.style.transform = "none";
-      sliderWrapper.style.gap = "30px 30px";
-    }
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
+    sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
+  // Navigation arrows
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -424,6 +647,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
+  // Swipe support
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -435,9 +659,10 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
+  // "I want this concept" → straight to funnel
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code;
+      const selectedCode = button.dataset.code; // SDI-1 ... SDI-10
       if (selectedCode) {
         window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
       }
@@ -445,6 +670,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 </body>
 </html>
