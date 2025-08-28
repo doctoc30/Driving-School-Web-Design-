@@ -477,6 +477,42 @@ footer {
   }
 }
 
+    @media (min-width: 1024px) {
+  .hamburger {
+    display: none;
+  }
+  nav.menu {
+    position: static;
+    height: auto;
+    width: auto;
+    background: transparent;
+    transform: none !important;
+    padding-left: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  nav.menu ul {
+    display: flex;
+    gap: 2rem; /* <<< THIS CREATES SPACE BETWEEN MENU ITEMS */
+  }
+  nav.menu ul li {
+    margin: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    font-size: 1.25rem;
+    animation: none !important;
+  }
+  nav.menu ul li a {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: white;
+    letter-spacing: 0.15em;
+  }
+  nav.menu ul li a:hover {
+    color: #222;
+  }
+}
 </style>
 </head>
 <body>
