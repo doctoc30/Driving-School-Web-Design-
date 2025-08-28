@@ -650,10 +650,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize AOS
   if (AOS) AOS.init();
 
-  // Slider positioning
+  // Update slider position based on orientation
   function updateSlider() {
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
-    sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 1024;
+
+    if (isPortrait) {
+      // Swipeable single slide
+      sliderWrapper.style.display = "flex";
+      sliderWrapper.style.flexWrap = "nowrap";
+      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+      sliderWrapper.style.gap = "0px";
+    } else {
+      // Desktop: 3 slides per row with spacing
+      sliderWrapper.style.display = "flex";
+      sliderWrapper.style.flexWrap = "wrap";
+      sliderWrapper.style.transform = "none";
+      sliderWrapper.style.gap = "30px 30px"; // vertical and horizontal spacing
+    }
   }
 
   // Navigation arrows
@@ -667,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support
+  // Swipe support for mobile
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -679,7 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // "I want this concept" → straight to funnel
+  // "I want this concept" → straight to funnel step 4
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
       const selectedCode = button.dataset.code; // SDI-1 ... SDI-10
