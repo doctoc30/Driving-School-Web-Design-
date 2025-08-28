@@ -448,24 +448,20 @@ footer {
 }
 
 
-    /* ===== FIXED SPACING FOR LANDSCAPE ===== */
+/* === LANDSCAPE GRID FIX (3 per row with spacing) === */
 @media (orientation: landscape) and (min-width: 768px) {
   .slider-wrapper {
-    display: flex !important;
-    flex-wrap: wrap !important;         /* allow multiple rows */
-    justify-content: flex-start !important;
-    gap: 30px !important;               /* gap between both rows & columns */
-    transform: none !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 30px;                             /* spacing between each template */
+    justify-items: center;                 /* center each slide inside grid cell */
+    transform: none !important;            /* stop swipe translate */
   }
 
   .slide {
-    flex: 0 0 calc(33.333% - 30px) !important;  /* 3 per row with horizontal gap */
-    max-width: calc(33.333% - 30px) !important;
-    margin: 0 !important;                       /* remove overrides that killed spacing */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;          /* fill its grid cell */
+    max-width: 100%;      /* no shrink issue */
+    margin: 0 !important; /* reset leftover margins */
   }
 
   .slide img {
