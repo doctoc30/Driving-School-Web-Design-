@@ -477,8 +477,10 @@ footer {
   }
 }
 
-
-@media (min-width: 1024px) {
+ @media (min-width: 1024px) {
+  .hamburger {
+    display: none;
+  }
   nav.menu {
     position: static;
     height: auto;
@@ -491,11 +493,14 @@ footer {
     align-items: center;
   }
   nav.menu ul {
-    display: flex !important;   /* force flexbox */
-    gap: 6rem !important;       /* force spacing between menu items */
+    display: flex !important;   /* make sure flex is ON */
+    flex-direction: row;        /* horizontal row */
+    justify-content: flex-end; 
+    align-items: center;
+    gap: 4rem;                  /* adds space between menu items */
   }
   nav.menu ul li {
-    margin: 0 !important;       /* stop items from collapsing */
+    margin: 0 !important;       /* reset any collapsing margins */
     opacity: 1 !important;
     transform: none !important;
     font-size: 1.25rem;
@@ -506,11 +511,15 @@ footer {
     font-size: 1.1rem;
     color: white;
     letter-spacing: 0.15em;
+    display: inline-block;
+    padding: 0 4px;             /* tiny breathing space inside links */
   }
   nav.menu ul li a:hover {
     color: #222;
   }
 }
+
+    
 </style>
 </head>
 <body>
