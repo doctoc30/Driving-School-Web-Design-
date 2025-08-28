@@ -447,17 +447,25 @@ footer {
   display: inline-block;
 }
 
- /* Add spacing between slides in landscape mode */
-@media (min-width: 768px) {
-  .slide {
-    margin-bottom: 30px; /* vertical space between each slide */
+
+
+
+    @media (min-width: 768px) {
+  .slider-wrapper {
+    display: flex;
+    flex-wrap: wrap;          /* allows multiple rows */
+    justify-content: flex-start;
+    gap: 30px 20px;           /* 30px vertical, 20px horizontal spacing */
+    transform: none !important; /* prevent slider transform in landscape */
   }
 
-  /* Optional: prevent extra transform issues in landscape */
-  .slider-wrapper {
-    flex-wrap: wrap;     /* keeps slides in rows */
+  .slide {
+    flex: 0 0 calc(33.333% - 20px); /* 3 per row, account for horizontal gap */
+    display: flex;
+    flex-direction: column;
   }
 }
+
 </style>
 </head>
 <body>
