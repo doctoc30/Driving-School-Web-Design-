@@ -447,19 +447,15 @@ footer {
   display: inline-block;
 }
 
- @media (min-width: 768px) {
-  .slider-wrapper {
-    display: grid !important;                /* switch to grid in landscape */
-    grid-template-columns: repeat(3, 1fr);   /* 3 per row */
-    grid-auto-rows: auto;                    /* rows height auto */
-    gap: 20px 20px;                          /* vertical & horizontal gap */
-    transform: none !important;              /* disable sliding translation */
+ /* Add spacing between slides in landscape mode */
+@media (min-width: 768px) {
+  .slide {
+    margin-bottom: 30px; /* vertical space between each slide */
   }
 
-  .slide {
-    width: 100%;                             /* fill each grid cell */
-    display: flex;
-    flex-direction: column;
+  /* Optional: prevent extra transform issues in landscape */
+  .slider-wrapper {
+    flex-wrap: wrap;     /* keeps slides in rows */
   }
 }
 </style>
