@@ -477,7 +477,9 @@ footer {
   }
 }
 
- @media (min-width: 1024px) {
+
+    /* Tablet + Desktop view */
+@media (min-width: 820px) {
   .hamburger {
     display: none;
   }
@@ -493,14 +495,11 @@ footer {
     align-items: center;
   }
   nav.menu ul {
-    display: flex !important;   /* make sure flex is ON */
-    flex-direction: row;        /* horizontal row */
-    justify-content: flex-end; 
-    align-items: center;
-    gap: 4rem;                  /* adds space between menu items */
+    display: flex;
+    gap: 3rem; /* same spacing as index.html */
   }
   nav.menu ul li {
-    margin: 0 !important;       /* reset any collapsing margins */
+    margin: 0;
     opacity: 1 !important;
     transform: none !important;
     font-size: 1.25rem;
@@ -511,8 +510,6 @@ footer {
     font-size: 1.1rem;
     color: white;
     letter-spacing: 0.15em;
-    display: inline-block;
-    padding: 0 4px;             /* tiny breathing space inside links */
   }
   nav.menu ul li a:hover {
     color: #222;
