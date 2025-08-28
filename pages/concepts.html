@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
 
-
-  <style>
+<style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -128,7 +127,7 @@ main {
   text-decoration: underline;
 }
 
-/* ===== CONCEPT SLIDER ===== */
+/* ===== Concept Slider Styles ===== */
 .concept-slider {
   position: relative;
   overflow: hidden;
@@ -142,54 +141,42 @@ main {
   will-change: transform;
 }
 
-/* Slide styling */
 .slide {
+  min-width: 100%;
+  position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  flex-direction: column;
 }
 
 .slide img {
   width: 100%;
   height: auto;
-  object-fit: cover;
-  border-radius: 8px;
+  object-fit: contain;
+  max-height: 80vh;
 }
 
-/* Buttons */
 .buttons {
   position: absolute;
   bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px 14px;
   border-radius: 8px;
 }
 
 .buttons a,
-.buttons span,
-.buttons button {
+.buttons span {
   color: #fff;
   text-decoration: none;
   font-weight: bold;
+  background: rgba(255,255,255,0.1);
   padding: 6px 10px;
   border-radius: 6px;
   text-align: center;
-  background: rgba(255,255,255,0.1);
-}
-
-.buttons a.want-concept {
-  color: #fff !important;
-  background: #007bff;
-  text-decoration: none !important;
-  font-weight: bold;
-  padding: 8px 14px;
-  border-radius: 6px;
-  display: inline-block;
 }
 
 /* Arrows */
@@ -209,88 +196,129 @@ main {
 .arrow.prev { left: 10px; }
 .arrow.next { right: 10px; }
 
-/* Social icons */
+/* Footer layout */
+footer {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Social Icons Container */
 .social-icons {
   max-width: 400px;
   width: 100%;
   margin: 20px auto;
-  display: flex !important;
   justify-content: center;
   align-items: center;
+  display: flex !important;
   flex-wrap: nowrap;
 }
+
+/* Each social link */
 .social-icons a {
-  width: 60px; height: 60px; font-size: 40px;
-  display: flex; justify-content: center; align-items: center;
-  margin: 0 20px 0 0;
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation: coin-spin 6s linear infinite;
   transform-style: preserve-3d;
+  perspective: 1000px;
+  margin: 0;
 }
+
+/* Icon images */
 .social-icons img {
-  width: 48px; height: 48px;
+  width: 48px;
+  height: 48px;
   filter: brightness(0) invert(1);
   transition: transform 0.4s ease;
 }
+
+/* Spacing between icons */
+.social-icons a:not(:last-child) {
+  margin-right: 40px;
+}
+
+/* Coin spin animation */
 @keyframes coin-spin {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
 }
 
-/* Footer */
+/* Footer bottom text */
 .footer-inner {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   width: 100%;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;
   padding-top: 10px;
 }
 
-/* ---------------- MEDIA QUERIES ---------------- */
-
-/* Portrait / mobile */
-@media (max-width: 1023px) {
+/* Slider: Landscape grid with vertical lines */
+@media (min-width: 1024px) and (orientation: landscape) {
   .slider-wrapper {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 0;
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 30px 30px; /* vertical 30px, horizontal 30px */
+    justify-content: flex-start;
+    transform:
+
+    none !important;
   }
+
+  .slide {
+    flex: 0 0 calc(33.333% - 20px);
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid rgba(255,255,255,0.2); /* vertical line between slides */
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Remove right border for the last column in each row */
+  .slide:nth-child(3n) {
+    border-right: none;
+  }
+}
+
+/* Portrait single-slide view */
+@media (max-width: 1023px), (orientation: portrait) {
+  .slider-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    transform: translateX(0);
+  }
+
   .slide {
     flex: 0 0 100%;
     min-width: 100%;
-  }
-  .arrow { display: block; }
-}
-
-/* Landscape / desktop */
-@media (min-width: 1024px) {
-  .slider-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px 30px; /* vertical | horizontal spacing */
-    justify-content: flex-start;
-    transform: none !important;
-  }
-  .slide {
-    flex: 0 0 calc(33.333% - 20px);
-    max-width: calc(33.333% - 20px);
-    display: flex;
-    flex-direction: column;
+    max-width: 100%;
     margin-bottom: 0;
+    border-right: none; /* remove vertical line in portrait */
   }
-  .arrow { display: none !important; }
+
+  .arrow {
+    display: block;
+  }
 }
 
-/* Portrait full-screen image fix */
-@media (orientation: portrait) and (max-width: 768px) {
-  .slide img { max-height: 100vh; object-fit: contain; }
+/* Button styling */
+.buttons a.want-concept {
+  color: #fff !important;
+  background: #007bff;
+  text-decoration: none !important;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  display: inline-block;
 }
-
 </style>
-
-
 </head>
 <body>
 
@@ -309,124 +337,31 @@ main {
     </ul>
   </nav>
 </header>
+
 <main>
+  <div class="concept-slider">
+    <div class="slider-wrapper">
 
-<!-- ✅ SLIDER -->
-<div class="concept-slider">
-  <div class="slider-wrapper">
-
-    <!-- Slide 1 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
-      <div class="buttons">
-        <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank" title="Design may differ slightly from concept image">
-          View Live Version
-        </a>
-        <span>SDI-1</span>
-        <button class="want-concept" data-code="SDI-1">I want this concept</button>
+      <!-- Example Slide -->
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6925.png" alt="Concept Image 1">
+        <div class="buttons">
+          <a href="https://doctoc30.github.io/Driving-School-Web-Design-/pages/about.html#booking" target="_blank">View Live Version</a>
+          <span>SDI-1</span>
+          <button class="want-concept" data-code="SDI-1">I want this concept</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Slide 2 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" alt="Concept Image 2">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6938.png" target="_blank">View live link</a>
-        <span>SDI-2</span>
-        <button class="want-concept" data-code="SDI-2">I want this concept</button>
-      </div>
+      <!-- Add more slides here, same structure -->
+      
     </div>
-
-    <!-- Slide 3 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" alt="Concept Image 3">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6939.png" target="_blank">View live link</a>
-        <span>SDI-3</span>
-        <button class="want-concept" data-code="SDI-3">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" alt="Concept Image 4">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6940.png" target="_blank">View live link</a>
-        <span>SDI-4</span>
-        <button class="want-concept" data-code="SDI-4">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" alt="Concept Image 5">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6941.png" target="_blank">View live link</a>
-        <span>SDI-5</span>
-        <button class="want-concept" data-code="SDI-5">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 6 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" alt="Concept Image 6">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6942.png" target="_blank">View live link</a>
-        <span>SDI-6</span>
-        <button class="want-concept" data-code="SDI-6">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 7 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" alt="Concept Image 7">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6943.png" target="_blank">View live link</a>
-        <span>SDI-7</span>
-        <button class="want-concept" data-code="SDI-7">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 8 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" alt="Concept Image 8">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6944.png" target="_blank">View live link</a>
-        <span>SDI-8</span>
-        <button class="want-concept" data-code="SDI-8">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 9 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" alt="Concept Image 9">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6945.png" target="_blank">View live link</a>
-        <span>SDI-9</span>
-        <button class="want-concept" data-code="SDI-9">I want this concept</button>
-      </div>
-    </div>
-
-    <!-- Slide 10 -->
-    <div class="slide">
-      <img src="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" alt="Concept Image 10">
-      <div class="buttons">
-        <a href="https://raw.githubusercontent.com/doctoc30/Driving-School-Web-Design-/main/Images/IMG_6946.png" target="_blank">View live link</a>
-        <span>SDI-10</span>
-        <button class="want-concept" data-code="SDI-10">I want this concept</button>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<!-- Arrows -->
-<button class="arrow prev">&#10094;</button>
-<button class="arrow next">&#10095;</button>
+  <!-- Arrows -->
+  <button class="arrow prev">&#10094;</button>
+  <button class="arrow next">&#10095;</button>
 
-
-
-  <!-- ✅ SOCIAL ICONS (now correctly after the slider) -->
+  <!-- Social Icons -->
   <div class="social-icons" aria-label="Social media links">
     <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
       <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
@@ -439,16 +374,17 @@ main {
     </a>
   </div>
 
-  <!-- ✅ FOOTER -->
   <div class="footer-inner" data-aos="fade-up">
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
+</main>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code'); // e.g. SDI-5
+  const codeParam = params.get('code');
+
   const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
   const nextBtn = document.querySelector('.arrow.next');
@@ -456,43 +392,38 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   if (!sliderWrapper || slides.length === 0) return;
-
-  // Show all slides
   slides.forEach(slide => slide.style.display = 'flex');
 
-  // Jump to specific slide if ?code= in URL
   if (codeParam) {
-    const match = slides.find(slide => {
-      const codeElem = slide.querySelector('.buttons span');
-      return codeElem && codeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
-    });
+    const match = slides.find(slide => slide.querySelector('.buttons span')?.textContent.trim().toUpperCase() === codeParam.toUpperCase());
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // Initialize AOS
   if (AOS) AOS.init();
 
-  // Update slider based on device
   function updateSlider() {
-    const isMobile = window.innerWidth < 1024;
-    if (isMobile) {
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 1024;
+    if (isPortrait) {
+      sliderWrapper.style.flexWrap = "nowrap";
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+      sliderWrapper.style.gap = "0";
     } else {
-      sliderWrapper.style.transform = 'none';
+      sliderWrapper.style.flexWrap = "wrap";
+      sliderWrapper.style.transform = "none";
+      sliderWrapper.style.gap = "30px 30px";
     }
   }
 
-  // Arrow navigation
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
   });
+
   if (prevBtn) prevBtn.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     updateSlider();
   });
 
-  // Swipe support
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -504,7 +435,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // "I want this concept" → funnel step 4
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
       const selectedCode = button.dataset.code;
@@ -515,5 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 </body>
 </html>
