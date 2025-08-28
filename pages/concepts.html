@@ -448,21 +448,23 @@ footer {
 }
 
 
-    /* Only for landscape / desktop */
-@media (min-width: 1024px) {
+    @media (min-width: 1024px) {
   .slider-wrapper {
     display: flex !important;
-    flex-wrap: wrap;          /* allow multiple rows */
-    gap: 30px 0;              /* 30px vertical gap, 0 horizontal gap (horizontal spacing stays as is) */
+    flex-wrap: wrap;                 /* multiple rows */
+    justify-content: flex-start;     /* align slides to the left */
+    gap: 30px 30px;                  /* vertical 30px, horizontal 30px */
+    transform: none !important;      /* disable slider transform in desktop */
   }
 
   .slide {
-    flex: 0 0 calc(33.333% - 0px); /* 3 slides per row, keep width unchanged */
-    margin-bottom: 30px;           /* vertical spacing between rows */
+    flex: 0 0 calc(33.333% - 20px); /* 3 slides per row minus horizontal gap */
     display: flex;
     flex-direction: column;
   }
 }
+
+
 </style>
 
 
