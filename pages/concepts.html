@@ -447,6 +447,40 @@ footer {
   display: inline-block;
 }
 
+
+    /* ===== FIXED SPACING FOR LANDSCAPE ===== */
+@media (orientation: landscape) and (min-width: 768px) {
+  .slider-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;         /* allow multiple rows */
+    justify-content: flex-start !important;
+    gap: 30px !important;               /* gap between both rows & columns */
+    transform: none !important;
+  }
+
+  .slide {
+    flex: 0 0 calc(33.333% - 30px) !important;  /* 3 per row with horizontal gap */
+    max-width: calc(33.333% - 30px) !important;
+    margin: 0 !important;                       /* remove overrides that killed spacing */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 300px;
+    border-radius: 8px;
+  }
+
+  .arrow {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
