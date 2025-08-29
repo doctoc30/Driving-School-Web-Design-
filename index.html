@@ -1263,6 +1263,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+ // Store selected features
+let features = [];
+
+// Record selected features
+function recordFeature(feature) {
+    features.push(feature);
+}
+
+// Recommend plan based on features
+function recommendPlan() {
+    let plan = 'Basic'; // default
+
+    if(features.includes('revisions-30') || features.includes('pages-50') || features.includes('booking')) {
+        plan = 'Premium';
+    } else if(features.includes('revisions-15') || features.includes('pages-10') || features.includes('seo')) {
+        plan = 'Pro';
+    }
+
+    document.getElementById('recommended-plan').innerText = plan;
+    document.getElementById('hiddenPlan').value = plan;
+}
+
+// Call recommendPlan before showing the plan recommendation screen
+function showPlanRecommendation() {
+    recommendPlan();
+    showScreen('plan-recommendation');
+}
+
+// Redirect to pricing.html with recommended plan
+document.getElementById('continuePaymentBtn').addEventListener('click', () => {
+    const plan = document.getElementById('hiddenPlan').value;
+    window.location.href = `pricing.html?plan=${plan}`;
+});
 </script>
 </body>
 </html>
