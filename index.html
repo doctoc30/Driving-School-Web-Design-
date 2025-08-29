@@ -915,15 +915,15 @@ body header + .form-screen {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- INTRO -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
-    </div>
+<!-- INTRO -->
+<div class="form-screen active" id="main-intro-options">
+  <h2>Welcome! What do you need help with today?</h2>
+  <div class="button-row">
+    <button type="button" onclick="startFunnel('New Website')">New Website</button>
+    <button type="button" onclick="startFunnel('Redesign Existing Website')">Redesign Existing Website</button>
+    <button type="button" onclick="startFunnel('Maintenance / Updates')">Maintenance / Updates</button>
   </div>
+</div>
 
   <!-- Q1: Branch -->
   <div class="form-screen" id="instructor-q1">
@@ -1393,6 +1393,15 @@ document.addEventListener("DOMContentLoaded", () => {
     typewriterEl.addEventListener('click', skipAnimation);
     colorRiseEl.addEventListener('click', skipAnimation);
   }
+
+ 
+// Start the funnel and store the selected option
+window.startFunnel = (option) => {
+  console.log("Selected option:", option); // optional for debugging
+  document.getElementById("hiddenFeatures").value = option; // store initial selection
+  showScreen('instructor-q1'); // move to first question
+};
+
 
   // ----- Initialize funnel -----
   hideAllScreens();
