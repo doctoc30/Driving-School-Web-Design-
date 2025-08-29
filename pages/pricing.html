@@ -397,31 +397,110 @@ footer {
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<!-- Include AOS -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
 <script>
-  // Initialize AOS animation
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ------------------ AOS init ------------------
   AOS.init();
 
-  // Hamburger Menu and Search Filter
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.querySelector('.hamburger');
-    const menu = document.querySelector('nav.menu');
-    
-    function toggleMenu() {
+  // ------------------ Screen navigation ------------------
+  const screens = document.querySelectorAll(".form-screen");
+  let currentScreen = 0;
+
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
+  }
+
+  function showScreen(screenId) {
+    const newScreen = document.getElementById(screenId);
+    if(!newScreen) return;
+
+    screens.forEach(s => s.classList.remove("active"));
+    newScreen.classList.add("active");
+    newScreen.style.display = "flex";
+    currentScreen = Array.from(screens).indexOf(newScreen);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.showScreen = showScreen;
+
+  function next() {
+    if(currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  function prev() {
+    if(currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  window.next = next;
+  window.prev = prev;
+
+  hideAllScreens();
+  showScreen('main-intro-options');
+
+  // ------------------ User path & features ------------------
+  let features = [];
+  window.setPath = path => { window.userPath = path; };
+  window.recordFeature = feature => { if(!features.includes(feature)) features.push(feature); };
+
+  // ------------------ Determine recommended plan ------------------
+  function determineRecommendedPlan() {
+    if(features.includes('pages-50') || features.includes('revisions-30') || features.includes('booking') || features.includes('social')) return 'premium';
+    if(features.includes('pages-10') || features.includes('revisions-15') || features.includes('seo')) return 'pro';
+    return 'basic';
+  }
+
+  // ------------------ Display recommended plan in funnel ------------------
+  function displayRecommendedPlan() {
+    const planEl = document.getElementById('recommended-plan');
+    if(planEl) planEl.innerText = determineRecommendedPlan().toUpperCase();
+  }
+
+  const planScreen = document.getElementById('plan-recommendation');
+  if(planScreen) {
+    const observer = new MutationObserver(() => {
+      if(planScreen.classList.contains('active')) displayRecommendedPlan();
+    });
+    observer.observe(planScreen, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // ------------------ Continue button ------------------
+  const continueBtn = document.getElementById('continuePaymentBtn');
+  if(continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      const plan = determineRecommendedPlan();
+      window.location.href = `pricing.html?plan=${plan}`;
+    });
+  }
+
+  // ------------------ Hamburger menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if(hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
       const isOpen = menu.classList.toggle('open');
       hamburger.classList.toggle('active');
       hamburger.setAttribute('aria-expanded', isOpen);
       menu.setAttribute('aria-hidden', !isOpen);
       document.body.style.overflow = isOpen ? 'hidden' : '';
-    }
-
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMenu();
     });
 
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+    document.addEventListener('click', e => {
+      if(!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
         hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
@@ -429,85 +508,16 @@ footer {
         document.body.style.overflow = '';
       }
     });
-
-    // Search filter
-    const searchInput = document.getElementById("search");
-    const items = document.querySelectorAll(".item");
-    
-    searchInput.addEventListener("keyup", () => {
-      const term = searchInput.value.toLowerCase();
-      items.forEach(item => {
-        const code = item.querySelector(".code").textContent.toLowerCase();
-        item.style.display = code.includes(term) ? "block" : "none";
-      });
-    });
-  });
-
-
-  
-
-
-  // Intersection Observer for scroll animation
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  cards.forEach(card => observer.observe(card));
-
-  // Stripe Checkout function
-  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
-
-  function stripeCheckout(plan) {
-    let priceId = '';
-    switch(plan) {
-      case 'basic': priceId = 'price_id_basic'; break;
-      case 'pro': priceId = 'price_id_pro'; break;
-      case 'premium': priceId = 'price_id_premium'; break;
-    }
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'payment',
-      successUrl: window.location.href + '?success=true',
-      cancelUrl: window.location.href + '?canceled=true',
-    }).then(function (result) {
-      if (result.error) alert(result.error.message);
-    });
   }
 
-  // Get plan from URL
-const urlParams = new URLSearchParams(window.location.search);
-const selectedPlan = urlParams.get('plan');
+  // ------------------ Design code redirect ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if(!input || !input.value.trim()) { alert('Please enter a design code'); return; }
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(input.value.trim())}&fromFunnel=1`;
+  }
 
-// Highlight the plan and scroll to it
-if(selectedPlan) {
-    const planCards = document.querySelectorAll('.pricing-card');
-    planCards.forEach(card => {
-        if(card.querySelector('h3').innerText.toLowerCase() === selectedPlan.toLowerCase()) {
-            card.classList.add('recommended');  // Add badge styling
-            // Scroll smoothly
-            setTimeout(() => {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 200);
-        }
-    });
-}
-
-// Optional: animate each card on scroll
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting) {
-            entry.target.classList.add('animate');
-        }
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.pricing-card[data-animate]').forEach(card => observer.observe(card));
+});
 </script>
-  
 </body>
 </html>
