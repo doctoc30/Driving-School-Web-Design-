@@ -566,17 +566,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Initialize funnel ------------------
   hideAllScreens();
-  if (!window.location.search.includes("step")) {
+const stepParam = new URLSearchParams(window.location.search).get('step');
+
+if (stepParam) {
+    showScreen(`instructor-q${stepParam}`);
+} else {
+    showScreen('main-intro-options'); // show intro immediately
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
-    const stepParam = new URLSearchParams(window.location.search).get('step');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
+}
 
   // ------------------ Design code navigation ------------------
   window.goToConcept = () => {
