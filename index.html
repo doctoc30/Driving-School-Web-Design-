@@ -1073,82 +1073,122 @@ body header + .form-screen {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
-  let features = []; // store selected features
-
-  const hiddenPlanInput = document.getElementById('hiddenPlan');
 
   // ------------------ Screen navigation ------------------
   function hideAllScreens() {
-    screens.forEach(screen => screen.classList.remove("active"));
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
   }
 
-  function showScreen(id) {
-    hideAllScreens();
-    const screen = document.getElementById(id);
-    if(screen) screen.classList.add("active");
-    currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({top:0, behavior:'smooth'});
+  function showScreen(screenId) {
+    const newScreen = document.getElementById(screenId);
+    if (!newScreen) return;
+
+    screens.forEach(s => s.classList.remove("active"));
+    newScreen.classList.add("active");
+    newScreen.style.display = "flex";
+    currentScreen = Array.from(screens).indexOf(newScreen);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   window.showScreen = showScreen;
 
-  window.next = () => {
-    if(currentScreen < screens.length-1) showScreen(screens[currentScreen+1].id);
-  }
-
-  window.prev = () => {
-    if(currentScreen > 0) showScreen(screens[currentScreen-1].id);
-  }
-
-  // ------------------ Feature tracking ------------------
-  window.recordFeature = (feature) => {
-    if(!features.includes(feature)) features.push(feature);
-  }
-
-  // ------------------ Plan recommendation ------------------
-  function determineRecommendedPlan() {
-    // Default: Pro
-    let plan = 'Pro';
-    if(features.includes('pages-50') || features.includes('revisions-30') || features.includes('booking')) {
-      plan = 'Premium';
-    } else if(features.includes('pages-5') || features.includes('revisions-5')) {
-      plan = 'Basic';
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
     }
-    return plan;
   }
 
-  function showPlanRecommendation() {
-    const plan = determineRecommendedPlan();
-    if(hiddenPlanInput) hiddenPlanInput.value = plan;
-    const recEl = document.getElementById('recommended-plan');
-    if(recEl) recEl.innerText = plan;
-    showScreen('plan-recommendation');
+  function prev() {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
-  // ------------------ Continue to pricing ------------------
+  window.next = next;
+  window.prev = prev;
+
+  // ------------------ User path & features ------------------
+  let features = [];
+  window.setPath = path => { window.userPath = path; };
+  window.recordFeature = feature => { if(!features.includes(feature)) features.push(feature); };
+
+  // ------------------ Determine recommended plan ------------------
+  function determineRecommendedPlan() {
+    // Simple logic based on selected features
+    if(features.includes('pages-50') || features.includes('revisions-30') || features.includes('booking') || features.includes('social')) {
+      return 'premium';
+    } else if(features.includes('pages-10') || features.includes('revisions-15') || features.includes('seo')) {
+      return 'pro';
+    } 
+    return 'basic';
+  }
+
+  // ------------------ Display plan on funnel ------------------
+  function displayRecommendedPlan() {
+    const planEl = document.getElementById('recommended-plan');
+    if(planEl) planEl.innerText = determineRecommendedPlan().toUpperCase();
+  }
+
+  // Update plan when plan-recommendation screen becomes active
+  const planScreen = document.getElementById('plan-recommendation');
+  if(planScreen) {
+    const observer = new MutationObserver(() => {
+      if(planScreen.classList.contains('active')) displayRecommendedPlan();
+    });
+    observer.observe(planScreen, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // ------------------ Continue button ------------------
   const continueBtn = document.getElementById('continuePaymentBtn');
-  if(continueBtn){
+  if(continueBtn) {
     continueBtn.addEventListener('click', () => {
       const plan = determineRecommendedPlan();
-      if(hiddenPlanInput) hiddenPlanInput.value = plan;
+      // Send plan in URL to pricing.html (lowercase to match pricing.js)
       window.location.href = `pricing.html?plan=${plan.toLowerCase()}`;
+    });
+  }
+
+  // ------------------ Initialize funnel ------------------
+  hideAllScreens();
+  showScreen('main-intro-options');
+
+  // ------------------ Hamburger menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if(hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    document.addEventListener('click', e => {
+      if(!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
     });
   }
 
   // ------------------ Design code redirect ------------------
   window.goToConcept = () => {
-    const codeInput = document.getElementById('designInput');
-    if(!codeInput) return;
-    const code = codeInput.value.trim();
-    if(!code){ alert("Please enter a design code."); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+    const input = document.getElementById('designInput');
+    if(!input || !input.value.trim()) { alert('Please enter a design code'); return; }
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(input.value.trim())}&fromFunnel=1`;
   }
-
-  // ------------------ Initialize first screen ------------------
-  showScreen('main-intro-options');
 
 });
 </script>
