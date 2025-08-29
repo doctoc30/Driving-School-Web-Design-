@@ -799,6 +799,130 @@ body header + .form-screen {
   padding-top: 0 !important;           /* remove any extra top spacing */
 }
 
+
+
+     body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #111;
+      color: white;
+    }
+
+    /* Progress Bar */
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.15);
+      z-index: 1500;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: white;
+      transition: width 0.4s ease;
+    }
+    #progress-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      color: white;
+      font-weight: bold;
+    }
+    #progress-labels span {
+      position: relative;
+    }
+    #progress-labels span::after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+      background: white;
+      opacity: 0.6;
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      padding: 100px 20px 40px;
+      text-align: center;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    /* Plan cards */
+    .plan-card {
+      position: relative;
+      border: 2px solid transparent;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 400px;
+      background: rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+    .plan-card.highlight {
+      border-color: white;
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.05);
+    }
+
+    /* Recommended badge */
+    .plan-card .badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: gold;
+      color: black;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: none;
+    }
+    .plan-card.highlight .badge {
+      display: inline-block;
+    }
+
+    /* Popup message */
+    #plan-popup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: white;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 2000;
+    }
+    #plan-popup.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
 </style>
 
 </head>
@@ -832,6 +956,65 @@ body header + .form-screen {
 <div id="typewriter"></div>
 
 
+  <!-- Progress bar -->
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+    <div id="progress-labels">
+      <span>Basic</span>
+      <span>Standard</span>
+      <span>Premium</span>
+    </div>
+  </div>
+
+  <!-- Screens -->
+  <section class="screen active" id="q1">
+    <h2>Question 1: Are you a solo instructor or a school?</h2>
+    <button onclick="recordFeature('solo'); next()">Solo</button>
+    <button onclick="recordFeature('school'); next()">School</button>
+  </section>
+
+  <section class="screen" id="q2">
+    <h2>Question 2: Do you want booking features?</h2>
+    <button onclick="recordFeature('booking'); next()">Yes</button>
+    <button onclick="next()">No</button>
+  </section>
+
+  <section class="screen" id="q3">
+    <h2>Question 3: Do you want SEO optimization?</h2>
+    <button onclick="recordFeature('seo'); next()">Yes</button>
+    <button onclick="next()">No</button>
+  </section>
+
+  <!-- Plan Page -->
+  <section class="screen" id="plan">
+    <h2>Your Suggested Plan</h2>
+
+    <div id="plan-basic" class="plan-card">
+      <span class="badge">Recommended</span>
+      <h3>Basic</h3>
+      <p>Solo instructor, essential features, 5 pages, 5 revisions.</p>
+    </div>
+
+    <div id="plan-standard" class="plan-card">
+      <span class="badge">Recommended</span>
+      <h3>Standard</h3>
+      <p>Driving schools, booking, 10 pages, 15 revisions.</p>
+    </div>
+
+    <div id="plan-premium" class="plan-card">
+      <span class="badge">Recommended</span>
+      <h3>Premium</h3>
+      <p>SEO, reviews, social, branding, 50 pages, 30 revisions.</p>
+    </div>
+
+    <button onclick="alert('Proceed to checkout')">Next</button>
+  </section>
+
+  <!-- Popup -->
+  <div id="plan-popup"></div>
+
+
+ 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
   <!-- Hidden fields to capture selected plan and features -->
@@ -1263,6 +1446,140 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+     const screens = document.querySelectorAll(".screen");
+    let currentScreen = 0;
+    let features = [];
+    let scores = { basic: 0, standard: 0, premium: 0 };
+    let currentTier = "basic";
+
+    function hideAllScreens() {
+      screens.forEach(s => s.classList.remove("active"));
+    }
+
+    function showScreen(index) {
+      hideAllScreens();
+      screens[index].classList.add("active");
+      currentScreen = index;
+
+      if (screens[index].id === "plan") {
+        highlightChosenPlan();
+      }
+    }
+
+    function next() {
+      if (currentScreen < screens.length - 1) {
+        showScreen(currentScreen + 1);
+      }
+    }
+
+    function recordFeature(feature) {
+      if (!features.includes(feature)) features.push(feature);
+
+      switch(feature) {
+        case "solo":
+          scores.basic++; break;
+        case "pages-5":
+        case "revisions-5":
+          scores.basic++; break;
+
+        case "school":
+        case "booking":
+        case "packages":
+        case "pages-10":
+        case "revisions-15":
+          scores.standard++; break;
+
+        case "seo":
+        case "reviews":
+        case "social":
+        case "email":
+        case "branding":
+        case "content":
+        case "guide":
+        case "resources":
+        case "mobile":
+        case "cta":
+        case "pages-50":
+        case "revisions-30":
+          scores.premium++; break;
+      }
+
+      updatePlanProgress();
+    }
+
+    function updatePlanProgress() {
+      const totalPoints = scores.basic + scores.standard + scores.premium;
+      if (totalPoints === 0) return;
+
+      const premiumWeight = (scores.premium / totalPoints) * 100;
+      const standardWeight = (scores.standard / totalPoints) * 100;
+      const basicWeight = (scores.basic / totalPoints) * 100;
+
+      let percent = 0;
+      let newTier = "basic";
+
+      if (premiumWeight >= standardWeight && premiumWeight >= basicWeight) {
+        percent = 67 + (premiumWeight / 3);
+        newTier = "premium";
+      } else if (standardWeight >= basicWeight) {
+        percent = 34 + (standardWeight / 3);
+        newTier = "standard";
+      } else {
+        percent = basicWeight / 3;
+        newTier = "basic";
+      }
+
+      document.getElementById("progress-bar").style.width = percent + "%";
+
+      if (newTier !== currentTier) {
+        currentTier = newTier;
+        showPlanPopup(newTier);
+      }
+    }
+
+    function showPlanPopup(tier) {
+      const popup = document.getElementById("plan-popup");
+      let message = "";
+
+      if (tier === "basic") message = "👍 You’re leaning towards Basic";
+      if (tier === "standard") message = "🚀 You’ve entered Standard!";
+      if (tier === "premium") message = "🌟 Premium looks like your fit!";
+
+      popup.textContent = message;
+      popup.classList.add("show");
+
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 2500);
+    }
+
+    function highlightChosenPlan() {
+      document.querySelectorAll(".plan-card").forEach(el => {
+        el.classList.remove("highlight");
+      });
+
+      let selectedCard = null;
+
+      if (currentTier === "basic") {
+        selectedCard = document.getElementById("plan-basic");
+      } else if (currentTier === "standard") {
+        selectedCard = document.getElementById("plan-standard");
+      } else if (currentTier === "premium") {
+        selectedCard = document.getElementById("plan-premium");
+      }
+
+      if (selectedCard) {
+        selectedCard.classList.add("highlight");
+        setTimeout(() => {
+          selectedCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }, 300);
+      }
+    }
 </script>
 </body>
 </html>
