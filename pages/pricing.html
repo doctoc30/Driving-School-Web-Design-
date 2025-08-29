@@ -555,6 +555,52 @@ document.addEventListener("DOMContentLoaded", () => {
     chosenCard.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 });
+
+// Parse query string
+const urlParams = new URLSearchParams(window.location.search);
+const plan = urlParams.get("plan");
+const features = urlParams.get("features");
+
+// Highlight the chosen plan
+if (plan) {
+  const card = document.getElementById(`${plan}-plan`);
+  if (card) {
+    card.classList.add("highlight");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+// If needed, show features on pricing page (optional)
+if (features) {
+  const featureBox = document.getElementById("chosen-features");
+  if (featureBox) featureBox.innerText = features.replace(/,/g, ", ");
+}
+
+// Stripe/PayPal links for each plan
+const paymentLinks = {
+  "basic": "https://buy.stripe.com/test_basic",
+  "pro": "https://buy.stripe.com/test_pro",
+  "premium": "https://buy.stripe.com/test_premium"
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const plan = urlParams.get("plan");
+
+if (plan && paymentLinks[plan]) {
+  // Highlight the chosen plan
+  const card = document.getElementById(`${plan}-plan`);
+  if (card) {
+    card.classList.add("highlight");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  // Update the Pay Now button
+  const payBtn = document.getElementById(`${plan}-pay`);
+  if (payBtn) {
+    payBtn.href = paymentLinks[plan];
+    payBtn.innerText = "Pay 50% Upfront & Continue";
+  }
+}
 </script>
 </body>
 </html>
