@@ -1190,7 +1190,7 @@ body header + .form-screen {
 </a>
   </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+ <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   AOS.init(); // Initialize animations
@@ -1224,15 +1224,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) {
-      showScreen(screens[currentScreen + 1].id);
-    }
+    if (currentScreen < screens.length - 1) showScreen(screens[currentScreen + 1].id);
   }
 
   function prev() {
-    if (currentScreen > 0) {
-      showScreen(screens[currentScreen - 1].id);
-    }
+    if (currentScreen > 0) showScreen(screens[currentScreen - 1].id);
   }
 
   window.showScreen = showScreen;
@@ -1247,7 +1243,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Plan scoring -----
   function getRecommendedPlan(features) {
     let score = 0;
-
     if (features.includes("booking")) score += 2;
     if (features.includes("packages")) score += 2;
     if (features.includes("seo")) score += 2;
@@ -1260,13 +1255,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (features.includes("resources")) score += 1;
     if (features.includes("mobile")) score += 2;
     if (features.includes("cta")) score += 1;
-
     if (features.includes("pages-5")) score += 2;
     if (features.includes("pages-10")) score += 4;
     if (features.includes("pages-50")) score += 6;
-
     if (features.includes("managed")) score += 2;
-
     if (features.includes("revisions-15")) score += 2;
     if (features.includes("revisions-30")) score += 3;
 
@@ -1277,11 +1269,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Show recommended plan -----
   function showRecommendedPlan(plan) {
-    // Update plan text
     const recEl = document.getElementById("recommended-plan");
     if (recEl) recEl.innerText = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
 
-    // Highlight card in pricing step
     const cards = document.querySelectorAll('#plan-recommendation .pricing-card');
     cards.forEach(card => {
       card.classList.remove("recommended");
@@ -1290,34 +1280,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chosenPlan = plan;
 
-    // Update hidden inputs for form submission
     document.getElementById("hiddenPlan").value = plan;
     document.getElementById("hiddenFeatures").value = selectedFeatures.join(", ");
     document.getElementById("hiddenPaymentLink").value = "pricing.html?plan=" + plan;
   }
 
-  // ----- Show plan recommendation step -----
   window.showPlanRecommendation = () => {
     const plan = getRecommendedPlan(selectedFeatures);
     showRecommendedPlan(plan);
     showScreen("plan-recommendation");
   };
 
-  // ----- Continue to pricing page -----
   if (continueBtn) {
     continueBtn.addEventListener("click", () => {
-      if (!chosenPlan) showPlanRecommendation(); // fallback
+      if (!chosenPlan) showPlanRecommendation();
       window.location.href = `pricing.html?plan=${chosenPlan}`;
     });
   }
 
-  // ----- Select plan manually from pricing cards -----
   window.selectPlan = (plan) => {
     document.getElementById("hiddenPlan").value = plan.charAt(0).toUpperCase() + plan.slice(1);
     showScreen("contact-step");
   };
 
-  // ----- Design code navigation -----
   window.goToConcept = () => {
     const codeInput = document.getElementById("designInput");
     if (!codeInput) { next(); return; }
@@ -1351,7 +1336,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Typewriter + skyrocket animation -----
   function startTypewriterAnimation() {
-    if (!typewriterEl) return;
+    if (!typewriterEl) { showScreen("main-intro-options"); return; }
+
     typewriterEl.style.opacity = 1;
     let lines = ["We build", "your website.", "You approve,", "then pay."];
     let currentLine = 0, currentChar = 0, lineEl = null;
@@ -1365,7 +1351,12 @@ document.addEventListener("DOMContentLoaded", () => {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
+          setTimeout(() => {
+            // Remove animation overlay so funnel is clickable
+            typewriterEl.style.display = 'none';
+            colorRiseEl.style.display = 'none';
+            showScreen('main-intro-options');
+          }, 2000);
         }, 1000);
         return;
       }
@@ -1403,5 +1394,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+
 </body>
 </html>
