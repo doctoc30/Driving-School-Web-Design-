@@ -269,6 +269,12 @@ footer {
   @media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px; } .pricing-card { min-height: 60vh; } }
   @media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px; } }
 
+  .highlight-plan {
+  border: 3px solid #007bff;
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
   
 </style>
 </head>
@@ -517,6 +523,37 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(input.value.trim())}&fromFunnel=1`;
   }
 
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Get plan from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const plan = urlParams.get("plan");
+
+  if (!plan) return;
+
+  // Normalize (lowercase)
+  const normalized = plan.toLowerCase();
+
+  // Map plan to card index (adjust if your order differs)
+  const planMap = {
+    basic: 0,
+    pro: 1,
+    premium: 2
+  };
+
+  const cards = document.querySelectorAll(".pricing-card");
+  const index = planMap[normalized];
+
+  if (index !== undefined && cards[index]) {
+    const chosenCard = cards[index];
+
+    // Highlight visually
+    chosenCard.classList.add("highlight-plan");
+
+    // Smooth scroll into view
+    chosenCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 });
 </script>
 </body>
