@@ -1201,6 +1201,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedFeatures = [];
   let chosenPlan = "";
 
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
   const continueBtn = document.getElementById("continuePaymentBtn");
 
   // ----- Screen navigation -----
@@ -1246,7 +1248,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function getRecommendedPlan(features) {
     let score = 0;
 
-    // Feature weights
     if (features.includes("booking")) score += 2;
     if (features.includes("packages")) score += 2;
     if (features.includes("seo")) score += 2;
@@ -1260,15 +1261,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (features.includes("mobile")) score += 2;
     if (features.includes("cta")) score += 1;
 
-    // Pages
     if (features.includes("pages-5")) score += 2;
     if (features.includes("pages-10")) score += 4;
     if (features.includes("pages-50")) score += 6;
 
-    // Ownership/hosting
     if (features.includes("managed")) score += 2;
 
-    // Revisions
     if (features.includes("revisions-15")) score += 2;
     if (features.includes("revisions-30")) score += 3;
 
@@ -1279,10 +1277,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Show recommended plan -----
   function showRecommendedPlan(plan) {
+    // Update plan text
     const recEl = document.getElementById("recommended-plan");
     if (recEl) recEl.innerText = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
 
-    // Highlight card (if pricing cards exist in step)
+    // Highlight card in pricing step
     const cards = document.querySelectorAll('#plan-recommendation .pricing-card');
     cards.forEach(card => {
       card.classList.remove("recommended");
@@ -1290,12 +1289,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     chosenPlan = plan;
+
+    // Update hidden inputs for form submission
     document.getElementById("hiddenPlan").value = plan;
     document.getElementById("hiddenFeatures").value = selectedFeatures.join(", ");
     document.getElementById("hiddenPaymentLink").value = "pricing.html?plan=" + plan;
   }
 
-  // ----- Go to plan recommendation -----
+  // ----- Show plan recommendation step -----
   window.showPlanRecommendation = () => {
     const plan = getRecommendedPlan(selectedFeatures);
     showRecommendedPlan(plan);
@@ -1310,16 +1311,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ----- Select plan manually from cards -----
+  // ----- Select plan manually from pricing cards -----
   window.selectPlan = (plan) => {
     document.getElementById("hiddenPlan").value = plan.charAt(0).toUpperCase() + plan.slice(1);
-    showScreen("contact-step"); // go to contact form
+    showScreen("contact-step");
   };
 
   // ----- Design code navigation -----
   window.goToConcept = () => {
     const codeInput = document.getElementById("designInput");
-    if (!codeInput) return;
+    if (!codeInput) { next(); return; }
     const code = codeInput.value.trim();
     if (!code) { next(); return; }
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
@@ -1337,7 +1338,6 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.setAttribute("aria-hidden", !isOpen);
       document.body.style.overflow = isOpen ? "hidden" : "";
     });
-
     document.addEventListener("click", (e) => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove("open");
@@ -1349,9 +1349,57 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ----- Initialize first screen -----
+  // ----- Typewriter + skyrocket animation -----
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = ["We build", "your website.", "You approve,", "then pay."];
+    let currentLine = 0, currentChar = 0, lineEl = null;
+    const typingSpeed = 100, lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    typeChar();
+  }
+
+  // ----- Initialize funnel -----
   hideAllScreens();
-  showScreen("main-intro-options");
+  if (typewriterEl && colorRiseEl) {
+    typewriterEl.classList.add('active');
+    colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    showScreen("main-intro-options");
+  }
 
 });
 </script>
