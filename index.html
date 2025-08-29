@@ -1073,253 +1073,85 @@ body header + .form-screen {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get("code");
-  const stepParam = params.get("step");
-  const fromFunnel = params.has("fromFunnel");
 
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
+  let features = []; // store selected features
+
+  const hiddenPlanInput = document.getElementById('hiddenPlan');
 
   // ------------------ Screen navigation ------------------
   function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
+    screens.forEach(screen => screen.classList.remove("active"));
   }
 
-  function showScreen(screenId) {
-    const newScreen = document.getElementById(screenId);
-    if (!newScreen) return;
-
-    const current = screens[currentScreen];
-    if (current) current.classList.remove("active");
-
-    newScreen.classList.add("active");
-    newScreen.style.display = "flex";
-    currentScreen = Array.from(screens).indexOf(newScreen);
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
+  function showScreen(id) {
+    hideAllScreens();
+    const screen = document.getElementById(id);
+    if(screen) screen.classList.add("active");
+    currentScreen = Array.from(screens).indexOf(screen);
+    window.scrollTo({top:0, behavior:'smooth'});
   }
 
   window.showScreen = showScreen;
-  window.next = next;
-  window.prev = prev;
 
-  // ------------------ User path and features ------------------
-  let userPath = "";
-  const features = [];
-  window.setPath = (path) => { userPath = path; };
-  window.recordFeature = (feature) => { if (!features.includes(feature)) features.push(feature); };
-  window.recommendPlan = () => {
-    let plan = '';
-    const count = features.length;
-    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+  window.next = () => {
+    if(currentScreen < screens.length-1) showScreen(screens[currentScreen+1].id);
+  }
+
+  window.prev = () => {
+    if(currentScreen > 0) showScreen(screens[currentScreen-1].id);
+  }
+
+  // ------------------ Feature tracking ------------------
+  window.recordFeature = (feature) => {
+    if(!features.includes(feature)) features.push(feature);
+  }
+
+  // ------------------ Plan recommendation ------------------
+  function determineRecommendedPlan() {
+    // Default: Pro
+    let plan = 'Pro';
+    if(features.includes('pages-50') || features.includes('revisions-30') || features.includes('booking')) {
+      plan = 'Premium';
+    } else if(features.includes('pages-5') || features.includes('revisions-5')) {
+      plan = 'Basic';
+    }
+    return plan;
+  }
+
+  function showPlanRecommendation() {
+    const plan = determineRecommendedPlan();
+    if(hiddenPlanInput) hiddenPlanInput.value = plan;
     const recEl = document.getElementById('recommended-plan');
-    if (recEl) recEl.innerText = plan;
-  };
-
-  // ------------------ Typewriter animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 1000);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  // ------------------ Initialize funnel ------------------
-  hideAllScreens();
-  if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
-
-  // ------------------ Step 3: Design code ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  };
-
-  // ------------------ Returning from concepts ------------------
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
-
-  // ------------------ Hamburger menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-});
-
- // Store selected features
-let features = [];
-
-// Record selected features
-function recordFeature(feature) {
-    features.push(feature);
-}
-
-// Recommend plan based on features
-function recommendPlan() {
-    let plan = 'Basic'; // default
-
-    if(features.includes('revisions-30') || features.includes('pages-50') || features.includes('booking')) {
-        plan = 'Premium';
-    } else if(features.includes('revisions-15') || features.includes('pages-10') || features.includes('seo')) {
-        plan = 'Pro';
-    }
-
-    document.getElementById('recommended-plan').innerText = plan;
-    document.getElementById('hiddenPlan').value = plan;
-}
-
-// Call recommendPlan before showing the plan recommendation screen
-function showPlanRecommendation() {
-    recommendPlan();
+    if(recEl) recEl.innerText = plan;
     showScreen('plan-recommendation');
-}
+  }
 
-// Redirect to pricing.html with recommended plan
-document.getElementById('continuePaymentBtn').addEventListener('click', () => {
-    const plan = document.getElementById('hiddenPlan').value;
-    window.location.href = `pricing.html?plan=${plan}`;
+  // ------------------ Continue to pricing ------------------
+  const continueBtn = document.getElementById('continuePaymentBtn');
+  if(continueBtn){
+    continueBtn.addEventListener('click', () => {
+      const plan = determineRecommendedPlan();
+      if(hiddenPlanInput) hiddenPlanInput.value = plan;
+      window.location.href = `pricing.html?plan=${plan.toLowerCase()}`;
+    });
+  }
+
+  // ------------------ Design code redirect ------------------
+  window.goToConcept = () => {
+    const codeInput = document.getElementById('designInput');
+    if(!codeInput) return;
+    const code = codeInput.value.trim();
+    if(!code){ alert("Please enter a design code."); return; }
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  }
+
+  // ------------------ Initialize first screen ------------------
+  showScreen('main-intro-options');
+
 });
-
- // At the end of your index.js or <script> for the funnel
-document.getElementById('continuePaymentBtn').addEventListener('click', () => {
-  const recommendedPlan = determineRecommendedPlan(); // Function you already have to choose plan
-  const planLower = recommendedPlan.toLowerCase();
-
-  // Optional: save features if needed
-  const features = Array.from(document.querySelectorAll('input[name="Selected Features"]')).map(f => f.value).join(',');
-
-  // Redirect to pricing.html with plan as URL param
-  window.location.href = `pricing.html?plan=${planLower}`;
-});
-
-// Example determineRecommendedPlan function
-function determineRecommendedPlan() {
-  // Here you can set your logic based on user selections
-  // Example: Pro if booking + SEO + 10+ pages, Premium if 50+ pages or full branding
-  const pages = document.querySelector('input[name="Selected Features"][value="pages-50"]')?.checked;
-  const revisions = document.querySelector('input[name="Selected Features"][value="revisions-30"]')?.checked;
-
-  if (pages || revisions) return 'Premium';
-  // Add more logic based on features
-  return 'Pro'; // default fallback
-}
 </script>
+
 </body>
 </html>
