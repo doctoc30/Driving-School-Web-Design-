@@ -1038,7 +1038,7 @@ body header + .form-screen {
     <h2>Your Recommended Plan:</h2>
     <p id="recommended-plan"></p>
     <div class="button-row">
-      <button type="button" id="continuePaymentBtn">Pay 50% Upfront & Continue</button>
+     <button type="button" id="continuePaymentBtn">See Pricing & Continue</button>
     </div>
   </div>
 
@@ -1370,6 +1370,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+ 
+document.getElementById("continuePaymentBtn").addEventListener("click", () => {
+  // Get the recommended plan text
+  const planText = document.getElementById("recommended-plan").innerText.toLowerCase();
+
+  // Extract the plan (basic, pro, premium)
+  let plan = "";
+  if (planText.includes("basic")) plan = "basic";
+  if (planText.includes("pro")) plan = "pro";
+  if (planText.includes("premium")) plan = "premium";
+
+  // Redirect to pricing.html with the plan in the URL
+  if (plan) {
+    window.location.href = `pricing.html?plan=${plan}`;
+  } else {
+    alert("No plan selected.");
+  }
+});
+
+document.getElementById("continuePaymentBtn").addEventListener("click", () => {
+  // Get selected features + plan
+  const plan = getRecommendedPlan();
+  const features = selectedFeatures.join(", ");
+
+  // Save to hidden inputs (so if the form is submitted, we capture everything too)
+  document.getElementById("hiddenPlan").value = plan;
+  document.getElementById("hiddenFeatures").value = features;
+
+  // Redirect to pricing with plan + features in URL
+  const encodedFeatures = encodeURIComponent(features);
+  window.location.href = `pricing.html?plan=${plan}&features=${encodedFeatures}`;
+});
 </script>
 </body>
 </html>
