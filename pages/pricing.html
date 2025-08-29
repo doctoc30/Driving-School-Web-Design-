@@ -478,6 +478,35 @@ footer {
       if (result.error) alert(result.error.message);
     });
   }
+
+  // Get plan from URL
+const urlParams = new URLSearchParams(window.location.search);
+const selectedPlan = urlParams.get('plan');
+
+// Highlight the plan and scroll to it
+if(selectedPlan) {
+    const planCards = document.querySelectorAll('.pricing-card');
+    planCards.forEach(card => {
+        if(card.querySelector('h3').innerText.toLowerCase() === selectedPlan.toLowerCase()) {
+            card.classList.add('recommended');  // Add badge styling
+            // Scroll smoothly
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 200);
+        }
+    });
+}
+
+// Optional: animate each card on scroll
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.pricing-card[data-animate]').forEach(card => observer.observe(card));
 </script>
   
 </body>
