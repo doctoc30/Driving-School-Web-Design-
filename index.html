@@ -799,82 +799,6 @@ body header + .form-screen {
   padding-top: 0 !important;           /* remove any extra top spacing */
 }
 
- .pricing-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: 30px 0;
-}
-
-.pricing-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 20px;
-  width: 280px;
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.pricing-card:hover {
-  transform: translateY(-5px);
-}
-
-.pricing-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.pricing-card .price {
-  font-size: 1.8rem;
-  color: #2a7cf6;
-  margin: 10px 0;
-}
-
-.pricing-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 15px 0;
-  text-align: left;
-}
-
-.pricing-card ul li {
-  margin: 8px 0;
-}
-
-.pricing-card button {
-  margin-top: 15px;
-  background: #2a7cf6;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.pricing-card button:hover {
-  background: #195dc4;
-}
-
-.pricing-card.recommended {
-  border: 2px solid #2a7cf6;
-  position: relative;
-}
-
-.pricing-card.recommended::before {
-  content: "Recommended";
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #2a7cf6;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-}
 </style>
 
 </head>
@@ -915,15 +839,15 @@ body header + .form-screen {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-<!-- INTRO -->
-<div class="form-screen active" id="main-intro-options">
-  <h2>Welcome! What do you need help with today?</h2>
-  <div class="button-row">
-    <button type="button" onclick="startFunnel('New Website')">New Website</button>
-    <button type="button" onclick="startFunnel('Redesign Existing Website')">Redesign Existing Website</button>
-    <button type="button" onclick="startFunnel('Maintenance / Updates')">Maintenance / Updates</button>
+  <!-- INTRO -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>Welcome! What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+    </div>
   </div>
-</div>
 
   <!-- Q1: Branch -->
   <div class="form-screen" id="instructor-q1">
@@ -1109,57 +1033,14 @@ body header + .form-screen {
     </div>
   </div>
 
- <!-- PLAN RECOMMENDATION -->
-<div class="form-screen" id="plan-recommendation">
-  <h2>Your Recommended Plan:</h2>
-  <p class="recommend-note">Based on your answers, here’s what we suggest. You can also choose another plan:</p>
-
-  <div class="pricing-container">
-    <!-- BASIC -->
-    <div class="pricing-card" data-plan="basic">
-      <h3>Basic</h3>
-      <p class="price">£499</p>
-      <ul>
-        <li>Up to 5 Pages</li>
-        <li>Mobile Friendly</li>
-        <li>Contact Form</li>
-        <li>Email Support</li>
-      </ul>
-      <button type="button" onclick="stripeCheckout('basic')">Choose Basic</button>
-    </div>
-
-    <!-- PRO -->
-    <div class="pricing-card" data-plan="pro">
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-      <ul>
-        <li>Up to 10 Pages</li>
-        <li>SEO Optimised</li>
-        <li>Booking System</li>
-        <li>Priority Support</li>
-      </ul>
-      <button type="button" onclick="stripeCheckout('pro')">Choose Pro</button>
-    </div>
-
-    <!-- PREMIUM -->
-    <div class="pricing-card" data-plan="premium">
-      <h3>Premium</h3>
-      <p class="price">£1,499</p>
-      <ul>
-        <li>Unlimited Pages</li>
-        <li>Advanced SEO</li>
-        <li>Custom Integrations</li>
-        <li>Dedicated Manager</li>
-      </ul>
-      <button type="button" onclick="stripeCheckout('premium')">Choose Premium</button>
+  <!-- PLAN RECOMMENDATION -->
+  <div class="form-screen" id="plan-recommendation">
+    <h2>Your Recommended Plan:</h2>
+    <p id="recommended-plan"></p>
+    <div class="button-row">
+      <button type="button" id="continuePaymentBtn">Pay 50% Upfront & Continue</button>
     </div>
   </div>
-
-  <div class="button-row">
-    <button type="button" onclick="next()">Continue</button>
-  </div>
-</div>
-
 
   <!-- CONTACT STEP -->
   <div class="form-screen" id="contact-step">
@@ -1193,276 +1074,195 @@ body header + .form-screen {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ----- Elements and state -----
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
+  const stepParam = params.get("step");
+  const fromFunnel = params.has("fromFunnel");
+
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
-  const selectedFeatures = [];
-  let chosenPlan = "";
 
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-  const continueBtn = document.getElementById("continuePaymentBtn");
-
-  // ----- Screen navigation -----
+  // ------------------ Screen navigation ------------------
   function hideAllScreens() {
-    screens.forEach(s => {
-      s.classList.remove("active");
-      s.style.display = "none";
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
     });
   }
 
-  function showScreen(id) {
-    hideAllScreens();
-    const screen = document.getElementById(id);
-    if (!screen) return;
-    screen.classList.add("active");
-    screen.style.display = "flex";
-    currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  function showScreen(screenId) {
+    const newScreen = document.getElementById(screenId);
+    if (!newScreen) return;
+
+    const current = screens[currentScreen];
+    if (current) current.classList.remove("active");
+
+    newScreen.classList.add("active");
+    newScreen.style.display = "flex";
+    currentScreen = Array.from(screens).indexOf(newScreen);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) showScreen(screens[currentScreen + 1].id);
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   function prev() {
-    if (currentScreen > 0) showScreen(screens[currentScreen - 1].id);
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ----- Record features -----
-  window.recordFeature = (feature) => {
-    if (!selectedFeatures.includes(feature)) selectedFeatures.push(feature);
+  // ------------------ User path and features ------------------
+  let userPath = "";
+  const features = [];
+  window.setPath = (path) => { userPath = path; };
+  window.recordFeature = (feature) => { if (!features.includes(feature)) features.push(feature); };
+  window.recommendPlan = () => {
+    let plan = '';
+    const count = features.length;
+    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    const recEl = document.getElementById('recommended-plan');
+    if (recEl) recEl.innerText = plan;
   };
 
-  // ----- Plan scoring -----
-  function getRecommendedPlan(features) {
-    let score = 0;
-    if (features.includes("booking")) score += 2;
-    if (features.includes("packages")) score += 2;
-    if (features.includes("seo")) score += 2;
-    if (features.includes("reviews")) score += 1;
-    if (features.includes("social")) score += 1;
-    if (features.includes("email")) score += 1;
-    if (features.includes("branding")) score += 1;
-    if (features.includes("content")) score += 1;
-    if (features.includes("guide")) score += 1;
-    if (features.includes("resources")) score += 1;
-    if (features.includes("mobile")) score += 2;
-    if (features.includes("cta")) score += 1;
-    if (features.includes("pages-5")) score += 2;
-    if (features.includes("pages-10")) score += 4;
-    if (features.includes("pages-50")) score += 6;
-    if (features.includes("managed")) score += 2;
-    if (features.includes("revisions-15")) score += 2;
-    if (features.includes("revisions-30")) score += 3;
+  // ------------------ Typewriter animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
 
-    if (score <= 6) return "basic";
-    if (score <= 12) return "pro";
-    return "premium";
-  }
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
 
-  // ----- Show recommended plan -----
-  function showRecommendedPlan(plan) {
-    const recEl = document.getElementById("recommended-plan");
-    if (recEl) recEl.innerText = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
-
-    const cards = document.querySelectorAll('#plan-recommendation .pricing-card');
-    cards.forEach(card => {
-      card.classList.remove("recommended");
-      if (card.dataset.plan === plan) card.classList.add("recommended");
-    });
-
-    chosenPlan = plan;
-
-    document.getElementById("hiddenPlan").value = plan;
-    document.getElementById("hiddenFeatures").value = selectedFeatures.join(", ");
-    document.getElementById("hiddenPaymentLink").value = "pricing.html?plan=" + plan;
-  }
-
-  window.showPlanRecommendation = () => {
-    const plan = getRecommendedPlan(selectedFeatures);
-    showRecommendedPlan(plan);
-    showScreen("plan-recommendation");
-  };
-
-  if (continueBtn) {
-    continueBtn.addEventListener("click", () => {
-      if (!chosenPlan) showPlanRecommendation();
-      window.location.href = `pricing.html?plan=${chosenPlan}`;
-    });
-  }
-
-  window.selectPlan = (plan) => {
-    document.getElementById("hiddenPlan").value = plan.charAt(0).toUpperCase() + plan.slice(1);
-    showScreen("contact-step");
-  };
-
-  // ----- Handle concept selection from concepts.html -----
-  window.goToConcept = () => {
-    const codeInput = document.getElementById("designInput");
-    if (!codeInput) { next(); return; }
-    const code = codeInput.value.trim();
-    if (!code) { next(); return; }
-
-    // Save the selected design code in sessionStorage
-    sessionStorage.setItem('funnelSelectedConcept', code);
-    // Redirect to concepts.html
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1`;
-  };
-
-  // ----- Resume funnel from sessionStorage if returning from concepts.html -----
-  const savedConcept = sessionStorage.getItem('funnelSelectedConcept');
-  const resumeQ = sessionStorage.getItem('funnelResumeQ') || 'instructor-q4';
-
-  if (savedConcept) {
-    // Pre-fill Q3 input
-    const designInput = document.getElementById('designInput');
-    if (designInput) designInput.value = savedConcept;
-
-    // Record concept as selected feature
-    recordFeature(savedConcept);
-
-    // Skip typewriter animation
-    if (typewriterEl) typewriterEl.style.display = 'none';
-    if (colorRiseEl) colorRiseEl.style.display = 'none';
-
-    // Show next question automatically
-    showScreen(resumeQ);
-
-    // Clear sessionStorage to prevent looping
-    sessionStorage.removeItem('funnelSelectedConcept');
-    sessionStorage.removeItem('funnelResumeQ');
-  } else {
-    // ----- Typewriter + skyrocket animation -----
-    function startTypewriterAnimation() {
-      if (!typewriterEl || !colorRiseEl) { showScreen("main-intro-options"); return; }
-
-      typewriterEl.style.pointerEvents = "none";
-      colorRiseEl.style.pointerEvents = "none";
-
-      typewriterEl.style.opacity = 1;
-      let lines = ["We build", "your website.", "You approve,", "then pay."];
-      let currentLine = 0, currentChar = 0, lineEl = null;
-      const typingSpeed = 100, lineDelay = 500;
-      const cursor = document.createElement('span');
-      cursor.classList.add('cursor');
-      typewriterEl.appendChild(cursor);
-
-      function typeChar() {
-        if (currentLine >= lines.length) {
-          cursor.remove();
-          setTimeout(() => {
-            typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-            setTimeout(() => {
-              typewriterEl.style.display = 'none';
-              colorRiseEl.style.display = 'none';
-              showScreen('main-intro-options');
-            }, 2000);
-          }, 1000);
-          return;
-        }
-        const text = lines[currentLine];
-        if (!lineEl) {
-          lineEl = document.createElement('div');
-          lineEl.classList.add('typed-line');
-          typewriterEl.appendChild(lineEl);
-          lineEl.appendChild(cursor);
-        }
-        if (currentChar < text.length) {
-          lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-          currentChar++;
-          setTimeout(typeChar, typingSpeed);
-        } else {
-          currentLine++;
-          currentChar = 0;
-          lineEl = null;
-          setTimeout(typeChar, lineDelay);
-        }
-      }
-
-      typeChar();
-
-      // Allow skipping animation on click
-      const skipAnimation = () => {
-        typewriterEl.style.display = 'none';
-        colorRiseEl.style.display = 'none';
-        showScreen('main-intro-options');
-      };
-      typewriterEl.addEventListener('click', skipAnimation);
-      colorRiseEl.addEventListener('click', skipAnimation);
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
     }
 
-    hideAllScreens();
-    if (typewriterEl && colorRiseEl) {
-      typewriterEl.classList.add('active');
-      colorRiseEl.classList.add('active');
-      startTypewriterAnimation();
-    } else {
-      showScreen("main-intro-options");
-    }
-  }
-
-  // ----- Hamburger menu -----
-  const hamburger = document.querySelector(".hamburger");
-  const menu = document.querySelector("nav.menu");
-  if (hamburger && menu) {
-    hamburger.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle("open");
-      hamburger.classList.toggle("active");
-      hamburger.setAttribute("aria-expanded", isOpen);
-      menu.setAttribute("aria-hidden", !isOpen);
-      document.body.style.overflow = isOpen ? "hidden" : "";
-    });
-    document.addEventListener("click", (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove("open");
-        hamburger.classList.remove("active");
-        hamburger.setAttribute("aria-expanded", false);
-        menu.setAttribute("aria-hidden", true);
-        document.body.style.overflow = "";
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
       }
-    });
-  }
-
-document.addEventListener("DOMContentLoaded", () => {
-  // ----- Check if user came from concept.html -----
-  const selectedConcept = sessionStorage.getItem('funnelSelectedConcept');
-  const urlParams = new URLSearchParams(window.location.search);
-  const stepParam = urlParams.get('step'); // e.g., ?step=4
-
-  if (selectedConcept) {
-    // Pre-fill design code input if exists
-    const designInput = document.getElementById('designInput');
-    if (designInput) designInput.value = selectedConcept;
-
-    // Record feature for the concept
-    window.recordFeature(selectedConcept);
-
-    // Determine which screen to show
-    if (stepParam && !isNaN(stepParam)) {
-      // Convert step to index: question 4 corresponds to instructor-q4
-      const targetScreen = `instructor-q${stepParam}`;
-      if (document.getElementById(targetScreen)) {
-        showScreen(targetScreen);
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
       } else {
-        showScreen('instructor-q1'); // fallback
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
       }
-    } else {
-      showScreen('instructor-q4'); // default to question 4
     }
 
-    // Clear sessionStorage so it doesn't interfere later
-    sessionStorage.removeItem('funnelSelectedConcept');
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
-  // ... rest of your existing JS ...
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Initialize funnel ------------------
+  hideAllScreens();
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
+
+  // ------------------ Step 3: Design code ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) { alert("Please enter a design code."); return; }
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  };
+
+  // ------------------ Returning from concepts ------------------
+  if (codeParam && stepParam && stepParam === "4") {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showScreen(`instructor-q4`);
+  }
+
+  // ------------------ Hamburger menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
 });
- 
 </script>
 </body>
 </html>
