@@ -1263,6 +1263,113 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+ 
+let currentScreen = 0;
+const screens = document.querySelectorAll(".form-screen");
+let selectedFeatures = [];
+let chosenPlan = "";
+
+// Show a specific screen
+function showScreen(id) {
+  screens.forEach(screen => screen.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  currentScreen = Array.from(screens).indexOf(document.getElementById(id));
+}
+
+// Go forward
+function next() {
+  if (currentScreen < screens.length - 1) {
+    screens[currentScreen].classList.remove("active");
+    screens[currentScreen + 1].classList.add("active");
+    currentScreen++;
+  }
+}
+
+// Go back
+function prev() {
+  if (currentScreen > 0) {
+    screens[currentScreen].classList.remove("active");
+    screens[currentScreen - 1].classList.add("active");
+    currentScreen--;
+  }
+}
+
+// Record a selected feature
+function recordFeature(feature) {
+  if (!selectedFeatures.includes(feature)) {
+    selectedFeatures.push(feature);
+  }
+}
+
+// Go to design concept page if code entered
+function goToConcept() {
+  const designCode = document.getElementById("designInput").value.trim();
+  if (designCode) {
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${designCode}`;
+  } else {
+    next();
+  }
+}
+
+// Plan recommendation logic
+function calculatePlan() {
+  let score = 0;
+
+  // Assign points based on chosen features
+  if (selectedFeatures.includes("booking")) score += 2;
+  if (selectedFeatures.includes("packages")) score += 2;
+  if (selectedFeatures.includes("seo")) score += 2;
+  if (selectedFeatures.includes("reviews")) score += 1;
+  if (selectedFeatures.includes("social")) score += 1;
+  if (selectedFeatures.includes("branding")) score += 1;
+  if (selectedFeatures.includes("content")) score += 1;
+  if (selectedFeatures.includes("guide")) score += 1;
+  if (selectedFeatures.includes("resources")) score += 1;
+  if (selectedFeatures.includes("mobile")) score += 2;
+  if (selectedFeatures.includes("cta")) score += 1;
+
+  if (selectedFeatures.includes("pages-10")) score += 2;
+  if (selectedFeatures.includes("pages-50")) score += 3;
+
+  if (selectedFeatures.includes("managed")) score += 1;
+
+  if (selectedFeatures.includes("revisions-15")) score += 2;
+  if (selectedFeatures.includes("revisions-30")) score += 3;
+
+  // Decide plan
+  if (score <= 5) {
+    chosenPlan = "basic";
+  } else if (score <= 10) {
+    chosenPlan = "pro";
+  } else {
+    chosenPlan = "premium";
+  }
+
+  // Show plan text
+  document.getElementById("recommended-plan").innerText = 
+    chosenPlan.charAt(0).toUpperCase() + chosenPlan.slice(1) + " Plan";
+
+  // Store in hidden input (for formsubmit email)
+  document.getElementById("hiddenPlan").value = chosenPlan;
+  document.getElementById("hiddenFeatures").value = selectedFeatures.join(", ");
+  document.getElementById("hiddenPaymentLink").value = "pricing.html?plan=" + chosenPlan;
+
+  // Move to recommendation screen
+  showScreen("plan-recommendation");
+}
+
+// Attach handler to "continue payment" button
+document.addEventListener("DOMContentLoaded", () => {
+  const continueBtn = document.getElementById("continuePaymentBtn");
+  if (continueBtn) {
+    continueBtn.addEventListener("click", () => {
+      window.location.href = "pricing.html?plan=" + chosenPlan;
+    });
+  }
+});
+
 </script>
 </body>
 </html>
