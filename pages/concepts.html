@@ -679,9 +679,11 @@ footer {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // ----- URL Parameters -----
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code'); // e.g. SDI-5
+  const codeParam = params.get('code'); // e.g., SDI-5
 
+  // ----- Slider Setup -----
   const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
   const nextBtn = document.querySelector('.arrow.next');
@@ -690,10 +692,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sliderWrapper || slides.length === 0) return;
 
-  // Show all slides
-  slides.forEach(slide => slide.style.display = 'flex'); 
+  // Show all slides initially
+  slides.forEach(slide => slide.style.display = 'flex');
 
-  // Jump to slide if ?code= in URL
+  // Jump to slide if code is in URL
   if (codeParam) {
     const match = slides.find(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
@@ -702,16 +704,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // Initialize AOS
+  // Initialize AOS animations
   if (AOS) AOS.init();
 
-  // Slider positioning
+  // Update slider position
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
     sliderWrapper.style.transform = isPortrait ? `translateX(-${currentIndex * 100}%)` : "none";
   }
 
-  // Navigation arrows
+  // Arrow navigation
   if (nextBtn) nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -731,37 +733,44 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (endX - startX > 50 && prevBtn) prevBtn.click();
   });
 
+  // Handle window resize
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // "I want this concept" → straight to funnel
+  // ----- "I want this concept" Buttons -----
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code; // SDI-1 ... SDI-10
+      const selectedCode = button.dataset.code; // e.g., SDI-1 ... SDI-10
       if (selectedCode) {
-        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        // Store in sessionStorage for index.html to read
+        sessionStorage.setItem('funnelSelectedConcept', selectedCode);
+
+        // Redirect to index.html funnel at question 4
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?step=4`;
       }
     });
   });
-});
 
-
+  // ----- Hamburger Menu -----
   const hamburger = document.querySelector('.hamburger');
-const menu = document.querySelector('nav.menu');
+  const menu = document.querySelector('nav.menu');
 
-hamburger.addEventListener('click', e => {
-  e.stopPropagation();
-  hamburger.classList.toggle('active');
-  menu.classList.toggle('open');
-  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-});
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('open');
+      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+    });
 
-// Close menu if click outside
-document.addEventListener('click', e => {
-  if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-    menu.classList.remove('open');
-    hamburger.classList.remove('active');
-    document.body.style.overflow = '';
+    // Close menu if click outside
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
   }
 });
 </script>
