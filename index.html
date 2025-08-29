@@ -1190,7 +1190,7 @@ body header + .form-screen {
 </a>
   </div>
 
- <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   AOS.init(); // Initialize animations
@@ -1336,7 +1336,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Typewriter + skyrocket animation -----
   function startTypewriterAnimation() {
-    if (!typewriterEl) { showScreen("main-intro-options"); return; }
+    if (!typewriterEl || !colorRiseEl) { showScreen("main-intro-options"); return; }
+
+    // Allow clicks through animation overlay
+    typewriterEl.style.pointerEvents = "none";
+    colorRiseEl.style.pointerEvents = "none";
 
     typewriterEl.style.opacity = 1;
     let lines = ["We build", "your website.", "You approve,", "then pay."];
@@ -1352,7 +1356,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
           setTimeout(() => {
-            // Remove animation overlay so funnel is clickable
             typewriterEl.style.display = 'none';
             colorRiseEl.style.display = 'none';
             showScreen('main-intro-options');
@@ -1380,6 +1383,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     typeChar();
+
+    // Allow skipping animation on click
+    const skipAnimation = () => {
+      typewriterEl.style.display = 'none';
+      colorRiseEl.style.display = 'none';
+      showScreen('main-intro-options');
+    };
+    typewriterEl.addEventListener('click', skipAnimation);
+    colorRiseEl.addEventListener('click', skipAnimation);
   }
 
   // ----- Initialize funnel -----
