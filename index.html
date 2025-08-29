@@ -1429,7 +1429,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+document.addEventListener("DOMContentLoaded", () => {
+  // ----- Check if user came from concept.html -----
+  const selectedConcept = sessionStorage.getItem('funnelSelectedConcept');
+  const urlParams = new URLSearchParams(window.location.search);
+  const stepParam = urlParams.get('step'); // e.g., ?step=4
+
+  if (selectedConcept) {
+    // Pre-fill design code input if exists
+    const designInput = document.getElementById('designInput');
+    if (designInput) designInput.value = selectedConcept;
+
+    // Record feature for the concept
+    window.recordFeature(selectedConcept);
+
+    // Determine which screen to show
+    if (stepParam && !isNaN(stepParam)) {
+      // Convert step to index: question 4 corresponds to instructor-q4
+      const targetScreen = `instructor-q${stepParam}`;
+      if (document.getElementById(targetScreen)) {
+        showScreen(targetScreen);
+      } else {
+        showScreen('instructor-q1'); // fallback
+      }
+    } else {
+      showScreen('instructor-q4'); // default to question 4
+    }
+
+    // Clear sessionStorage so it doesn't interfere later
+    sessionStorage.removeItem('funnelSelectedConcept');
+  }
+
+  // ... rest of your existing JS ...
 });
+ 
 </script>
 </body>
 </html>
