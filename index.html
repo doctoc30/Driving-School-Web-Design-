@@ -1297,6 +1297,30 @@ document.getElementById('continuePaymentBtn').addEventListener('click', () => {
     const plan = document.getElementById('hiddenPlan').value;
     window.location.href = `pricing.html?plan=${plan}`;
 });
+
+ // At the end of your index.js or <script> for the funnel
+document.getElementById('continuePaymentBtn').addEventListener('click', () => {
+  const recommendedPlan = determineRecommendedPlan(); // Function you already have to choose plan
+  const planLower = recommendedPlan.toLowerCase();
+
+  // Optional: save features if needed
+  const features = Array.from(document.querySelectorAll('input[name="Selected Features"]')).map(f => f.value).join(',');
+
+  // Redirect to pricing.html with plan as URL param
+  window.location.href = `pricing.html?plan=${planLower}`;
+});
+
+// Example determineRecommendedPlan function
+function determineRecommendedPlan() {
+  // Here you can set your logic based on user selections
+  // Example: Pro if booking + SEO + 10+ pages, Premium if 50+ pages or full branding
+  const pages = document.querySelector('input[name="Selected Features"][value="pages-50"]')?.checked;
+  const revisions = document.querySelector('input[name="Selected Features"][value="revisions-30"]')?.checked;
+
+  if (pages || revisions) return 'Premium';
+  // Add more logic based on features
+  return 'Pro'; // default fallback
+}
 </script>
 </body>
 </html>
