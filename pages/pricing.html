@@ -229,141 +229,47 @@ footer {
   }
 }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #33a7d4;
-    color: white;
-    overflow-x: hidden;
-  }
-  a { text-decoration: none; color: inherit; }
 
-  /* ---------- Pricing Section ---------- */
-  #pricing-section {
-    background: #33a7d4;
-    color: white;
-    padding: 80px 20px;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .pricing-container {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    width: 100%;
-    max-width: 1200px;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; overflow-x: hidden; }
 
-  /* ---------- Card Styling ---------- */
-  .pricing-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  }
+  #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+  .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
 
-  .pricing-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  .pricing-card { background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 16px; padding: 40px 20px; text-align: center; min-height: 80vh; display: flex; flex-direction: column; justify-content: space-between;
+    opacity: 0; transform: translateY(50px); transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   }
+  .pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
 
-  .pricing-card.recommended .badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #227090;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: bold;
-  }
+  .pricing-card.recommended .badge { position: absolute; top: 15px; right: 15px; background: #227090; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; }
 
-  .pricing-card h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 900;
-  }
+  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
+  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
+  .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
+  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
 
-  .pricing-card .price {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    font-weight: bold;
+  .pay-now { background: white; color: #33a7d4; font-weight: bold; padding: 1rem 2rem; border-radius: 8px; border: none; cursor: pointer;
+    font-size: 1rem; line-height: 1.3; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+    transition: all 0.3s ease; margin-bottom: 5px; width: 100%;
   }
+  .pay-now:hover { background: #227090; color: white; }
+  .pay-now img { width: 24px; height: auto; margin-right: 8px; }
 
-  .pricing-card ul {
-    list-style: none;
-    margin-bottom: 2rem;
-    padding: 0;
-  }
+  .button-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+  .button-row div { width: 100%; max-width: 220px; }
+  .button-row small { display: block; margin-top: 5px; font-size: 0.85rem; color: #f0f0f0; text-align: center; }
 
-  .pricing-card ul li {
-    margin: 10px 0;
-    font-size: 1.1rem;
-  }
+  .pricing-card.in-view { opacity: 1; transform: translateY(0); }
+  .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
+  @keyframes glow { 0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);} 100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);} }
 
-  /* Pay Now Button */
-  .pricing-card .pay-now {
-    background: white;
-    color: #33a7d4;
-    font-weight: bold;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    line-height: 1.3;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
+  @media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px; } .pricing-card { min-height: 60vh; } }
+  @media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px; } }
 
-  .pricing-card .pay-now:hover {
-    background: #227090;
-    color: white;
-  }
-
-  /* SVG Icon Styling */
-  .pay-now .icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-    color: #33a7d4;
-  }
-  .pay-now:hover .icon {
-    color: white;
-  }
-
-  /* Scroll Animation for Cards */
-  .pricing-card.in-view {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Desktop Layout */
-  @media (min-width: 1024px) {
-    .pricing-container { flex-direction: row; gap: 20px; }
-    .pricing-card { min-height: 60vh; }
-  }
-
-  /* Mobile Full-Screen Cards */
-  @media (max-width: 768px) {
-    .pricing-card { min-height: 90vh; padding: 60px 20px; }
-  }
-
+  
 </style>
 </head>
 <body>
@@ -384,7 +290,6 @@ footer {
   </nav>
 </header>
 
-
   <section id="pricing-section">
   <div class="pricing-container">
 
@@ -397,17 +302,25 @@ footer {
         <li>5 Revisions</li>
         <li>Mobile Friendly</li>
       </ul>
-      <button class="pay-now" onclick="window.location.href='#'">
-        <span class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm.5 16h-1v-2h-2v-1h2v-2H10v-1h2V8h1v2h2v1h-2v2h3v1h-3v2z"/>
-          </svg>
-        </span>
-        <strong>Pay 50% Now (£250)</strong> <br> 50% on Completion
-      </button>
+      <div class="button-row">
+        <div>
+          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £499 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+        <div>
+          <button class="pay-now" onclick="stripeCheckout('basic')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Credit_card_font_awesome.svg" alt="Card">
+            Pay £499 via Card
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+      </div>
     </div>
 
-    <!-- Pro Plan (Recommended) -->
+    <!-- Pro Plan -->
     <div class="pricing-card recommended" data-animate>
       <div class="badge">Recommended</div>
       <h3>Pro</h3>
@@ -418,14 +331,22 @@ footer {
         <li>SEO Optimization</li>
         <li>Booking System</li>
       </ul>
-      <button class="pay-now" onclick="window.location.href='#'">
-        <span class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm.5 16h-1v-2h-2v-1h2v-2H10v-1h2V8h1v2h2v1h-2v2h3v1h-3v2z"/>
-          </svg>
-        </span>
-        <strong>Pay 50% Now (£499)</strong> <br> 50% on Completion
-      </button>
+      <div class="button-row">
+        <div>
+          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £999 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+        <div>
+          <button class="pay-now" onclick="stripeCheckout('pro')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Credit_card_font_awesome.svg" alt="Card">
+            Pay £999 via Card
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+      </div>
     </div>
 
     <!-- Premium Plan -->
@@ -439,14 +360,22 @@ footer {
         <li>Booking & Payment Integration</li>
         <li>Social Media Integration</li>
       </ul>
-      <button class="pay-now" onclick="window.location.href='#'">
-        <span class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1zm.5 16h-1v-2h-2v-1h2v-2H10v-1h2V8h1v2h2v1h-2v2h3v1h-3v2z"/>
-          </svg>
-        </span>
-        <strong>Pay 50% Now (£749)</strong> <br> 50% on Completion
-      </button>
+      <div class="button-row">
+        <div>
+          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £1499 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+        <div>
+          <button class="pay-now" onclick="stripeCheckout('premium')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Credit_card_font_awesome.svg" alt="Card">
+            Pay £1499 via Card
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -516,7 +445,9 @@ footer {
 
 
   
-  // Intersection Observer for scroll animations (cards only)
+
+
+  // Intersection Observer for scroll animation
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -526,8 +457,27 @@ footer {
       }
     });
   }, { threshold: 0.3 });
-
   cards.forEach(card => observer.observe(card));
+
+  // Stripe Checkout function
+  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
+
+  function stripeCheckout(plan) {
+    let priceId = '';
+    switch(plan) {
+      case 'basic': priceId = 'price_id_basic'; break;
+      case 'pro': priceId = 'price_id_pro'; break;
+      case 'premium': priceId = 'price_id_premium'; break;
+    }
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      successUrl: window.location.href + '?success=true',
+      cancelUrl: window.location.href + '?canceled=true',
+    }).then(function (result) {
+      if (result.error) alert(result.error.message);
+    });
+  }
 </script>
   
 </body>
