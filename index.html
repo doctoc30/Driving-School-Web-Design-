@@ -1193,8 +1193,6 @@ body header + .form-screen {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  AOS.init(); // Initialize animations
-
   // ----- Elements and state -----
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
@@ -1303,13 +1301,110 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen("contact-step");
   };
 
+  // ----- Handle concept selection from concepts.html -----
   window.goToConcept = () => {
     const codeInput = document.getElementById("designInput");
     if (!codeInput) { next(); return; }
     const code = codeInput.value.trim();
     if (!code) { next(); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+
+    // Save the selected design code in sessionStorage
+    sessionStorage.setItem('funnelSelectedConcept', code);
+    // Redirect to concepts.html
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1`;
   };
+
+  // ----- Resume funnel from sessionStorage if returning from concepts.html -----
+  const savedConcept = sessionStorage.getItem('funnelSelectedConcept');
+  const resumeQ = sessionStorage.getItem('funnelResumeQ') || 'instructor-q4';
+
+  if (savedConcept) {
+    // Pre-fill Q3 input
+    const designInput = document.getElementById('designInput');
+    if (designInput) designInput.value = savedConcept;
+
+    // Record concept as selected feature
+    recordFeature(savedConcept);
+
+    // Skip typewriter animation
+    if (typewriterEl) typewriterEl.style.display = 'none';
+    if (colorRiseEl) colorRiseEl.style.display = 'none';
+
+    // Show next question automatically
+    showScreen(resumeQ);
+
+    // Clear sessionStorage to prevent looping
+    sessionStorage.removeItem('funnelSelectedConcept');
+    sessionStorage.removeItem('funnelResumeQ');
+  } else {
+    // ----- Typewriter + skyrocket animation -----
+    function startTypewriterAnimation() {
+      if (!typewriterEl || !colorRiseEl) { showScreen("main-intro-options"); return; }
+
+      typewriterEl.style.pointerEvents = "none";
+      colorRiseEl.style.pointerEvents = "none";
+
+      typewriterEl.style.opacity = 1;
+      let lines = ["We build", "your website.", "You approve,", "then pay."];
+      let currentLine = 0, currentChar = 0, lineEl = null;
+      const typingSpeed = 100, lineDelay = 500;
+      const cursor = document.createElement('span');
+      cursor.classList.add('cursor');
+      typewriterEl.appendChild(cursor);
+
+      function typeChar() {
+        if (currentLine >= lines.length) {
+          cursor.remove();
+          setTimeout(() => {
+            typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+            setTimeout(() => {
+              typewriterEl.style.display = 'none';
+              colorRiseEl.style.display = 'none';
+              showScreen('main-intro-options');
+            }, 2000);
+          }, 1000);
+          return;
+        }
+        const text = lines[currentLine];
+        if (!lineEl) {
+          lineEl = document.createElement('div');
+          lineEl.classList.add('typed-line');
+          typewriterEl.appendChild(lineEl);
+          lineEl.appendChild(cursor);
+        }
+        if (currentChar < text.length) {
+          lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+          currentChar++;
+          setTimeout(typeChar, typingSpeed);
+        } else {
+          currentLine++;
+          currentChar = 0;
+          lineEl = null;
+          setTimeout(typeChar, lineDelay);
+        }
+      }
+
+      typeChar();
+
+      // Allow skipping animation on click
+      const skipAnimation = () => {
+        typewriterEl.style.display = 'none';
+        colorRiseEl.style.display = 'none';
+        showScreen('main-intro-options');
+      };
+      typewriterEl.addEventListener('click', skipAnimation);
+      colorRiseEl.addEventListener('click', skipAnimation);
+    }
+
+    hideAllScreens();
+    if (typewriterEl && colorRiseEl) {
+      typewriterEl.classList.add('active');
+      colorRiseEl.classList.add('active');
+      startTypewriterAnimation();
+    } else {
+      showScreen("main-intro-options");
+    }
+  }
 
   // ----- Hamburger menu -----
   const hamburger = document.querySelector(".hamburger");
@@ -1334,87 +1429,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ----- Typewriter + skyrocket animation -----
-  function startTypewriterAnimation() {
-    if (!typewriterEl || !colorRiseEl) { showScreen("main-intro-options"); return; }
-
-    // Allow clicks through animation overlay
-    typewriterEl.style.pointerEvents = "none";
-    colorRiseEl.style.pointerEvents = "none";
-
-    typewriterEl.style.opacity = 1;
-    let lines = ["We build", "your website.", "You approve,", "then pay."];
-    let currentLine = 0, currentChar = 0, lineEl = null;
-    const typingSpeed = 100, lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => {
-            typewriterEl.style.display = 'none';
-            colorRiseEl.style.display = 'none';
-            showScreen('main-intro-options');
-          }, 2000);
-        }, 1000);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    typeChar();
-
-    // Allow skipping animation on click
-    const skipAnimation = () => {
-      typewriterEl.style.display = 'none';
-      colorRiseEl.style.display = 'none';
-      showScreen('main-intro-options');
-    };
-    typewriterEl.addEventListener('click', skipAnimation);
-    colorRiseEl.addEventListener('click', skipAnimation);
-  }
-
- 
-// Start the funnel and store the selected option
-window.startFunnel = (option) => {
-  console.log("Selected option:", option); // optional for debugging
-  document.getElementById("hiddenFeatures").value = option; // store initial selection
-  showScreen('instructor-q1'); // move to first question
-};
-
-
-  // ----- Initialize funnel -----
-  hideAllScreens();
-  if (typewriterEl && colorRiseEl) {
-    typewriterEl.classList.add('active');
-    colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    showScreen("main-intro-options");
-  }
-
 });
 </script>
-
 </body>
 </html>
