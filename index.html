@@ -877,6 +877,7 @@ body header + .form-screen {
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
+      <button type="button" onclick="next()">Skip</button>
     </div>
   </div>
 
@@ -1073,6 +1074,11 @@ body header + .form-screen {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
+  const stepParam = params.get("step");
+  const fromFunnel = params.has("fromFunnel");
+
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
 
@@ -1088,14 +1094,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const newScreen = document.getElementById(screenId);
     if (!newScreen) return;
 
-    screens.forEach(s => s.classList.remove("active"));
+    const current = screens[currentScreen];
+    if (current) current.classList.remove("active");
+
     newScreen.classList.add("active");
     newScreen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(newScreen);
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  window.showScreen = showScreen;
 
   function next() {
     if (currentScreen < screens.length - 1) {
@@ -1111,58 +1118,131 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User path & features ------------------
-  let features = [];
-  window.setPath = path => { window.userPath = path; };
-  window.recordFeature = feature => { if(!features.includes(feature)) features.push(feature); };
+  // ------------------ User path and features ------------------
+  let userPath = "";
+  const features = [];
+  window.setPath = (path) => { userPath = path; };
+  window.recordFeature = (feature) => { if (!features.includes(feature)) features.push(feature); };
+  window.recommendPlan = () => {
+    let plan = '';
+    const count = features.length;
+    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
+    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
+    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
+    const recEl = document.getElementById('recommended-plan');
+    if (recEl) recEl.innerText = plan;
+  };
 
-  // ------------------ Determine recommended plan ------------------
-  function determineRecommendedPlan() {
-    // Simple logic based on selected features
-    if(features.includes('pages-50') || features.includes('revisions-30') || features.includes('booking') || features.includes('social')) {
-      return 'premium';
-    } else if(features.includes('pages-10') || features.includes('revisions-15') || features.includes('seo')) {
-      return 'pro';
-    } 
-    return 'basic';
+  // ------------------ Typewriter animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
-  // ------------------ Display plan on funnel ------------------
-  function displayRecommendedPlan() {
-    const planEl = document.getElementById('recommended-plan');
-    if(planEl) planEl.innerText = determineRecommendedPlan().toUpperCase();
-  }
-
-  // Update plan when plan-recommendation screen becomes active
-  const planScreen = document.getElementById('plan-recommendation');
-  if(planScreen) {
-    const observer = new MutationObserver(() => {
-      if(planScreen.classList.contains('active')) displayRecommendedPlan();
-    });
-    observer.observe(planScreen, { attributes: true, attributeFilter: ['class'] });
-  }
-
-  // ------------------ Continue button ------------------
-  const continueBtn = document.getElementById('continuePaymentBtn');
-  if(continueBtn) {
-    continueBtn.addEventListener('click', () => {
-      const plan = determineRecommendedPlan();
-      // Send plan in URL to pricing.html (lowercase to match pricing.js)
-      window.location.href = `pricing.html?plan=${plan.toLowerCase()}`;
-    });
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
   }
 
   // ------------------ Initialize funnel ------------------
   hideAllScreens();
-  showScreen('main-intro-options');
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
+
+  // ------------------ Step 3: Design code ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) { alert("Please enter a design code."); return; }
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  };
+
+  // ------------------ Returning from concepts ------------------
+  if (codeParam && stepParam && stepParam === "4") {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showScreen(`instructor-q4`);
+  }
 
   // ------------------ Hamburger menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
-  if(hamburger && menu) {
+  if (hamburger && menu) {
     hamburger.addEventListener('click', e => {
       e.stopPropagation();
       const isOpen = menu.classList.toggle('open');
@@ -1173,7 +1253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener('click', e => {
-      if(!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
         hamburger.classList.remove('active');
         hamburger.setAttribute('aria-expanded', false);
@@ -1182,16 +1262,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // ------------------ Design code redirect ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if(!input || !input.value.trim()) { alert('Please enter a design code'); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(input.value.trim())}&fromFunnel=1`;
-  }
-
 });
 </script>
-
 </body>
 </html>
