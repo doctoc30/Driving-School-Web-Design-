@@ -869,39 +869,42 @@ body header + .form-screen {
 }
 
 
- 
-/* Remove all side spacing on mobile for pricing section */
+
+ /* Remove all side spacing on mobile for pricing section */
 @media (max-width: 768px) {
   #pricing-section {
-    padding: 60px 0 40px 0 !important; /* Remove horizontal padding */
+    padding: 60px 0 40px 0 !important;
     margin: 0;
     width: 100%;
   }
   
   .pricing-container {
-    max-width: 100% !important; /* Remove max-width constraint */
+    max-width: 100% !important;
     padding: 0;
     margin: 0;
+    gap: 20px;
   }
   
   .pricing-card {
     width: 100% !important;
-    border-radius: 0 !important; /* Remove rounded corners for true full-width */
+    border-radius: 0 !important;
     margin: 0;
   }
   
-  /* If you want to keep some spacing between cards */
-  .pricing-container {
-    gap: 20px;
+  /* Add minimal inner padding for content */
+  .pricing-card {
+    padding: 30px 15px !important;
   }
 }
 
 /* Optional: Add slight side padding on very small screens for text readability */
 @media (max-width: 480px) {
   .pricing-card {
-    padding: 40px 15px !important;
+    padding: 30px 10px !important;
   }
 }
+
+ 
 
 
 </style>
