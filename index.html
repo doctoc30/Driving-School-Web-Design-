@@ -990,7 +990,6 @@ body header + .form-screen {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
   <!-- Hidden fields to capture selected plan and features -->
@@ -1023,9 +1022,7 @@ body header + .form-screen {
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
     <div class="button-row">
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">
-  Show me concepts
-</button>
+      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
       <button type="button" onclick="next()">Custom design</button>
     </div>
   </div>
@@ -1049,7 +1046,6 @@ body header + .form-screen {
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
-
 
   <!-- Q5: Lesson Packages -->
   <div class="form-screen" id="instructor-q5">
@@ -1167,113 +1163,37 @@ body header + .form-screen {
       <button type="button" onclick="recordFeature('pages-5'); next()">Around 5</button>
       <button type="button" onclick="recordFeature('pages-10'); next()">Around 10</button>
       <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
-      <button type="button" onclick="recordFeature('pages-not-sure'); next()">Not sure</button>
+            <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
     </div>
   </div>
 
-  <!-- Q17: Ownership -->
-  <div class="form-screen" id="instructor-q17">
-    <h2>Do you want to fully own the website outright?</h2>
-    <p>Or would you prefer managed hosting where we take care of everything?</p>
+  <!-- Summary: Final Selection and Payment -->
+  <div class="form-screen" id="summary-screen">
+    <h2>Summary of Your Choices</h2>
+    <div id="selected-features-summary">
+      <!-- Dynamic summary will be displayed here -->
+    </div>
+    <p>Please review your selections before proceeding. Once you’re ready, choose your plan below:</p>
+    
     <div class="button-row">
-      <button type="button" onclick="recordFeature('own'); next()">I want to own it</button>
-      <button type="button" onclick="recordFeature('managed'); next()">Managed hosting</button>
+      <button type="button" onclick="redirectToPlan('plan-1')">Select Plan 1</button>
+      <button type="button" onclick="redirectToPlan('plan-2')">Select Plan 2</button>
+      <button type="button" onclick="redirectToPlan('plan-3')">Select Plan 3</button>
     </div>
   </div>
 
-  <!-- Q18: Revisions -->
-  <div class="form-screen" id="instructor-q18">
-    <h2>How many revisions would you like?</h2>
-    <p>The more revisions, the more custom we can make your site.</p>
+  <!-- Final Payment Redirect -->
+  <div class="form-screen" id="payment-screen">
+    <h2>Thank you for your selection!</h2>
+    <p>You will be redirected to the payment page shortly based on your chosen plan.</p>
+    <p>If you have any questions, feel free to reach out.</p>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('revisions-5'); next()">5 revisions (Basic)</button>
-      <button type="button" onclick="recordFeature('revisions-15'); next()">15 revisions (Pro)</button>
-      <button type="button" onclick="recordFeature('revisions-30'); next()">30 revisions (Premium)</button>
-    </div>
-  </div>
-
-
-
- <section id="pricing-funnel">
-  <div class="pricing-container">
-
-    <!-- Funnel Step 1 (e.g., "Recommended Plan") -->
-    <div class="pricing-card">
-      <h3>Basic Plan</h3>
-      <p class="price">£499</p>
-      <ul>
-        <li>5 Pages Website</li>
-        <li>3 Revisions</li>
-        <li>Basic SEO</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-    </div>
-
-    <!-- Recommended Plan -->
-    <div class="pricing-card recommended">
-      <div class="badge">Recommended</div>
-      <h3>Pro Plan</h3>
-      <p class="price">£999</p>
-      <ul>
-        <li>10 Pages Website</li>
-        <li>15 Revisions</li>
-        <li>SEO Optimization</li>
-        <li>Booking System</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-    </div>
-
-    <!-- Premium Plan -->
-    <div class="pricing-card">
-      <h3>Premium Plan</h3>
-      <p class="price">£1499</p>
-      <ul>
-        <li>20 Pages Website</li>
-        <li>Unlimited Revisions</li>
-        <li>Advanced SEO</li>
-        <li>Social Media Integration</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-    </div>
-
-  </div>
-</section>
-
-  <!-- CONTACT STEP -->
-  <div class="form-screen" id="contact-step">
-    <h2>Almost done! Please enter your details</h2>
-    <label>Full Name</label>
-    <input type="text" name="Full Name" required>
-    <label>Email Address</label>
-    <input type="email" name="Email" required>
-    <label>WhatsApp Number (optional)</label>
-    <input type="text" name="WhatsApp">
-    <label style="margin-top: 20px;">
-      <input type="checkbox" required name="GDPR Consent">
-      I consent to having this website store my submitted information so they can respond to my inquiry.
-    </label>
-    <div class="button-row">
-      <button type="button" onclick="prev()">Previous</button>
-      <button type="submit">Submit</button>
+      <button type="button" onclick="redirectToPayment()">Proceed to Payment</button>
     </div>
   </div>
 
 </form>
-
-
-
+ 
 <a href="https://doctoc30.github.io/Faz-Designs/pages/about.html" 
    id="skipToPackages" class="skip-link" style="display: none;">
   Skip Questions For Now →
@@ -1474,55 +1394,64 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Example answer points (you can modify these as needed)
-const answers = {
-  answer1: { plan: 'basic', points: 1 },
-  answer2: { plan: 'pro', points: 2 },
-  answer3: { plan: 'premium', points: 3 }
-};
 
-// Function to calculate total points based on selected answers
-function calculateScore() {
-  let totalScore = 0;
-
-  // Get selected answers (assuming answers are stored in an array or object)
-  const selectedAnswers = getSelectedAnswers(); // You need to implement this
-
-  selectedAnswers.forEach(answer => {
-    totalScore += answers[answer].points;
-  });
-
-  return totalScore;
-}
-
-// Function to show the recommended plan based on the total score
-function showRecommendedPlan() {
-  const totalScore = calculateScore();
-  let recommendedPlan;
-
-  // Logic to determine which plan to recommend based on the score
-  if (totalScore <= 3) {
-    recommendedPlan = 'basic';
-  } else if (totalScore <= 6) {
-    recommendedPlan = 'pro';
-  } else {
-    recommendedPlan = 'premium';
+   function setPath(type) {
+    document.getElementById("hiddenPath").value = type;
   }
 
-  // Show the appropriate plan
-  displayPlan(recommendedPlan);
-}
+  function showScreen(screenId) {
+    // Hide all screens
+    let screens = document.querySelectorAll('.form-screen');
+    screens.forEach(screen => {
+      screen.classList.remove('active');
+    });
 
-// Function to display the selected plan
-function displayPlan(plan) {
-  const allPlans = ['basic', 'pro', 'premium'];
-  allPlans.forEach(pl => {
-    document.getElementById(pl + '-plan').style.display = (pl === plan) ? 'block' : 'none';
-  });
-}
+    // Show the selected screen
+    document.getElementById(screenId).classList.add('active');
+  }
 
-// Call this function after the user completes the funnel quiz
-showRecommendedPlan();
+  function next() {
+    const activeScreen = document.querySelector('.form-screen.active');
+    const nextScreenId = activeScreen.nextElementSibling.id;
+    showScreen(nextScreenId);
+  }
+
+  function recordFeature(feature) {
+    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    hiddenFeatures.value += feature + ', ';
+  }
+
+  function goToConcept() {
+    const designCode = document.getElementById('designInput').value;
+    document.getElementById('hiddenFeatures').value += "Design Code: " + designCode;
+    showScreen('instructor-q4');  // Direct to next question
+  }
+
+  function redirectToPlan(plan) {
+    let planLink = '';
+
+    switch(plan) {
+      case 'plan-1':
+        planLink = 'https://payment-link1.com';
+        break;
+      case 'plan-2':
+        planLink = 'https://payment-link2.com';
+        break;
+      case 'plan-3':
+        planLink = 'https://payment-link3.com';
+        break;
+    }
+
+    document.getElementById('hiddenPaymentLink').value = planLink;
+    window.location.href = planLink;
+  }
+
+  function redirectToPayment() {
+    const paymentLink = document.getElementById('hiddenPaymentLink').value;
+    window.location.href = paymentLink;
+  }
+
+
 </script>
 </body>
 </html>
