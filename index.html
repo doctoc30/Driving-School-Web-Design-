@@ -867,6 +867,26 @@ body header + .form-screen {
   .pricing-container { flex-direction: row; max-width: 1200px; gap: 20px; }
   .pricing-card { flex: 1; min-height: 65vh; }
 }
+
+
+ @media (max-width: 768px) {
+  #pricing-section {
+    padding: 80px 0 40px 0; /* only top/bottom padding */
+  }
+  .pricing-container {
+    flex-direction: column;
+    gap: 20px; /* small gap between cards */
+    width: 100%; 
+    max-width: 100%; 
+    margin: 0;
+    padding: 0;
+  }
+  .pricing-card {
+    width: 100%;
+    min-height: 90vh; /* optional, keeps scroll effect similar to pricing.html */
+    border-radius: 0; /* optional, if you want full-screen card edges */
+  }
+}
 </style>
 
 </head>
