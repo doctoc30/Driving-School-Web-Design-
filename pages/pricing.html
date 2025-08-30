@@ -310,73 +310,83 @@ footer {
   color: #444;
 }
 
-/* PayPal Button */
+
+
+
+/* PayPal Button - App-like, Brand Consistent */
 .pay-now {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 14px;
-  background: #0070ba;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   border: none;
-  border-radius: 6px;
+  border-radius: 50px; /* pill shape */
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.3);
 }
 
 .pay-now img {
-  height: 20px;
+  height: 22px;
 }
 
 .pay-now:hover {
-  background: #004f8c;
+  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.4);
 }
 
-.pricing-card small {
-  display: block;
-  margin-top: 10px;
-  color: #666;
-  font-size: 0.85rem;
+.pay-now:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
 }
 
-/* PayPal Trust Badge - Prominent */
+/* Trust Badge - Matching style */
 .paypal-badge {
   margin-top: 15px;
   padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #f9f9f9;
+  border-radius: 12px;
+  background: #f4f7fa;
+  border: 1px solid #e0e5eb;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .paypal-badge img {
-  max-width: 120px;
+  max-width: 140px;
   height: auto;
   margin-bottom: 8px;
 }
 
 .paypal-badge p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #222;
+  color: #1d1d1d;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-/* Lock icon style */
 .lock-icon {
   font-size: 1.1rem;
   color: #0070ba;
 }
+
+
+
+
+  
+
 </style>
 </head>
 <body>
