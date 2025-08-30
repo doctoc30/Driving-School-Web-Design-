@@ -1760,12 +1760,7 @@ if (planScreen) {
   observer.observe(planScreen, { attributes: true, attributeFilter: ['class'] });
 }
 
- document.querySelectorAll('.select-btn').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const plan = e.target.closest('.pricing-card').querySelector('.plan-title').innerText;
-    alert(`You selected the ${plan}`);
-  });
-});
+
 </script>
 </body>
 </html>
