@@ -1474,46 +1474,55 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
- // Function to check if element is in the viewport
-function isInView(element) {
-  const rect = element.getBoundingClientRect();
-  return rect.top >= 0 && rect.left >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+// Example answer points (you can modify these as needed)
+const answers = {
+  answer1: { plan: 'basic', points: 1 },
+  answer2: { plan: 'pro', points: 2 },
+  answer3: { plan: 'premium', points: 3 }
+};
+
+// Function to calculate total points based on selected answers
+function calculateScore() {
+  let totalScore = 0;
+
+  // Get selected answers (assuming answers are stored in an array or object)
+  const selectedAnswers = getSelectedAnswers(); // You need to implement this
+
+  selectedAnswers.forEach(answer => {
+    totalScore += answers[answer].points;
+  });
+
+  return totalScore;
 }
 
-// Function to handle scroll animation
-function handleScrollAnimation() {
-  const pricingCards = document.querySelectorAll('.pricing-card');
-  pricingCards.forEach(card => {
-    if (isInView(card)) {
-      card.classList.add('in-view');
-    }
+// Function to show the recommended plan based on the total score
+function showRecommendedPlan() {
+  const totalScore = calculateScore();
+  let recommendedPlan;
+
+  // Logic to determine which plan to recommend based on the score
+  if (totalScore <= 3) {
+    recommendedPlan = 'basic';
+  } else if (totalScore <= 6) {
+    recommendedPlan = 'pro';
+  } else {
+    recommendedPlan = 'premium';
+  }
+
+  // Show the appropriate plan
+  displayPlan(recommendedPlan);
+}
+
+// Function to display the selected plan
+function displayPlan(plan) {
+  const allPlans = ['basic', 'pro', 'premium'];
+  allPlans.forEach(pl => {
+    document.getElementById(pl + '-plan').style.display = (pl === plan) ? 'block' : 'none';
   });
 }
 
-// Initialize the scroll animation
-window.addEventListener('scroll', handleScrollAnimation);
-
-// Trigger animation on initial load for cards already in view
-document.addEventListener('DOMContentLoaded', () => {
-  handleScrollAnimation();
-});
-
-// Handle selection of a pricing plan
-const planButtons = document.querySelectorAll('.pay-now');
-
-planButtons.forEach(button => {
-  button.addEventListener('click', (event) => {
-    const plan = event.target.closest('.pricing-card');
-    const planName = plan.querySelector('h3').textContent;
-
-    // Here you could track plan selection or integrate with analytics
-    console.log(`Selected plan: ${planName}`);
-
-    // Redirect to payment page (already linked in HTML)
-    const redirectLink = plan.querySelector('button').getAttribute('onclick').match(/'([^']+)'/)[1];
-    window.location.href = redirectLink;
-  });
-});
+// Call this function after the user completes the funnel quiz
+showRecommendedPlan();
 </script>
 </body>
 </html>
