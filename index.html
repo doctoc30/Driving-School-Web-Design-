@@ -868,42 +868,42 @@ body header + .form-screen {
   .pricing-card { flex: 1; min-height: 65vh; }
 }
 
-/* Funnel Pricing Step Fix - Mobile Full Width */
-@media (max-width: 768px) {
-  /* Remove inner padding/gutters from the step wrapper */
-  .step#step-17 {
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow-x: hidden; /* stops horizontal scroll */
-  }
 
+ 
+/* Remove all side spacing on mobile for pricing section */
+@media (max-width: 768px) {
   #pricing-section {
-    padding: 60px 0 40px 0 !important; /* top/bottom only */
+    padding: 60px 0 40px 0 !important; /* Remove horizontal padding */
     margin: 0;
     width: 100%;
   }
-
+  
   .pricing-container {
-    flex-direction: column;
-    gap: 20px;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0;
+    max-width: 100% !important; /* Remove max-width constraint */
     padding: 0;
+    margin: 0;
   }
-
+  
   .pricing-card {
     width: 100% !important;
-    min-height: 90vh;
-    border-radius: 16px; /* keep curved corners like pricing.html */
-    margin: 0 auto; /* centers if anything left */
+    border-radius: 0 !important; /* Remove rounded corners for true full-width */
+    margin: 0;
   }
-
-  /* Pull Basic plan down slightly if it’s tucked into header */
-  .pricing-card.basic {
-    margin-top: 40px;
+  
+  /* If you want to keep some spacing between cards */
+  .pricing-container {
+    gap: 20px;
   }
 }
+
+/* Optional: Add slight side padding on very small screens for text readability */
+@media (max-width: 480px) {
+  .pricing-card {
+    padding: 40px 15px !important;
+  }
+}
+
+
 </style>
 
 </head>
