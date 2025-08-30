@@ -584,6 +584,344 @@ footer {
                 font-size: 2rem;
             }
         }
+
+
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #33a7d4 0%, #227090 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 30px;
+            margin: 0 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Training Interface */
+        .training-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input, .form-group textarea {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #e91e63;
+            transform: translateY(-2px);
+        }
+        
+        /* Knowledge Base */
+        .knowledge-base {
+            text-align: left;
+        }
+        
+        .knowledge-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .knowledge-question {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .knowledge-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .knowledge-actions button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .edit-btn {
+            background: #33a7d4;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #ff4081;
+            color: white;
+        }
+        
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            background: #ff4081;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        .chat-button i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .chat-window {
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-window.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        .chat-header {
+            background: #33a7d4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f5f7fb;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: #e6e9ef;
+            color: #333;
+            border-top-left-radius: 4px;
+            align-self: flex-start;
+            text-align: left;
+        }
+        
+        .user-message {
+            background: #33a7d4;
+            color: white;
+            border-top-right-radius: 4px;
+            align-self: flex-end;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e6e9ef;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .send-button {
+            width: 40px;
+            height: 40px;
+            background: #33a7d4;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 320px;
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .tab-button {
+                width: 80%;
+            }
+        }
 </style>
 </head>
 <body>
@@ -826,7 +1164,108 @@ footer {
         
 
 
-
+ <div class="container">
+        <h1>Trainable Chatbot</h1>
+        <p>This chatbot can be trained with custom questions and responses. Use the training interface to teach it new things!</p>
+        
+        <div class="tabs">
+            <div class="tab-button active" data-tab="train">Train Chatbot</div>
+            <div class="tab-button" data-tab="knowledge">Knowledge Base</div>
+            <div class="tab-button" data-tab="test">Test Chatbot</div>
+        </div>
+        
+        <div class="tab-content active" id="train">
+            <h2>Train Your Chatbot</h2>
+            <p>Add new questions and responses to train your chatbot.</p>
+            
+            <form class="training-form" id="training-form">
+                <div class="form-group">
+                    <label for="question">Question/Keyword:</label>
+                    <input type="text" id="question" placeholder="What should the user ask?" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="response">Response:</label>
+                    <textarea id="response" placeholder="How should the chatbot respond?" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Add to Knowledge Base</button>
+            </form>
+        </div>
+        
+        <div class="tab-content" id="knowledge">
+            <h2>Knowledge Base</h2>
+            <p>All the questions and responses your chatbot knows.</p>
+            
+            <div class="knowledge-base" id="knowledge-base">
+                <div class="knowledge-item">
+                    <div class="knowledge-question">Hello / Hi / Hey</div>
+                    <div class="knowledge-answer">Hello! How can I assist you today?</div>
+                    <div class="knowledge-actions">
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </div>
+                
+                <div class="knowledge-item">
+                    <div class="knowledge-question">Pricing / Price / Cost</div>
+                    <div class="knowledge-answer">Our pricing starts at £499 for a basic website. We also have business (£999) and enterprise (£1999) plans. Would you like more details?</div>
+                    <div class="knowledge-actions">
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="test">
+            <h2>Test Your Chatbot</h2>
+            <p>Interact with your chatbot to test its knowledge.</p>
+            
+            <div style="background: white; border-radius: 15px; padding: 20px; max-width: 500px; margin: 0 auto;">
+                <div style="height: 300px; overflow-y: auto; margin-bottom: 15px; padding: 15px; background: #f5f7fb; border-radius: 10px;" id="test-chat">
+                    <div class="message bot-message">Hello! I'm your trained chatbot. How can I help you today?</div>
+                </div>
+                
+                <div style="display: flex;">
+                    <input type="text" placeholder="Type your message..." style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px 0 0 25px; outline: none;">
+                    <button style="background: #33a7d4; color: white; border: none; padding: 0 20px; border-radius: 0 25px 25px 0; cursor: pointer;">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chatbot Container -->
+    <div class="chatbot-container">
+        <div class="chat-button">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        
+        <div class="chat-window">
+            <div class="chat-header">
+                <h3>Chat with us!</h3>
+                <button class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-messages">
+                <div class="message bot-message">
+                    Hi there! 👋 How can I help you today?
+                </div>
+                <div class="message bot-message">
+                    I can answer questions about pricing, features, or anything else about our service.
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message here...">
+                <button class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 <div class="social-icons" aria-label="Social media links">
   <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
@@ -918,6 +1357,164 @@ footer {
                     });
                 }
             });
+        });
+
+  document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Update active tab button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Chatbot functionality
+            const chatButton = document.querySelector('.chat-button');
+            const chatWindow = document.querySelector('.chat-window');
+            const closeButton = document.querySelector('.close-button');
+            const sendButton = document.querySelector('.send-button');
+            const chatInput = document.querySelector('.chat-input input');
+            const chatMessages = document.querySelector('.chat-messages');
+            
+            // Toggle chat window
+            chatButton.addEventListener('click', function() {
+                chatWindow.classList.toggle('active');
+            });
+            
+            // Close chat window
+            closeButton.addEventListener('click', function() {
+                chatWindow.classList.remove('active');
+            });
+            
+            // Training form submission
+            const trainingForm = document.getElementById('training-form');
+            trainingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const question = document.getElementById('question').value;
+                const response = document.getElementById('response').value;
+                
+                // Add to knowledge base
+                addToKnowledgeBase(question, response);
+                
+                // Reset form
+                trainingForm.reset();
+                
+                // Show success message
+                alert('Successfully added to knowledge base!');
+            });
+            
+            // Add to knowledge base function
+            function addToKnowledgeBase(question, response) {
+                const knowledgeBase = document.getElementById('knowledge-base');
+                
+                const newItem = document.createElement('div');
+                newItem.classList.add('knowledge-item');
+                
+                newItem.innerHTML = `
+                    <div class="knowledge-question">${question}</div>
+                    <div class="knowledge-answer">${response}</div>
+                    <div class="knowledge-actions">
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </div>
+                `;
+                
+                knowledgeBase.appendChild(newItem);
+                
+                // Add event listeners for edit and delete buttons
+                newItem.querySelector('.edit-btn').addEventListener('click', function() {
+                    document.getElementById('question').value = question;
+                    document.getElementById('response').value = response;
+                    knowledgeBase.removeChild(newItem);
+                    
+                    // Switch to training tab
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('[data-tab="train"]').classList.add('active');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById('train').classList.add('active');
+                });
+                
+                newItem.querySelector('.delete-btn').addEventListener('click', function() {
+                    knowledgeBase.removeChild(newItem);
+                });
+            }
+            
+            // Send message function
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Add user message
+                    addMessage(message, 'user');
+                    chatInput.value = '';
+                    
+                    // Simulate bot response after a short delay
+                    setTimeout(() => {
+                        botResponse(message);
+                    }, 600);
+                }
+            }
+            
+            // Send message on button click
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Send message on Enter key
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Add message to chat
+            function addMessage(text, type) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add(type + '-message');
+                messageElement.textContent = text;
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Bot response logic
+            function botResponse(userMessage) {
+                userMessage = userMessage.toLowerCase();
+                let response;
+                
+                // Check knowledge base for matches
+                const knowledgeItems = document.querySelectorAll('.knowledge-item');
+                let foundMatch = false;
+                
+                for (const item of knowledgeItems) {
+                    const questions = item.querySelector('.knowledge-question').textContent.split(' / ');
+                    const answer = item.querySelector('.knowledge-answer').textContent;
+                    
+                    for (const question of questions) {
+                        if (userMessage.includes(question.toLowerCase())) {
+                            response = answer;
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+                    
+                    if (foundMatch) break;
+                }
+                
+                if (!foundMatch) {
+                    response = "I'm still learning. Could you please contact us at hello@example.com for more assistance with this question?";
+                }
+                
+                addMessage(response, 'bot');
+            }
         });
 </script>
   
