@@ -799,6 +799,165 @@ body header + .form-screen {
   padding-top: 0 !important;           /* remove any extra top spacing */
 }
 
+
+ #pricing-funnel {
+  padding: 80px 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.pricing-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+.pricing-card.recommended .badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #227090;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.pricing-card h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 900;
+}
+
+.pricing-card .price {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.pricing-card ul {
+  list-style: none;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+.pricing-card ul li {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.pricing-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pricing-card.recommended.in-view {
+  animation: glow 2s ease infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    transform: translateY(0) scale(1.03);
+  }
+  100% {
+    box-shadow: 0 25px 50px rgba(255,255,255,0.4);
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+.pay-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+}
+
+.pay-now img {
+  height: 22px;
+}
+
+.pay-now:hover {
+  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
+}
+
+.pay-now:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
+}
+
+.paypal-badge {
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #e0e5eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.paypal-badge img {
+  max-width: 140px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.paypal-badge p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lock-icon {
+  font-size: 1.1rem;
+  color: #0070ba;
+}
 </style>
 
 </head>
@@ -1033,14 +1192,64 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- PLAN RECOMMENDATION -->
-  <div class="form-screen" id="plan-recommendation">
-    <h2>Your Recommended Plan:</h2>
-    <p id="recommended-plan"></p>
-    <div class="button-row">
-      <button type="button" id="continuePaymentBtn">Pay 50% Upfront & Continue</button>
+
+
+ <section id="pricing-funnel">
+  <div class="pricing-container">
+
+    <!-- Funnel Step 1 (e.g., "Recommended Plan") -->
+    <div class="pricing-card">
+      <h3>Basic Plan</h3>
+      <p class="price">£499</p>
+      <ul>
+        <li>5 Pages Website</li>
+        <li>3 Revisions</li>
+        <li>Basic SEO</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
     </div>
+
+    <!-- Recommended Plan -->
+    <div class="pricing-card recommended">
+      <div class="badge">Recommended</div>
+      <h3>Pro Plan</h3>
+      <p class="price">£999</p>
+      <ul>
+        <li>10 Pages Website</li>
+        <li>15 Revisions</li>
+        <li>SEO Optimization</li>
+        <li>Booking System</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card">
+      <h3>Premium Plan</h3>
+      <p class="price">£1499</p>
+      <ul>
+        <li>20 Pages Website</li>
+        <li>Unlimited Revisions</li>
+        <li>Advanced SEO</li>
+        <li>Social Media Integration</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+    </div>
+
   </div>
+</section>
 
   <!-- CONTACT STEP -->
   <div class="form-screen" id="contact-step">
@@ -1262,6 +1471,48 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+});
+
+
+ // Function to check if element is in the viewport
+function isInView(element) {
+  const rect = element.getBoundingClientRect();
+  return rect.top >= 0 && rect.left >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+}
+
+// Function to handle scroll animation
+function handleScrollAnimation() {
+  const pricingCards = document.querySelectorAll('.pricing-card');
+  pricingCards.forEach(card => {
+    if (isInView(card)) {
+      card.classList.add('in-view');
+    }
+  });
+}
+
+// Initialize the scroll animation
+window.addEventListener('scroll', handleScrollAnimation);
+
+// Trigger animation on initial load for cards already in view
+document.addEventListener('DOMContentLoaded', () => {
+  handleScrollAnimation();
+});
+
+// Handle selection of a pricing plan
+const planButtons = document.querySelectorAll('.pay-now');
+
+planButtons.forEach(button => {
+  button.addEventListener('click', (event) => {
+    const plan = event.target.closest('.pricing-card');
+    const planName = plan.querySelector('h3').textContent;
+
+    // Here you could track plan selection or integrate with analytics
+    console.log(`Selected plan: ${planName}`);
+
+    // Redirect to payment page (already linked in HTML)
+    const redirectLink = plan.querySelector('button').getAttribute('onclick').match(/'([^']+)'/)[1];
+    window.location.href = redirectLink;
+  });
 });
 </script>
 </body>
