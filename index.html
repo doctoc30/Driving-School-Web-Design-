@@ -835,6 +835,38 @@ body header + .form-screen {
 .paypal-badge p { font-size: 0.9rem; font-weight: 600; color: #1d1d1d; margin: 0; display: flex; align-items: center; gap: 6px;}
 .lock-icon { font-size: 1.1rem; color: #0070ba; }
 
+
+
+ #pricing-section {
+  padding: 100px 20px 40px 20px; /* top padding ensures first card is visible under header */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* align cards to top */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.pricing-container {
+  display: flex;
+  flex-direction: column; /* full width cards stacked on mobile */
+  gap: 40px;
+  width: 100%;
+  max-width: 600px; /* constrain width on mobile */
+  margin: 0 auto;
+}
+
+.pricing-card {
+  width: 100%;   /* full width */
+  min-height: 70vh;
+}
+
+/* Desktop layout */
+@media(min-width: 1024px) {
+  #pricing-section { padding-top: 120px; }
+  .pricing-container { flex-direction: row; max-width: 1200px; gap: 20px; }
+  .pricing-card { flex: 1; min-height: 65vh; }
+}
 </style>
 
 </head>
