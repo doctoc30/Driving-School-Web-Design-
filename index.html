@@ -1398,54 +1398,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
    
 
+ document.addEventListener("DOMContentLoaded", () => {
+      const screens = document.querySelectorAll(".form-screen");
+      let currentScreen = 0;
 
+      function hideAllScreens() {
+        screens.forEach(screen => {
+          screen.classList.remove("active");
+          screen.style.display = "none";
+        });
+      }
 
+      function showScreen(screenId) {
+        const newScreen = document.getElementById(screenId);
+        if (!newScreen) return;
 
-  // JavaScript functionality for handling screen transitions and form submission
-  function showScreen(screenId) {
-    // Hide all screens
-    document.querySelectorAll('.form-screen').forEach(screen => screen.classList.remove('active'));
-    // Show the selected screen
-    document.getElementById(screenId).classList.add('active');
-  }
+        const current = screens[currentScreen];
+        if (current) current.classList.remove("active");
 
-  function next() {
-    // Navigate to the next screen (placeholder logic)
-    const currentScreen = document.querySelector('.form-screen.active');
-    const nextScreen = currentScreen.nextElementSibling;
-    if (nextScreen && nextScreen.classList.contains('form-screen')) {
-      showScreen(nextScreen.id);
-    }
-  }
+        newScreen.classList.add("active");
+        newScreen.style.display = "flex";
+        currentScreen = Array.from(screens).indexOf(newScreen);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
-  function recordFeature(feature) {
-    // Store selected features in hidden inputs for form submission
-    const selectedFeatures = document.getElementById('hiddenFeatures');
-    selectedFeatures.value += feature + ', ';
-  }
+      function next() {
+        if (currentScreen < screens.length - 1) {
+          currentScreen++;
+          showScreen(screens[currentScreen].id);
+        }
+      }
 
-  function setPath(path) {
-    // Set the path for the selected plan type
-    document.getElementById('hiddenPlan').value = path;
-  }
+      window.showScreen = showScreen;
+      window.next = next;
 
-  function selectPlan(planName) {
-    // Store the selected plan and payment link
-    document.getElementById('hiddenPlan').value = planName;
-    document.getElementById('hiddenPaymentLink').value = `https://your-payment-link.com/${planName.toLowerCase().replace(/\s+/g, '-')}`;
-    showScreen('thank-you-screen');
-  }
-
-  function submitForm() {
-    // Submit the form after the plan selection
-    document.getElementById('formWrapper').submit();
-  }
-
-  function resetForm() {
-    // Reset the form and start over
-    document.getElementById('formWrapper').reset();
-    showScreen('main-intro-options');
-  }
+           // Trigger AOS animations when section becomes visible
+      AOS.init({
+        duration: 1000, // Set duration for animations
+        once: true, // Animations will trigger only once
+      });
+    });
 </script>
 </body>
 </html>
