@@ -799,6 +799,120 @@ body header + .form-screen {
   padding-top: 0 !important;           /* remove any extra top spacing */
 }
 
+
+   /* Your existing CSS remains unchanged until the plan recommendation section */
+   /* Add these new styles for the pricing cards in the funnel */
+  .pricing-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+  }
+
+  .pricing-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 16px;
+    padding: 30px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0.7;
+    transform: scale(0.95);
+    transition: all 0.5s ease;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  .pricing-card.recommended {
+    opacity: 1;
+    transform: scale(1);
+    animation: glow 2s ease infinite alternate;
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: scale(1); }
+    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: scale(1.03); }
+  }
+
+  .pricing-card .badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #227090;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  .pricing-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 900;
+  }
+
+  .pricing-card .price {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+  }
+
+  .pricing-card ul {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    padding: 0;
+  }
+
+  .pricing-card ul li {
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+
+  .pay-now-funnel {
+    background: white;
+    color: #33a7d4;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .pay-now-funnel:hover {
+    background: #227090;
+    color: white;
+  }
+
+  @media (min-width: 768px) {
+    .pricing-container {
+      flex-direction: row;
+    }
+    
+    .pricing-card {
+      min-height: 450px;
+    }
+  }
+
+  /* Ensure the recommendation screen looks good */
+  #plan-recommendation {
+    justify-content: flex-start;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow-y: auto;
+  }
+
+  #plan-recommendation h2 {
+    margin-bottom: 30px;
+  }
+
 </style>
 
 </head>
@@ -1033,14 +1147,18 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- PLAN RECOMMENDATION -->
-  <div class="form-screen" id="plan-recommendation">
-    <h2>Your Recommended Plan:</h2>
-    <p id="recommended-plan"></p>
-    <div class="button-row">
-      <button type="button" id="continuePaymentBtn">Pay 50% Upfront & Continue</button>
-    </div>
+ <!-- PLAN RECOMMENDATION SCREEN - UPDATED -->
+<div class="form-screen" id="plan-recommendation">
+  <h2>Your Recommended Plan:</h2>
+  <div class="pricing-container" id="pricing-cards-container">
+    <!-- Pricing cards will be dynamically inserted here -->
   </div>
+  <div class="button-row">
+    <button type="button" onclick="prev()">Previous</button>
+    <button type="button" id="continuePaymentBtn">Continue with Recommended Plan</button>
+  </div>
+</div>
+
 
   <!-- CONTACT STEP -->
   <div class="form-screen" id="contact-step">
@@ -1263,6 +1381,217 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+ // Add to your existing JavaScript
+
+// Initialize point system
+let totalPoints = 0;
+
+// Point values for each feature/selection
+const pointValues = {
+  // Q1: Solo vs School
+  'solo': 2,
+  'school': 5,
+  
+  // Q4: Booking & Payment
+  'booking': 8,
+  
+  // Q5: Lesson Packages
+  'packages': 5,
+  
+  // Q6: Local SEO
+  'seo': 4,
+  
+  // Q7: Reviews
+  'reviews': 3,
+  
+  // Q8: Social Media
+  'social': 4,
+  
+  // Q9: Professional Email
+  'email': 3,
+  
+  // Q10: Branding
+  'branding': 2, // Having branding reduces complexity
+  // No branding adds 0 points (simpler site)
+  
+  // Q11: Content
+  'content': 2, // Having content reduces work
+  // No content adds 0 points
+  
+  // Q12: First Lesson Guide
+  'guide': 3,
+  
+  // Q13: Resources
+  'resources': 3,
+  
+  // Q14: Mobile optimization (default is yes)
+  'mobile': 0, // This is expected, no extra points
+  
+  // Q15: CTAs
+  'cta': 2,
+  
+  // Q16: Pages
+  'pages-5': 2,
+  'pages-10': 5,
+  'pages-50': 10,
+  'pages-not-sure': 3,
+  
+  // Q17: Ownership
+  'own': 1,
+  'managed': 4, // Managed hosting is more complex
+  
+  // Q18: Revisions
+  'revisions-5': 1,
+  'revisions-15': 3,
+  'revisions-30': 6
+};
+
+// Modify the recordFeature function to also add points
+window.recordFeature = (feature) => { 
+  if (!features.includes(feature)) {
+    features.push(feature);
+    // Add points if this feature has a point value
+    if (pointValues[feature] !== undefined) {
+      totalPoints += pointValues[feature];
+    }
+  }
+};
+
+// Enhanced recommendPlan function
+window.recommendPlan = () => {
+  // Determine plan based on total points
+  let recommendedPlan = '';
+  let planLevel = '';
+  
+  if (totalPoints <= 15) {
+    recommendedPlan = 'Basic';
+    planLevel = 'basic';
+  } else if (totalPoints <= 30) {
+    recommendedPlan = 'Pro';
+    planLevel = 'pro';
+  } else {
+    recommendedPlan = 'Premium';
+    planLevel = 'premium';
+  }
+  
+  // Store the recommended plan in hidden field
+  document.getElementById('hiddenPlan').value = recommendedPlan;
+  document.getElementById('hiddenFeatures').value = features.join(', ');
+  
+  // Generate the pricing cards
+  generatePricingCards(planLevel);
+  
+  // Set up the continue button
+  const continueBtn = document.getElementById('continuePaymentBtn');
+  continueBtn.onclick = function() {
+    // Store plan selection and proceed to contact details
+    next();
+  };
+};
+
+// Function to generate pricing cards
+function generatePricingCards(recommendedPlanLevel) {
+  const container = document.getElementById('pricing-cards-container');
+  container.innerHTML = '';
+  
+  const plans = [
+    {
+      level: 'basic',
+      name: 'Basic',
+      price: '£499',
+      features: [
+        '5 Pages Website',
+        '5 Revisions',
+        'Mobile Friendly',
+        'Contact Form'
+      ],
+      recommended: recommendedPlanLevel === 'basic'
+    },
+    {
+      level: 'pro', 
+      name: 'Pro',
+      price: '£999',
+      features: [
+        '10 Pages Website',
+        '15 Revisions',
+        'SEO Optimization',
+        'Booking System',
+        'Basic Branding'
+      ],
+      recommended: recommendedPlanLevel === 'pro'
+    },
+    {
+      level: 'premium',
+      name: 'Premium', 
+      price: '£1499',
+      features: [
+        '50+ Pages Website',
+        '30 Revisions',
+        'Full Branding',
+        'Booking & Payment Integration',
+        'Social Media Integration',
+        'Content Creation Help'
+      ],
+      recommended: recommendedPlanLevel === 'premium'
+    }
+  ];
+  
+  plans.forEach(plan => {
+    const card = document.createElement('div');
+    card.className = `pricing-card ${plan.recommended ? 'recommended' : ''}`;
+    
+    card.innerHTML = `
+      ${plan.recommended ? '<div class="badge">Recommended</div>' : ''}
+      <h3>${plan.name}</h3>
+      <p class="price">${plan.price}</p>
+      <ul>
+        ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
+      </ul>
+      <button class="pay-now-funnel" onclick="selectPlan('${plan.level}')">
+        Select ${plan.name} Plan
+      </button>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+// Function to handle plan selection
+window.selectPlan = (planLevel) => {
+  const plans = {
+    'basic': 'Basic',
+    'pro': 'Pro', 
+    'premium': 'Premium'
+  };
+  
+  document.getElementById('hiddenPlan').value = plans[planLevel] || 'Basic';
+  
+  // Highlight the selected plan
+  const cards = document.querySelectorAll('.pricing-card');
+  cards.forEach(card => card.classList.remove('recommended'));
+  
+  const selectedCard = document.querySelector(`.pricing-card:has(button[onclick="selectPlan('${planLevel}')"])`);
+  if (selectedCard) {
+    selectedCard.classList.add('recommended');
+  }
+  
+  // Update the continue button text
+  document.getElementById('continuePaymentBtn').textContent = `Continue with ${plans[planLevel]} Plan`;
+};
+
+// Modify the existing code to call recommendPlan when reaching the plan recommendation screen
+// Add this to your DOMContentLoaded event listener:
+
+const planScreen = document.getElementById('plan-recommendation');
+if (planScreen) {
+  const observer = new MutationObserver(() => {
+    if (planScreen.classList.contains('active')) {
+      recommendPlan();
+    }
+  });
+  observer.observe(planScreen, { attributes: true, attributeFilter: ['class'] });
+}
 </script>
 </body>
 </html>
