@@ -800,129 +800,106 @@ body header + .form-screen {
 }
 
 
- /* Scroll Animation */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(50px); }
-  100% { opacity: 1; transform: translateY(0); }
+
+
+
+
+
+ /* Pricing Section Styles */
+#pricing {
+    padding: 60px 0;
+    background-color: #f8f8f8;
+    text-align: center;
 }
 
+#pricing .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-
-
-   /* Unified Pricing Card */
-  .pricing-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  }
-  .pricing-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-  }
-
-  .pricing-card.recommended .badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #227090;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
+#pricing .section-title {
+    font-size: 36px;
     font-weight: bold;
-  }
+    margin-bottom: 15px;
+}
 
-  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
-  .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
+#pricing .section-subtitle {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 40px;
+}
 
-  .pricing-card.in-view { opacity: 1; transform: translateY(0); }
-  .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
+.pricing-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
 
-  @keyframes glow {
-    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
-    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
-  }
+.pricing-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 30%;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
-  @media (min-width: 1024px) {
-    .pricing-container { flex-direction: row; gap: 20px; }
-    .pricing-card { min-height: 65vh; }
-  }
-  @media (max-width: 768px) {
-    .pricing-card { min-height: 90vh; padding: 60px 20px; }
-  }
+.pricing-card .plan-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
 
-  /* PayPal Button - App-like, Brand Consistent */
-  .pay-now {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+.pricing-card .price {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.pricing-card .price .currency {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.pricing-card .price .amount {
+    font-size: 40px;
+}
+
+.pricing-card .plan-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.pricing-card .plan-features li {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.pricing-card .btn {
+    padding: 10px 20px;
+    background-color: #007BFF;
     color: #fff;
-    font-size: 1.05rem;
-    font-weight: 600;
     border: none;
-    border-radius: 50px; /* pill shape */
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
-  }
+}
 
-  .pay-now img { height: 22px; }
+.pricing-card .btn:hover {
+    background-color: #0056b3;
+}
 
-  .pay-now:hover {
-    background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
-  }
-  .pay-now:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-  }
+/* Highlighting the Recommended Plan */
+.pricing-card.recommended {
+    border: 2px solid #007BFF;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+}
 
-  /* Trust Badge */
-  .paypal-badge {
-    margin-top: 15px;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.9);
-    border: 1px solid #e0e5eb;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-  .paypal-badge img {
-    max-width: 140px;
-    height: auto;
-    margin-bottom: 8px;
-  }
-  .paypal-badge p {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #1d1d1d;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .lock-icon { font-size: 1.1rem; color: #0070ba; }
-
+.pricing-card.recommended .plan-title {
+    color: #007BFF;
+}
 </style>
 
 </head>
@@ -1132,49 +1109,59 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Pricing Section (After Answering All Questions) -->
-  <div class="form-screen" id="pricing-section">
-    <h2>Recommended Plan for You</h2>
-    <p>Based on your answers, here’s the best plan for your needs:</p>
 
-    <!-- Plan Cards -->
-    <div class="pricing-cards">
-      <div class="card">
-        <h3>Basic Plan</h3>
-        <p>Perfect for solo instructors just starting out.</p>
-        <ul>
-          <li>1-3 pages</li>
-          <li>Basic branding</li>
-          <li>Mobile responsive</li>
-        </ul>
-        <div class="price">£499</div>
-        <button type="button" onclick="selectPlan('Basic Plan')">Select Plan</button>
-      </div>
-      <div class="card">
-        <h3>Pro Plan</h3>
-        <p>Great for growing businesses and driving schools.</p>
-        <ul>
-          <li>4-6 pages</li>
-          <li>Advanced SEO</li>
-          <li>Booking system integration</li>
-          <li>Professional email setup</li>
-        </ul>
-        <div class="price">£799</div>
-        <button type="button" onclick="selectPlan('Pro Plan')">Select Plan</button>
-      </div>
-      <div class="card">
-        <h3>Premium Plan</h3>
-        <p>For driving schools with full feature requirements.</p>
-        <ul>
-          <li>7+ pages</li>
-          <li>Full branding & logo</li>
-          <li>Comprehensive SEO</li>
-          <li>Online payments and booking</li>
-        </ul>
-        <div class="price">£1199</div>
-        <button type="button" onclick="selectPlan('Premium Plan')">Select Plan</button>
-      </div>
+ <!-- Step 17: Pricing Section -->
+<section id="pricing" class="pricing-section">
+    <div class="container">
+        <h2 class="section-title">Our Pricing Plans</h2>
+        <p class="section-subtitle">Choose the plan that's right for you</p>
+
+        <!-- Pricing Cards -->
+        <div class="pricing-cards">
+            <!-- Plan 1 -->
+            <div class="pricing-card">
+                <h3 class="plan-title">Basic Plan</h3>
+                <div class="price">
+                    <span class="currency">$</span><span class="amount">29</span><span class="duration">/month</span>
+                </div>
+                <ul class="plan-features">
+                    <li>1 Website</li>
+                    <li>Basic Support</li>
+                    <li>5GB Storage</li>
+                </ul>
+                <button class="btn select-plan-btn">Select Plan</button>
+            </div>
+
+            <!-- Plan 2 -->
+            <div class="pricing-card recommended">
+                <h3 class="plan-title">Standard Plan</h3>
+                <div class="price">
+                    <span class="currency">$</span><span class="amount">59</span><span class="duration">/month</span>
+                </div>
+                <ul class="plan-features">
+                    <li>5 Websites</li>
+                    <li>Priority Support</li>
+                    <li>25GB Storage</li>
+                </ul>
+                <button class="btn select-plan-btn">Select Plan</button>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="pricing-card">
+                <h3 class="plan-title">Premium Plan</h3>
+                <div class="price">
+                    <span class="currency">$</span><span class="amount">99</span><span class="duration">/month</span>
+                </div>
+                <ul class="plan-features">
+                    <li>Unlimited Websites</li>
+                    <li>24/7 Support</li>
+                    <li>50GB Storage</li>
+                </ul>
+                <button class="btn select-plan-btn">Select Plan</button>
+            </div>
+        </div>
     </div>
+</section>
 
     <!-- Additional Info & Next Steps -->
     <div class="next-step">
