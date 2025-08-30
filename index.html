@@ -800,44 +800,52 @@ body header + .form-screen {
 }
 
 
-   /* Your existing CSS remains unchanged until the plan recommendation section */
-   /* Add these new styles for the pricing cards in the funnel */
-  .pricing-container {
+
+ 
+  /* Your existing CSS remains unchanged until the plan recommendation section */
+  /* ===== PRICING CARDS FOR FUNNEL - EXTRACTED FROM PRICING.HTML ===== */
+  .pricing-container-funnel {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
     width: 100%;
-    max-width: 1000px;
-    margin: 20px auto;
+    max-width: 1200px;
+    margin: 30px auto;
   }
 
-  .pricing-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  .pricing-card-funnel {
+    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
     border-radius: 16px;
-    padding: 30px 20px;
+    padding: 40px 20px;
     text-align: center;
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     opacity: 0.7;
-    transform: scale(0.95);
-    transition: all 0.5s ease;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   }
 
-  .pricing-card.recommended {
+  .pricing-card-funnel:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  }
+
+  .pricing-card-funnel.recommended {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
     animation: glow 2s ease infinite alternate;
   }
 
   @keyframes glow {
-    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: scale(1); }
-    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: scale(1.03); }
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
+    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
   }
 
-  .pricing-card .badge {
+  .pricing-card-funnel .badge {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -849,30 +857,101 @@ body header + .form-screen {
     font-weight: bold;
   }
 
-  .pricing-card h3 {
-    font-size: 1.8rem;
+  .pricing-card-funnel h3 {
+    font-size: 2rem;
     margin-bottom: 1rem;
     font-weight: 900;
   }
 
-  .pricing-card .price {
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
+  .pricing-card-funnel .price {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     font-weight: bold;
   }
 
-  .pricing-card ul {
+  .pricing-card-funnel ul {
     list-style: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     padding: 0;
   }
 
-  .pricing-card ul li {
-    margin: 8px 0;
-    font-size: 1rem;
+  .pricing-card-funnel ul li {
+    margin: 10px 0;
+    font-size: 1.1rem;
   }
 
+  /* PayPal Button - App-like, Brand Consistent */
   .pay-now-funnel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+    margin-bottom: 10px;
+  }
+
+  .pay-now-funnel img {
+    height: 22px;
+  }
+
+  .pay-now-funnel:hover {
+    background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
+  }
+
+  .pay-now-funnel:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
+  }
+
+  /* Trust Badge */
+  .paypal-badge {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #e0e5eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+
+  .paypal-badge img {
+    max-width: 140px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+
+  .paypal-badge p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1d1d1d;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .lock-icon {
+    font-size: 1.1rem;
+    color: #0070ba;
+  }
+
+  /* Select Plan Button */
+  .select-plan-btn {
     background: white;
     color: #33a7d4;
     font-weight: bold;
@@ -886,18 +965,26 @@ body header + .form-screen {
     margin-top: 10px;
   }
 
-  .pay-now-funnel:hover {
+  .select-plan-btn:hover {
     background: #227090;
     color: white;
   }
 
-  @media (min-width: 768px) {
-    .pricing-container {
+  @media (min-width: 1024px) {
+    .pricing-container-funnel {
       flex-direction: row;
+      gap: 20px;
     }
     
-    .pricing-card {
-      min-height: 450px;
+    .pricing-card-funnel {
+      min-height: 65vh;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .pricing-card-funnel {
+      min-height: 90vh;
+      padding: 60px 20px;
     }
   }
 
@@ -911,8 +998,8 @@ body header + .form-screen {
 
   #plan-recommendation h2 {
     margin-bottom: 30px;
+    font-size: 2.2rem;
   }
-
 </style>
 
 </head>
@@ -1147,10 +1234,10 @@ body header + .form-screen {
     </div>
   </div>
 
- <!-- PLAN RECOMMENDATION SCREEN - UPDATED -->
+<!-- PLAN RECOMMENDATION SCREEN - UPDATED WITH PRICING CARDS -->
 <div class="form-screen" id="plan-recommendation">
   <h2>Your Recommended Plan:</h2>
-  <div class="pricing-container" id="pricing-cards-container">
+  <div class="pricing-container-funnel" id="pricing-cards-container">
     <!-- Pricing cards will be dynamically inserted here -->
   </div>
   <div class="button-row">
@@ -1158,6 +1245,7 @@ body header + .form-screen {
     <button type="button" id="continuePaymentBtn">Continue with Recommended Plan</button>
   </div>
 </div>
+
 
 
   <!-- CONTACT STEP -->
@@ -1382,7 +1470,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
- // Add to your existing JavaScript
+// Add to your existing JavaScript
 
 // Initialize point system
 let totalPoints = 0;
@@ -1412,12 +1500,10 @@ const pointValues = {
   'email': 3,
   
   // Q10: Branding
-  'branding': 2, // Having branding reduces complexity
-  // No branding adds 0 points (simpler site)
+  'branding': 2,
   
   // Q11: Content
-  'content': 2, // Having content reduces work
-  // No content adds 0 points
+  'content': 2,
   
   // Q12: First Lesson Guide
   'guide': 3,
@@ -1425,8 +1511,8 @@ const pointValues = {
   // Q13: Resources
   'resources': 3,
   
-  // Q14: Mobile optimization (default is yes)
-  'mobile': 0, // This is expected, no extra points
+  // Q14: Mobile optimization
+  'mobile': 0,
   
   // Q15: CTAs
   'cta': 2,
@@ -1439,7 +1525,7 @@ const pointValues = {
   
   // Q17: Ownership
   'own': 1,
-  'managed': 4, // Managed hosting is more complex
+  'managed': 4,
   
   // Q18: Revisions
   'revisions-5': 1,
@@ -1461,22 +1547,18 @@ window.recordFeature = (feature) => {
 // Enhanced recommendPlan function
 window.recommendPlan = () => {
   // Determine plan based on total points
-  let recommendedPlan = '';
   let planLevel = '';
   
   if (totalPoints <= 15) {
-    recommendedPlan = 'Basic';
     planLevel = 'basic';
   } else if (totalPoints <= 30) {
-    recommendedPlan = 'Pro';
     planLevel = 'pro';
   } else {
-    recommendedPlan = 'Premium';
     planLevel = 'premium';
   }
   
   // Store the recommended plan in hidden field
-  document.getElementById('hiddenPlan').value = recommendedPlan;
+  document.getElementById('hiddenPlan').value = planLevel.charAt(0).toUpperCase() + planLevel.slice(1);
   document.getElementById('hiddenFeatures').value = features.join(', ');
   
   // Generate the pricing cards
@@ -1506,7 +1588,8 @@ function generatePricingCards(recommendedPlanLevel) {
         'Mobile Friendly',
         'Contact Form'
       ],
-      recommended: recommendedPlanLevel === 'basic'
+      recommended: recommendedPlanLevel === 'basic',
+      paypalLink: 'https://www.paypal.com/paypal-link-basic'
     },
     {
       level: 'pro', 
@@ -1519,7 +1602,8 @@ function generatePricingCards(recommendedPlanLevel) {
         'Booking System',
         'Basic Branding'
       ],
-      recommended: recommendedPlanLevel === 'pro'
+      recommended: recommendedPlanLevel === 'pro',
+      paypalLink: 'https://www.paypal.com/paypal-link-pro'
     },
     {
       level: 'premium',
@@ -1533,13 +1617,14 @@ function generatePricingCards(recommendedPlanLevel) {
         'Social Media Integration',
         'Content Creation Help'
       ],
-      recommended: recommendedPlanLevel === 'premium'
+      recommended: recommendedPlanLevel === 'premium',
+      paypalLink: 'https://www.paypal.com/paypal-link-premium'
     }
   ];
   
   plans.forEach(plan => {
     const card = document.createElement('div');
-    card.className = `pricing-card ${plan.recommended ? 'recommended' : ''}`;
+    card.className = `pricing-card-funnel ${plan.recommended ? 'recommended' : ''}`;
     
     card.innerHTML = `
       ${plan.recommended ? '<div class="badge">Recommended</div>' : ''}
@@ -1548,17 +1633,42 @@ function generatePricingCards(recommendedPlanLevel) {
       <ul>
         ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
       </ul>
-      <button class="pay-now-funnel" onclick="selectPlan('${plan.level}')">
+      
+      <button class="pay-now-funnel" onclick="selectPlan('${plan.level}', '${plan.paypalLink}')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay ${plan.price} via PayPal
+      </button>
+      
+      <small>50% now to secure, 50% on completion</small>
+      
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+      
+      <button class="select-plan-btn" onclick="selectPlan('${plan.level}')">
         Select ${plan.name} Plan
       </button>
     `;
     
     container.appendChild(card);
   });
+  
+  // Add intersection observer for animations
+  const cards = document.querySelectorAll('.pricing-card-funnel');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  cards.forEach(card => observer.observe(card));
 }
 
 // Function to handle plan selection
-window.selectPlan = (planLevel) => {
+window.selectPlan = (planLevel, paypalLink = '') => {
   const plans = {
     'basic': 'Basic',
     'pro': 'Pro', 
@@ -1567,11 +1677,18 @@ window.selectPlan = (planLevel) => {
   
   document.getElementById('hiddenPlan').value = plans[planLevel] || 'Basic';
   
+  // If PayPal link is provided and user clicked PayPal button, redirect
+  if (paypalLink && event.target.classList.contains('pay-now-funnel')) {
+    document.getElementById('hiddenPaymentLink').value = paypalLink;
+    window.location.href = paypalLink;
+    return;
+  }
+  
   // Highlight the selected plan
-  const cards = document.querySelectorAll('.pricing-card');
+  const cards = document.querySelectorAll('.pricing-card-funnel');
   cards.forEach(card => card.classList.remove('recommended'));
   
-  const selectedCard = document.querySelector(`.pricing-card:has(button[onclick="selectPlan('${planLevel}')"])`);
+  const selectedCard = document.querySelector(`.pricing-card-funnel:has(button[onclick*="selectPlan('${planLevel}'"])`);
   if (selectedCard) {
     selectedCard.classList.add('recommended');
   }
