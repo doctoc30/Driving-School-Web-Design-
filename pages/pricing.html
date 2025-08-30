@@ -230,261 +230,205 @@ footer {
 }
 
 
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; overflow-x: hidden; }
 
   #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
   .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
 
-  .pricing-card { background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    border-radius: 16px; padding: 40px 20px; text-align: center; min-height: 80vh; display: flex; flex-direction: column; justify-content: space-between;
-    opacity: 0; transform: translateY(50px); transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  /* Unified Pricing Card */
+  .pricing-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   }
-  .pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
+  .pricing-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  }
 
-  .pricing-card.recommended .badge { position: absolute; top: 15px; right: 15px; background: #227090; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; }
+  .pricing-card.recommended .badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #227090;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
 
   .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
   .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
   .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
   .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
 
-  .pay-now { background: white; color: #33a7d4; font-weight: bold; padding: 1rem 2rem; border-radius: 8px; border: none; cursor: pointer;
-    font-size: 1rem; line-height: 1.3; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
-    transition: all 0.3s ease; margin-bottom: 5px; width: 100%;
-  }
-  .pay-now:hover { background: #227090; color: white; }
-  .pay-now img { width: 24px; height: auto; margin-right: 8px; }
-
-  .button-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-  .button-row div { width: 100%; max-width: 220px; }
-  .button-row small { display: block; margin-top: 5px; font-size: 0.85rem; color: #f0f0f0; text-align: center; }
-
   .pricing-card.in-view { opacity: 1; transform: translateY(0); }
   .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
-  @keyframes glow { 0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);} 100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);} }
 
-  @media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px; } .pricing-card { min-height: 60vh; } }
-  @media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px; } }
+  @keyframes glow {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
+    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
+  }
 
+  @media (min-width: 1024px) {
+    .pricing-container { flex-direction: row; gap: 20px; }
+    .pricing-card { min-height: 65vh; }
+  }
+  @media (max-width: 768px) {
+    .pricing-card { min-height: 90vh; padding: 60px 20px; }
+  }
 
+  /* PayPal Button - App-like, Brand Consistent */
+  .pay-now {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px; /* pill shape */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+  }
 
+  .pay-now img { height: 22px; }
 
-  .pricing-card {
-  text-align: center;
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
-}
+  .pay-now:hover {
+    background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
+  }
+  .pay-now:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
+  }
 
-.pricing-card:hover {
-  transform: translateY(-5px);
-}
-
-.pricing-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.pricing-card .price {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #222;
-}
-
-.pricing-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-}
-
-.pricing-card ul li {
-  margin: 8px 0;
-  font-size: 0.95rem;
-  color: #444;
-}
-
-
-
-
-/* PayPal Button - App-like, Brand Consistent */
-.pay-now {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 50px; /* pill shape */
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.3);
-}
-
-.pay-now img {
-  height: 22px;
-}
-
-.pay-now:hover {
-  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.4);
-}
-
-.pay-now:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-}
-
-/* Trust Badge - Matching style */
-.paypal-badge {
-  margin-top: 15px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #f4f7fa;
-  border: 1px solid #e0e5eb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.paypal-badge img {
-  max-width: 140px;
-  height: auto;
-  margin-bottom: 8px;
-}
-
-.paypal-badge p {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1d1d1d;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.lock-icon {
-  font-size: 1.1rem;
-  color: #0070ba;
-}
-
-
-
+  /* Trust Badge */
+  .paypal-badge {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #e0e5eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .paypal-badge img {
+    max-width: 140px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+  .paypal-badge p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1d1d1d;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lock-icon { font-size: 1.1rem; color: #0070ba; }
+</style>
 
   
 
-</style>
-</head>
-<body>
-
-<header>
-  <div class="logo">D S W D</div>
-  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </div>
-  <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
-    <ul>
-      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
-
-  <section id="pricing-section">
+<section id="pricing-section">
   <div class="pricing-container">
 
-<!-- Basic Plan -->
-<div class="pricing-card" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul>
-    <li>5 Pages Website</li>
-    <li>5 Revisions</li>
-    <li>Mobile Friendly</li>
-  </ul>
-  
-  <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  
-  <small>50% now to secure, 50% on completion</small>
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£499</p>
+      <ul>
+        <li>5 Pages Website</li>
+        <li>5 Revisions</li>
+        <li>Mobile Friendly</li>
+      </ul>
 
-  <!-- Large Trust Badge -->
-  <div class="paypal-badge">
-    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-    <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-  </div>
-</div>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
 
-<!-- Pro Plan -->
-<div class="pricing-card recommended" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul>
-    <li>10 Pages Website</li>
-    <li>15 Revisions</li>
-    <li>SEO Optimization</li>
-    <li>Booking System</li>
-  </ul>
-  
-  <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  
-  <small>50% now to secure, 50% on completion</small>
+      <small>50% now to secure, 50% on completion</small>
 
-  <!-- Large Trust Badge -->
-  <div class="paypal-badge">
-    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-    <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-  </div>
-</div>
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
 
-<!-- Premium Plan -->
-<div class="pricing-card" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul>
-    <li>50+ Pages Website</li>
-    <li>30 Revisions</li>
-    <li>Full Branding</li>
-    <li>Booking & Payment Integration</li>
-    <li>Social Media Integration</li>
-  </ul>
-  
-  <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  
-  <small>50% now to secure, 50% on completion</small>
+    <!-- Pro Plan -->
+    <div class="pricing-card recommended" data-animate>
+      <div class="badge">Recommended</div>
+      <h3>Pro</h3>
+      <p class="price">£999</p>
+      <ul>
+        <li>10 Pages Website</li>
+        <li>15 Revisions</li>
+        <li>SEO Optimization</li>
+        <li>Booking System</li>
+      </ul>
 
-  <!-- Large Trust Badge -->
-  <div class="paypal-badge">
-    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-    <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-  </div>
-</div>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£1499</p>
+      <ul>
+        <li>50+ Pages Website</li>
+        <li>30 Revisions</li>
+        <li>Full Branding</li>
+        <li>Booking & Payment Integration</li>
+        <li>Social Media Integration</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
