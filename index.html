@@ -878,29 +878,34 @@ body header + .form-screen {
     width: 100%;
   }
   
+  .pricing-container {
+    max-width: 100% !important;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+  }
+  
+  .pricing-card {
+    width: 100% !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+  
+  /* Add minimal inner padding for content */
+  .pricing-card {
+    padding: 30px 15px !important;
+  }
+}
 
+/* Optional: Add slight side padding on very small screens for text readability */
+@media (max-width: 480px) {
+  .pricing-card {
+    padding: 30px 10px !important;
+  }
+}
 
-/* Hide non-active screens */
-.form-screen { display: none; margin: 20px 0; }
-.form-screen.active { display: block; }
+ 
 
-/* Button row */
-.button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-.button-row button { padding: 10px 20px; cursor: pointer; border: 1px solid #333; background: #fff; transition: all 0.2s; }
-.button-row button:hover { background: #f0f0f0; }
-
-/* Pricing container */
-.pricing-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
-.pricing-card { border: 2px solid #ccc; padding: 15px; flex: 1; min-width: 220px; cursor: pointer; transition: all 0.2s; }
-.pricing-card.selected { border-color: #0070ba; background: #e6f0fa; }
-
-/* Progress bar */
-#progress-bar-container { width: 100%; background: #eee; height: 6px; margin-bottom: 20px; }
-#progress-bar { width: 0%; height: 100%; background: #0070ba; transition: width 0.3s; }
-
-/* Universal PayPal button */
-#universalPayBtn { margin-top: 15px; padding: 12px 25px; background: #0070ba; color: #fff; border: none; cursor: pointer; transition: all 0.2s; }
-#universalPayBtn:disabled { background: #ccc; cursor: not-allowed; }
 
 </style>
 
@@ -931,24 +936,17 @@ body header + .form-screen {
 </header> 
 
 
-<!-- ==== Skyrocket / Typewriter Intro ==== -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<!-- ==== Start of Form ==== -->
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <!-- Progress Bar -->
-  <div id="progress-bar-container">
-    <div id="progress-bar"></div>
-  </div>
-
-  <!-- Hidden fields -->
+  <!-- Hidden fields to capture selected plan and features -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ==== Intro Buttons (first step) ==== -->
+  <!-- INTRO -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -958,7 +956,6 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ==== Q1 → Q16 ==== -->
   <!-- Q1: Branch -->
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
@@ -971,6 +968,7 @@ body header + .form-screen {
   <!-- Q2: Design Selection -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
+    <p>You can enter a design code, choose from templates, or request a custom design.</p>
     <div class="button-row">
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
       <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
@@ -978,10 +976,10 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Q3: Design Code Entry -->
+  <!-- Q3 (Updated): Design Code Entry -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
@@ -991,6 +989,7 @@ body header + .form-screen {
   <!-- Q4: Booking & Payment -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
+    <p>This makes it easy for parents and learners to schedule instantly.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1000,6 +999,7 @@ body header + .form-screen {
   <!-- Q5: Lesson Packages -->
   <div class="form-screen" id="instructor-q5">
     <h2>Do you want to offer lesson packages or gift vouchers?</h2>
+    <p>Popular for parents buying lessons for teens. Can be sold online.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1009,6 +1009,7 @@ body header + .form-screen {
   <!-- Q6: Local SEO -->
   <div class="form-screen" id="instructor-q6">
     <h2>Do you want your site to rank on Google locally?</h2>
+    <p>Appear when people search “driving lessons near me”.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1018,6 +1019,7 @@ body header + .form-screen {
   <!-- Q7: Reviews -->
   <div class="form-screen" id="instructor-q7">
     <h2>Would you like to display student reviews?</h2>
+    <p>Testimonials build trust and help attract new learners.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1027,6 +1029,7 @@ body header + .form-screen {
   <!-- Q8: Social Media -->
   <div class="form-screen" id="instructor-q8">
     <h2>Do you want social media integration?</h2>
+    <p>Connect Facebook, Instagram, or TikTok to your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1035,7 +1038,7 @@ body header + .form-screen {
 
   <!-- Q9: Professional Email -->
   <div class="form-screen" id="instructor-q9">
-    <h2>Would you like a professional email?</h2>
+    <h2>Would you like a professional email (e.g., info@yourdomain.com)?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1045,6 +1048,7 @@ body header + .form-screen {
   <!-- Q10: Branding -->
   <div class="form-screen" id="instructor-q10">
     <h2>Do you have a logo and brand colors?</h2>
+    <p>If not, we can help create branding for your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1054,6 +1058,7 @@ body header + .form-screen {
   <!-- Q11: Content -->
   <div class="form-screen" id="instructor-q11">
     <h2>Do you already have text and images prepared?</h2>
+    <p>Content is important for launching quickly. We can also help create it.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1063,6 +1068,7 @@ body header + .form-screen {
   <!-- Q12: First Lesson Guide -->
   <div class="form-screen" id="instructor-q12">
     <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <p>This reduces student anxiety and builds trust.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1072,6 +1078,7 @@ body header + .form-screen {
   <!-- Q13: Resources -->
   <div class="form-screen" id="instructor-q13">
     <h2>Would you like to link to official resources?</h2>
+    <p>Such as booking theory/practical tests, Highway Code, and revision materials.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('resources'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1081,6 +1088,7 @@ body header + .form-screen {
   <!-- Q14: Mobile -->
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want your site optimized for mobile?</h2>
+    <p>Most learners browse and book on their phones.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1090,6 +1098,7 @@ body header + .form-screen {
   <!-- Q15: CTAs -->
   <div class="form-screen" id="instructor-q15">
     <h2>Do you want strong call-to-action buttons?</h2>
+    <p>Helps guide students to book lessons or check packages.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1103,34 +1112,91 @@ body header + .form-screen {
       <button type="button" onclick="recordFeature('pages-5'); next()">Around 5</button>
       <button type="button" onclick="recordFeature('pages-10'); next()">Around 10</button>
       <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
+            <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
     </div>
   </div>
 
-  <!-- ==== Q17: Pricing & PayPal ==== -->
-  <div class="form-screen" id="instructor-q17">
-    <h2>Your Recommended Plan</h2>
+<!-- ==== STEP 17: PRICING ==== -->
+<div id="instructor-q17" class="form-screen">
+  <section id="pricing-section">
     <div class="pricing-container">
-      <div class="pricing-card" data-plan="Basic" data-price="499">
+      <!-- Basic Plan -->
+      <div class="pricing-card" data-animate>
         <h3>Basic</h3>
-        <p>5 Pages, 5 Revisions, Mobile Friendly</p>
+        <p class="price">£499</p>
+        <ul>
+          <li>5 Pages Website</li>
+          <li>5 Revisions</li>
+          <li>Mobile Friendly</li>
+        </ul>
+        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £499 via PayPal
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
-      <div class="pricing-card recommended" data-plan="Pro" data-price="999">
-        <h3>Pro (Recommended)</h3>
-        <p>10 Pages, 15 Revisions, SEO, Booking System</p>
+
+      <!-- Pro Plan -->
+      <div class="pricing-card recommended" data-animate>
+        <div class="badge">Recommended</div>
+        <h3>Pro</h3>
+        <p class="price">£999</p>
+        <ul>
+          <li>10 Pages Website</li>
+          <li>15 Revisions</li>
+          <li>SEO Optimization</li>
+          <li>Booking System</li>
+        </ul>
+        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £999 via PayPal
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
-      <div class="pricing-card" data-plan="Premium" data-price="1499">
+
+      <!-- Premium Plan -->
+      <div class="pricing-card" data-animate>
         <h3>Premium</h3>
-        <p>50+ Pages, Full Branding, Booking & Payment, Social Media</p>
+        <p class="price">£1499</p>
+        <ul>
+          <li>50+ Pages Website</li>
+          <li>30 Revisions</li>
+          <li>Full Branding</li>
+          <li>Booking & Payment Integration</li>
+          <li>Social Media Integration</li>
+        </ul>
+        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £1499 via PayPal
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
     </div>
+  </section>
+  <button onclick="prev()" style="margin-top:20px;">Back</button>
+</div>
 
-    <!-- Dynamic single PayPal button -->
-    <button type="submit" id="paypalButton">Pay via PayPal</button>
+    <!-- Additional Info & Next Steps -->
+    <div class="next-step">
+      <p>Once you select your plan, we will guide you through the next steps to finalize your website.</p>
+      <div class="button-row">
+        <button type="button" onclick="submitForm()">Continue</button>
+      </div>
+    </div>
   </div>
 
-  <!-- ==== Final Thank You Screen ==== -->
+  <!-- Final Thank You Screen -->
   <div class="form-screen" id="thank-you-screen">
-    <h2>Thank you!</h2>
+    <h2>Thank you for completing the questionnaire!</h2>
     <p>We will send your selected plan and payment link to your email shortly.</p>
     <div class="button-row">
       <button type="button" onclick="resetForm()">Start Over</button>
@@ -1334,98 +1400,55 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = '';
       }
     });
-  
+  }
+});
 
 
 
- 
+   // ---------- AOS INIT ----------
+AOS.init();
 
- 
+// ---------- Funnel Navigation ----------
+const screens = document.querySelectorAll(".form-screen");
+let currentScreen = 0;
 
-let currentStep = 0;
-const screens = document.querySelectorAll('.form-screen');
-const progressBar = document.getElementById('progress-bar');
-let selectedFeatures = [];
-let selectedPlan = '';
-let paymentLink = '';
+function hideAllScreens() {
+  screens.forEach(s => s.classList.remove("active"));
+}
 
 function showScreen(id) {
-  screens.forEach(s => s.classList.remove('active'));
+  hideAllScreens();
   const screen = document.getElementById(id);
-  if(screen) screen.classList.add('active');
-  updateProgress();
+  if(screen) screen.classList.add("active");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  currentScreen = Array.from(screens).indexOf(screen);
 }
 
 function next() {
-  if(currentStep < screens.length -1){
-    currentStep++;
-    screens[currentStep].classList.add('active');
-    screens[currentStep-1].classList.remove('active');
-    updateProgress();
+  if(currentScreen < screens.length -1) {
+    currentScreen++;
+    showScreen(screens[currentScreen].id);
   }
 }
 
 function prev() {
-  if(currentStep > 0){
-    screens[currentStep].classList.remove('active');
-    currentStep--;
-    screens[currentStep].classList.add('active');
-    updateProgress();
+  if(currentScreen > 0) {
+    currentScreen--;
+    showScreen(screens[currentScreen].id);
   }
 }
 
-function updateProgress() {
-  const total = screens.length;
-  const percentage = ((currentStep+1)/total)*100;
-  if(progressBar) progressBar.style.width = percentage+'%';
-}
-
-function recordFeature(feature){
-  if(!selectedFeatures.includes(feature)) selectedFeatures.push(feature);
-  document.getElementById('hiddenFeatures').value = selectedFeatures.join(', ');
-}
-
-// For design code input
-function recordDesignCode(){
-  const code = document.getElementById('designInput').value;
-  if(code) selectedFeatures.push(`Design Code: ${code}`);
-  document.getElementById('hiddenFeatures').value = selectedFeatures.join(', ');
-}
-
-// Pricing selection
-function selectPlan(planName, link){
-  selectedPlan = planName;
-  paymentLink = link;
-  document.getElementById('hiddenPlan').value = selectedPlan;
-  document.getElementById('hiddenPaymentLink').value = paymentLink;
-
-  // Highlight selected card
-  const cards = document.querySelectorAll('.pricing-card');
-  cards.forEach(c=> c.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-
-  // Enable universal PayPal button
-  document.getElementById('universalPayBtn').disabled = false;
-}
-
-function goToPayPal(){
-  if(paymentLink) window.location.href = paymentLink;
-}
-
-// Reset form
-function resetForm(){
-  currentStep = 0;
-  selectedFeatures = [];
-  selectedPlan = '';
-  paymentLink = '';
-  screens.forEach(s => s.classList.remove('active'));
-  screens[0].classList.add('active');
-  updateProgress();
-  document.getElementById('universalPayBtn').disabled = true;
-  document.getElementById('hiddenFeatures').value = '';
-  document.getElementById('hiddenPlan').value = '';
-  document.getElementById('hiddenPaymentLink').value = '';
-}
+// ---------- Intersection Observer for Pricing Cards ----------
+const cards = document.querySelectorAll('.pricing-card[data-animate]');
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      obs.unobserve(entry.target);
+    }
+  });
+},{threshold:0.3});
+cards.forEach(card => observer.observe(card));
 
 </script>
 </body>
