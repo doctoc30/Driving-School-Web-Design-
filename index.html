@@ -1355,9 +1355,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newScreen = document.getElementById(screenId);
     if (!newScreen) return;
 
-    const current = screens[currentScreen];
-    if (current) current.classList.remove("active");
-
+    hideAllScreens();
     newScreen.classList.add("active");
     newScreen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(newScreen);
@@ -1366,9 +1364,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
+    const screensArray = Array.from(screens);
+    let currentIndex = screensArray.findIndex(s => s.classList.contains('active'));
+    
+    if (currentIndex < screensArray.length - 1) {
+      let nextScreen = screensArray[currentIndex + 1];
+
+      // Ensure after Q16, it goes to pricing
+      if (screensArray[currentIndex].id === 'instructor-q16') {
+        nextScreen = document.getElementById('instructor-q17');
+      }
+
+      showScreen(nextScreen.id);
     }
   }
 
@@ -1523,111 +1530,47 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
+  // ---------- Intersection Observer for Pricing Cards ----------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  cards.forEach(card => observer.observe(card));
 
+  let selectedPlan = 'pro'; // default plan
+  const planLinks = {
+    'basic': 'https://www.paypal.com/placeholder-basic',
+    'pro': 'https://www.paypal.com/placeholder-pro',
+    'premium': 'https://www.paypal.com/placeholder-premium'
+  };
 
-   // ---------- AOS INIT ----------
-AOS.init();
-
-// ---------- Funnel Navigation ----------
-const screens = document.querySelectorAll(".form-screen");
-let currentScreen = 0;
-
-function hideAllScreens() {
-  screens.forEach(s => s.classList.remove("active"));
-}
-
-function showScreen(id) {
-  hideAllScreens();
-  const screen = document.getElementById(id);
-  if(screen) screen.classList.add("active");
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  currentScreen = Array.from(screens).indexOf(screen);
-}
-
-function next() {
-  if(currentScreen < screens.length -1) {
-    currentScreen++;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-function prev() {
-  if(currentScreen > 0) {
-    currentScreen--;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-// ---------- Intersection Observer for Pricing Cards ----------
-const cards = document.querySelectorAll('.pricing-card[data-animate]');
-const observer = new IntersectionObserver((entries, obs) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('in-view');
-      obs.unobserve(entry.target);
-    }
+  // Click on a pricing card selects plan
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectedPlan = card.dataset.plan;
+      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
+      card.style.border = '3px solid #fff';
+      document.getElementById('hiddenPlan').value = selectedPlan;
+    });
   });
-},{threshold:0.3});
-cards.forEach(card => observer.observe(card));
 
+  // Go to PayPal for selected plan
+  window.goToPayPal = () => {
+    window.location.href = planLinks[selectedPlan];
+  };
 
- let selectedPlan = 'pro'; // default plan
-const planLinks = {
-  'basic': 'https://www.paypal.com/placeholder-basic',
-  'pro': 'https://www.paypal.com/placeholder-pro',
-  'premium': 'https://www.paypal.com/placeholder-premium'
-};
+  // Submit form only (capture lead)
+  window.submitForm = () => {
+    document.getElementById('formWrapper').submit();
+  };
 
-// Function to show next screen
-function showScreen(id){
-  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-// Example: record selected features
-function recordFeature(feature){
-  const featuresInput = document.getElementById('hiddenFeatures');
-  featuresInput.value += feature + ',';
-}
-
-// Simple next/prev
-function next(){ 
-  const screens = Array.from(document.querySelectorAll('.form-screen'));
-  const current = screens.findIndex(s => s.classList.contains('active'));
-  if(current < screens.length -1){
-    showScreen(screens[current+1].id);
-  }
-}
-function prev(){ 
-  const screens = Array.from(document.querySelectorAll('.form-screen'));
-  const current = screens.findIndex(s => s.classList.contains('active'));
-  if(current > 0){
-    showScreen(screens[current-1].id);
-  }
-}
-
-// Click on a pricing card selects plan
-document.querySelectorAll('.pricing-card').forEach(card => {
-  card.addEventListener('click', ()=>{
-    selectedPlan = card.dataset.plan;
-    // Highlight selected card
-    document.querySelectorAll('.pricing-card').forEach(c=>c.style.border='none');
-    card.style.border='3px solid #fff';
-    document.getElementById('hiddenPlan').value = selectedPlan;
-  });
 });
-
-// Go to PayPal for selected plan
-function goToPayPal(){
-  window.location.href = planLinks[selectedPlan];
-}
-
-// Submit form only (capture lead)
-function submitForm(){
-  document.getElementById('formWrapper').submit();
-}
 </script>
 </body>
 </html>
