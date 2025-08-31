@@ -1090,6 +1090,7 @@ input, select {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
+ 
   <!-- INTRO -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
@@ -1256,74 +1257,71 @@ input, select {
       <button type="button" onclick="recordFeature('pages-5'); next()">Around 5</button>
       <button type="button" onclick="recordFeature('pages-10'); next()">Around 10</button>
       <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
-            <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
     </div>
   </div>
 
-<!-- ===== PRICING SECTION ===== -->
-<div class="form-screen" id="instructor-q17">
-  <section id="pricing-section">
-    <div class="pricing-container">
-      <div class="pricing-card" data-plan="basic">
-        <h3>Basic</h3>
-        <p class="price">£499</p>
-        <ul>
-          <li>5 Pages Website</li>
-          <li>5 Revisions</li>
-          <li>Mobile Friendly</li>
-        </ul>
+  <!-- Q17: Pricing -->
+  <div class="form-screen" id="instructor-q17">
+    <section id="pricing-section">
+      <div class="pricing-container">
+        <div class="pricing-card" data-plan="basic">
+          <h3>Basic</h3>
+          <p class="price">£499</p>
+          <ul>
+            <li>5 Pages Website</li>
+            <li>5 Revisions</li>
+            <li>Mobile Friendly</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card recommended" data-plan="pro">
+          <div class="badge">Recommended</div>
+          <h3>Pro</h3>
+          <p class="price">£999</p>
+          <ul>
+            <li>10 Pages Website</li>
+            <li>15 Revisions</li>
+            <li>SEO Optimization</li>
+            <li>Booking System</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card" data-plan="premium">
+          <h3>Premium</h3>
+          <p class="price">£1499</p>
+          <ul>
+            <li>50+ Pages Website</li>
+            <li>30 Revisions</li>
+            <li>Full Branding</li>
+            <li>Booking & Payment Integration</li>
+            <li>Social Media Integration</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="pricing-card recommended" data-plan="pro">
-        <div class="badge">Recommended</div>
-        <h3>Pro</h3>
-        <p class="price">£
+      <!-- Global PayPal Button -->
+      <button id="globalPayBtn" class="pay-now" onclick="goToPayPal()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay Now via PayPal
+      </button>
 
-
-        <p class="price">£999</p>
-        <ul>
-          <li>10 Pages Website</li>
-          <li>15 Revisions</li>
-          <li>SEO Optimization</li>
-          <li>Booking System</li>
-        </ul>
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
       </div>
 
-      <div class="pricing-card" data-plan="premium">
-        <h3>Premium</h3>
-        <p class="price">£1499</p>
-        <ul>
-          <li>50+ Pages Website</li>
-          <li>30 Revisions</li>
-          <li>Full Branding</li>
-          <li>Booking & Payment Integration</li>
-          <li>Social Media Integration</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Global PayPal Button -->
-    <button id="globalPayBtn" class="pay-now" onclick="goToPayPal()">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-      Pay Now via PayPal
-    </button>
-    <div class="paypal-badge">
-      <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-      <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-    </div>
-
-  </section>
-  <button onclick="prev()" style="margin-top:20px;">Back</button>
-</div>
-
-<!-- ===== FINAL STEP: MOVE FORWARD ===== -->
-<div class="form-screen" id="final-step">
-  <h2>👉 How would you like to move forward?</h2>
-  <div class="button-row">
-    <button type="button" onclick="goToPayPal()">🔹 I’m ready to start my website design now</button>
-    <button type="button" onclick="submitForm()">🔹 I’d like more details before starting</button>
+    </section>
+    <button onclick="prev()" style="margin-top:20px;">Back</button>
   </div>
-</div>
+
+  <!-- FINAL STEP -->
+  <div class="form-screen" id="final-step">
+    <h2>👉 How would you like to move forward?</h2>
+    <div class="button-row">
+      <button type="button" onclick="goToPayPal()">🔹 I’m ready to start my website design now</button>
+      <button type="button" onclick="submitForm()">🔹 I’d like more details before starting</button>
+    </div>
+  </div>
 
 </form>
 
