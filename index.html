@@ -931,22 +931,24 @@ body header + .form-screen {
 </header> 
 
 
+<!-- ==== Skyrocket / Typewriter Intro ==== -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form id="funnelForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST">
+<!-- ==== Start of Form ==== -->
+<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+
+  <!-- Progress Bar -->
+  <div id="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
 
   <!-- Hidden fields -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- Progress bar -->
-  <div id="progress-bar-container">
-    <div id="progress-bar"></div>
-  </div>
-
-  <!-- INTRO -->
+  <!-- ==== Intro Buttons (first step) ==== -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -956,7 +958,8 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Q1 -->
+  <!-- ==== Q1 → Q16 ==== -->
+  <!-- Q1: Branch -->
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -965,10 +968,9 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Q2 -->
+  <!-- Q2: Design Selection -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
     <div class="button-row">
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
       <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
@@ -976,136 +978,125 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Q3 -->
+  <!-- Q3: Design Code Entry -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
     <div class="button-row">
-      <button type="button" onclick="recordDesignCode(); next()">Continue</button>
+      <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
     </div>
   </div>
 
-  <!-- Q4 -->
+  <!-- Q4: Booking & Payment -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
-    <p>This makes it easy for parents and learners to schedule instantly.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q5 -->
+  <!-- Q5: Lesson Packages -->
   <div class="form-screen" id="instructor-q5">
     <h2>Do you want to offer lesson packages or gift vouchers?</h2>
-    <p>Popular for parents buying lessons for teens. Can be sold online.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q6 -->
+  <!-- Q6: Local SEO -->
   <div class="form-screen" id="instructor-q6">
     <h2>Do you want your site to rank on Google locally?</h2>
-    <p>Appear when people search “driving lessons near me”.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q7 -->
+  <!-- Q7: Reviews -->
   <div class="form-screen" id="instructor-q7">
     <h2>Would you like to display student reviews?</h2>
-    <p>Testimonials build trust and help attract new learners.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q8 -->
+  <!-- Q8: Social Media -->
   <div class="form-screen" id="instructor-q8">
     <h2>Do you want social media integration?</h2>
-    <p>Connect Facebook, Instagram, or TikTok to your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q9 -->
+  <!-- Q9: Professional Email -->
   <div class="form-screen" id="instructor-q9">
-    <h2>Would you like a professional email (e.g., info@yourdomain.com)?</h2>
+    <h2>Would you like a professional email?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q10 -->
+  <!-- Q10: Branding -->
   <div class="form-screen" id="instructor-q10">
     <h2>Do you have a logo and brand colors?</h2>
-    <p>If not, we can help create branding for your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q11 -->
+  <!-- Q11: Content -->
   <div class="form-screen" id="instructor-q11">
     <h2>Do you already have text and images prepared?</h2>
-    <p>Content is important for launching quickly. We can also help create it.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q12 -->
+  <!-- Q12: First Lesson Guide -->
   <div class="form-screen" id="instructor-q12">
     <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <p>This reduces student anxiety and builds trust.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q13 -->
+  <!-- Q13: Resources -->
   <div class="form-screen" id="instructor-q13">
     <h2>Would you like to link to official resources?</h2>
-    <p>Such as booking theory/practical tests, Highway Code, and revision materials.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('resources'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q14 -->
+  <!-- Q14: Mobile -->
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want your site optimized for mobile?</h2>
-    <p>Most learners browse and book on their phones.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q15 -->
+  <!-- Q15: CTAs -->
   <div class="form-screen" id="instructor-q15">
     <h2>Do you want strong call-to-action buttons?</h2>
-    <p>Helps guide students to book lessons or check packages.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
-  <!-- Q16 -->
+  <!-- Q16: Pages -->
   <div class="form-screen" id="instructor-q16">
     <h2>How many pages will your site need?</h2>
     <div class="button-row">
@@ -1115,44 +1106,35 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- Q17: Pricing + PayPal -->
+  <!-- ==== Q17: Pricing & PayPal ==== -->
   <div class="form-screen" id="instructor-q17">
-    <h2>Select your plan</h2>
+    <h2>Your Recommended Plan</h2>
     <div class="pricing-container">
-      <div class="pricing-card" onclick="selectPlan('Basic','https://www.paypal.com/paypal-link-basic')">
+      <div class="pricing-card" data-plan="Basic" data-price="499">
         <h3>Basic</h3>
-        <p>£499</p>
-        <ul>
-          <li>5 Pages Website</li>
-          <li>5 Revisions</li>
-          <li>Mobile Friendly</li>
-        </ul>
+        <p>5 Pages, 5 Revisions, Mobile Friendly</p>
       </div>
-      <div class="pricing-card" onclick="selectPlan('Pro','https://www.paypal.com/paypal-link-pro')">
-        <h3>Pro</h3>
-        <p>£999</p>
-        <ul>
-          <li>10 Pages Website</li>
-          <li>15 Revisions</li>
-          <li>SEO Optimization</li>
-          <li>Booking System</li>
-        </ul>
+      <div class="pricing-card recommended" data-plan="Pro" data-price="999">
+        <h3>Pro (Recommended)</h3>
+        <p>10 Pages, 15 Revisions, SEO, Booking System</p>
       </div>
-      <div class="pricing-card" onclick="selectPlan('Premium','https://www.paypal.com/paypal-link-premium')">
+      <div class="pricing-card" data-plan="Premium" data-price="1499">
         <h3>Premium</h3>
-        <p>£1499</p>
-        <ul>
-          <li>50+ Pages Website</li>
-          <li>30 Revisions</li>
-          <li>Full Branding</li>
-          <li>Booking & Payment Integration</li>
-          <li>Social Media Integration</li>
-        </ul>
+        <p>50+ Pages, Full Branding, Booking & Payment, Social Media</p>
       </div>
     </div>
-    <button type="button" id="universalPayBtn" onclick="goToPayPal()" disabled>
-      Pay Now via PayPal
-    </button>
+
+    <!-- Dynamic single PayPal button -->
+    <button type="submit" id="paypalButton">Pay via PayPal</button>
+  </div>
+
+  <!-- ==== Final Thank You Screen ==== -->
+  <div class="form-screen" id="thank-you-screen">
+    <h2>Thank you!</h2>
+    <p>We will send your selected plan and payment link to your email shortly.</p>
+    <div class="button-row">
+      <button type="button" onclick="resetForm()">Start Over</button>
+    </div>
   </div>
 </form>
  
