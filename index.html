@@ -907,6 +907,23 @@ body header + .form-screen {
  
 
 
+  /* Progress Bar Styles */
+#progress-bar-container {
+  width: 100%;
+  background: #f1f1f1;
+  border-radius: 20px;
+  margin: 20px auto;
+  height: 12px;
+  overflow: hidden;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #007bff, #00c851);
+  transition: width 0.4s ease;
+}
+
 </style>
 
 </head>
@@ -939,7 +956,14 @@ body header + .form-screen {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
+
+
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+
+<!-- Progress Bar -->
+<div id="progress-bar-container">
+  <div id="progress-bar"></div>
+</div>
 
   <!-- Hidden fields to capture selected plan and features -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
@@ -1450,6 +1474,45 @@ const observer = new IntersectionObserver((entries, obs) => {
 },{threshold:0.3});
 cards.forEach(card => observer.observe(card));
 
+
+ // Count total steps (all .form-screen except thank-you)
+const steps = document.querySelectorAll(".form-screen").length - 1; 
+let currentStep = 0;
+
+function updateProgressBar() {
+  const progress = ((currentStep) / steps) * 100;
+  document.getElementById("progress-bar").style.width = progress + "%";
+}
+
+// Modify next() and prev() to update currentStep
+function next() {
+  const activeScreen = document.querySelector(".form-screen.active");
+  if (activeScreen) {
+    activeScreen.classList.remove("active");
+    const nextScreen = activeScreen.nextElementSibling;
+    if (nextScreen) {
+      nextScreen.classList.add("active");
+      currentStep++;
+      updateProgressBar();
+    }
+  }
+}
+
+function prev() {
+  const activeScreen = document.querySelector(".form-screen.active");
+  if (activeScreen) {
+    activeScreen.classList.remove("active");
+    const prevScreen = activeScreen.previousElementSibling;
+    if (prevScreen) {
+      prevScreen.classList.add("active");
+      currentStep--;
+      updateProgressBar();
+    }
+  }
+}
+
+// Initialize
+updateProgressBar();
 </script>
 </body>
 </html>
