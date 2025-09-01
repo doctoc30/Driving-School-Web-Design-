@@ -1370,15 +1370,12 @@ document.addEventListener("DOMContentLoaded", () => {
     newScreen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(newScreen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Observe pricing cards if showing pricing screen
-    if (screenId === 'instructor-q17') observePricingCards();
   }
 
   function next() {
     const screensArray = Array.from(screens);
     let currentIndex = screensArray.findIndex(s => s.classList.contains('active'));
-
+    
     if (currentIndex < screensArray.length - 1) {
       let nextScreen = screensArray[currentIndex + 1];
 
@@ -1420,8 +1417,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
+  function startTypewriterAnimation(callback) {
+    if (!typewriterEl) return callback && callback();
     typewriterEl.style.opacity = 1;
     let lines = [];
     let currentLine = 0;
@@ -1442,10 +1439,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function typeChar() {
       if (currentLine >= lines.length) {
         cursor.remove();
+        typewriterEl.style.animation = 'rocketRise 2s ease forwards';
         setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 1000);
+          if (callback) callback(); // show first question
+        }, 2000);
         return;
       }
       const text = lines[currentLine];
@@ -1494,21 +1491,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isReturningFromConcept = codeParam && stepParam;
 
-  if (!isReturningFromConcept) {
+  if (!isReturningFromConcept && !localStorage.getItem('funnelVisited')) {
     // First-time visitor: show typewriter
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+    startTypewriterAnimation(() => {
+      showScreen('main-intro-options');
+    });
+    localStorage.setItem('funnelVisited', 'true');
   } else {
-    // Returning from concept
+    // Returning from concept or subsequent visits
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
 
     const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
+    if (inputEl && codeParam) inputEl.value = codeParam;
 
-    // Go to step from URL
-    showScreen(`instructor-q${stepParam}`);
+    // Go to step from URL or last saved
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen(localStorage.getItem('lastStep') || 'main-intro-options');
   }
 
   // Save last step when navigating
@@ -1530,31 +1531,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&step=3&fromFunnel=1`;
   };
 
-  // ------------------ Hamburger menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+  // ------------------ Intersection Observer for Pricing Cards ----------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
       }
     });
-  }
+  }, {threshold: 0.3});
+  cards.forEach(card => observer.observe(card));
 
-  // ---------- PRICING CARDS ----------
   let selectedPlan = 'pro'; // default plan
   const planLinks = {
     'basic': 'https://www.paypal.com/paypal-link-basic',
@@ -1562,31 +1550,18 @@ document.addEventListener("DOMContentLoaded", () => {
     'premium': 'https://www.paypal.com/paypal-link-premium'
   };
 
-  function observePricingCards() {
-    const cards = document.querySelectorAll('#instructor-q17 .pricing-card[data-plan]');
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, {threshold: 0.3});
-    cards.forEach(card => observer.observe(card));
-  }
-
-  // Click on pricing card selects plan
-  document.querySelectorAll('#instructor-q17 .pricing-card').forEach(card => {
+  // Click on a pricing card selects plan
+  document.querySelectorAll('.pricing-card').forEach(card => {
     card.addEventListener('click', () => {
       selectedPlan = card.dataset.plan;
-      document.querySelectorAll('#instructor-q17 .pricing-card').forEach(c => c.style.border = 'none');
+      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
       card.style.border = '3px solid #fff';
       document.getElementById('hiddenPlan').value = selectedPlan;
       document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
     });
   });
 
-  // Go to PayPal
+  // Global PayPal button
   window.goToPayPal = () => {
     window.location.href = planLinks[selectedPlan];
   };
@@ -1596,19 +1571,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('formWrapper').submit();
   };
 
-  // ---------- FINAL STEP ----------
+  // ------------------ FINAL STEP ----------
   const finalStepBtns = document.querySelectorAll('#final-step button');
   finalStepBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.innerText.includes("I’m ready to start")) {
-        // Go to PayPal
         goToPayPal();
       } else if (btn.innerText.includes("I’d like more details")) {
-        // Submit form only (capture lead)
         submitForm();
       }
     });
   });
+
+});
 
 </script>
 </body>
