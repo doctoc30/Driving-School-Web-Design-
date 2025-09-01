@@ -1377,16 +1377,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem('features', JSON.stringify(features));
   };
 
-  window.recommendPlan = () => {
-    let plan = '';
-    const count = features.length;
-    if (count <= 3) plan = 'Basic Plan: Simple website + booking/contact';
-    else if (count <= 6) plan = 'Standard Plan: Booking, payments, SEO, branding help';
-    else plan = 'Premium Plan: Full features including lesson packages, social media, content help, and professional email';
-    const recEl = document.getElementById('recommended-plan');
-    if (recEl) recEl.innerText = plan;
-  };
-
   // ------------------ Typewriter animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1465,23 +1455,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isReturningFromConcept = codeParam && stepParam;
 
-  if (!isReturningFromConcept && !localStorage.getItem('funnelVisited')) {
+  if (!isReturningFromConcept) {
     // First-time visitor: show typewriter
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
-    localStorage.setItem('funnelVisited', 'true');
   } else {
+    // Returning from concept
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
 
-    // Pre-fill design code if returning from concept
     const inputEl = document.getElementById("designInput");
-    if (inputEl && codeParam) inputEl.value = codeParam;
+    if (inputEl) inputEl.value = codeParam;
 
-    // Go to the step from URL or localStorage
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen(localStorage.getItem('lastStep') || 'instructor-q1');
+    // Go to step from URL
+    showScreen(`instructor-q${stepParam}`);
   }
 
   // Save last step when navigating
@@ -1500,7 +1488,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!input) return;
     const code = input.value.trim();
     if (!code) { alert("Please enter a design code."); return; }
-    // Send back current step for return
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&step=3&fromFunnel=1`;
   };
 
@@ -1542,9 +1529,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedPlan = 'pro'; // default plan
   const planLinks = {
-    'basic': 'https://www.paypal.com/placeholder-basic',
-    'pro': 'https://www.paypal.com/placeholder-pro',
-    'premium': 'https://www.paypal.com/placeholder-premium'
+    'basic': 'https://www.paypal.com/paypal-link-basic',
+    'pro': 'https://www.paypal.com/paypal-link-pro',
+    'premium': 'https://www.paypal.com/paypal-link-premium'
   };
 
   // Click on a pricing card selects plan
@@ -1554,6 +1541,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
       card.style.border = '3px solid #fff';
       document.getElementById('hiddenPlan').value = selectedPlan;
+      document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
     });
   });
 
