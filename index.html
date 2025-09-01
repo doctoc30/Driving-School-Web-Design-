@@ -1344,10 +1344,12 @@ input, select {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+
+ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  const fromFunnel = params.has("fromFunnel");
 
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
@@ -1363,6 +1365,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showScreen(screenId) {
     const newScreen = document.getElementById(screenId);
     if (!newScreen) return;
+
     hideAllScreens();
     newScreen.classList.add("active");
     newScreen.style.display = "flex";
@@ -1373,15 +1376,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function next() {
     const screensArray = Array.from(screens);
     let currentIndex = screensArray.findIndex(s => s.classList.contains('active'));
-
+    
     if (currentIndex < screensArray.length - 1) {
       let nextScreen = screensArray[currentIndex + 1];
-
-      // Ensure after Q16, it goes to pricing
+      // Special: after Q16 → Pricing
       if (screensArray[currentIndex].id === 'instructor-q16') {
         nextScreen = document.getElementById('instructor-q17');
       }
-
       showScreen(nextScreen.id);
     }
   }
@@ -1401,13 +1402,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = localStorage.getItem('userPath') || "";
   let features = JSON.parse(localStorage.getItem('features') || "[]");
 
-  window.setPath = (path) => {
-    userPath = path;
+  window.setPath = (path) => { 
+    userPath = path; 
     localStorage.setItem('userPath', userPath);
   };
 
-  window.recordFeature = (feature) => {
-    if (!features.includes(feature)) features.push(feature);
+  window.recordFeature = (feature) => { 
+    if (!features.includes(feature)) features.push(feature); 
     localStorage.setItem('features', JSON.stringify(features));
   };
 
@@ -1415,12 +1416,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
-  function startTypewriterAnimation(callback) {
-    if (!typewriterEl) {
-      callback?.();
-      return;
-    }
-
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
     let lines = [];
     let currentLine = 0;
@@ -1443,11 +1440,10 @@ document.addEventListener("DOMContentLoaded", () => {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => callback?.(), 2000);
+          setTimeout(() => showScreen('main-intro-options'), 2000);
         }, 1000);
         return;
       }
-
       const text = lines[currentLine];
       if (!lineEl) {
         lineEl = document.createElement('div');
@@ -1455,7 +1451,6 @@ document.addEventListener("DOMContentLoaded", () => {
         typewriterEl.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
-
       if (currentChar < text.length) {
         lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
         currentChar++;
@@ -1484,7 +1479,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function debounce(func, wait) {
     let timeout;
-    return function (...args) {
+    return function(...args) {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
@@ -1499,18 +1494,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // First-time visitor: show typewriter
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
-
-    startTypewriterAnimation(() => showScreen('main-intro-options'));
+    startTypewriterAnimation();
     localStorage.setItem('funnelVisited', 'true');
   } else {
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
 
+    // Pre-fill design code if returning from concept
     const inputEl = document.getElementById("designInput");
     if (inputEl && codeParam) inputEl.value = codeParam;
 
+    // Go to the step from URL or localStorage
     if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen(localStorage.getItem('lastStep') || 'main-intro-options');
+    else showScreen(localStorage.getItem('lastStep') || 'instructor-q1');
   }
 
   // Save last step when navigating
@@ -1523,7 +1519,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ------------------ Design code step ------------------
+  // ------------------ Step 3: Design code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
@@ -1531,6 +1527,60 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!code) { alert("Please enter a design code."); return; }
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&step=3&fromFunnel=1`;
   };
+
+  // ---------- Intersection Observer for Pricing Cards ----------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  cards.forEach(card => observer.observe(card));
+
+  let selectedPlan = 'pro'; // default plan
+  const planLinks = {
+    'basic': 'https://www.paypal.com/paypal-link-basic',
+    'pro': 'https://www.paypal.com/paypal-link-pro',
+    'premium': 'https://www.paypal.com/paypal-link-premium'
+  };
+
+  // Click on a pricing card selects plan
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectedPlan = card.dataset.plan;
+      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
+      card.style.border = '3px solid #fff';
+      document.getElementById('hiddenPlan').value = selectedPlan;
+      document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
+    });
+  });
+
+  // Go to PayPal for selected plan
+  window.goToPayPal = () => {
+    window.location.href = planLinks[selectedPlan];
+  };
+
+  // Submit form only (capture lead)
+  window.submitForm = () => {
+    document.getElementById('formWrapper').submit();
+  };
+
+  // ------------------ Final Step buttons ------------------
+  const finalStep = document.getElementById('final-step');
+  if(finalStep){
+    finalStep.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', () => {
+        if(btn.innerText.includes("ready to start")){
+          goToPayPal();
+        } else {
+          submitForm();
+        }
+      });
+    });
+  }
 
   // ------------------ Hamburger menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -1556,45 +1606,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- Pricing cards ----------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, {threshold: 0.3});
-  cards.forEach(card => observer.observe(card));
-
-  let selectedPlan = 'pro';
-  const planLinks = {
-    'basic': 'https://www.paypal.com/paypal-link-basic',
-    'pro': 'https://www.paypal.com/paypal-link-pro',
-    'premium': 'https://www.paypal.com/paypal-link-premium'
-  };
-
-  // Click on pricing card
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.addEventListener('click', () => {
-      selectedPlan = card.dataset.plan;
-      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
-      card.style.border = '3px solid #fff';
-      document.getElementById('hiddenPlan').value = selectedPlan;
-      document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
-    });
-  });
-
-  // Go to PayPal
-  window.goToPayPal = () => {
-    window.location.href = planLinks[selectedPlan];
-  };
-
-  // Submit form only
-  window.submitForm = () => {
-    document.getElementById('formWrapper').submit();
-  };
 });
 
 </script>
