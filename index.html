@@ -1270,13 +1270,15 @@ input, select {
     </div>
   </div>
 
-<!-- Q17: Pricing + FINAL STEP -->
-<div class="form-screen" id="instructor-q17">
+<!-- ==== STEP 17: PRICING + PAYMENT ==== -->
+<div id="instructor-q17" class="form-screen">
+
+  <!-- PRICING SECTION -->
   <section id="pricing-section">
     <div class="pricing-container">
 
       <!-- Basic Plan -->
-      <div class="pricing-card" data-plan="basic">
+      <div class="pricing-card" data-plan="basic" data-animate>
         <h3>Basic</h3>
         <p class="price">£499</p>
         <ul>
@@ -1284,10 +1286,17 @@ input, select {
           <li>5 Revisions</li>
           <li>Mobile Friendly</li>
         </ul>
+        <a class="pay-now" href="https://www.paypal.com/paypal-link-basic" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £499 via PayPal
+        </a>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
 
       <!-- Pro Plan -->
-      <div class="pricing-card recommended" data-plan="pro">
+      <div class="pricing-card recommended" data-plan="pro" data-animate>
         <div class="badge">Recommended</div>
         <h3>Pro</h3>
         <p class="price">£999</p>
@@ -1297,10 +1306,17 @@ input, select {
           <li>SEO Optimization</li>
           <li>Booking System</li>
         </ul>
+        <a class="pay-now" href="https://www.paypal.com/paypal-link-pro" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £999 via PayPal
+        </a>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
 
       <!-- Premium Plan -->
-      <div class="pricing-card" data-plan="premium">
+      <div class="pricing-card" data-plan="premium" data-animate>
         <h3>Premium</h3>
         <p class="price">£1499</p>
         <ul>
@@ -1310,37 +1326,38 @@ input, select {
           <li>Booking & Payment Integration</li>
           <li>Social Media Integration</li>
         </ul>
+        <a class="pay-now" href="https://www.paypal.com/paypal-link-premium" target="_blank">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £1499 via PayPal
+        </a>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
       </div>
 
     </div>
-
-    <!-- Global PayPal Button -->
-    <button id="globalPayBtn" class="pay-now" onclick="goToPayPal()">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-      Pay Now via PayPal
-    </button>
-
-    <div class="paypal-badge">
-      <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-      <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-    </div>
-
   </section>
 
-  <!-- FINAL STEP -->
-  <div id="final-step-wrapper" style="margin-top:40px;">
+  <!-- PAYMENT / NEXT STEP OPTIONS -->
+  <section id="payment-options" style="margin-top:40px;">
     <h2>👉 How would you like to move forward?</h2>
-    <div class="button-row">
-      <button type="button" onclick="goToPayPal()">
+
+    <div class="payment-options">
+      <!-- Option 1: Ready to pay -->
+      <button type="button" class="payment-btn pay-now" onclick="goToPayPal()">
         🔹 I’m ready to start my website design now
       </button>
-      <button type="button" onclick="submitForm()">
+
+      <!-- Option 2: Need more info -->
+      <button type="button" class="payment-btn submit-lead" onclick="submitLead()">
         🔹 I’d like more details before starting
       </button>
     </div>
-  </div>
+  </section>
 
-  <button onclick="prev()" style="margin-top:20px;">Back</button>
+  <div class="button-row" style="margin-top:20px;">
+    <button type="button" onclick="prev()">Back</button>
+  </div>
 </div>
 
 </form>
@@ -1419,13 +1436,15 @@ document.addEventListener("DOMContentLoaded", () => {
     'pro': 'https://www.paypal.com/paypal-link-pro',
     'premium': 'https://www.paypal.com/paypal-link-premium'
   };
-  let selectedPlan = 'pro'; // default
+  let selectedPlan = null;
 
+  // Highlight selected plan and update hidden inputs
   cards.forEach(card => {
     card.addEventListener('click', () => {
       selectedPlan = card.dataset.plan;
       cards.forEach(c => c.style.border = 'none');
       card.style.border = '3px solid #fff';
+
       const hiddenPlan = document.getElementById('hiddenPlan');
       const hiddenLink = document.getElementById('hiddenPaymentLink');
       if(hiddenPlan) hiddenPlan.value = selectedPlan;
@@ -1433,11 +1452,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Optional: highlight default plan (Pro)
+  const defaultPlanCard = document.querySelector('.pricing-card[data-plan="pro"]');
+  if(defaultPlanCard){
+    defaultPlanCard.style.border = '3px solid #fff';
+    selectedPlan = 'pro';
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if(hiddenPlan) hiddenPlan.value = selectedPlan;
+    if(hiddenLink) hiddenLink.value = planLinks[selectedPlan];
+  }
+
+  // ------------------ Payment buttons ------------------
   window.goToPayPal = () => {
+    if(!selectedPlan || !planLinks[selectedPlan]){
+      alert('Please select a plan first!');
+      return;
+    }
     window.location.href = planLinks[selectedPlan];
   };
 
-  window.submitForm = () => {
+  window.submitLead = () => {
     const form = document.getElementById('formWrapper');
     if(form) form.submit();
   };
