@@ -1354,8 +1354,7 @@ input, select {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
@@ -1375,7 +1374,6 @@ input, select {
   function showScreen(screenId) {
     const newScreen = document.getElementById(screenId);
     if (!newScreen) return;
-
     hideAllScreens();
     newScreen.classList.add("active");
     newScreen.style.display = "flex";
@@ -1386,10 +1384,9 @@ input, select {
   function next() {
     const screensArray = Array.from(screens);
     let currentIndex = screensArray.findIndex(s => s.classList.contains('active'));
-    
     if (currentIndex < screensArray.length - 1) {
       let nextScreen = screensArray[currentIndex + 1];
-      // Special: after Q16 → Pricing
+      // After Q16, jump to pricing
       if (screensArray[currentIndex].id === 'instructor-q16') {
         nextScreen = document.getElementById('instructor-q17');
       }
@@ -1497,11 +1494,8 @@ input, select {
 
   // ------------------ Initialize funnel ------------------
   hideAllScreens();
-
   const isReturningFromConcept = codeParam && stepParam;
-
   if (!isReturningFromConcept && !localStorage.getItem('funnelVisited')) {
-    // First-time visitor: show typewriter
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
@@ -1510,11 +1504,9 @@ input, select {
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
     if (colorRiseEl) colorRiseEl.classList.remove('active');
 
-    // Pre-fill design code if returning from concept
     const inputEl = document.getElementById("designInput");
     if (inputEl && codeParam) inputEl.value = codeParam;
 
-    // Go to the step from URL or localStorage
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen(localStorage.getItem('lastStep') || 'instructor-q1');
   }
@@ -1537,60 +1529,6 @@ input, select {
     if (!code) { alert("Please enter a design code."); return; }
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&step=3&fromFunnel=1`;
   };
-
-  // ---------- Intersection Observer for Pricing Cards ----------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, {threshold: 0.3});
-  cards.forEach(card => observer.observe(card));
-
-  let selectedPlan = 'pro'; // default plan
-  const planLinks = {
-    'basic': 'https://www.paypal.com/paypal-link-basic',
-    'pro': 'https://www.paypal.com/paypal-link-pro',
-    'premium': 'https://www.paypal.com/paypal-link-premium'
-  };
-
-  // Click on a pricing card selects plan
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.addEventListener('click', () => {
-      selectedPlan = card.dataset.plan;
-      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
-      card.style.border = '3px solid #fff';
-      document.getElementById('hiddenPlan').value = selectedPlan;
-      document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
-    });
-  });
-
-  // Go to PayPal for selected plan
-  window.goToPayPal = () => {
-    window.location.href = planLinks[selectedPlan];
-  };
-
-  // Submit form only (capture lead)
-  window.submitForm = () => {
-    document.getElementById('formWrapper').submit();
-  };
-
-  // ------------------ Final Step buttons ------------------
-  const finalStep = document.getElementById('final-step');
-  if(finalStep){
-    finalStep.querySelectorAll('button').forEach(btn=>{
-      btn.addEventListener('click', () => {
-        if(btn.innerText.includes("ready to start")){
-          goToPayPal();
-        } else {
-          submitForm();
-        }
-      });
-    });
-  }
 
   // ------------------ Hamburger menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -1616,6 +1554,47 @@ input, select {
     });
   }
 
+  // ---------- Intersection Observer for Pricing Cards ----------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  cards.forEach(card => observer.observe(card));
+
+  let selectedPlan = 'pro'; // default plan
+  const planLinks = {
+    'basic': 'https://www.paypal.com/paypal-link-basic',
+    'pro': 'https://www.paypal.com/paypal-link-pro',
+    'premium': 'https://www.paypal.com/paypal-link-premium'
+  };
+
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.addEventListener('click', () => {
+      selectedPlan = card.dataset.plan;
+      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
+      card.style.border = '3px solid #fff';
+      const hiddenPlan = document.getElementById('hiddenPlan');
+      const hiddenLink = document.getElementById('hiddenPaymentLink');
+      if(hiddenPlan) hiddenPlan.value = selectedPlan;
+      if(hiddenLink) hiddenLink.value = planLinks[selectedPlan];
+    });
+  });
+
+  // PayPal redirect
+  window.goToPayPal = () => {
+    window.location.href = planLinks[selectedPlan];
+  };
+
+  // Submit only (capture lead)
+  window.submitForm = () => {
+    const form = document.getElementById('formWrapper');
+    if(form) form.submit();
+  };
 });
 
 </script>
