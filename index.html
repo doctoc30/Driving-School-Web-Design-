@@ -832,7 +832,8 @@ input, select {
   margin-bottom: 1.5rem;
 }
 
-/* ===== PRICING SECTION ===== */
+
+ /* ===== PRICING SECTION ===== */
 #pricing-section {
   padding: 60px 20px 40px 20px;
   min-height: 100vh;
@@ -846,7 +847,7 @@ input, select {
 /* Container for all cards */
 .pricing-container {
   display: flex;
-  flex-direction: column; /* default mobile */
+  flex-direction: column;
   gap: 20px;
   width: 100%;
   max-width: 600px;
@@ -871,7 +872,7 @@ input, select {
   position: relative;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   width: 100%;
-  scroll-snap-align: center; /* centers card in container */
+  scroll-snap-align: center;
 }
 
 .pricing-card.in-view {
@@ -891,11 +892,27 @@ input, select {
   font-weight: bold;
 }
 
+/* Recommended glow animation */
+.pricing-card.recommended.in-view {
+  animation: glow 2s ease infinite alternate;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
+  100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
+}
+
 /* Hover effect */
 .pricing-card:hover {
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
+
+/* Pricing details */
+.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
+.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
+.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
+.pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
 
 /* PayPal button */
 .pay-now {
@@ -914,11 +931,10 @@ input, select {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+  margin-top: 20px;
 }
 
-.pay-now img {
-  height: 22px;
-}
+.pay-now img { height: 22px; }
 
 .pay-now:hover {
   background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
@@ -931,99 +947,109 @@ input, select {
   box-shadow: 0 3px 6px rgba(0,112,186,0.3);
 }
 
+/* PayPal badge */
+.paypal-badge {
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #e0e5eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.paypal-badge img {
+  max-width: 140px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.paypal-badge p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lock-icon { font-size: 1.1rem; color: #0070ba; }
+
 /* ===== MOBILE LAYOUT (up to 768px) ===== */
 @media(max-width: 768px) {
-  .pricing-container {
-    flex-direction: column;
-    max-width: 100%;
-    padding: 0;
-    gap: 20px;
-    overflow-x: hidden;
-  }
-
-  .pricing-card {
-    width: 90%;
-    margin: 0 auto; /* centers card in mobile portrait */
-    border-radius: 12px;
-    padding: 25px 15px;
-  }
+  .pricing-container { flex-direction: column; max-width: 100%; gap: 20px; }
+  .pricing-card { width: 90%; margin: 0 auto; border-radius: 12px; padding: 25px 15px; }
+  #globalPayBtn { width: 90%; max-width: 320px; margin: 20px auto 0 auto; display: flex; justify-content: center; }
+  .paypal-badge { width: 90%; max-width: 320px; margin: 10px auto 0 auto; }
 }
 
 /* ===== TABLET LAYOUT (769px – 1024px) ===== */
 @media(min-width: 769px) and (max-width: 1024px) {
   .pricing-container {
     flex-direction: row;
-    flex-wrap: nowrap;
     gap: 30px;
     max-width: 1000px;
     margin: 0 auto;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-
-  .pricing-card {
-    flex: 0 0 300px; /* fixed width */
-    min-height: 65vh;
-    padding: 40px 20px;
-    margin: 0 auto;
-  }
+  .pricing-card { flex: 0 0 300px; min-height: 65vh; padding: 40px 20px; margin: 0 auto; }
 }
 
 /* ===== DESKTOP LAYOUT (1025px+) ===== */
 @media(min-width: 1025px) {
   .pricing-container {
     flex-direction: row;
-    flex-wrap: nowrap;
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
   }
-
-  .pricing-card {
-    flex: 1; /* equally divide space */
-    min-height: 65vh;
-    padding: 40px 20px;
-    margin: 0;
-  }
+  .pricing-card { flex: 1; min-height: 65vh; padding: 40px 20px; margin: 0; }
 }
 
 
 
+ /* ===== FINAL STEP BUTTONS ===== */
+#final-step .button-row {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
 
- /* Center PayPal button on small screens (portrait) */
-@media (max-width: 480px) and (orientation: portrait) {
-  #pricing-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+#final-step .button-row button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+}
 
-  .pricing-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0 10px;
-  }
+#final-step .button-row button:hover {
+  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,112,186,0.45);
+}
 
-  .pricing-card {
-    width: 100% !important;
-    margin: 0 0 20px 0;
-    border-radius: 12px;
-    box-sizing: border-box;
-  }
-
-  #globalPayBtn {
-    width: 90% !important;
-    max-width: 320px;
-    margin: 20px auto 0 auto;
-    display: flex;
-    justify-content: center;
-  }
-
-  .paypal-badge {
-    width: 90% !important;
-    max-width: 320px;
-    margin: 10px auto 0 auto;
-  }
+#final-step .button-row button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0,112,186,0.3);
 }
 </style>
 
@@ -1234,68 +1260,78 @@ input, select {
     </div>
   </div>
 
-  <!-- Q17: Pricing -->
-  <div class="form-screen" id="instructor-q17">
-    <section id="pricing-section">
-      <div class="pricing-container">
-        <div class="pricing-card" data-plan="basic">
-          <h3>Basic</h3>
-          <p class="price">£499</p>
-          <ul>
-            <li>5 Pages Website</li>
-            <li>5 Revisions</li>
-            <li>Mobile Friendly</li>
-          </ul>
-        </div>
+<!-- Q17: Pricing + FINAL STEP -->
+<div class="form-screen" id="instructor-q17">
+  <section id="pricing-section">
+    <div class="pricing-container">
 
-        <div class="pricing-card recommended" data-plan="pro">
-          <div class="badge">Recommended</div>
-          <h3>Pro</h3>
-          <p class="price">£999</p>
-          <ul>
-            <li>10 Pages Website</li>
-            <li>15 Revisions</li>
-            <li>SEO Optimization</li>
-            <li>Booking System</li>
-          </ul>
-        </div>
-
-        <div class="pricing-card" data-plan="premium">
-          <h3>Premium</h3>
-          <p class="price">£1499</p>
-          <ul>
-            <li>50+ Pages Website</li>
-            <li>30 Revisions</li>
-            <li>Full Branding</li>
-            <li>Booking & Payment Integration</li>
-            <li>Social Media Integration</li>
-          </ul>
-        </div>
+      <!-- Basic Plan -->
+      <div class="pricing-card" data-plan="basic">
+        <h3>Basic</h3>
+        <p class="price">£499</p>
+        <ul>
+          <li>5 Pages Website</li>
+          <li>5 Revisions</li>
+          <li>Mobile Friendly</li>
+        </ul>
       </div>
 
-      <!-- Global PayPal Button -->
-      <button id="globalPayBtn" class="pay-now" onclick="goToPayPal()">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay Now via PayPal
-      </button>
-
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      <!-- Pro Plan -->
+      <div class="pricing-card recommended" data-plan="pro">
+        <div class="badge">Recommended</div>
+        <h3>Pro</h3>
+        <p class="price">£999</p>
+        <ul>
+          <li>10 Pages Website</li>
+          <li>15 Revisions</li>
+          <li>SEO Optimization</li>
+          <li>Booking System</li>
+        </ul>
       </div>
 
-    </section>
-    <button onclick="prev()" style="margin-top:20px;">Back</button>
-  </div>
+      <!-- Premium Plan -->
+      <div class="pricing-card" data-plan="premium">
+        <h3>Premium</h3>
+        <p class="price">£1499</p>
+        <ul>
+          <li>50+ Pages Website</li>
+          <li>30 Revisions</li>
+          <li>Full Branding</li>
+          <li>Booking & Payment Integration</li>
+          <li>Social Media Integration</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Global PayPal Button -->
+    <button id="globalPayBtn" class="pay-now" onclick="goToPayPal()">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+      Pay Now via PayPal
+    </button>
+
+    <div class="paypal-badge">
+      <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+      <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+    </div>
+
+  </section>
 
   <!-- FINAL STEP -->
-  <div class="form-screen" id="final-step">
+  <div id="final-step-wrapper" style="margin-top:40px;">
     <h2>👉 How would you like to move forward?</h2>
     <div class="button-row">
-      <button type="button" onclick="goToPayPal()">🔹 I’m ready to start my website design now</button>
-      <button type="button" onclick="submitForm()">🔹 I’d like more details before starting</button>
+      <button type="button" onclick="goToPayPal()">
+        🔹 I’m ready to start my website design now
+      </button>
+      <button type="button" onclick="submitForm()">
+        🔹 I’d like more details before starting
+      </button>
     </div>
   </div>
+
+  <button onclick="prev()" style="margin-top:20px;">Back</button>
+</div>
 
 </form>
 
