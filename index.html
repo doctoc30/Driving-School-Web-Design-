@@ -775,7 +775,7 @@ body header + .form-screen {
 }
 
 
-/* ===== FUNNEL SCREEN GLOBAL ===== */
+ /* Funnel screen global */
 .form-screen {
   display: none;
   flex-direction: column;
@@ -792,272 +792,115 @@ body header + .form-screen {
   display: flex;
 }
 
-#main-intro-options {
-  justify-content: center !important;
-  min-height: 100vh;
-  padding-top: 0 !important;
+
+ #main-intro-options {
+  justify-content: center !important; /* center vertically */
+  min-height: 100vh;                   /* full viewport height */
+  padding-top: 0 !important;           /* remove any extra top spacing */
 }
 
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
 
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  background: white;
-  color: #33a7d4;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-input, select {
-  padding: 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 1.5rem;
-}
-
-/* ===== FORM SCREENS ===== */
-.form-screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 1;
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-/* ===== BUTTON ROWS ===== */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.button-row button {
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: #227090;
-  color: #fff;
-}
-
-.button-row button:hover {
-  transform: translateY(-2px);
-  background: #14566d;
-}
-
-/* ===== TYPEWRITER & SKYROCKET ===== */
-#typewriter {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  opacity: 0;
-  margin-top: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-#typewriter.active {
-  opacity: 1;
-}
-
-.cursor {
-  display: inline-block;
-  width: 2px;
-  background: #227090;
-  animation: blink 0.7s infinite;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
-}
-
-.color-rise {
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #227090, #14566d);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.color-rise.active {
-  opacity: 1;
-}
+/* ===== FUNNEL SCREEN ===== */
+.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+.form-screen.active { display: flex; }
 
 /* ===== PRICING SECTION ===== */
-#instructor-q17 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 30px 20px;
-  width: 100%;
+#pricing-section { padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; width: 100%; }
+.pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
+
+/* Unified Pricing Card */
+.pricing-card { background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)); border-radius: 16px; padding: 40px 20px; text-align: center; min-height: 70vh; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; transform: translateY(50px); transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.25);}
+.pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35);}
+.pricing-card.recommended .badge { position: absolute; top: 15px; right: 15px; background: #227090; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold;}
+.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900;}
+.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold;}
+.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0;}
+.pricing-card ul li { margin: 10px 0; font-size: 1.1rem;}
+.pricing-card.in-view { opacity: 1; transform: translateY(0);}
+.pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate;}
+@keyframes glow { 0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);} 100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);} }
+
+@media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px;} .pricing-card { min-height: 65vh;} }
+@media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px;} }
+
+/* PayPal Button */
+.pay-now { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #0070ba 0%, #00457c 100%); color: #fff; font-size: 1.05rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);}
+.pay-now img { height: 22px;}
+.pay-now:hover { background: linear-gradient(135deg, #004f8c 0%, #00345c 100%); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);}
+.pay-now:active { transform: translateY(0); box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);}
+
+/* Trust Badge */
+.paypal-badge { margin-top: 15px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.9); border: 1px solid #e0e5eb; display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 2px 6px rgba(0,0,0,0.05);}
+.paypal-badge img { max-width: 140px; height: auto; margin-bottom: 8px;}
+.paypal-badge p { font-size: 0.9rem; font-weight: 600; color: #1d1d1d; margin: 0; display: flex; align-items: center; gap: 6px;}
+.lock-icon { font-size: 1.1rem; color: #0070ba; }
+
+
+
+ #pricing-section {
+  padding: 100px 20px 40px 20px; /* top padding ensures first card is visible under header */
   min-height: 100vh;
-  box-sizing: border-box;
-}
-
-#pricing-section {
-  width: 100%;
-  max-width: 1200px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
-
-.pricing-container {
-  display: flex;
-  flex-direction: column; /* mobile default */
-  gap: 20px;
+  justify-content: center;
+  align-items: flex-start; /* align cards to top */
   width: 100%;
   overflow-x: hidden;
 }
 
+.pricing-container {
+  display: flex;
+  flex-direction: column; /* full width cards stacked on mobile */
+  gap: 40px;
+  width: 100%;
+  max-width: 600px; /* constrain width on mobile */
+  margin: 0 auto;
+}
+
 .pricing-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 30px 20px;
-  text-align: center;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  cursor: pointer;
+  width: 100%;   /* full width */
+  min-height: 70vh;
 }
 
-.pricing-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
+/* Desktop layout */
+@media(min-width: 1024px) {
+  #pricing-section { padding-top: 120px; }
+  .pricing-container { flex-direction: row; max-width: 1200px; gap: 20px; }
+  .pricing-card { flex: 1; min-height: 65vh; }
 }
 
-.pricing-card.recommended .badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #227090;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: bold;
-}
 
-.pricing-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-}
 
-/* PayPal Button */
-#globalPayBtn {
-  margin-top: 20px;
-  padding: 16px 20px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: #fff;
-  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
-  box-shadow: 0 4px 10px rgba(0,112,186,0.35);
-  width: 100%;
-  max-width: 320px;
-}
-
-#globalPayBtn img {
-  height: 22px;
-}
-
-#globalPayBtn:hover {
-  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-}
-
-/* PayPal Badge */
-.paypal-badge {
-  width: 100%;
-  max-width: 320px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.paypal-badge img {
-  max-width: 100%;
-  height: auto;
-}
-
-.paypal-badge p {
-  font-size: 0.85rem;
-  color: #555;
-}
-
-/* ===== MEDIA QUERIES ===== */
+ /* Remove all side spacing on mobile for pricing section */
 @media (max-width: 768px) {
-  .pricing-container {
-    flex-direction: column;
+  #pricing-section {
+    padding: 60px 0 40px 0 !important;
+    margin: 0;
+    width: 100%;
   }
+  
+  .pricing-container {
+    max-width: 100% !important;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+  }
+  
   .pricing-card {
-    width: 90%;
-    margin: 0 auto;
+    width: 100% !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+  
+  /* Add minimal inner padding for content */
+  .pricing-card {
+    padding: 30px 15px !important;
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-  .pricing-container {
-    flex-direction: row;
-    gap: 30px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+/* Optional: Add slight side padding on very small screens for text readability */
+@media (max-width: 480px) {
   .pricing-card {
-    flex: 0 0 300px;
-  }
-}
-
-@media (min-width: 1025px) {
-  .pricing-container {
-    flex-direction: row;
-    gap: 30px;
-  }
-  .pricing-card {
-    flex: 1;
+    padding: 30px 10px !important;
   }
 }
 
