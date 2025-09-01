@@ -1370,12 +1370,15 @@ document.addEventListener("DOMContentLoaded", () => {
     newScreen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(newScreen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Observe pricing cards if showing pricing screen
+    if (screenId === 'instructor-q17') observePricingCards();
   }
 
   function next() {
     const screensArray = Array.from(screens);
     let currentIndex = screensArray.findIndex(s => s.classList.contains('active'));
-    
+
     if (currentIndex < screensArray.length - 1) {
       let nextScreen = screensArray[currentIndex + 1];
 
@@ -1551,18 +1554,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- Intersection Observer for Pricing Cards ----------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, {threshold: 0.3});
-  cards.forEach(card => observer.observe(card));
-
+  // ---------- PRICING CARDS ----------
   let selectedPlan = 'pro'; // default plan
   const planLinks = {
     'basic': 'https://www.paypal.com/paypal-link-basic',
@@ -1570,18 +1562,31 @@ document.addEventListener("DOMContentLoaded", () => {
     'premium': 'https://www.paypal.com/paypal-link-premium'
   };
 
-  // Click on a pricing card selects plan
-  document.querySelectorAll('.pricing-card').forEach(card => {
+  function observePricingCards() {
+    const cards = document.querySelectorAll('#instructor-q17 .pricing-card[data-plan]');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.3});
+    cards.forEach(card => observer.observe(card));
+  }
+
+  // Click on pricing card selects plan
+  document.querySelectorAll('#instructor-q17 .pricing-card').forEach(card => {
     card.addEventListener('click', () => {
       selectedPlan = card.dataset.plan;
-      document.querySelectorAll('.pricing-card').forEach(c => c.style.border = 'none');
+      document.querySelectorAll('#instructor-q17 .pricing-card').forEach(c => c.style.border = 'none');
       card.style.border = '3px solid #fff';
       document.getElementById('hiddenPlan').value = selectedPlan;
       document.getElementById('hiddenPaymentLink').value = planLinks[selectedPlan];
     });
   });
 
-  // Go to PayPal for selected plan
+  // Go to PayPal
   window.goToPayPal = () => {
     window.location.href = planLinks[selectedPlan];
   };
@@ -1590,7 +1595,21 @@ document.addEventListener("DOMContentLoaded", () => {
   window.submitForm = () => {
     document.getElementById('formWrapper').submit();
   };
-});
+
+  // ---------- FINAL STEP ----------
+  const finalStepBtns = document.querySelectorAll('#final-step button');
+  finalStepBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.innerText.includes("I’m ready to start")) {
+        // Go to PayPal
+        goToPayPal();
+      } else if (btn.innerText.includes("I’d like more details")) {
+        // Submit form only (capture lead)
+        submitForm();
+      }
+    });
+  });
+
 </script>
 </body>
 </html>
