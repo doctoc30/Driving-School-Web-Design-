@@ -1116,92 +1116,105 @@ body header + .form-screen {
     </div>
   </div>
 
-<!-- ==== STEP 17: PRICING ==== -->
-<div id="instructor-q17" class="form-screen">
-  <section id="pricing-section">
-    <div class="pricing-container">
-      <!-- Basic Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Basic</h3>
-        <p class="price">£499</p>
-        <ul>
-          <li>5 Pages Website</li>
-          <li>5 Revisions</li>
-          <li>Mobile Friendly</li>
-        </ul>
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £499 via PayPal
-        </button>
-        <div class="paypal-badge">
-          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+
+   <!-- ==== STEP 17: PRICING ==== -->
+  <div id="instructor-q17" class="form-screen">
+    <h2>Choose Your Website Package</h2>
+    <section id="pricing-section">
+      <div class="pricing-container">
+        <!-- Basic Plan -->
+        <div class="pricing-card" data-animate>
+          <h3>Basic</h3>
+          <p class="price">£499</p>
+          <ul>
+            <li>5 Pages Website</li>
+            <li>5 Revisions</li>
+            <li>Mobile Friendly</li>
+          </ul>
+          <button type="button" class="pay-now" onclick="selectPlan('basic', 'https://www.paypal.com/paypal-link-basic')">
+            Select Basic Plan
+          </button>
+          <div class="paypal-badge">
+            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+          </div>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card recommended" data-animate>
+          <div class="badge">Recommended</div>
+          <h3>Pro</h3>
+          <p class="price">£999</p>
+          <ul>
+            <li>10 Pages Website</li>
+            <li>15 Revisions</li>
+            <li>SEO Optimization</li>
+            <li>Booking System</li>
+          </ul>
+          <button type="button" class="pay-now" onclick="selectPlan('pro', 'https://www.paypal.com/paypal-link-pro')">
+            Select Pro Plan
+          </button>
+          <div class="paypal-badge">
+            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+          </div>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="pricing-card" data-animate>
+          <h3>Premium</h3>
+          <p class="price">£1499</p>
+          <ul>
+            <li>50+ Pages Website</li>
+            <li>30 Revisions</li>
+            <li>Full Branding</li>
+            <li>Booking & Payment Integration</li>
+            <li>Social Media Integration</li>
+          </ul>
+          <button type="button" class="pay-now" onclick="selectPlan('premium', 'https://www.paypal.com/paypal-link-premium')">
+            Select Premium Plan
+          </button>
+          <div class="paypal-badge">
+            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+          </div>
         </div>
       </div>
-
-      <!-- Pro Plan -->
-      <div class="pricing-card recommended" data-animate>
-        <div class="badge">Recommended</div>
-        <h3>Pro</h3>
-        <p class="price">£999</p>
-        <ul>
-          <li>10 Pages Website</li>
-          <li>15 Revisions</li>
-          <li>SEO Optimization</li>
-          <li>Booking System</li>
-        </ul>
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £999 via PayPal
-        </button>
-        <div class="paypal-badge">
-          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-        </div>
-      </div>
-
-      <!-- Premium Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Premium</h3>
-        <p class="price">£1499</p>
-        <ul>
-          <li>50+ Pages Website</li>
-          <li>30 Revisions</li>
-          <li>Full Branding</li>
-          <li>Booking & Payment Integration</li>
-          <li>Social Media Integration</li>
-        </ul>
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £1499 via PayPal
-        </button>
-        <div class="paypal-badge">
-          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <button onclick="prev()" style="margin-top:20px;">Back</button>
-</div>
-
-    <!-- Additional Info & Next Steps -->
-    <div class="next-step">
-      <p>Once you select your plan, we will guide you through the next steps to finalize your website.</p>
-      <div class="button-row">
-        <button type="button" onclick="submitForm()">Continue</button>
-      </div>
-    </div>
+    </section>
+    <button onclick="prev()" style="margin-top:20px;">Back</button>
   </div>
 
-  <!-- Final Thank You Screen -->
-  <div class="form-screen" id="thank-you-screen">
-    <h2>Thank you for completing the questionnaire!</h2>
-    <p>We will send your selected plan and payment link to your email shortly.</p>
-    <div class="button-row">
-      <button type="button" onclick="resetForm()">Start Over</button>
+  <!-- ==== NEW STEP: CHOICE SCREEN ==== -->
+  <div id="choice-screen" class="form-screen">
+    <h2>👉 How would you like to move forward?</h2>
+    
+    <div class="choice-container">
+      <div class="choice-option" onclick="selectOption('pay')">
+        <h3>🔹 "I'm ready to start my website design now"</h3>
+        <p>Proceed to secure payment via PayPal to begin your project immediately.</p>
+      </div>
+      
+      <div class="choice-option" onclick="selectOption('info')">
+        <h3>🔹 "I'd like more details before starting"</h3>
+        <p>Submit your information and we'll contact you with more details (no payment required).</p>
+      </div>
     </div>
+    
+    <!-- PayPal Button Container (initially hidden) -->
+    <div id="paypal-button-container">
+      <a id="paypal-button" class="pay-now" href="#" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay Now via PayPal
+      </a>
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
+    
+    <button onclick="showScreen('instructor-q17')" style="margin-top:20px;">Back</button>
   </div>
+
 </form>
  
 <a href="https://doctoc30.github.io/Faz-Designs/pages/about.html" 
