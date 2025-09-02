@@ -996,7 +996,7 @@ body header + .form-screen {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+ <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
   <!-- Hidden fields to capture selected plan and features -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
@@ -1005,7 +1005,7 @@ body header + .form-screen {
 
   <!-- ===================== SERVICE QUESTIONS Q1–Q20 ===================== -->
   <!-- Each service is a single question screen -->
-  <div class="form-screen active" id="service-q1">
+  <div class="form-screen" id="service-q1">
     <h2>1. Mobile-Friendly Design</h2>
     <p>Ensure your website looks perfect on phones and tablets.</p>
     <div class="button-row">
@@ -1206,18 +1206,13 @@ body header + .form-screen {
     <h2>Choose Your Website Package</h2>
     <section id="pricing-section">
       <div class="pricing-container">
-
         <!-- Basic Plan -->
         <div class="pricing-card" data-animate data-plan="basic">
           <h3>Basic</h3>
           <p class="price">£499</p>
           <ul id="basic-services"></ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('basic')">
-            Pay £499 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('basic')">
-            I’d like more details before starting
-          </button>
+          <button type="button" class="brand-btn" onclick="goToPayPal('basic')">Pay £499 via PayPal</button>
+          <button type="button" class="brand-btn" onclick="submitLead('basic')">I’d like more details</button>
         </div>
 
         <!-- Pro Plan -->
@@ -1225,12 +1220,8 @@ body header + .form-screen {
           <h3>Pro</h3>
           <p class="price">£999</p>
           <ul id="pro-services"></ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('pro')">
-            Pay £999 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('pro')">
-            I’d like more details before starting
-          </button>
+          <button type="button" class="brand-btn" onclick="goToPayPal('pro')">Pay £999 via PayPal</button>
+          <button type="button" class="brand-btn" onclick="submitLead('pro')">I’d like more details</button>
         </div>
 
         <!-- Premium Plan -->
@@ -1238,23 +1229,16 @@ body header + .form-screen {
           <h3>Premium</h3>
           <p class="price">£1499</p>
           <ul id="premium-services"></ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('premium')">
-            Pay £1499 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('premium')">
-            I’d like more details before starting
-          </button>
+          <button type="button" class="brand-btn" onclick="goToPayPal('premium')">Pay £1499 via PayPal</button>
+          <button type="button" class="brand-btn" onclick="submitLead('premium')">I’d like more details</button>
         </div>
-
       </div>
     </section>
     <button onclick="prev()" class="brand-btn">Back</button>
   </div>
 </form>
 
-<!-- ===================== JS ===================== -->
-
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+ <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -1417,7 +1401,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
+          setTimeout(() => showScreen('service-q1'), 2000); // <-- SHOW FIRST SERVICE QUESTION
         }, 1000);
         return;
       }
