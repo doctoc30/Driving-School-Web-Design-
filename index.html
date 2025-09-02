@@ -1267,7 +1267,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "instructor-q17") recommendPlan();
+    if (screen.id === "instructor-q17") updateRecommendedPlan();
   }
 
   function next() {
@@ -1299,55 +1299,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!features.includes(feature)) features.push(feature);
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
+    updateRecommendedPlan(); // update live
   };
 
-  // ------------------ Define Plan Thresholds ------------------
-  const planThresholds = {
-    basic: ['booking', 'packages', 'seo', 'reviews'],
-    standard: ['social', 'email', 'branding', 'content'],
-    premium: ['guide', 'resources', 'mobile', 'cta', 'pages-5', 'pages-10', 'pages-50']
-  };
+  // ------------------ Plan Recommendation Logic ------------------
+  function updateRecommendedPlan() {
+    let plan = "";
+    const points = features.length;
 
-  // ------------------ Point-Based Recommended Plan ------------------
-  function recommendPlan() {
-    let plan = "basic"; // default plan
+    // Step 4–16 features distribution
+    const basicFeatures = ["booking", "mobile", "cta", "pages-5"];
+    const standardFeatures = ["seo", "reviews", "branding", "pages-10"];
+    const premiumFeatures = ["packages", "social", "email", "content", "guide", "resources", "pages-50"];
 
-    // Check if any premium service is selected
-    const hasPremium = features.some(f => planThresholds.premium.includes(f));
-    if (hasPremium) plan = "premium";
-    else {
-      const basicCount = features.filter(f => planThresholds.basic.includes(f)).length;
-      const standardCount = features.filter(f => planThresholds.standard.includes(f)).length;
-      const totalCount = basicCount + standardCount;
-      if (totalCount <= 4) plan = "basic";
-      else plan = "pro";
-    }
+    const hasBasic = features.some(f => basicFeatures.includes(f));
+    const hasStandard = features.some(f => standardFeatures.includes(f));
+    const hasPremium = features.some(f => premiumFeatures.includes(f));
 
-    // Build feature lists per plan
-    const selectedBasic = features.filter(f => planThresholds.basic.includes(f));
-    const selectedStandard = features.filter(f => planThresholds.standard.includes(f));
-    const selectedPremium = features.filter(f => planThresholds.premium.includes(f));
+    if (hasPremium) plan = "Premium Plan: Full features including lesson packages, social media, content, professional email";
+    else if (hasStandard) plan = "Standard Plan: Booking, payments, SEO, branding help";
+    else if (hasBasic) plan = "Basic Plan: Simple website + booking/contact";
+    else plan = "Basic Plan: Simple website + booking/contact";
 
     const recEl = document.getElementById('recommended-plan');
-    if (recEl) {
-      recEl.innerHTML = `
-        <strong>Recommended Plan:</strong> ${plan.charAt(0).toUpperCase() + plan.slice(1)}<br>
-        ${selectedBasic.length ? "<u>Basic Features:</u> " + selectedBasic.join(", ") + "<br>" : ""}
-        ${selectedStandard.length ? "<u>Standard Features:</u> " + selectedStandard.join(", ") + "<br>" : ""}
-        ${selectedPremium.length ? "<u>Premium Features:</u> " + selectedPremium.join(", ") : ""}
-      `;
-    }
-
-    // Highlight recommended card
-    const cards = document.querySelectorAll('.pricing-card[data-plan]');
-    cards.forEach(card => {
-      if (card.dataset.plan === plan) card.classList.add('recommended-plan');
-      else card.classList.remove('recommended-plan');
-    });
-
-    // Auto-scroll to recommended card
-    const recCard = document.querySelector(`.pricing-card[data-plan="${plan}"]`);
-    if (recCard) recCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (recEl) recEl.innerText = plan;
   }
 
   // ------------------ Typewriter Animation ------------------
