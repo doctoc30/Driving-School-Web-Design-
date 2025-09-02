@@ -1493,58 +1493,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- document.addEventListener("DOMContentLoaded", () => {
-  const screens = document.querySelectorAll(".form-screen");
-  let currentScreen = 0;
-  const features = [];
-  let selectedPlan = "";
-
-  // ------------------ Navigation ------------------
-  function hideAllScreens() {
-    screens.forEach(s => { s.classList.remove("active"); s.style.display = "none"; });
-  }
-  function showScreen(id) {
-    const screen = document.getElementById(id);
-    if (!screen) return;
-    hideAllScreens();
-    screen.classList.add("active");
-    screen.style.display = "flex";
-    currentScreen = Array.from(screens).indexOf(screen);
-    if(screen.id === "instructor-q17") recommendPlan();
-  }
-  function next() { if(currentScreen<screens.length-1) showScreen(screens[++currentScreen].id); }
-  function prev() { if(currentScreen>0) showScreen(screens[--currentScreen].id); }
-  window.showScreen = showScreen; window.next = next; window.prev = prev;
-
-  // ------------------ Features & Points ------------------
-  window.recordFeature = (feature, points=1) => {
-    if(!features.includes(feature)) features.push(feature);
-    features.points = (features.points||0)+points;
-    const hf = document.getElementById('hiddenFeatures'); if(hf) hf.value = features.join(", ");
-  };
-
-  // ------------------ Recommend Plan ------------------
-  function recommendPlan() {
-    const points = features.points || features.length;
-    let plan = points<=3?"basic":points<=6?"pro":"premium";
-    document.querySelectorAll('.pricing-card').forEach(c=>c.classList.remove('recommended'));
-    const rec = document.querySelector(`.pricing-card[data-plan="${plan}"]`);
-    if(rec) rec.classList.add('recommended');
-    document.getElementById('hiddenPlan').value = plan;
-    document.getElementById('hiddenPaymentLink').value = plan==="basic"?"https://www.paypal.com/paypal-link-basic":
-                                                       plan==="pro"?"https://www.paypal.com/paypal-link-pro":
-                                                       "https://www.paypal.com/paypal-link-premium";
-  }
-
-  // ------------------ Pricing Buttons ------------------
-  const planLinks = { basic:"https://www.paypal.com/paypal-link-basic", pro:"https://www.paypal.com/paypal-link-pro", premium:"https://www.paypal.com/paypal-link-premium" };
-  window.goToPayPal = plan => { selectedPlan=plan; document.getElementById('hiddenPlan').value=plan; document.getElementById('hiddenPaymentLink').value=planLinks[plan]; window.location.href=planLinks[plan]; };
-  window.submitLead = plan => { selectedPlan=plan; document.getElementById('hiddenPlan').value=plan; document.getElementById('hiddenPaymentLink').value=""; document.getElementById('formWrapper').submit(); };
-
-  // ------------------ Init ------------------
-  hideAllScreens();
-  showScreen('main-intro-options');
-});
 </script>
 </body>
 </html>
