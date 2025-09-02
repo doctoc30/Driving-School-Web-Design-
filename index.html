@@ -1236,6 +1236,7 @@ body header + .form-screen {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1290,21 +1291,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.setPath = (path) => { userPath = path; };
 
-  window.recordFeature = (feature, points = 1) => {
+  // ------------------ Record feature with points ------------------
+  window.recordFeature = (feature) => {
     if (!features.includes(feature)) features.push(feature);
-    // Store points for recommendation
-    features.points = (features.points || 0) + points;
+
+    const featurePoints = {
+      booking: 2,       // Pro feature
+      packages: 3,      // Premium
+      seo: 2,           // Pro
+      reviews: 2,       // Pro
+      social: 3,        // Premium
+      email: 3,         // Premium
+      branding: 2,      // Pro
+      content: 3,       // Premium
+      guide: 2,         // Pro
+      resources: 2,     // Pro
+      mobile: 1,        // Basic
+      cta: 1,           // Basic
+      "pages-5": 1,     // Basic
+      "pages-10": 2,    // Pro
+      "pages-50": 3     // Premium
+    };
+
+    features.points = (features.points || 0) + (featurePoints[feature] || 1);
+
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
   };
 
   // ------------------ Point-Based Recommended Plan ------------------
   function recommendPlan() {
+    const points = features.points || 0;
     let plan = "";
-    const points = features.points || features.length;
 
-    if (points <= 3) plan = "basic";
-    else if (points <= 6) plan = "pro";
+    if (points <= 5) plan = "basic";
+    else if (points <= 10) plan = "pro";
     else plan = "premium";
 
     // Highlight recommended card
@@ -1316,9 +1337,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenPlan = document.getElementById('hiddenPlan');
     if (hiddenPlan) hiddenPlan.value = plan;
     const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenLink) hiddenLink.value = plan === "basic" ? "https://www.paypal.com/paypal-link-basic" :
-                                   plan === "pro" ? "https://www.paypal.com/paypal-link-pro" :
-                                   "https://www.paypal.com/paypal-link-premium";
+    const planLinks = {
+      basic: "https://www.paypal.com/paypal-link-basic",
+      pro: "https://www.paypal.com/paypal-link-pro",
+      premium: "https://www.paypal.com/paypal-link-premium"
+    };
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
   }
 
   // ------------------ Typewriter Animation ------------------
@@ -1489,9 +1513,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ AOS Init ------------------
   AOS.init();
 });
-
-
-
 
 </script>
 </body>
