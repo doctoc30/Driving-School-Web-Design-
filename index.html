@@ -983,149 +983,156 @@ body header + .form-screen {
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
-      <button type="button" onclick="setPath('solo'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('solo'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('solo'); showScreen('instructor-q1')">Maintenance / Updates</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
     </div>
   </div>
 
-<!-- Q1 -->
-<div class="form-screen" id="instructor-q1">
-  <h2>Are you a solo driving instructor or a driving school?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
-    <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+  <!-- Q1 -->
+  <div class="form-screen" id="instructor-q1">
+    <h2>Are you a solo driving instructor or a driving school?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
+      <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+    </div>
   </div>
-</div>
 
-<!-- Q4: Booking & Payment -->
-<div class="form-screen" id="instructor-q4">
-  <h2>Do you want students to book & pay online?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <!-- Q2: Design Selection -->
+  <div class="form-screen" id="instructor-q2">
+    <h2>Do you have a design concept in mind?</h2>
+    <p>You can enter a design code, choose from templates, or request a custom design.</p>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
+      <button type="button" onclick="next()">Custom design</button>
+    </div>
   </div>
-</div>
 
-<!-- Q5: Lesson Packages -->
-<div class="form-screen" id="instructor-q5">
-  <h2>Do you want to offer lesson packages or gift vouchers?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <!-- Q3 (Updated): Design Code Entry -->
+  <div class="form-screen" id="design-code">
+    <h2>Enter your chosen design code</h2>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <div class="button-row">
+      <button type="button" onclick="goToConcept()">Continue</button>
+      <button type="button" onclick="next()">Skip</button>
+    </div>
   </div>
-</div>
 
-<!-- Q6: Local SEO -->
-<div class="form-screen" id="instructor-q6">
-  <h2>Do you want your site to rank on Google locally?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <!-- Q4–Q16 (Services Questions) -->
+  <div class="form-screen" id="instructor-q4">
+    <h2>Do you want students to book & pay online?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q7: Reviews -->
-<div class="form-screen" id="instructor-q7">
-  <h2>Would you like to display student reviews?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q5">
+    <h2>Do you want to offer lesson packages or gift vouchers?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q8: Social Media -->
-<div class="form-screen" id="instructor-q8">
-  <h2>Do you want social media integration?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q6">
+    <h2>Do you want your site to rank on Google locally?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q9: Professional Email -->
-<div class="form-screen" id="instructor-q9">
-  <h2>Would you like a professional email?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q7">
+    <h2>Would you like to display student reviews?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q10: Branding -->
-<div class="form-screen" id="instructor-q10">
-  <h2>Do you have a logo and brand colors?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q8">
+    <h2>Do you want social media integration?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q11: Content -->
-<div class="form-screen" id="instructor-q11">
-  <h2>Do you already have text and images prepared?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q9">
+    <h2>Would you like a professional email?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q12: First Lesson Guide -->
-<div class="form-screen" id="instructor-q12">
-  <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q10">
+    <h2>Do you have a logo and brand colors?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q13: Resources -->
-<div class="form-screen" id="instructor-q13">
-  <h2>Would you like to link to official resources?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('resources'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q11">
+    <h2>Do you already have text and images prepared?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q14: Mobile -->
-<div class="form-screen" id="instructor-q14">
-  <h2>Do you want your site optimized for mobile?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q12">
+    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q15: CTAs -->
-<div class="form-screen" id="instructor-q15">
-  <h2>Do you want strong call-to-action buttons?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
+  <div class="form-screen" id="instructor-q13">
+    <h2>Would you like to link to official resources?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('resources'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
 
-<!-- Q16: Pages -->
-<div class="form-screen" id="instructor-q16">
-  <h2>How many pages will your site need?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('pages-5'); next()">Around 5</button>
-    <button type="button" onclick="recordFeature('pages-10'); next()">Around 10</button>
-    <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
+  <div class="form-screen" id="instructor-q14">
+    <h2>Do you want your site optimized for mobile?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
   </div>
-</div>
+
+  <div class="form-screen" id="instructor-q15">
+    <h2>Do you want strong call-to-action buttons?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q16">
+    <h2>How many pages will your site need?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('pages-5'); next()">Around 5</button>
+      <button type="button" onclick="recordFeature('pages-10'); next()">Around 10</button>
+      <button type="button" onclick="recordFeature('pages-50'); next()">50+</button>
+    </div>
+  </div>
 
   <!-- ===================== STEP 17: CHOICE SCREEN ===================== -->
   <div id="choice-screen" class="form-screen">
     <h2>👉 How would you like to move forward?</h2>
-
     <div class="button-group">
       <button type="button" class="brand-btn" onclick="showScreen('instructor-q17')">
         I'm ready to start my website design now
         <span class="btn-subtext">Proceed to choose your website package and pay via PayPal.</span>
       </button>
-
       <button type="button" class="brand-btn" onclick="submitLeadWithoutPlan()">
         I'd like more details before starting
         <span class="btn-subtext">Submit your information and we'll contact you (no payment required).</span>
@@ -1133,70 +1140,76 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== STEP 18: PRICING CARDS ===================== -->
-  <div id="instructor-q17" class="form-screen">
-    <h2>Choose Your Website Package</h2>
-    <section id="pricing-section">
-      <div class="pricing-container">
+<!-- ===================== STEP 18: PRICING CARDS ===================== -->
+<div id="instructor-q17" class="form-screen">
+  <h2>Choose Your Website Package</h2>
 
-        <!-- Basic Plan -->
-        <div class="pricing-card" data-plan="basic">
-          <h3>Basic</h3>
-          <p class="price">£499</p>
-          <ul>
-            <li>5 Pages Website</li>
-            <li>5 Revisions</li>
-            <li>Mobile Friendly</li>
-          </ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('basic')">
-            Pay £499 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('basic')">
-            I’d like more details before starting
-          </button>
-        </div>
-
-        <!-- Pro Plan -->
-        <div class="pricing-card" data-plan="pro">
-          <h3>Pro</h3>
-          <p class="price">£999</p>
-          <ul>
-            <li>10 Pages Website</li>
-            <li>15 Revisions</li>
-            <li>SEO Optimization</li>
-            <li>Booking System</li>
-          </ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('pro')">
-            Pay £999 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('pro')">
-            I’d like more details before starting
-          </button>
-        </div>
-
-        <!-- Premium Plan -->
-        <div class="pricing-card" data-plan="premium">
-          <h3>Premium</h3>
-          <p class="price">£1499</p>
-          <ul>
-            <li>50+ Pages Website</li>
-            <li>30 Revisions</li>
-            <li>Full Branding</li>
-            <li>Booking & Payment Integration</li>
-            <li>Social Media Integration</li>
-          </ul>
-          <button type="button" class="brand-btn" onclick="goToPayPal('premium')">
-            Pay £1499 via PayPal
-          </button>
-          <button type="button" class="brand-btn" onclick="submitLead('premium')">
-            I’d like more details before starting
-          </button>
-        </div>
-
-      </div>
-    </section>
-    <button onclick="prev()" class="brand-btn">Back</button>
+  <!-- Recommended Plan Display -->
+  <div id="recommended-plan" style="padding:15px; background:#f7f7f7; border:1px solid #ddd; margin-bottom:20px; border-radius:6px;">
+    <!-- Recommended plan will be dynamically inserted here by JS -->
   </div>
+
+  <section id="pricing-section">
+    <div class="pricing-container">
+
+      <!-- Basic Plan -->
+      <div class="pricing-card" data-animate data-plan="basic">
+        <h3>Basic</h3>
+        <p class="price">£499</p>
+        <ul>
+          <li>5 Pages Website</li>
+          <li>5 Revisions</li>
+          <li>Mobile Friendly</li>
+        </ul>
+        <button type="button" class="brand-btn" onclick="goToPayPal('basic')">
+          Pay £499 via PayPal
+        </button>
+        <button type="button" class="brand-btn" onclick="submitLead('basic')">
+          I’d like more details before starting
+        </button>
+      </div>
+
+      <!-- Pro Plan -->
+      <div class="pricing-card recommended" data-animate data-plan="pro">
+        <h3>Pro</h3>
+        <p class="price">£999</p>
+        <ul>
+          <li>10 Pages Website</li>
+          <li>15 Revisions</li>
+          <li>SEO Optimization</li>
+          <li>Booking System</li>
+        </ul>
+        <button type="button" class="brand-btn" onclick="goToPayPal('pro')">
+          Pay £999 via PayPal
+        </button>
+        <button type="button" class="brand-btn" onclick="submitLead('pro')">
+          I’d like more details before starting
+        </button>
+      </div>
+
+      <!-- Premium Plan -->
+      <div class="pricing-card" data-animate data-plan="premium">
+        <h3>Premium</h3>
+        <p class="price">£1499</p>
+        <ul>
+          <li>50+ Pages Website</li>
+          <li>30 Revisions</li>
+          <li>Full Branding</li>
+          <li>Booking & Payment Integration</li>
+          <li>Social Media Integration</li>
+        </ul>
+        <button type="button" class="brand-btn" onclick="goToPayPal('premium')">
+          Pay £1499 via PayPal
+        </button>
+        <button type="button" class="brand-btn" onclick="submitLead('premium')">
+          I’d like more details before starting
+        </button>
+      </div>
+
+    </div>
+  </section>
+  <button onclick="prev()" class="brand-btn">Back</button>
+</div>
 
 </form>
 
@@ -1254,101 +1267,147 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ User Path & Features ------------------
   let userPath = "";
   const features = [];
-  features.points = 0; // initialize points
   let selectedPlan = "";
 
   window.setPath = (path) => { userPath = path; };
 
-  // ------------------ Record feature with points ------------------
-  const featurePoints = {
-    booking: 2,       // Pro feature
-    packages: 3,      // Premium
-    seo: 2,           // Pro
-    reviews: 2,       // Pro
-    social: 3,        // Premium
-    email: 3,         // Premium
-    branding: 2,      // Pro
-    content: 3,       // Premium
-    guide: 2,         // Pro
-    resources: 2,     // Pro
-    mobile: 1,        // Basic
-    cta: 1,           // Basic
-    "pages-5": 1,     // Basic
-    "pages-10": 2,    // Pro
-    "pages-50": 3     // Premium
-  };
-
   window.recordFeature = (feature) => {
     if (!features.includes(feature)) features.push(feature);
-    const pointsToAdd = featurePoints[feature] || 1;
-    features.points += pointsToAdd;
-
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
   };
 
+  // ------------------ Define Plan Thresholds ------------------
+  const planThresholds = {
+    basic: ['booking', 'packages', 'seo', 'reviews'],
+    standard: ['social', 'email', 'branding', 'content'],
+    premium: ['guide', 'resources', 'mobile', 'cta', 'pages-5', 'pages-10', 'pages-50']
+  };
+
   // ------------------ Point-Based Recommended Plan ------------------
   function recommendPlan() {
-    const points = features.points || 0;
-    let plan = "";
+    let plan = "basic"; // default plan
 
-    if (points <= 5) plan = "basic";
-    else if (points <= 10) plan = "pro";
-    else plan = "premium";
+    // Check if any premium service is selected
+    const hasPremium = features.some(f => planThresholds.premium.includes(f));
+    if (hasPremium) plan = "premium";
+    else {
+      const basicCount = features.filter(f => planThresholds.basic.includes(f)).length;
+      const standardCount = features.filter(f => planThresholds.standard.includes(f)).length;
+      const totalCount = basicCount + standardCount;
+      if (totalCount <= 4) plan = "basic";
+      else plan = "pro";
+    }
+
+    // Build feature lists per plan
+    const selectedBasic = features.filter(f => planThresholds.basic.includes(f));
+    const selectedStandard = features.filter(f => planThresholds.standard.includes(f));
+    const selectedPremium = features.filter(f => planThresholds.premium.includes(f));
+
+    const recEl = document.getElementById('recommended-plan');
+    if (recEl) {
+      recEl.innerHTML = `
+        <strong>Recommended Plan:</strong> ${plan.charAt(0).toUpperCase() + plan.slice(1)}<br>
+        ${selectedBasic.length ? "<u>Basic Features:</u> " + selectedBasic.join(", ") + "<br>" : ""}
+        ${selectedStandard.length ? "<u>Standard Features:</u> " + selectedStandard.join(", ") + "<br>" : ""}
+        ${selectedPremium.length ? "<u>Premium Features:</u> " + selectedPremium.join(", ") : ""}
+      `;
+    }
 
     // Highlight recommended card
-    document.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('recommended'));
+    const cards = document.querySelectorAll('.pricing-card[data-plan]');
+    cards.forEach(card => {
+      if (card.dataset.plan === plan) card.classList.add('recommended-plan');
+      else card.classList.remove('recommended-plan');
+    });
+
+    // Auto-scroll to recommended card
     const recCard = document.querySelector(`.pricing-card[data-plan="${plan}"]`);
-    if (recCard) recCard.classList.add('recommended');
-
-    // Store recommended plan in hidden field
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) hiddenPlan.value = plan;
-
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    const planLinks = {
-      basic: "https://www.paypal.com/paypal-link-basic",
-      pro: "https://www.paypal.com/paypal-link-pro",
-      premium: "https://www.paypal.com/paypal-link-premium"
-    };
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
+    if (recCard) recCard.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
-  // ------------------ Pricing Card Buttons ------------------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
-  };
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
 
-  window.goToPayPal = (plan) => {
-    selectedPlan = plan;
-    document.getElementById('hiddenPlan').value = plan;
-    document.getElementById('hiddenPaymentLink').value = planLinks[plan];
-    window.location.href = planLinks[plan];
-  };
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
 
-  window.submitLead = (plan) => {
-    selectedPlan = plan;
-    document.getElementById('hiddenPlan').value = plan;
-    document.getElementById('hiddenPaymentLink').value = "";
-    document.getElementById('formWrapper').submit();
-  };
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
 
-  cards.forEach(card => {
-    const plan = card.dataset.plan;
-    const payBtn = card.querySelector("button:first-of-type");
-    const infoBtn = card.querySelector("button:last-of-type");
-    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
-  });
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
   if (!codeParam && !stepParam) {
-    showScreen('main-intro-options');
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
   } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen('instructor-q2');
   }
@@ -1367,6 +1426,52 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inputEl) inputEl.value = codeParam;
     showScreen(`instructor-q4`);
   }
+
+  // ------------------ Pricing Card Buttons ------------------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  const planLinks = {
+    basic: "https://www.paypal.com/paypal-link-basic",
+    pro: "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
+
+  window.goToPayPal = (plan) => {
+    selectedPlan = plan;
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
+    window.location.href = planLinks[plan];
+  };
+
+  window.submitLead = (plan) => {
+    selectedPlan = plan;
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = "";
+    const form = document.getElementById('formWrapper');
+    if (form) form.submit();
+  };
+
+  cards.forEach(card => {
+    const plan = card.dataset.plan;
+    const payBtn = card.querySelector("button:first-of-type");
+    const infoBtn = card.querySelector("button:last-of-type");
+    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
+  });
+
+  // ------------------ Intersection Observer for Pricing Animation ------------------
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  cards.forEach(card => observer.observe(card));
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -1395,8 +1500,5 @@ document.addEventListener("DOMContentLoaded", () => {
   AOS.init();
 });
 </script>
-
-
-
 </body>
 </html>
