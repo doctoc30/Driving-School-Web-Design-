@@ -1714,35 +1714,8 @@ function updateProgress(currentStep) {
 
 
 
-let screenHistory = []; // Track visited screens
 
-function showScreen(screenId) {
-  const screens = document.querySelectorAll('.form-screen');
-  screens.forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
 
-  // Push to history if not duplicate
-  if (!screenHistory.length || screenHistory[screenHistory.length - 1] !== screenId) {
-    screenHistory.push(screenId);
-  }
-}
-
-function next() {
-  // find next screen logic
-  const current = document.querySelector('.form-screen.active');
-  let nextScreen = current.nextElementSibling;
-  while (nextScreen && !nextScreen.classList.contains('form-screen')) {
-    nextScreen = nextScreen.nextElementSibling;
-  }
-  if (nextScreen) showScreen(nextScreen.id);
-}
-
-function prev() {
-  // Remove current screen from history
-  screenHistory.pop();
-  const prevScreen = screenHistory.pop(); // get previous
-  if (prevScreen) showScreen(prevScreen);
-}
 
 </script>
 </body>
