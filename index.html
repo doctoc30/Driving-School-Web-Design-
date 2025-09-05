@@ -1010,6 +1010,27 @@ screens.forEach((screen, index) => {
 
 // Initial call to set starting progress
 updateProgress();
+
+
+
+  
+const hamburger = document.querySelector('.hamburger');
+const menu = document.querySelector('nav.menu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  menu.classList.toggle('open');
+});
+
+// Close menu when any link is clicked
+const menuLinks = document.querySelectorAll('nav.menu ul li a');
+menuLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    menu.classList.remove('open');
+  });
+});
+
 </script>
 </body>
 </html>
