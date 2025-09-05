@@ -6,209 +6,314 @@
 <title>D S W D</title>
 
 <style>
- * {
-  margin: 0; padding: 0; box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #33a7d4;
-  color: white;
-  overflow-x: hidden;
-}
-
-/* ---------- HEADER & NAV ---------- */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background-color: #33a7d4;
-  z-index: 2000;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-}
-
-.logo {
-  font-weight: 900;
-  font-size: 1.7rem;
-  letter-spacing: 2px;
-  user-select: none;
-  cursor: default;
-}
-
-.logo img {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-.hamburger {
-  width: 28px;
-  height: 22px;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 2100;
-}
-
-.hamburger span {
-  display: block;
-  height: 3.5px;
-  background: white;
-  border-radius: 2px;
-  transition: all 0.35s ease-in-out;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: translateY(9px) rotate(45deg);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-9px) rotate(-45deg);
-}
-
-nav.menu {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #33a7d4;
-  transform: translateX(-100%);
-  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 4rem;
-  z-index: 2050;
-}
-
-nav.menu.open {
-  transform: translateX(0);
-}
-
-nav.menu ul {
-  list-style: none;
-}
-
-nav.menu ul li {
-  margin-bottom: 2.2rem;
-  opacity: 0;
-  transform: translateX(-40px);
-  font-weight: 900;
-  font-size: 3rem;
-  letter-spacing: 0.1em;
-}
-
-nav.menu ul li a {
-  color: white;
-  text-decoration: none;
-  user-select: none;
-  display: inline-block;
-  transition: color 0.3s ease;
-}
-
-nav.menu ul li a:hover {
-  color: #222;
-}
-
-nav.menu.open ul li {
-  animation: slideInFade 0.4s forwards;
-}
-
-nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
-nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
-nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
-nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
-nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
-
-@keyframes slideInFade {
-  to { opacity: 1; transform: translateX(0); }
-}
-
-/* Desktop view */
-@media (min-width: 1024px) {
-  .hamburger { display: none; }
-  nav.menu {
-    position: static;
-    height: auto;
-    width: auto;
-    background: transparent;
-    transform: none !important;
-    padding-left: 0;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
   }
-  nav.menu ul { display: flex; gap: 3rem; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #33a7d4;
+    color: white;
+    overflow-x: hidden;
+  }
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: #33a7d4;
+    z-index: 2000;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+  .logo {
+    font-weight: 900;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+    user-select: none;
+    cursor: default;
+  }
+  .hamburger {
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2100;
+  }
+  .hamburger span {
+    display: block;
+    height: 3.5px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.35s ease-in-out;
+  }
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  nav.menu {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #33a7d4;
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4rem;
+    z-index: 2050;
+  }
+  nav.menu.open {
+    transform: translateX(0);
+  }
+  nav.menu ul {
+    list-style: none;
+  }
   nav.menu ul li {
-    margin: 0;
-    opacity: 1 !important;
-    transform: none !important;
-    font-size: 1.25rem;
-    animation: none !important;
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    transform: translateX(-40px);
+    font-weight: 900;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
   }
   nav.menu ul li a {
-    font-weight: 900;
-    font-size: 1.1rem;
     color: white;
-    letter-spacing: 0.15em;
+    text-decoration: none;
+    user-select: none;
+    display: inline-block;
+    transition: color 0.3s ease;
   }
-  nav.menu ul li a:hover { color: #222; }
+  nav.menu ul li a:hover {
+    color: #222;
+  }
+  nav.menu.open ul li {
+    animation: slideInFade 0.4s forwards;
+  }
+  nav.menu.open ul li:nth-child(1) {
+    animation-delay: 0.15s;
+  }
+  nav.menu.open ul li:nth-child(2) {
+    animation-delay: 0.35s;
+  }
+  nav.menu.open ul li:nth-child(3) {
+    animation-delay: 0.55s;
+  }
+  nav.menu.open ul li:nth-child(4) {
+    animation-delay: 0.75s;
+  }
+  nav.menu.open ul li:nth-child(5) {
+    animation-delay: 0.95s;
+  }
+  @keyframes slideInFade {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Desktop view - raised breakpoint to 1024px */
+  @media (min-width: 1024px) {
+    .hamburger {
+      display: none;
+    }
+    nav.menu {
+      position: static;
+      height: auto;
+      width: auto;
+      background: transparent;
+      transform: none !important;
+      padding-left: 0;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    nav.menu ul {
+      display: flex;
+      gap: 3rem;
+    }
+    nav.menu ul li {
+      margin: 0;
+      opacity: 1 !important;
+      transform: none !important;
+      font-size: 1.25rem;
+      animation: none !important;
+    }
+    nav.menu ul li a {
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: white;
+      letter-spacing: 0.15em;
+    }
+    nav.menu ul li a:hover {
+      color: #222;
+    }
+  }
+
+<title>Splash + Form</title>
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: white;
+  }
+
+  .color-rise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    animation: solidRise 8s ease-in-out forwards;
+    z-index: 0;
+  }
+
+  @keyframes solidRise {
+    0% { background-color: white; }
+    100% { background-color: #33a7d4; }
+  }
+
+  .overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 30px #227090; /* Adjusted shadow to complement new color */
+    z-index: 1;
+    text-align: center;
+    opacity: 0;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.2;
+    white-space: pre-line;
+  }
+
+  @keyframes rocketRise {
+    0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
+    100% { transform: translate(-50%, -150%) translateY(-100vh); opacity: 0; }
+  }
+
+  .typed-line { display: block; }
+
+  .cursor {
+    display: inline-block;
+    width: 1ch;
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+
+
+
+
+  select, input[type="text"], input[type="email"] {
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    width: 80%;
+    max-width: 400px;
+    cursor: pointer;
+    appearance: none;
+    background-color: white;
+    color: #333;
+    height: 3.5rem;
+    padding-right: 2.5rem;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    font-family: inherit;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    background-image: none;
+    cursor: text;
+  }
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem; /* Increased spacing */
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
-/* ---------- SPLASH / TYPEWRITER ---------- */
-html, body {
+button {
+    background: white;
+    color: #33a7d4;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+    min-width: 140px; /* Further ensures button sizing */
+}
+
+  button:hover {
+    background: #227090; /* Adjusted hover color to complement new color */
+    color: white;
+  }
+
+
+ 
+ /* ---------- BASE STYLES ---------- */
+
+nav ul {
+  display: block;
+}
+
+nav ul li {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  background: white;
 }
 
-.color-rise {
-  position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: white;
-  animation: solidRise 8s ease-in-out forwards;
-  z-index: 0;
-  display: none;
-  transition: background-color 2s ease;
+nav ul li a {
+  padding: 0.5rem 1rem;
 }
 
-.color-rise.active { display: block; }
-
-@keyframes solidRise {
-  0% { background-color: white; }
-  100% { background-color: #33a7d4; }
+select,
+input[type="text"],
+input[type="email"] {
+  width: 60%;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  padding: 1rem;
 }
 
 .overlay-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 30px #227090;
-  z-index: 1;
-  text-align: center;
-  opacity: 0;
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1.2;
-  white-space: pre-line;
+  font-size: calc(6vw + 0.5rem);
 }
 
 #typewriter {
@@ -227,12 +332,14 @@ html, body {
   font-size: clamp(2.5rem, 6vw, 5rem);
   max-width: 90vw;
   line-height: 1.3;
-  display: none;
 }
 
-#typewriter.active { display: block; }
+#typewriter .typed-line {
+  font-size: inherit;
+  margin: 0.1em 0;
+  white-space: normal;
+}
 
-.typed-line { display: block; }
 .cursor {
   display: inline-block;
   width: 2px;
@@ -242,9 +349,155 @@ html, body {
   margin-left: 2px;
 }
 
-@keyframes blink { 50% { background: transparent; } }
+@keyframes blink {
+  50% {
+    background: transparent;
+  }
+}
 
-/* ---------- FORMS ---------- */
+/* ---------- Base Typewriter Styles ---------- */
+#typewriter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  z-index: 1000;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  opacity: 1;
+  pointer-events: none;
+  line-height: 1.3;
+}
+
+.typewriter-text {
+  white-space: normal;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+/* ---------- Mobile (Up to 599px) ---------- */
+@media screen and (max-width: 599px) {
+  #typewriter {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    max-width: 90vw;
+  }
+
+  .typewriter-text {
+    font-size: clamp(2rem, 6vw, 3rem);
+    max-width: 90vw;
+  }
+}
+
+/* ---------- Tablet Portrait (600–1024px) ---------- */
+@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
+  #typewriter {
+    font-size: 6rem !important;
+    max-width: 90vw !important;
+  }
+
+  .typewriter-text {
+    font-size: 3.5rem !important;
+    max-width: 85vw !important;
+  }
+}
+
+/* ---------- Tablet Landscape (600–1024px) ---------- */
+@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
+  #typewriter {
+    font-size: 5.5rem !important;
+    max-width: 85vw !important;
+  }
+
+  .typewriter-text {
+    font-size: 3.2rem !important;
+    max-width: 80vw !important;
+  }
+}
+
+/* ---------- Desktop (1025px+) ---------- */
+@media screen and (min-width: 1025px) {
+  #typewriter {
+    font-size: 6.5rem !important;
+    max-width: 75vw !important;
+  }
+
+  .typewriter-text {
+    font-size: 4rem !important;
+    max-width: 60vw !important;
+  }
+}
+
+ /* ---------- iPhone Landscape Final Fix ---------- */
+@media screen and (max-width: 812px) and (orientation: landscape) {
+  #typewriter {
+    top: 60% !important;
+    transform: translate(-50%, -60%) !important;
+    font-size: clamp(1.5rem, 4vw, 2.8rem) !important;
+    line-height: 1.2 !important;
+    max-width: 90vw !important;
+  }
+
+  .typewriter-text {
+    font-size: clamp(1rem, 3vw, 1.8rem) !important;
+    line-height: 1.2 !important;
+    max-width: 85vw !important;
+  }
+}
+
+/* Tablet: Ensure space between buttons */
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+  .button-row {
+    gap: 3rem;         /* Increase spacing */
+    flex-wrap: wrap;   /* Allow buttons to wrap to next line if needed */
+    justify-content: center;
+  }
+
+  .button-row button {
+    min-width: 140px;  /* Prevent buttons from shrinking too much */
+    margin: 0.5rem 1rem; /* Extra spacing around each button */
+  }
+}
+
+ /* --------------------------------------------
+   1. FIRST QUESTION SCREEN (#form-start-choice)
+--------------------------------------------- */
+#form-start-choice {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: #33a7d4;
+  color: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#form-start-choice.show {
+  display: flex;
+  opacity: 1;
+}
+
+
+ 
+/* --------------------------------------------
+   2. MULTI-STEP FORM SCREENS (.form-screen)
+--------------------------------------------- */
 .form-screen {
   position: fixed;
   top: 50%;
@@ -261,27 +514,58 @@ html, body {
   z-index: 1000;
   display: none;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;   /* Center vertically */
+  align-items: center;       /* Center horizontally */
   overflow-y: auto;
   border-radius: 12px;
 }
 
-.form-screen.active { display: flex; }
-
-#form-start-choice {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity 1s ease;
+/* Show active screen */
+.form-screen.active {
+  display: flex;
 }
 
-#form-start-choice.show { display: flex; opacity: 1; }
+/* On small-height screens, remove vertical centering
+   so content scrolls naturally */
+@media (max-height: 600px) {
+  .form-screen {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: flex-start;
+    padding-top: 4rem;
+    min-height: auto;
+  }
+}
 
-select, input[type="text"], input[type="email"], input[type="tel"] {
+.form-screen.active {
+  display: flex;
+}
+
+.form-screen h2 {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  max-width: 500px;
+  line-height: 1.4;
+}
+
+/* Optional: adjust if very small screens */
+@media (max-height: 600px) {
+  .form-screen {
+    justify-content: flex-start;
+    padding-top: 4rem;
+  }
+}
+
+
+
+/* --------------------------------------------
+   3. FORM FIELDS (input, select)
+--------------------------------------------- */
+select,
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
   padding: 1rem;
   border: none;
   border-radius: 8px;
@@ -297,8 +581,26 @@ select, input[type="text"], input[type="email"], input[type="tel"] {
   font-family: inherit;
 }
 
-/* ---------- BUTTONS ---------- */
-button, .brand-btn {
+/* --------------------------------------------
+   4. CONSENT CHECKBOX SECTION
+--------------------------------------------- */
+.consent-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.consent-wrapper input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* --------------------------------------------
+   5. BUTTONS
+--------------------------------------------- */
+button {
   padding: 1rem 2rem;
   font-size: 1rem;
   border: none;
@@ -308,20 +610,50 @@ button, .brand-btn {
   font-weight: bold;
   margin: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
+button:hover {
+  opacity: 0.9;
+}
 
-.button-row, .button-group {
+/* Optional: group buttons side-by-side */
+.button-group {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
 }
 
-.button-group { flex-direction: column; gap: 1rem; margin-top: 1rem; }
+/* --------------------------------------------
+   6. MOBILE HEIGHT ADJUSTMENTS
+--------------------------------------------- */
+
+
+.button-row {
+  display: flex;
+  justify-content: center;  /* Center the buttons */
+  gap: 1rem;                /* Space between buttons */
+  margin-top: 2rem;
+}
+
+.button-row button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: #33a7d4;
+  font-weight: bold;
+  cursor: pointer;
+  width: auto;              /* Make sure buttons size to content */
+  min-width: 100px;         /* Optional: consistent width */
+}
+
+.button-row button:hover {
+  opacity: 0.9;
+}
+
+
 
 .skip-link {
   position: fixed;
@@ -329,87 +661,289 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
   left: 50%;
   transform: translateX(-50%);
   background: none;
-  color: #ffffff;
+  color: #ffffff; /* Or use your brand color */
   border: none;
   padding: 0;
   font-size: 16px;
   font-weight: normal;
   text-decoration: none;
   z-index: 10000;
+  box-shadow: none;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
+.skip-link:hover {
+  opacity: 0.8;
+}
+ 
+.logo img {
+  height: 40px;   /* fits within your 60px header */
+  width: auto;    /* keeps proportions */
+  display: block;
+}
 
-.skip-link:hover { opacity: 0.8; }
 
-/* ---------- PRICING SECTION ---------- */
-#pricing-section {
-  padding: 100px 20px 40px 20px;
+#main-intro-options {
+  justify-content: flex-start !important; /* push content to the top */
+}
+
+#main-intro-options h2 {
+  margin-top: 40px; /* push heading down a little if needed */
+}
+
+#main-intro-options .button-row {
+  margin-top: 60px; /* this moves ONLY the 3 buttons further down */
+}
+
+
+
+ #typewriter { display: none; }
+#typewriter.active { display: block; }
+
+.color-rise { display: none; transition: none; }
+.color-rise.active { display: block; transition: background-color 2s ease; }
+
+
+
+
+
+/* ------------------------ */
+/* General funnel screen styling */
+/* ------------------------ */
+.form-screen {
+  display: none;              /* hidden by default */
+  flex-direction: column;     /* stack content vertically */
+  justify-content: center;    /* vertical centering */
+  align-items: center;        /* horizontal centering */
+  min-height: 100vh;          /* full viewport height */
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* Buttons row styling */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* ------------------------ */
+/* First screen adjustment */
+/* ------------------------ */
+#main-intro-options {
+  padding-top: 120px;   /* ⬅️ adjust this number to move down */
+}
+
+/* ------------------------ */
+/* Tablet / landscape adjustments */
+/* ------------------------ */
+@media (min-width: 768px) {
+  .form-screen {
+    padding: 40px;
+  }
+  #main-intro-options {
+    padding-top: 140px; /* slightly lower on tablet */
+  }
+}
+
+/* ------------------------ */
+/* Desktop adjustments */
+/* ------------------------ */
+@media (min-width: 1024px) {
+  .form-screen {
+    padding: 60px;
+  }
+  #main-intro-options {
+    padding-top: 160px; /* even lower on desktop */
+  }
+}
+
+/* ------------------------ */
+/* Optional: adjust for fixed header */
+/* ------------------------ */
+body header + .form-screen {
+  padding-top: 80px;
+}
+
+
+ /* Funnel screen global */
+.form-screen {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.form-screen.active {
+  display: flex;
+}
+
+
+ #main-intro-options {
+  justify-content: center !important; /* center vertically */
+  min-height: 100vh;                   /* full viewport height */
+  padding-top: 0 !important;           /* remove any extra top spacing */
+}
+
+
+/* ===== FUNNEL SCREEN ===== */
+.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+.form-screen.active { display: flex; }
+
+/* ===== PRICING SECTION ===== */
+#pricing-section { padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; width: 100%; }
+.pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
+
+/* Unified Pricing Card */
+.pricing-card { background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)); border-radius: 16px; padding: 40px 20px; text-align: center; min-height: 70vh; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; transform: translateY(50px); transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.25);}
+.pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35);}
+.pricing-card.recommended .badge { position: absolute; top: 15px; right: 15px; background: #227090; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold;}
+.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900;}
+.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold;}
+.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0;}
+.pricing-card ul li { margin: 10px 0; font-size: 1.1rem;}
+.pricing-card.in-view { opacity: 1; transform: translateY(0);}
+.pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate;}
+@keyframes glow { 0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);} 100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);} }
+
+@media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px;} .pricing-card { min-height: 65vh;} }
+@media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px;} }
+
+/* PayPal Button */
+.pay-now { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #0070ba 0%, #00457c 100%); color: #fff; font-size: 1.05rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);}
+.pay-now img { height: 22px;}
+.pay-now:hover { background: linear-gradient(135deg, #004f8c 0%, #00345c 100%); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);}
+.pay-now:active { transform: translateY(0); box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);}
+
+/* Trust Badge */
+.paypal-badge { margin-top: 15px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.9); border: 1px solid #e0e5eb; display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 2px 6px rgba(0,0,0,0.05);}
+.paypal-badge img { max-width: 140px; height: auto; margin-bottom: 8px;}
+.paypal-badge p { font-size: 0.9rem; font-weight: 600; color: #1d1d1d; margin: 0; display: flex; align-items: center; gap: 6px;}
+.lock-icon { font-size: 1.1rem; color: #0070ba; }
+
+
+
+ #pricing-section {
+  padding: 100px 20px 40px 20px; /* top padding ensures first card is visible under header */
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-start; /* align cards to top */
   width: 100%;
   overflow-x: hidden;
 }
 
 .pricing-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* full width cards stacked on mobile */
   gap: 40px;
   width: 100%;
-  max-width: 600px;
+  max-width: 600px; /* constrain width on mobile */
   margin: 0 auto;
 }
 
 .pricing-card {
-  width: 100%;
+  width: 100%;   /* full width */
   min-height: 70vh;
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-.pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
-.pricing-card.recommended .badge { position: absolute; top: 15px; right: 15px; background: #227090; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; }
-.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
-.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-.pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
-.pricing-card.in-view { opacity: 1; transform: translateY(0); }
-.pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
-
-@keyframes glow { 0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);} 100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);} }
-
-@media (min-width: 1024px) { 
+/* Desktop layout */
+@media(min-width: 1024px) {
   #pricing-section { padding-top: 120px; }
   .pricing-container { flex-direction: row; max-width: 1200px; gap: 20px; }
   .pricing-card { flex: 1; min-height: 65vh; }
 }
 
+
+
+ /* Remove all side spacing on mobile for pricing section */
 @media (max-width: 768px) {
-  #pricing-section { padding: 60px 0 40px 0 !important; margin: 0; width: 100%; }
-  .pricing-container { max-width: 100% !important; padding: 0; margin: 0; gap: 20px; }
-  .pricing-card { width: 100% !important; border-radius: 0 !important; margin: 0; padding: 30px 15px !important; }
+  #pricing-section {
+    padding: 60px 0 40px 0 !important;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .pricing-container {
+    max-width: 100% !important;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+  }
+  
+  .pricing-card {
+    width: 100% !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+  
+  /* Add minimal inner padding for content */
+  .pricing-card {
+    padding: 30px 15px !important;
+  }
 }
 
+/* Optional: Add slight side padding on very small screens for text readability */
 @media (max-width: 480px) {
-  .pricing-card { padding: 30px 10px !important; }
+  .pricing-card {
+    padding: 30px 10px !important;
+  }
 }
 
-/* ---------- PROGRESS BAR ---------- */
+ 
+.brand-btn {
+  background: #fff;
+  color: #33a7d4;
+  border: 2px solid #33a7d4;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  margin: 0.5rem 0;
+  transition: all 0.2s ease;
+}
+
+.brand-btn:hover {
+  background: #f0f8ff;
+}
+
+.btn-subtext {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: normal;
+  margin-top: 0.3rem;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+
+
+ /* ------------------ PROGRESS / WATER BAR ------------------ */
 .progress-container {
   position: fixed;
-  top: 60px;
+  top: 60px; /* right below your header */
   left: 0;
   width: 100%;
   height: 8px;
@@ -420,7 +954,7 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
 }
 
 .progress-bar {
-  width: 0%;
+  width: 0%; /* starts empty */
   height: 100%;
   background: linear-gradient(90deg, #33a7d4, #227090);
   border-radius: 4px;
@@ -456,11 +990,11 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
   pointer-events: none;
 }
 
+/* Responsive adjustments */
 @media(max-width: 768px) {
   .progress-container { height: 6px; }
   .progress-label { font-size: 0.7rem; }
 }
-
 </style>
 
 </head>
@@ -486,18 +1020,12 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
 <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
   </ul>
 </nav>
+ 
+</header> 
 
-  </header> 
 
-<!-- Color Rise + Typewriter Intro -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
-
-<!-- Progress Bar (placed below splash/typewriter) -->
-<div class="progress-container">
-  <div class="progress-bar"></div>
-  <div class="progress-label">0%</div>
-</div>
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
@@ -506,27 +1034,28 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== INTRO ===================== -->
-  <div class="form-screen" id="main-intro-options">
+  <!-- ===================== Q1–Q16 ===================== -->
+
+  <!-- INTRO -->
+  <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); nextFromIntro()">New Website</button>
-      <button type="button" onclick="setPath('instructor'); nextFromIntro()">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); nextFromIntro()">Maintenance / Updates</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
     </div>
   </div>
 
-  <!-- ===================== Q1 ===================== -->
+  <!-- Q1 -->
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
       <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
     </div>
-    <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- ===================== Q2: Design Selection ===================== -->
+  <!-- Q2: Design Selection -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
@@ -535,10 +1064,9 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
       <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
       <button type="button" onclick="next()">Custom design</button>
     </div>
-    <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- ===================== Q3: Design Code Entry ===================== -->
+  <!-- Q3 (Updated): Design Code Entry -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
@@ -546,21 +1074,163 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
     </div>
-    <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- ===================== STEP 4–18: Funnel Questions ===================== -->
-  <!-- Keep your existing Q4–Q18 screens exactly as they are, no changes needed -->
+<!-- ------------------ SOLO INSTRUCTOR FUNNEL ------------------ -->
+
+<!-- STEP 4–8: Basic Plan -->
+<div class="form-screen" id="instructor-q4">
+  <h2>Do you want students to book & pay online?</h2>
+  <p><strong>(Basic Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q5">
+  <h2>Do you want your site optimized for mobile?</h2>
+  <p><strong>(Basic Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q6">
+  <h2>Do you want strong call-to-action buttons?</h2>
+  <p><strong>(Basic Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q7">
+  <h2>Do you want a simple contact form?</h2>
+  <p><strong>(Basic Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q8">
+  <h2>Do you want an About Me / Instructor Bio section?</h2>
+  <p><strong>(Basic Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<!-- STEP 9–13: Standard Plan -->
+<div class="form-screen" id="instructor-q9">
+  <h2>Do you want your site to rank on Google locally?</h2>
+  <p><strong>(Standard Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q10">
+  <h2>Would you like to display student reviews?</h2>
+  <p><strong>(Standard Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q11">
+  <h2>Do you want branding help (logo, colors)?</h2>
+  <p><strong>(Standard Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q12">
+  <h2>Do you want a FAQ or student guide section?</h2>
+  <p><strong>(Standard Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q13">
+  <h2>Do you want newsletter signup or mailing list?</h2>
+  <p><strong>(Standard Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<!-- STEP 14–18: Premium Plan -->
+<div class="form-screen" id="instructor-q14">
+  <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q15">
+  <h2>Do you want social media integration?</h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('social'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q16">
+  <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('email'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q17">
+  <h2>Do you want help creating content (text/images)?</h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('content'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+<div class="form-screen" id="instructor-q18">
+  <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+  </div>
+</div>
+
+  <div class="form-screen" id="instructor-q18">
+    <h2>Do you want a “What to Expect” guide for first lessons? <strong>(Premium Plan)</strong></h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
 
   <!-- =================== Q19: Ownership / Monthly Support =================== -->
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <p>Choose “Own Outright” to pay once and own the website, or “Monthly Support” for ongoing maintenance, updates, and hosting.</p>
     <div class="button-row">
-      <button type="button" onclick="recordOwnership('buyOutright'); next()">Own Outright</button>
-      <button type="button" onclick="recordOwnership('monthlySupport'); next()">Monthly Support</button>
+      <button type="button" onclick="recordFeature('buyOutright'); next()">Own Outright</button>
+      <button type="button" onclick="recordFeature('monthlySupport'); next()">Monthly Support</button>
     </div>
-    <button type="button" onclick="prev()">Back</button>
   </div>
 
   <!-- =================== Recommended Plan Display =================== -->
@@ -569,18 +1239,11 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
     <p id="recommended-plan">Calculating...</p>
     <div class="button-row">
       <button type="button" onclick="goToPayPal(selectedPlan)">Proceed to Payment</button>
-      <button type="button" onclick="submitLead(selectedPlan)">I need more info / Email me</button>
+      <button type="button" onclick="submitLead(selectedPlan)">Submit as Lead</button>
     </div>
-    <p style="font-size:0.9em; margin-top:10px;">
-      By submitting, you agree to our <a href="pages/privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="pages/cookies-policy.html" target="_blank">Cookies Policy</a>.
-    </p>
-    <button type="button" onclick="prev()">Back</button>
   </div>
 
 </form>
-
-  
-
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -609,9 +1272,6 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    updateWaterProgress();
-    updateProgress(currentScreen);
-
     if (screen.id === "recommended-plan-screen") updateRecommendedPlan();
   }
 
@@ -637,7 +1297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = "";
   const features = [];
   let selectedPlan = "";
-  let ownershipChoice = "";
+  let ownershipChoice = ""; // Q19 ownership choice
 
   window.setPath = (path) => { userPath = path; };
 
@@ -647,19 +1307,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
 
-    updateRecommendedPlan();
+    updateRecommendedPlan(); // update live
   };
 
   window.recordOwnership = (choice) => {
-    ownershipChoice = choice;
+    ownershipChoice = choice; // "buyOutright" or "monthlySupport"
     const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) hiddenPlan.value = choice;
+    if (hiddenPlan) hiddenPlan.value = ownershipChoice;
     updateRecommendedPlan();
   };
 
   // ------------------ Plan Recommendation Logic ------------------
   function updateRecommendedPlan() {
     let plan = "";
+
     const basicFeatures = ["booking", "mobile", "cta", "contact", "bio"];
     const standardFeatures = ["seo", "reviews", "branding", "faq", "newsletter"];
     const premiumFeatures = ["packages", "social", "email", "content", "guide"];
@@ -678,10 +1339,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerText = plan;
-
-    selectedPlan = plan.split(":")[0]; // For PayPal/lead
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) hiddenPlan.value = selectedPlan;
   }
 
   // ------------------ Q19 Ownership Buttons ------------------
@@ -690,6 +1347,92 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { recordOwnership('buyOutright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership('monthlySupport'); next(); });
+
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
 
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
@@ -700,14 +1443,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   };
 
-  if (codeParam && stepParam) showScreen(`instructor-q${stepParam}`);
-  else showScreen('instructor-q2');
+  if (codeParam && stepParam && stepParam === "4") {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showScreen(`instructor-q4`);
+  }
 
-  // ------------------ PayPal / Lead Submission ------------------
+  // ------------------ Pricing Card Buttons ------------------
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
   const planLinks = {
-    "Basic Plan": "https://www.paypal.com/paypal-link-basic",
-    "Standard Plan": "https://www.paypal.com/paypal-link-standard",
-    "Premium Plan": "https://www.paypal.com/paypal-link-premium"
+    basic: "https://www.paypal.com/paypal-link-basic",
+    pro: "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
   };
 
   window.goToPayPal = (plan) => {
@@ -729,27 +1476,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (form) form.submit();
   };
 
-  // ------------------ Back Buttons ------------------
-  const backButtons = document.querySelectorAll(".back-btn");
-  backButtons.forEach(btn => btn.addEventListener("click", prev));
+  cards.forEach(card => {
+    const plan = card.dataset.plan;
+    const payBtn = card.querySelector("button:first-of-type");
+    const infoBtn = card.querySelector("button:last-of-type");
+    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
+  });
 
-  // ------------------ Progress Bar ------------------
-  const totalSteps = screens.length;
-  function updateProgress(step) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round(((step + 1) / totalSteps) * 100);
-    if (progressBar) progressBar.style.width = percent + "%";
-    if (progressLabel) progressLabel.textContent = percent + "%";
-  }
-
-  // ------------------ Water Rise ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / totalSteps) * 100;
-    wave.style.height = progressPercent + '%';
-  }
+  // ------------------ Intersection Observer for Pricing Animation ------------------
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  cards.forEach(card => observer.observe(card));
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -773,116 +1517,47 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
   // ------------------ AOS Init ------------------
   AOS.init();
 });
 
 
+ // ------------------ Water Rise Progress Bar ------------------
+function updateWaterProgress() {
+  const wave = document.getElementById('progress-wave');
+  if (!wave) return;
+
+  const totalScreens = screens.length;
+  const progressPercent = ((currentScreen + 1) / totalScreens) * 100;
+
+  // Animate height like water rising
+  wave.style.height = progressPercent + '%';
+}
+
+// Override showScreen to also update water progress
+const originalShowScreen = showScreen;
+showScreen = (id) => {
+  originalShowScreen(id);
+  updateWaterProgress();
+};
+
+// Initialize on page load
+updateWaterProgress();
 
 
- // Grab all form screens
-const screens = document.querySelectorAll('.form-screen');
-const progressBar = document.querySelector('.progress-bar');
-const progressLabel = document.querySelector('.progress-label');
+ const totalSteps = document.querySelectorAll('.form-screen').length;
 
-function updateProgress() {
-  const total = screens.length;
-  let currentIndex = 0;
-
-  screens.forEach((screen, index) => {
-    if (screen.classList.contains('active')) currentIndex = index + 1;
-  });
-
-  const percent = Math.round((currentIndex / total) * 100);
-
-  // Update the bar
+function updateProgress(currentStep) {
+  const progressBar = document.querySelector('.progress-bar');
+  const progressLabel = document.querySelector('.progress-label');
+  const percent = Math.round((currentStep / totalSteps) * 100);
   progressBar.style.width = percent + '%';
   progressLabel.textContent = percent + '%';
 }
 
-// Example: update when navigating to next screen
-screens.forEach((screen, index) => {
-  screen.addEventListener('click', () => {
-    // Simulate moving to next screen for testing
-    screens.forEach(s => s.classList.remove('active'));
-    const next = screens[index + 1] || screens[0];
-    next.classList.add('active');
-    updateProgress();
-  });
-});
-
-
-
-
-
-
-  // Select the progress elements
-  const progressContainer = document.querySelector('.progress-container');
-  const progressBar = document.querySelector('.progress-bar');
-  const progressLabel = document.querySelector('.progress-label');
-
-  // Select all form screens
-  const screens = document.querySelectorAll('.form-screen');
-  let currentStep = 0;
-
-  // Show progress bar when form starts
-  function showProgressBar() {
-    progressContainer.classList.add('active');
-    updateProgress();
-  }
-
-  // Update progress bar based on current step
-  function updateProgress() {
-    const totalSteps = screens.length;
-    const percent = Math.round((currentStep / (totalSteps - 1)) * 100);
-    progressBar.style.width = percent + '%';
-    progressLabel.textContent = percent + '%';
-  }
-
-  // Move to next screen
-  function showScreen(screenId) {
-    screens.forEach(screen => screen.classList.remove('active'));
-    const screen = document.getElementById(screenId);
-    if (screen) {
-      screen.classList.add('active');
-    }
-
-    // Update currentStep
-    currentStep = Array.from(screens).indexOf(screen);
-    updateProgress();
-  }
-
-  // Initialize: call this after splash/typewriter finishes
-  showProgressBar();
-
-// Initial call to set starting progress
-updateProgress();
-
-
-
-  
-const hamburger = document.querySelector('.hamburger');
-const menu = document.querySelector('nav.menu');
-
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('active');
-  menu.classList.toggle('open');
-});
-
-// Close menu when any link is clicked
-const menuLinks = document.querySelectorAll('nav.menu ul li a');
-menuLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    menu.classList.remove('open');
-  });
-});
-
-    // Helper to move from intro buttons to Q1
-  function nextFromIntro() {
-    showScreen('instructor-q1');
-  }
+// Example: call updateProgress(currentStepIndex) whenever user navigates
+// updateProgress(1);  // first step
+// updateProgress(5);  // fifth step, etc.
 </script>
 </body>
 </html>
