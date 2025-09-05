@@ -1288,6 +1288,9 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
+    updateWaterProgress();
+    updateProgress(currentScreen);
+
     if (screen.id === "recommended-plan-screen") updateRecommendedPlan();
   }
 
@@ -1313,7 +1316,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = "";
   const features = [];
   let selectedPlan = "";
-  let ownershipChoice = ""; // Q19 ownership choice
+  let ownershipChoice = "";
 
   window.setPath = (path) => { userPath = path; };
 
@@ -1323,20 +1326,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
 
-    updateRecommendedPlan(); // update live
+    updateRecommendedPlan();
   };
 
   window.recordOwnership = (choice) => {
-    ownershipChoice = choice; // "buyOutright" or "monthlySupport"
+    ownershipChoice = choice;
     const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) hiddenPlan.value = ownershipChoice;
+    if (hiddenPlan) hiddenPlan.value = choice;
     updateRecommendedPlan();
   };
 
   // ------------------ Plan Recommendation Logic ------------------
   function updateRecommendedPlan() {
     let plan = "";
-
     const basicFeatures = ["booking", "mobile", "cta", "contact", "bio"];
     const standardFeatures = ["seo", "reviews", "branding", "faq", "newsletter"];
     const premiumFeatures = ["packages", "social", "email", "content", "guide"];
@@ -1355,6 +1357,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerText = plan;
+
+    selectedPlan = plan.split(":")[0]; // For PayPal/lead
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    if (hiddenPlan) hiddenPlan.value = selectedPlan;
   }
 
   // ------------------ Q19 Ownership Buttons ------------------
@@ -1363,92 +1369,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { recordOwnership('buyOutright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership('monthlySupport'); next(); });
-
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 1000);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
 
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
@@ -1459,18 +1379,14 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   };
 
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
+  if (codeParam && stepParam) showScreen(`instructor-q${stepParam}`);
+  else showScreen('instructor-q2');
 
-  // ------------------ Pricing Card Buttons ------------------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  // ------------------ PayPal / Lead Submission ------------------
   const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
+    "Basic Plan": "https://www.paypal.com/paypal-link-basic",
+    "Standard Plan": "https://www.paypal.com/paypal-link-standard",
+    "Premium Plan": "https://www.paypal.com/paypal-link-premium"
   };
 
   window.goToPayPal = (plan) => {
@@ -1492,24 +1408,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (form) form.submit();
   };
 
-  cards.forEach(card => {
-    const plan = card.dataset.plan;
-    const payBtn = card.querySelector("button:first-of-type");
-    const infoBtn = card.querySelector("button:last-of-type");
-    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
-  });
+  // ------------------ Back Buttons ------------------
+  const backButtons = document.querySelectorAll(".back-btn");
+  backButtons.forEach(btn => btn.addEventListener("click", prev));
 
-  // ------------------ Intersection Observer for Pricing Animation ------------------
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  cards.forEach(card => observer.observe(card));
+  // ------------------ Progress Bar ------------------
+  const totalSteps = screens.length;
+  function updateProgress(step) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round(((step + 1) / totalSteps) * 100);
+    if (progressBar) progressBar.style.width = percent + "%";
+    if (progressLabel) progressLabel.textContent = percent + "%";
+  }
+
+  // ------------------ Water Rise ------------------
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / totalSteps) * 100;
+    wave.style.height = progressPercent + '%';
+  }
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -1533,47 +1452,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
   // ------------------ AOS Init ------------------
   AOS.init();
 });
-
-
- // ------------------ Water Rise Progress Bar ------------------
-function updateWaterProgress() {
-  const wave = document.getElementById('progress-wave');
-  if (!wave) return;
-
-  const totalScreens = screens.length;
-  const progressPercent = ((currentScreen + 1) / totalScreens) * 100;
-
-  // Animate height like water rising
-  wave.style.height = progressPercent + '%';
-}
-
-// Override showScreen to also update water progress
-const originalShowScreen = showScreen;
-showScreen = (id) => {
-  originalShowScreen(id);
-  updateWaterProgress();
-};
-
-// Initialize on page load
-updateWaterProgress();
-
-
- const totalSteps = document.querySelectorAll('.form-screen').length;
-
-function updateProgress(currentStep) {
-  const progressBar = document.querySelector('.progress-bar');
-  const progressLabel = document.querySelector('.progress-label');
-  const percent = Math.round((currentStep / totalSteps) * 100);
-  progressBar.style.width = percent + '%';
-  progressLabel.textContent = percent + '%';
-}
-
-// Example: call updateProgress(currentStepIndex) whenever user navigates
-// updateProgress(1);  // first step
-// updateProgress(5);  // fifth step, etc.
 </script>
 </body>
 </html>
