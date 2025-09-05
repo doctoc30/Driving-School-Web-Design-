@@ -1,0 +1,64 @@
+<h2>Order Details for <span id="planName"></span> Plan</h2>
+
+<form id="orderForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
+
+  <input type="hidden" id="selectedPlan" name="Selected Plan">
+
+  <!-- Basic Plan Fields -->
+  <label>Logo Upload</label>
+  <input type="file" name="logoUpload" accept="image/*">
+
+  <label>About Me / Company Bio</label>
+  <textarea name="bio" required></textarea>
+
+  <!-- Standard Plan Fields -->
+  <div class="standard-fields" style="display:none;">
+    <label>SEO Keywords</label>
+    <input type="text" name="seoKeywords">
+
+    <label>Reviews / Testimonials</label>
+    <textarea name="reviews"></textarea>
+
+    <label>FAQ / Guide Content</label>
+    <textarea name="faqContent"></textarea>
+  </div>
+
+  <!-- Premium Plan Fields -->
+  <div class="premium-fields" style="display:none;">
+    <label>Social Media Links</label>
+    <input type="text" name="socialLinks">
+
+    <label>Professional Email Setup Info</label>
+    <input type="text" name="emailSetup">
+
+    <label>Lesson Packages / Gift Vouchers</label>
+    <textarea name="lessonPackages"></textarea>
+
+    <label>Additional Content Uploads</label>
+    <input type="file" name="contentUploads" accept="image/*,.pdf,.doc" multiple>
+  </div>
+
+  <!-- GDPR Consent -->
+  <label>
+    <input type="checkbox" name="gdprConsent" required>
+    I consent to my information being stored and used for website creation.
+    <a href="/pages/privacy-policy.html" target="_blank">Privacy Policy</a> and 
+    <a href="/pages/cookies-policy.html" target="_blank">Cookies Policy</a>.
+  </label>
+
+  <button type="submit">Submit Order</button>
+</form>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const plan = urlParams.get('plan');
+  document.getElementById('planName').innerText = plan;
+  document.getElementById('selectedPlan').value = plan;
+
+  if(plan === "Standard") {
+    document.querySelector('.standard-fields').style.display = 'block';
+  } else if(plan === "Premium") {
+    document.querySelector('.standard-fields').style.display = 'block';
+    document.querySelector('.premium-fields').style.display = 'block';
+  }
+</script>
