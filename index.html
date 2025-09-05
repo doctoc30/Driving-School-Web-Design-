@@ -995,6 +995,62 @@ body header + .form-screen {
   .progress-container { height: 6px; }
   .progress-label { font-size: 0.7rem; }
 }
+
+
+ /* Tooltip Container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: #007BFF;
+  margin-left: 5px;
+}
+
+/* Tooltip Text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 220px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%; /* Position above icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Tooltip Arrow */
+.tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Arrow at bottom of tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .tooltip .tooltiptext {
+    width: 180px;
+    font-size: 12px;
+  }
+}
 </style>
 
 </head>
@@ -1088,141 +1144,238 @@ body header + .form-screen {
   </div>
 </div>
 
+<!-- Q5: Mobile Optimization -->
 <div class="form-screen" id="instructor-q5">
-  <h2>Do you want your site optimized for mobile?</h2>
+  <h2>
+    Do you want your site optimized for mobile?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Mobile optimization ensures your website looks great on phones and tablets, making it easier for students to book lessons and view information.</span>
+    </span>
+  </h2>
   <p><strong>(Basic Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q6: CTA Buttons -->
 <div class="form-screen" id="instructor-q6">
-  <h2>Do you want strong call-to-action buttons?</h2>
+  <h2>
+    Do you want strong call-to-action buttons?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">CTA buttons guide your visitors to take action, like booking a lesson or contacting you, boosting conversions.</span>
+    </span>
+  </h2>
   <p><strong>(Basic Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q7: Contact Form -->
 <div class="form-screen" id="instructor-q7">
-  <h2>Do you want a simple contact form?</h2>
+  <h2>
+    Do you want a simple contact form?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">A contact form lets students reach out directly without leaving your website, improving communication and inquiries.</span>
+    </span>
+  </h2>
   <p><strong>(Basic Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q8: About Me -->
 <div class="form-screen" id="instructor-q8">
-  <h2>Do you want an About Me / Instructor Bio section?</h2>
+  <h2>
+    Do you want an About Me / Instructor Bio section?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">An About Me section builds trust with students by sharing your experience, qualifications, and teaching style.</span>
+    </span>
+  </h2>
   <p><strong>(Basic Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
-<!-- STEP 9–13: Standard Plan -->
+<!-- Q9: Local SEO -->
 <div class="form-screen" id="instructor-q9">
-  <h2>Do you want your site to rank on Google locally?</h2>
+  <h2>
+    Do you want your site to rank on Google locally?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Local SEO helps potential students in your area find your website easily when searching for driving lessons.</span>
+    </span>
+  </h2>
   <p><strong>(Standard Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q10: Reviews -->
 <div class="form-screen" id="instructor-q10">
-  <h2>Would you like to display student reviews?</h2>
+  <h2>
+    Would you like to display student reviews?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Showing reviews builds credibility and helps new students trust your teaching services.</span>
+    </span>
+  </h2>
   <p><strong>(Standard Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q11: Branding -->
 <div class="form-screen" id="instructor-q11">
-  <h2>Do you want branding help (logo, colors)?</h2>
+  <h2>
+    Do you want branding help (logo, colors)?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Branding makes your website look professional and memorable, helping you stand out from competitors.</span>
+    </span>
+  </h2>
   <p><strong>(Standard Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q12: FAQ / Student Guide -->
 <div class="form-screen" id="instructor-q12">
-  <h2>Do you want a FAQ or student guide section?</h2>
+  <h2>
+    Do you want a FAQ or student guide section?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">A FAQ or guide section answers common questions, saving you time and making students feel informed before booking lessons.</span>
+    </span>
+  </h2>
   <p><strong>(Standard Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q13: Newsletter -->
 <div class="form-screen" id="instructor-q13">
-  <h2>Do you want newsletter signup or mailing list?</h2>
+  <h2>
+    Do you want newsletter signup or mailing list?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">A newsletter lets you send updates, promotions, and tips to students, keeping them engaged and coming back.</span>
+    </span>
+  </h2>
   <p><strong>(Standard Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
-<!-- STEP 14–18: Premium Plan -->
+<!-- Q14: Lesson Packages / Gift Vouchers -->
 <div class="form-screen" id="instructor-q14">
-  <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+  <h2>
+    Do you want to offer lesson packages or gift vouchers online?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Selling packages or gift vouchers online increases revenue and makes it convenient for students or gift buyers to pay upfront.</span>
+    </span>
+  </h2>
   <p><strong>(Premium Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q15: Social Media -->
 <div class="form-screen" id="instructor-q15">
-  <h2>Do you want social media integration?</h2>
+  <h2>
+    Do you want social media integration?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Social media integration allows you to showcase posts, get followers, and share updates directly from your website.</span>
+    </span>
+  </h2>
   <p><strong>(Premium Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('social'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q16: Professional Email -->
 <div class="form-screen" id="instructor-q16">
-  <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+  <h2>
+    Would you like a professional email address (info@yourdomain.com)?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">A professional email address builds credibility and makes your business look trustworthy to students.</span>
+    </span>
+  </h2>
   <p><strong>(Premium Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('email'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q17: Content Creation -->
 <div class="form-screen" id="instructor-q17">
-  <h2>Do you want help creating content (text/images)?</h2>
+  <h2>
+    Do you want help creating content (text/images)?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">Professional content ensures your website communicates clearly and looks visually appealing to attract more students.</span>
+    </span>
+  </h2>
   <p><strong>(Premium Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('content'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
 </div>
 
+<!-- Q18: What to Expect Guide -->
 <div class="form-screen" id="instructor-q18">
-  <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+  <h2>
+    Do you want a “What to Expect” guide for first lessons?
+    <span class="tooltip">ℹ
+      <span class="tooltiptext">A 'What to Expect' guide prepares new students, reduces anxiety, and improves their overall experience with your lessons.</span>
+    </span>
+  </h2>
+  <p><strong>(Premium Plan)</strong></p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+    <button type="button" onclick="next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
+  </div>
+</div>
+
+ 
   <p><strong>(Premium Plan)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
     <button type="button" onclick="next()">No</button>
   </div>
+  <button type="button" onclick="prev()">Back</button>
 </div>
-
-  <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a “What to Expect” guide for first lessons? <strong>(Premium Plan)</strong></h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-  </div>
 
   <!-- =================== Q19: Ownership / Monthly Support =================== -->
   <div class="form-screen" id="instructor-q19">
@@ -1558,6 +1711,39 @@ function updateProgress(currentStep) {
 // Example: call updateProgress(currentStepIndex) whenever user navigates
 // updateProgress(1);  // first step
 // updateProgress(5);  // fifth step, etc.
+
+
+
+let screenHistory = []; // Track visited screens
+
+function showScreen(screenId) {
+  const screens = document.querySelectorAll('.form-screen');
+  screens.forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+
+  // Push to history if not duplicate
+  if (!screenHistory.length || screenHistory[screenHistory.length - 1] !== screenId) {
+    screenHistory.push(screenId);
+  }
+}
+
+function next() {
+  // find next screen logic
+  const current = document.querySelector('.form-screen.active');
+  let nextScreen = current.nextElementSibling;
+  while (nextScreen && !nextScreen.classList.contains('form-screen')) {
+    nextScreen = nextScreen.nextElementSibling;
+  }
+  if (nextScreen) showScreen(nextScreen.id);
+}
+
+function prev() {
+  // Remove current screen from history
+  screenHistory.pop();
+  const prevScreen = screenHistory.pop(); // get previous
+  if (prevScreen) showScreen(prevScreen);
+}
+
 </script>
 </body>
 </html>
