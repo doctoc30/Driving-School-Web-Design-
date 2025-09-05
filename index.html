@@ -486,20 +486,19 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
 <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
   </ul>
 </nav>
- 
-</header> 
 
+  </header> 
 
+<!-- Color Rise + Typewriter Intro -->
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
- <!-- Progress Bar (placed below splash/typewriter) -->
+<!-- Progress Bar (placed below splash/typewriter) -->
 <div class="progress-container">
   <div class="progress-bar"></div>
   <div class="progress-label">0%</div>
 </div>
 
- 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
   <!-- Hidden fields to capture selected plan and features -->
@@ -507,19 +506,17 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== Q1–Q16 ===================== -->
-
-  <!-- INTRO -->
-  <div class="form-screen active" id="main-intro-options">
+  <!-- ===================== INTRO ===================== -->
+  <div class="form-screen" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+      <button type="button" onclick="setPath('instructor'); nextFromIntro()">New Website</button>
+      <button type="button" onclick="setPath('instructor'); nextFromIntro()">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); nextFromIntro()">Maintenance / Updates</button>
     </div>
   </div>
 
-  <!-- Q1 -->
+  <!-- ===================== Q1 ===================== -->
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -529,7 +526,7 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
     <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- Q2: Design Selection -->
+  <!-- ===================== Q2: Design Selection ===================== -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
@@ -541,7 +538,7 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
     <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- Q3: Design Code Entry -->
+  <!-- ===================== Q3: Design Code Entry ===================== -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
@@ -552,168 +549,16 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
     <button type="button" onclick="prev()">Back</button>
   </div>
 
-  <!-- ------------------ SOLO INSTRUCTOR FUNNEL ------------------ -->
-
-  <!-- STEP 4–8: Basic Plan -->
-  <div class="form-screen" id="instructor-q4">
-    <h2>Do you want students to book & pay online?</h2>
-    <p><strong>(Basic Plan)</strong> – Allows students to book lessons and pay directly through your website.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q5">
-    <h2>Do you want your site optimized for mobile?</h2>
-    <p><strong>(Basic Plan)</strong> – Ensures your website looks great and works on all mobile devices.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q6">
-    <h2>Do you want strong call-to-action buttons?</h2>
-    <p><strong>(Basic Plan)</strong> – Buttons that guide visitors to book lessons or contact you.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q7">
-    <h2>Do you want a simple contact form?</h2>
-    <p><strong>(Basic Plan)</strong> – Allows visitors to send you messages directly from your website.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q8">
-    <h2>Do you want an About Me / Instructor Bio section?</h2>
-    <p><strong>(Basic Plan)</strong> – Showcase your experience, qualifications, and teaching style.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <!-- STEP 9–13: Standard Plan -->
-  <div class="form-screen" id="instructor-q9">
-    <h2>Do you want your site to rank on Google locally?</h2>
-    <p><strong>(Standard Plan)</strong> – Optimized for local SEO so students in your area can find you.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q10">
-    <h2>Would you like to display student reviews?</h2>
-    <p><strong>(Standard Plan)</strong> – Build trust by showing feedback from your past students.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q11">
-    <h2>Do you want branding help (logo, colors)?</h2>
-    <p><strong>(Standard Plan)</strong> – Assistance creating a professional brand identity for your website.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q12">
-    <h2>Do you want a FAQ or student guide section?</h2>
-    <p><strong>(Standard Plan)</strong> – Helps answer common student questions and reduces repeated queries.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q13">
-    <h2>Do you want newsletter signup or mailing list?</h2>
-    <p><strong>(Standard Plan)</strong> – Collect emails to keep in touch and send updates to your students.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <!-- STEP 14–18: Premium Plan -->
-  <div class="form-screen" id="instructor-q14">
-    <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
-    <p><strong>(Premium Plan)</strong> – Sell prepaid lesson packages or gift vouchers through your site.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q15">
-    <h2>Do you want social media integration?</h2>
-    <p><strong>(Premium Plan)</strong> – Connect your website with your social media profiles for sharing updates.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q16">
-    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
-    <p><strong>(Premium Plan)</strong> – A professional branded email for your business communications.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q17">
-    <h2>Do you want help creating content (text/images)?</h2>
-    <p><strong>(Premium Plan)</strong> – Assistance with writing and images to make your website engaging.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
-
-  <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a “What to Expect” guide for first lessons? <strong>(Premium Plan)</strong></h2>
-    <p>Provide a clear guide for students so they know what to expect during their first lesson.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-    <button type="button" onclick="prev()">Back</button>
-  </div>
+  <!-- ===================== STEP 4–18: Funnel Questions ===================== -->
+  <!-- Keep your existing Q4–Q18 screens exactly as they are, no changes needed -->
 
   <!-- =================== Q19: Ownership / Monthly Support =================== -->
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <p>Choose “Own Outright” to pay once and own the website, or “Monthly Support” for ongoing maintenance, updates, and hosting.</p>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('buyOutright'); next()">Own Outright</button>
-      <button type="button" onclick="recordFeature('monthlySupport'); next()">Monthly Support</button>
+      <button type="button" onclick="recordOwnership('buyOutright'); next()">Own Outright</button>
+      <button type="button" onclick="recordOwnership('monthlySupport'); next()">Monthly Support</button>
     </div>
     <button type="button" onclick="prev()">Back</button>
   </div>
@@ -733,6 +578,9 @@ button:hover, .brand-btn:hover { opacity: 0.9; background: #f0f8ff; }
   </div>
 
 </form>
+
+  
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1031,6 +879,10 @@ menuLinks.forEach(link => {
   });
 });
 
+    // Helper to move from intro buttons to Q1
+  function nextFromIntro() {
+    showScreen('instructor-q1');
+  }
 </script>
 </body>
 </html>
