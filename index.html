@@ -1665,7 +1665,21 @@ function updateProgress(currentStep) {
 
 
 
+// Automatically assign classes to funnel navigation buttons
+document.addEventListener("DOMContentLoaded", () => {
+  const allButtons = document.querySelectorAll(".button-row button");
 
+  allButtons.forEach(btn => {
+    const onclick = btn.getAttribute("onclick");
+    if (onclick) {
+      if (onclick.includes("next()")) {
+        btn.classList.add("next-button");
+      } else if (onclick.includes("prev()")) {
+        btn.classList.add("back-button");
+      }
+    }
+  });
+});
 
 </script>
 </body>
