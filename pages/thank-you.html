@@ -5,43 +5,45 @@
   <input type="hidden" id="selectedPlan" name="Selected Plan">
 
   <!-- Basic Plan Fields -->
-  <label>Logo Upload</label>
-  <input type="file" name="logoUpload" accept="image/*">
+  <div class="basic-fields">
+    <label for="logoUpload">Logo Upload</label>
+    <input type="file" id="logoUpload" name="logoUpload" accept="image/*">
 
-  <label>About Me / Company Bio</label>
-  <textarea name="bio" required></textarea>
+    <label for="bio">About Me / Company Bio</label>
+    <textarea id="bio" name="bio" required></textarea>
+  </div>
 
   <!-- Standard Plan Fields -->
   <div class="standard-fields" style="display:none;">
-    <label>SEO Keywords</label>
-    <input type="text" name="seoKeywords">
+    <label for="seoKeywords">SEO Keywords</label>
+    <input type="text" id="seoKeywords" name="seoKeywords">
 
-    <label>Reviews / Testimonials</label>
-    <textarea name="reviews"></textarea>
+    <label for="reviews">Reviews / Testimonials</label>
+    <textarea id="reviews" name="reviews"></textarea>
 
-    <label>FAQ / Guide Content</label>
-    <textarea name="faqContent"></textarea>
+    <label for="faqContent">FAQ / Guide Content</label>
+    <textarea id="faqContent" name="faqContent"></textarea>
   </div>
 
   <!-- Premium Plan Fields -->
   <div class="premium-fields" style="display:none;">
-    <label>Social Media Links</label>
-    <input type="text" name="socialLinks">
+    <label for="socialLinks">Social Media Links</label>
+    <input type="text" id="socialLinks" name="socialLinks">
 
-    <label>Professional Email Setup Info</label>
-    <input type="text" name="emailSetup">
+    <label for="emailSetup">Professional Email Setup Info</label>
+    <input type="text" id="emailSetup" name="emailSetup">
 
-    <label>Lesson Packages / Gift Vouchers</label>
-    <textarea name="lessonPackages"></textarea>
+    <label for="lessonPackages">Lesson Packages / Gift Vouchers</label>
+    <textarea id="lessonPackages" name="lessonPackages"></textarea>
 
-    <label>Additional Content Uploads</label>
-    <input type="file" name="contentUploads" accept="image/*,.pdf,.doc" multiple>
+    <label for="contentUploads">Additional Content Uploads</label>
+    <input type="file" id="contentUploads" name="contentUploads" accept="image/*,.pdf,.doc" multiple>
   </div>
 
   <!-- GDPR Consent -->
   <label>
     <input type="checkbox" name="gdprConsent" required>
-    I consent to my information being stored and used for website creation.
+    I consent to my information being stored and used for website creation.  
     <a href="/pages/privacy-policy.html" target="_blank">Privacy Policy</a> and 
     <a href="/pages/cookies-policy.html" target="_blank">Cookies Policy</a>.
   </label>
@@ -50,15 +52,25 @@
 </form>
 
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const plan = urlParams.get('plan');
-  document.getElementById('planName').innerText = plan;
-  document.getElementById('selectedPlan').value = plan;
+  (function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'Basic';
+    const planNameEl = document.getElementById('planName');
+    const selectedPlanEl = document.getElementById('selectedPlan');
 
-  if(plan === "Standard") {
-    document.querySelector('.standard-fields').style.display = 'block';
-  } else if(plan === "Premium") {
-    document.querySelector('.standard-fields').style.display = 'block';
-    document.querySelector('.premium-fields').style.display = 'block';
-  }
+    planNameEl.innerText = plan;
+    selectedPlanEl.value = plan;
+
+    const standardFields = document.querySelector('.standard-fields');
+    const premiumFields = document.querySelector('.premium-fields');
+
+    // Show fields based on plan
+    if(plan.toLowerCase() === 'standard') {
+      standardFields.style.display = 'block';
+    } else if(plan.toLowerCase() === 'premium') {
+      standardFields.style.display = 'block';
+      premiumFields.style.display = 'block';
+    }
+    // Basic plan: no extra fields, already visible
+  })();
 </script>
