@@ -1577,6 +1577,93 @@ function updateProgress(currentStep) {
 // Example: call updateProgress(currentStepIndex) whenever user navigates
 // updateProgress(1);  // first step
 // updateProgress(5);  // fifth step, etc.
+
+
+
+
+ // ======= Feature Tracking =======
+let yesFeatures = [];
+let noFeatures = [];
+
+// Record Yes
+function recordFeature(feature) {
+    yesFeatures.push(feature);
+}
+
+// Record No
+function recordNoFeature(feature) {
+    noFeatures.push(feature);
+}
+
+// ======= Plan Tiers =======
+const planTiers = {
+    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+    Standard: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+    Premium: ['packages', 'social', 'email', 'content', 'guide']
+};
+
+// ======= Handle Own Outright =======
+function handleBuyOutright() {
+    recordFeature('buyOutright'); // record ownership
+    showRecommendedPlan();
+}
+
+// ======= Show Recommended Plan =======
+function showRecommendedPlan() {
+    let planName = "Recommended Plan (Owned Outright)";
+    let html = `<strong>${planName}</strong>`;
+
+    for (let tier in planTiers) {
+        html += `<h3>${tier} Plan Features:</h3>`;
+
+        // Included (Yes)
+        let yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
+        if (yesInTier.length > 0) {
+            html += "<p><strong>Included:</strong><ul>";
+            yesInTier.forEach(f => {
+                html += `<li>${formatFeatureName(f)}</li>`;
+            });
+            html += "</ul></p>";
+        }
+
+        // Not Included (No)
+        let noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+        if (noInTier.length > 0) {
+            html += "<p><strong>Not Included:</strong><ul>";
+            noInTier.forEach(f => {
+                html += `<li>${formatFeatureName(f)}</li>`;
+            });
+            html += "</ul></p>";
+        }
+    }
+
+    document.getElementById('recommended-plan').innerHTML = html;
+    showScreen('recommended-plan-screen');
+}
+
+// ======= Feature Name Formatter =======
+function formatFeatureName(f) {
+    const featureNames = {
+        booking: "Online Booking & Payment",
+        mobile: "Mobile Optimized",
+        cta: "Strong Call-to-Action Buttons",
+        contact: "Simple Contact Form",
+        bio: "About Me / Instructor Bio",
+        seo: "Local SEO Optimization",
+        reviews: "Student Reviews Section",
+        branding: "Branding Help (Logo & Colors)",
+        faq: "FAQ / Student Guide Section",
+        newsletter: "Newsletter Signup / Mailing List",
+        packages: "Lesson Packages & Gift Vouchers",
+        social: "Social Media Integration",
+        email: "Professional Email Address",
+        content: "Content Creation Help",
+        guide: "What to Expect Guide",
+        buyOutright: "Owned Outright"
+    };
+    return featureNames[f] || f;
+}
+
 </script>
 </body>
 </html>
