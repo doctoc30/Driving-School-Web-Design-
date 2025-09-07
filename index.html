@@ -1034,17 +1034,6 @@ body header + .form-screen {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== Q1–Q16 ===================== -->
-
-  <!-- INTRO -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
-    </div>
-  </div>
 
   <!-- Q1 -->
   <div class="form-screen" id="instructor-q1">
@@ -1231,23 +1220,22 @@ body header + .form-screen {
   </div>
 </div>
 
-<!-- Q18 -->
-<div class="form-screen" id="instructor-q18">
-  <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-  <p><strong>(Premium Plan)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-    <button type="button" onclick="next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- ===================== STEP 18: Final Choice Before Payment ===================== -->
+  <div class="form-screen" id="final-choice">
+    <h2>What would you like to do next?</h2>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
+      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
   <!-- =================== Q19: Ownership / Monthly Support =================== -->
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('buyOutright'); next()">Own Outright</button>
-      <button type="button" onclick="recordFeature('monthlySupport'); next()">Monthly Support</button>
+      <button type="button" onclick="handleOwnership('Owned Outright')">Own Outright</button>
+      <button type="button" onclick="handleOwnership('Monthly Support')">Monthly Support</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1257,8 +1245,8 @@ body header + .form-screen {
     <h2>Your Recommended Plan</h2>
     <p id="recommended-plan">Calculating...</p>
     <div class="button-row">
-      <button type="button" onclick="goToPayPal(selectedPlan)">Proceed to Payment</button>
-      <button type="button" onclick="submitLead(selectedPlan)">Submit as Lead</button>
+      <button type="button" id="payButton">Proceed to Payment</button>
+      <button type="button" onclick="submitLead()">Submit as Lead</button>
     </div>
   </div>
 
