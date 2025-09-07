@@ -995,9 +995,6 @@ body header + .form-screen {
   .progress-container { height: 6px; }
   .progress-label { font-size: 0.7rem; }
 }
-
-
-
 </style>
 
 </head>
@@ -1036,7 +1033,9 @@ body header + .form-screen {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== INTRO ===================== -->
+  <!-- ===================== Q1–Q16 ===================== -->
+
+  <!-- INTRO -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -1046,7 +1045,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q1 ===================== -->
+  <!-- Q1 -->
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -1055,7 +1054,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q2 ===================== -->
+  <!-- Q2: Design Selection -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
@@ -1066,7 +1065,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q3 ===================== -->
+  <!-- Q3: Design Code Entry -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
     <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
@@ -1076,18 +1075,21 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== BASIC PLAN (Q4–Q8) ===================== -->
+  <!-- ------------------ SOLO INSTRUCTOR FUNNEL ------------------ -->
+
+  <!-- STEP 4–8: Basic Plan -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
+    <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
   <div class="form-screen" id="instructor-q5">
     <h2>Do you want your site optimized for mobile?</h2>
+    <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1097,6 +1099,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q6">
     <h2>Do you want strong call-to-action buttons?</h2>
+    <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1106,6 +1109,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q7">
     <h2>Do you want a simple contact form?</h2>
+    <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1115,6 +1119,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q8">
     <h2>Do you want an About Me / Instructor Bio section?</h2>
+    <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1122,9 +1127,10 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== STANDARD PLAN (Q9–Q13) ===================== -->
+  <!-- STANDARD PLAN -->
   <div class="form-screen" id="instructor-q9">
     <h2>Do you want your site to rank on Google locally?</h2>
+    <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1134,6 +1140,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q10">
     <h2>Would you like to display student reviews?</h2>
+    <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1143,6 +1150,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q11">
     <h2>Do you want branding help (logo, colors)?</h2>
+    <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1152,6 +1160,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q12">
     <h2>Do you want a FAQ or student guide section?</h2>
+    <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1161,6 +1170,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q13">
     <h2>Do you want newsletter signup or mailing list?</h2>
+    <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1168,9 +1178,10 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== PREMIUM PLAN (Q14–Q18) ===================== -->
+  <!-- PREMIUM PLAN -->
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+    <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1180,6 +1191,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q15">
     <h2>Do you want social media integration?</h2>
+    <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1189,6 +1201,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q16">
     <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+    <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1198,6 +1211,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q17">
     <h2>Do you want help creating content (text/images)?</h2>
+    <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1207,6 +1221,7 @@ body header + .form-screen {
 
   <div class="form-screen" id="instructor-q18">
     <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
       <button type="button" onclick="next()">No</button>
@@ -1214,7 +1229,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== FINAL CHOICE BEFORE OWNERSHIP ===================== -->
+  <!-- ===================== STEP 18: Final Choice Before Payment ===================== -->
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
@@ -1224,7 +1239,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q19: OWNERSHIP ===================== -->
+  <!-- =================== Q19: Ownership / Monthly Support =================== -->
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <div class="button-row">
@@ -1234,34 +1249,18 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <!-- =================== Recommended Plan Display =================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
     <p id="recommended-plan">Calculating...</p>
-
-    <div class="pricing-cards-wrapper">
-      <div class="pricing-card" data-plan="basic">
-        <h4>Basic Plan</h4>
-        <p>Simple website + booking/contact</p>
-        <button type="button" onclick="goToPayPal('basic')">Pay Now</button>
-        <button type="button" onclick="submitLead('basic')">More Info</button>
-      </div>
-      <div class="pricing-card" data-plan="pro">
-        <h4>Standard Plan</h4>
-        <p>Booking, payments, SEO, branding help</p>
-        <button type="button" onclick="goToPayPal('pro')">Pay Now</button>
-        <button type="button" onclick="submitLead('pro')">More Info</button>
-      </div>
-      <div class="pricing-card" data-plan="premium">
-        <h4>Premium Plan</h4>
-        <p>Full features including lesson packages, social media, content, professional email</p>
-        <button type="button" onclick="goToPayPal('premium')">Pay Now</button>
-        <button type="button" onclick="submitLead('premium')">More Info</button>
-      </div>
+    <div class="button-row">
+      <button type="button" id="payButton" onclick="goToPayPal()">Proceed to Payment</button>
+      <button type="button" onclick="submitLead()">Submit as Lead</button>
     </div>
   </div>
 
 </form>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1290,10 +1289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+    if (screen.id === "recommended-plan-screen") updateRecommendedPlan();
   }
 
   function next() {
@@ -1316,107 +1312,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ User Path & Features ------------------
   let userPath = "";
-  let yesFeatures = [];
-  let noFeatures = [];
+  const features = [];
   let selectedPlan = "";
   let ownershipChoice = ""; // Q19 ownership choice
 
   window.setPath = (path) => { userPath = path; };
 
   window.recordFeature = (feature) => {
-    if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+    if (!features.includes(feature)) features.push(feature);
 
     const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenFeatures) hiddenFeatures.value = features.join(", ");
 
-    showRecommendedPlan(); // live update
+    updateRecommendedPlan(); // update live
   };
 
-  window.recordNoFeature = (feature) => {
-    if (!noFeatures.includes(feature)) noFeatures.push(feature);
+  window.recordOwnership = (choice) => {
+    ownershipChoice = choice; // "buyOutright" or "monthlySupport"
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    if (hiddenPlan) hiddenPlan.value = ownershipChoice;
+    updateRecommendedPlan();
   };
 
-  // ------------------ Ownership ------------------
-  window.handleOwnership = (choice) => {
-    ownershipChoice = choice;
-    if (choice === 'Owned Outright') recordFeature('buyOutright');
-    else recordFeature('monthlySupport');
-    showRecommendedPlan();
-  };
+  // ------------------ Plan Recommendation Logic ------------------
+  function updateRecommendedPlan() {
+    let plan = "";
 
-  // ------------------ Plan Tiers ------------------
-  const planTiers = {
-    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    Standard: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    Premium: ['packages', 'social', 'email', 'content', 'guide']
-  };
+    const basicFeatures = ["booking", "mobile", "cta", "contact", "bio"];
+    const standardFeatures = ["seo", "reviews", "branding", "faq", "newsletter"];
+    const premiumFeatures = ["packages", "social", "email", "content", "guide"];
 
-  // ------------------ Recommended Plan Display ------------------
-  function showRecommendedPlan() {
-    let recommendedTier = "Basic";
-    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Standard";
+    const hasBasic = features.some(f => basicFeatures.includes(f));
+    const hasStandard = features.some(f => standardFeatures.includes(f));
+    const hasPremium = features.some(f => premiumFeatures.includes(f));
 
-    let planName = `Recommended Plan (${ownershipChoice || "Ownership TBD"})`;
-    let html = `<strong>${planName}</strong>`;
+    if (hasPremium) plan = "Premium Plan: Full features including lesson packages, social media, content, professional email";
+    else if (hasStandard) plan = "Standard Plan: Booking, payments, SEO, branding help";
+    else if (hasBasic) plan = "Basic Plan: Simple website + booking/contact";
+    else plan = "Basic Plan: Simple website + booking/contact";
 
-    for (let tier in planTiers) {
-      html += `<h3>${tier} Plan Features:</h3>`;
-
-      let included = yesFeatures.filter(f => planTiers[tier].includes(f));
-      if (included.length) {
-        html += "<ul>";
-        included.forEach(f => {
-          let label = (tier !== recommendedTier) ? " (Optional)" : "";
-          html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
-        });
-        html += "</ul>";
-      }
-
-      let excluded = noFeatures.filter(f => planTiers[tier].includes(f));
-      if (excluded.length) {
-        html += "<ul>";
-        excluded.forEach(f => {
-          html += `<li>❌ ${formatFeatureName(f)}</li>`;
-        });
-        html += "</ul>";
-      }
-    }
+    if (ownershipChoice === "buyOutright") plan += " (You chose to own the website outright)";
+    else if (ownershipChoice === "monthlySupport") plan += " (You chose monthly support including hosting & maintenance)";
 
     const recEl = document.getElementById('recommended-plan');
-    if (recEl) recEl.innerHTML = html;
+    if (recEl) recEl.innerText = plan;
   }
 
-  function formatFeatureName(f) {
-    const names = {
-      booking: "Online Booking & Payment",
-      mobile: "Mobile Optimized",
-      cta: "Strong Call-to-Action Buttons",
-      contact: "Simple Contact Form",
-      bio: "About Me / Instructor Bio",
-      seo: "Local SEO Optimization",
-      reviews: "Student Reviews Section",
-      branding: "Branding Help (Logo & Colors)",
-      faq: "FAQ / Student Guide Section",
-      newsletter: "Newsletter Signup / Mailing List",
-      packages: "Lesson Packages & Gift Vouchers",
-      social: "Social Media Integration",
-      email: "Professional Email Address",
-      content: "Content Creation Help",
-      guide: "What to Expect Guide",
-      buyOutright: "Owned Outright",
-      monthlySupport: "Monthly Support"
-    };
-    return names[f] || f;
-  }
-
-  // ------------------ Q19 Buttons ------------------
+  // ------------------ Q19 Ownership Buttons ------------------
   const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
   const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
-  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { handleOwnership('Owned Outright'); next(); });
-  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { handleOwnership('Monthly Support'); next(); });
 
-  // ------------------ Typewriter Intro ------------------
+  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { recordOwnership('buyOutright'); next(); });
+  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership('monthlySupport'); next(); });
+
+  // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
@@ -1424,12 +1373,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
     let lines = [];
-    let currentLine = 0, currentChar = 0, lineEl = null;
-    const typingSpeed = 100, lineDelay = 500;
-    const cursor = document.createElement('span'); cursor.classList.add('cursor');
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
-    function setLines() {
+    function setLinesByOrientation() {
       lines = window.matchMedia("(orientation: landscape)").matches
         ? ["We build", "your website.", "You approve,", "then pay."]
         : ["We build", "your", "website.", "You approve,", "then pay."];
@@ -1438,8 +1391,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function typeChar() {
       if (currentLine >= lines.length) {
         cursor.remove();
-        setTimeout(() => { typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000); }, 1000);
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
         return;
       }
       const text = lines[currentLine];
@@ -1454,23 +1409,49 @@ document.addEventListener("DOMContentLoaded", () => {
         currentChar++;
         setTimeout(typeChar, typingSpeed);
       } else {
-        currentLine++; currentChar = 0; lineEl = null;
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
         setTimeout(typeChar, lineDelay);
       }
     }
 
-    setLines(); typeChar();
+    setLinesByOrientation();
+    typeChar();
 
     window.addEventListener('resize', debounce(() => {
-      currentLine = 0; currentChar = 0; lineEl = null;
-      typewriterEl.textContent = ''; typewriterEl.appendChild(cursor);
-      setLines(); typeChar();
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
     }, 300));
   }
 
-  function debounce(func, wait) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
-  // ------------------ Step 3 Design Code ------------------
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
+
+  // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
@@ -1485,9 +1466,13 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen(`instructor-q4`);
   }
 
-  // ------------------ Pricing Cards ------------------
+  // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  const planLinks = { basic: "https://www.paypal.com/paypal-link-basic", pro: "https://www.paypal.com/paypal-link-pro", premium: "https://www.paypal.com/paypal-link-premium" };
+  const planLinks = {
+    basic: "https://www.paypal.com/paypal-link-basic",
+    pro: "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
 
   window.goToPayPal = (plan) => {
     selectedPlan = plan;
@@ -1518,7 +1503,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Intersection Observer for Pricing Animation ------------------
   const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); obs.unobserve(entry.target); } });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
   }, { threshold: 0.3 });
   cards.forEach(card => observer.observe(card));
 
@@ -1544,42 +1534,150 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
   // ------------------ AOS Init ------------------
   AOS.init();
-
-  // ------------------ Water Rise Progress ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const totalScreens = screens.length;
-    const progressPercent = ((currentScreen + 1) / totalScreens) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-
-  // ------------------ Standard Progress Bar ------------------
-  const totalSteps = screens.length;
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / totalSteps) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
-
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
 });
- </script>      
+
+
+ // ------------------ Water Rise Progress Bar ------------------
+function updateWaterProgress() {
+  const wave = document.getElementById('progress-wave');
+  if (!wave) return;
+
+  const totalScreens = screens.length;
+  const progressPercent = ((currentScreen + 1) / totalScreens) * 100;
+
+  // Animate height like water rising
+  wave.style.height = progressPercent + '%';
+}
+
+// Override showScreen to also update water progress
+const originalShowScreen = showScreen;
+showScreen = (id) => {
+  originalShowScreen(id);
+  updateWaterProgress();
+};
+
+// Initialize on page load
+updateWaterProgress();
+
+
+ const totalSteps = document.querySelectorAll('.form-screen').length;
+
+function updateProgress(currentStep) {
+  const progressBar = document.querySelector('.progress-bar');
+  const progressLabel = document.querySelector('.progress-label');
+  const percent = Math.round((currentStep / totalSteps) * 100);
+  progressBar.style.width = percent + '%';
+  progressLabel.textContent = percent + '%';
+}
+
+// Example: call updateProgress(currentStepIndex) whenever user navigates
+// updateProgress(1);  // first step
+// updateProgress(5);  // fifth step, etc.
+
+
+
+// ======= Feature Tracking =======
+let yesFeatures = [];
+let noFeatures = [];
+let ownershipChoice = ""; // "Owned Outright" or "Monthly Support"
+
+// Record Yes
+function recordFeature(feature) {
+    yesFeatures.push(feature);
+}
+
+// Record No
+function recordNoFeature(feature) {
+    noFeatures.push(feature);
+}
+
+// ======= Plan Tiers =======
+const planTiers = {
+    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+    Standard: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+    Premium: ['packages', 'social', 'email', 'content', 'guide']
+};
+
+// ======= Handle Ownership Button Click =======
+function handleOwnership(choice) {
+    ownershipChoice = choice; // Save ownership selection
+    if (choice === 'Owned Outright') {
+        recordFeature('buyOutright');
+    } else {
+        recordFeature('monthlySupport');
+    }
+    showRecommendedPlan(); // Show recommended plan screen
+}
+
+// ======= Show Recommended Plan =======
+function showRecommendedPlan() {
+    // Determine recommended plan tier
+    let recommendedTier = "Basic";
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
+        recommendedTier = "Premium";
+    } else if (yesFeatures.some(f => planTiers.Standard.includes(f))) {
+        recommendedTier = "Standard";
+    }
+
+    let planName = `Recommended Plan (${ownershipChoice})`;
+    let html = `<strong>${planName}</strong>`;
+
+    // Loop through all tiers
+    for (let tier in planTiers) {
+        html += `<h3>${tier} Plan Features:</h3>`;
+
+        // Included features
+        let yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
+        if (yesInTier.length > 0) {
+            html += "<ul>";
+            yesInTier.forEach(f => {
+                let label = (tier !== recommendedTier) ? " (Optional)" : "";
+                html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
+            });
+            html += "</ul>";
+        }
+
+        // Not Included features
+        let noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+        if (noInTier.length > 0) {
+            html += "<ul>";
+            noInTier.forEach(f => {
+                html += `<li>❌ ${formatFeatureName(f)}</li>`;
+            });
+            html += "</ul>";
+        }
+    }
+
+    // Display on screen
+    document.getElementById('recommended-plan').innerHTML = html;
+    showScreen('recommended-plan-screen');
+}
+
+// ======= Feature Name Formatter =======
+function formatFeatureName(f) {
+    const featureNames = {
+        booking: "Online Booking & Payment",
+        mobile: "Mobile Optimized",
+        cta: "Strong Call-to-Action Buttons",
+        contact: "Simple Contact Form",
+        bio: "About Me / Instructor Bio",
+        seo: "Local SEO Optimization",
+        reviews: "Student Reviews Section",
+        branding: "Branding Help (Logo & Colors)",
+        faq: "FAQ / Student Guide Section",
+        newsletter: "Newsletter Signup / Mailing List",
+        packages: "Lesson Packages & Gift Vouchers",
+        social: "Social Media Integration",
+        email: "Professional Email Address",
+        content: "Content Creation Help",
+        guide: "What to Expect Guide",
+        buyOutright: "Owned Outright",
+        monthlySupport: "Monthly Support"
+    };
+    return featureNames[f] || f;
+}
+</script>
 </body>
 </html>
