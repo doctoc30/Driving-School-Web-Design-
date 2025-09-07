@@ -1580,7 +1580,6 @@ function updateProgress(currentStep) {
 
 
 
-
 // ======= Feature Tracking =======
 let yesFeatures = [];
 let noFeatures = [];
@@ -1616,38 +1615,40 @@ function handleOwnership(choice) {
 
 // ======= Show Recommended Plan =======
 function showRecommendedPlan() {
-    // Determine plan type based on Yes features
-    let planName = "Recommended Plan";
-    if (yesFeatures.some(f => ['seo', 'reviews', 'branding', 'faq', 'newsletter'].includes(f))) {
-        planName = "Standard Plan";
-    }
-    if (yesFeatures.some(f => ['packages', 'social', 'email', 'content', 'guide'].includes(f))) {
-        planName = "Premium Plan";
+    // Determine recommended plan tier
+    let recommendedTier = "Basic";
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
+        recommendedTier = "Premium";
+    } else if (yesFeatures.some(f => planTiers.Standard.includes(f))) {
+        recommendedTier = "Standard";
     }
 
-    // Add ownership/payment type
-    planName += ` (${ownershipChoice})`;
-
-    // Build HTML grouped by plan tiers
+    let planName = `Recommended Plan (${ownershipChoice})`;
     let html = `<strong>${planName}</strong>`;
 
+    // Loop through all tiers
     for (let tier in planTiers) {
         html += `<h3>${tier} Plan Features:</h3>`;
 
-        // Included features (Yes)
+        // Included features
         let yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
         if (yesInTier.length > 0) {
-            html += "<p><strong>Included:</strong><ul>";
-            yesInTier.forEach(f => { html += `<li>${formatFeatureName(f)}</li>`; });
-            html += "</ul></p>";
+            html += "<ul>";
+            yesInTier.forEach(f => {
+                let label = (tier !== recommendedTier) ? " (Optional)" : "";
+                html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
+            });
+            html += "</ul>";
         }
 
-        // Not Included features (No)
+        // Not Included features
         let noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
         if (noInTier.length > 0) {
-            html += "<p><strong>Not Included:</strong><ul>";
-            noInTier.forEach(f => { html += `<li>${formatFeatureName(f)}</li>`; });
-            html += "</ul></p>";
+            html += "<ul>";
+            noInTier.forEach(f => {
+                html += `<li>❌ ${formatFeatureName(f)}</li>`;
+            });
+            html += "</ul>";
         }
     }
 
@@ -1679,7 +1680,6 @@ function formatFeatureName(f) {
     };
     return featureNames[f] || f;
 }
-
 </script>
 </body>
 </html>
