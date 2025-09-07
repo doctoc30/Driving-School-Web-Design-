@@ -1060,7 +1060,7 @@ body header + .form-screen {
   <!-- ===================== Q3 ===================== -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
@@ -1073,7 +1073,7 @@ body header + .form-screen {
     <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
     </div>
   </div>
 
@@ -1082,7 +1082,7 @@ body header + .form-screen {
     <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1092,7 +1092,7 @@ body header + .form-screen {
     <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1102,7 +1102,7 @@ body header + .form-screen {
     <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1112,7 +1112,7 @@ body header + .form-screen {
     <p><strong>(Basic Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1123,7 +1123,7 @@ body header + .form-screen {
     <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1133,7 +1133,7 @@ body header + .form-screen {
     <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1143,7 +1143,7 @@ body header + .form-screen {
     <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1153,7 +1153,7 @@ body header + .form-screen {
     <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1163,7 +1163,7 @@ body header + .form-screen {
     <p><strong>(Standard Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1174,7 +1174,7 @@ body header + .form-screen {
     <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1184,7 +1184,7 @@ body header + .form-screen {
     <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('social'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1194,7 +1194,7 @@ body header + .form-screen {
     <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1204,7 +1204,7 @@ body header + .form-screen {
     <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('content'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1214,7 +1214,7 @@ body header + .form-screen {
     <p><strong>(Premium Plan)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
+      <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1242,87 +1242,14 @@ body header + .form-screen {
   <!-- ===================== RECOMMENDED PLAN ===================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
-
-    <section id="pricing-section">
-      <div class="pricing-container">
-
-        <!-- Basic -->
-        <div class="pricing-card" data-animate data-plan="basic">
-          <div class="badge" id="basicBadge">Recommended</div>
-          <h3>Basic</h3>
-          <p class="price">£499</p>
-          <ul>
-            <li>5 Pages Website</li>
-            <li>5 Revisions</li>
-            <li>Mobile Friendly</li>
-          </ul>
-          <button class="pay-now" type="button" onclick="goToPayPal('basic')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
-
-        <!-- Pro -->
-        <div class="pricing-card" data-animate data-plan="pro">
-          <div class="badge" id="proBadge">Recommended</div>
-          <h3>Pro</h3>
-          <p class="price">£999</p>
-          <ul>
-            <li>10 Pages Website</li>
-            <li>15 Revisions</li>
-            <li>SEO Optimization</li>
-            <li>Booking System</li>
-          </ul>
-          <button class="pay-now" type="button" onclick="goToPayPal('pro')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £999 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
-
-        <!-- Premium -->
-        <div class="pricing-card" data-animate data-plan="premium">
-          <div class="badge" id="premiumBadge">Recommended</div>
-          <h3>Premium</h3>
-          <p class="price">£1499</p>
-          <ul>
-            <li>50+ Pages Website</li>
-            <li>30 Revisions</li>
-            <li>Full Branding</li>
-            <li>Booking & Payment Integration</li>
-            <li>Social Media Integration</li>
-          </ul>
-          <button class="pay-now" type="button" onclick="goToPayPal('premium')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £1499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
+    <div id="recommended-plan"></div>
 
     <!-- Submit as lead option -->
     <div class="button-row" style="margin-top: 2rem; text-align: center;">
       <button type="button" onclick="submitLead()">Submit as Lead Instead</button>
     </div>
   </div>
-
 </form>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1414,21 +1341,23 @@ document.addEventListener("DOMContentLoaded", () => {
     Premium: ['packages', 'social', 'email', 'content', 'guide']
   };
 
+  const funnelToPayPal = { Basic: 'basic', Standard: 'pro', Premium: 'premium' };
+
   // ------------------ Show Recommended Plan ------------------
   function showRecommendedPlan() {
     let recommendedTier = "Basic";
     if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
     else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Standard";
 
+    const payPalPlan = funnelToPayPal[recommendedTier];
+
     let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
     let html = `<strong>${planName}</strong>`;
 
     for (let tier in planTiers) {
-      html += `<h3>${tier} Plan Features:</h3>`;
-
       const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
       if (yesInTier.length > 0) {
-        html += "<ul>";
+        html += `<h3>${tier} Plan Features:</h3><ul>`;
         yesInTier.forEach(f => {
           const label = (tier !== recommendedTier) ? " (Optional)" : "";
           html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
@@ -1446,6 +1375,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerHTML = html;
+
+    const payButton = document.getElementById('payButton');
+    if (payButton) payButton.onclick = () => goToPayPal(payPalPlan);
+
+    const leadButton = document.querySelector('#recommended-plan-screen button:nth-child(2)');
+    if (leadButton) leadButton.onclick = () => submitLead(payPalPlan);
+
     if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
   }
 
