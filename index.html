@@ -1581,9 +1581,10 @@ function updateProgress(currentStep) {
 
 
 
- // ======= Feature Tracking =======
+// ======= Feature Tracking =======
 let yesFeatures = [];
 let noFeatures = [];
+let ownershipChoice = ""; // "Owned Outright" or "Monthly Support"
 
 // Record Yes
 function recordFeature(feature) {
@@ -1602,41 +1603,55 @@ const planTiers = {
     Premium: ['packages', 'social', 'email', 'content', 'guide']
 };
 
-// ======= Handle Own Outright =======
-function handleBuyOutright() {
-    recordFeature('buyOutright'); // record ownership
-    showRecommendedPlan();
+// ======= Handle Ownership Button Click =======
+function handleOwnership(choice) {
+    ownershipChoice = choice; // Save ownership selection
+    if (choice === 'Owned Outright') {
+        recordFeature('buyOutright');
+    } else {
+        recordFeature('monthlySupport');
+    }
+    showRecommendedPlan(); // Show recommended plan screen
 }
 
 // ======= Show Recommended Plan =======
 function showRecommendedPlan() {
-    let planName = "Recommended Plan (Owned Outright)";
+    // Determine plan type based on Yes features
+    let planName = "Recommended Plan";
+    if (yesFeatures.some(f => ['seo', 'reviews', 'branding', 'faq', 'newsletter'].includes(f))) {
+        planName = "Standard Plan";
+    }
+    if (yesFeatures.some(f => ['packages', 'social', 'email', 'content', 'guide'].includes(f))) {
+        planName = "Premium Plan";
+    }
+
+    // Add ownership/payment type
+    planName += ` (${ownershipChoice})`;
+
+    // Build HTML grouped by plan tiers
     let html = `<strong>${planName}</strong>`;
 
     for (let tier in planTiers) {
         html += `<h3>${tier} Plan Features:</h3>`;
 
-        // Included (Yes)
+        // Included features (Yes)
         let yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
         if (yesInTier.length > 0) {
             html += "<p><strong>Included:</strong><ul>";
-            yesInTier.forEach(f => {
-                html += `<li>${formatFeatureName(f)}</li>`;
-            });
+            yesInTier.forEach(f => { html += `<li>${formatFeatureName(f)}</li>`; });
             html += "</ul></p>";
         }
 
-        // Not Included (No)
+        // Not Included features (No)
         let noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
         if (noInTier.length > 0) {
             html += "<p><strong>Not Included:</strong><ul>";
-            noInTier.forEach(f => {
-                html += `<li>${formatFeatureName(f)}</li>`;
-            });
+            noInTier.forEach(f => { html += `<li>${formatFeatureName(f)}</li>`; });
             html += "</ul></p>";
         }
     }
 
+    // Display on screen
     document.getElementById('recommended-plan').innerHTML = html;
     showScreen('recommended-plan-screen');
 }
@@ -1659,7 +1674,8 @@ function formatFeatureName(f) {
         email: "Professional Email Address",
         content: "Content Creation Help",
         guide: "What to Expect Guide",
-        buyOutright: "Owned Outright"
+        buyOutright: "Owned Outright",
+        monthlySupport: "Monthly Support"
     };
     return featureNames[f] || f;
 }
