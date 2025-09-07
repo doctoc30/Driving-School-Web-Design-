@@ -1,8 +1,28 @@
-<h2>Order Details for <span id="planName"></span> Plan</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You - Driving School Website</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  h2 { color: #333; }
+  label { display: block; margin-top: 10px; }
+  textarea, input[type="text"], input[type="file"] { width: 100%; margin-top: 5px; padding: 5px; }
+  .hidden { display: none; }
+  #summaryText { margin: 15px 0; padding: 10px; background: #f4f4f4; border: 1px solid #ddd; }
+</style>
+</head>
+<body>
+
+<h2>Order Details for <span id="planName"></span></h2>
+<div id="summaryText">Loading your selection...</div>
 
 <form id="orderForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
 
   <input type="hidden" id="selectedPlan" name="Selected Plan">
+  <input type="hidden" id="selectedOwnership" name="Ownership">
+  <input type="hidden" id="selectedFeatures" name="Selected Features">
 
   <!-- Basic Plan Fields -->
   <div class="basic-fields">
@@ -14,7 +34,7 @@
   </div>
 
   <!-- Standard Plan Fields -->
-  <div class="standard-fields" style="display:none;">
+  <div class="standard-fields hidden">
     <label for="seoKeywords">SEO Keywords</label>
     <input type="text" id="seoKeywords" name="seoKeywords">
 
@@ -26,7 +46,7 @@
   </div>
 
   <!-- Premium Plan Fields -->
-  <div class="premium-fields" style="display:none;">
+  <div class="premium-fields hidden">
     <label for="socialLinks">Social Media Links</label>
     <input type="text" id="socialLinks" name="socialLinks">
 
@@ -52,25 +72,45 @@
 </form>
 
 <script>
-  (function() {
+(function() {
     const urlParams = new URLSearchParams(window.location.search);
     const plan = urlParams.get('plan') || 'Basic';
+    const ownership = urlParams.get('ownership') || '';
+    const features = urlParams.get('features') || '';
+
     const planNameEl = document.getElementById('planName');
+    const summaryTextEl = document.getElementById('summaryText');
+
     const selectedPlanEl = document.getElementById('selectedPlan');
+    const selectedOwnershipEl = document.getElementById('selectedOwnership');
+    const selectedFeaturesEl = document.getElementById('selectedFeatures');
 
     planNameEl.innerText = plan;
     selectedPlanEl.value = plan;
+    selectedOwnershipEl.value = ownership;
+    selectedFeaturesEl.value = features;
 
+    // Show selected features in summary
+    const featureList = features ? features.split(',').map(f => `<li>${f}</li>`).join('') : '<li>No extra features selected</li>';
+    summaryTextEl.innerHTML = `
+      <strong>Ownership / Payment:</strong> ${ownership}<br>
+      <strong>Selected Features:</strong>
+      <ul>${featureList}</ul>
+    `;
+
+    // Show/hide fields based on plan
     const standardFields = document.querySelector('.standard-fields');
     const premiumFields = document.querySelector('.premium-fields');
 
-    // Show fields based on plan
-    if(plan.toLowerCase() === 'standard') {
-      standardFields.style.display = 'block';
-    } else if(plan.toLowerCase() === 'premium') {
-      standardFields.style.display = 'block';
-      premiumFields.style.display = 'block';
+    if(plan.toLowerCase().includes('standard')) {
+      standardFields.classList.remove('hidden');
     }
-    // Basic plan: no extra fields, already visible
-  })();
+    if(plan.toLowerCase().includes('premium')) {
+      standardFields.classList.remove('hidden');
+      premiumFields.classList.remove('hidden');
+    }
+})();
 </script>
+
+</body>
+</html>
