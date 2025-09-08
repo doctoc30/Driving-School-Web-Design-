@@ -1379,7 +1379,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
-  let ownershipChoice = ""; // Q19 ownership choice
+  let ownershipChoice = "";
 
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
@@ -1424,21 +1424,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Show Recommended Plan ------------------
   function showRecommendedPlan() {
-    // Remove No features from Yes
-    const yesClean = yesFeatures.filter(f => !noFeatures.includes(f));
-
-    // New logic: strictly prioritize Premium > Pro > Basic
     let recommendedTier = "Basic";
-    if (yesClean.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesClean.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
-    else if (yesClean.some(f => planTiers.Basic.includes(f))) recommendedTier = "Basic";
+
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
     let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
     let html = `<strong>${planName}</strong>`;
 
     for (let tier in planTiers) {
       html += `<h3>${tier} Plan Features:</h3>`;
-      const yesInTier = yesClean.filter(f => planTiers[tier].includes(f));
+      const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
       const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
 
       if (yesInTier.length > 0 || noInTier.length > 0) {
@@ -1506,6 +1502,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
+    // Scroll fix for mobile and tablet: use 'nearest'
     if (card) {
       setTimeout(() => {
         card.scrollIntoView({ behavior: "smooth", block: "nearest" });
