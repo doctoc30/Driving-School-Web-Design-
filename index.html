@@ -1705,13 +1705,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- // ------------------ NEW: Calculate Final Plan ------------------
 function calculatePlan() {
   let finalPlan = "basic";
-  if (planScores.pro > planScores.basic && planScores.pro >= planScores.premium) {
-    finalPlan = "pro";
-  } else if (planScores.premium > planScores.basic && planScores.premium > planScores.pro) {
+
+  // If ANY premium features are selected → Premium wins
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
     finalPlan = "premium";
+  }
+  // Else if ANY pro features are selected → Pro wins
+  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) {
+    finalPlan = "pro";
   }
 
   // Highlight chosen card
@@ -1732,7 +1735,7 @@ function calculatePlan() {
   if (card) {
     setTimeout(() => {
       card.scrollIntoView({ behavior: "smooth", block: "center" });
-      card.classList.add("highlight"); // optional CSS glow effect
+      card.classList.add("highlight"); 
       setTimeout(() => card.classList.remove("highlight"), 2000);
     }, 500);
   }
