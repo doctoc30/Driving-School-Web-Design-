@@ -1512,50 +1512,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Calculate & Highlight Final Plan ------------------
+  Plan ------------------
   function calculatePlan(finalPlan) {
-  finalPlan = finalPlan.toLowerCase();
+    finalPlan = finalPlan.toLowerCase();
 
-  // Hide all badges first
-  document.querySelectorAll(".pricing-card .badge")
-    .forEach(b => b.style.display = "none");
+    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
-  // Find the selected card
-  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-  if (!card) return;
+    const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+    const badge = card ? card.querySelector(".badge") : null;
+    if (badge) badge.style.display = "block";
 
-  // Show the badge
-  const badge = card.querySelector(".badge");
-  if (badge) badge.style.display = "block";
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-  // Update hidden form values
-  const hiddenPlan = document.getElementById("hiddenPlan");
-  const hiddenFeatures = document.getElementById("hiddenFeatures");
-  const hiddenLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
-
-  // Ensure the card is fully visible before scrolling
-  card.style.display = 'block';
-  card.style.position = 'relative';
-  card.style.zIndex = '10';
-
-  // Scroll into view, accounting for header
-  setTimeout(() => {
-    const headerHeight = document.querySelector("header")?.offsetHeight || 80;
-    const rect = card.getBoundingClientRect();
-    const absoluteY = window.scrollY + rect.top;
-
-    window.scrollTo({
-      top: absoluteY - headerHeight - 20,
-      behavior: "smooth"
-    });
-
-    // Highlight effect
-    card.classList.add("highlight");
-    setTimeout(() => card.classList.remove("highlight"), 2000);
-  }, 500);
-}
+    if (card) {
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        card.classList.add("highlight");
+        setTimeout(() => card.classList.remove("highlight"), 2000);
+      }, 500);
+    }
+  }
 
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
@@ -1571,6 +1552,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inputEl) inputEl.value = codeParam;
     showScreen(`instructor-q4`);
   }
+
 
   // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
