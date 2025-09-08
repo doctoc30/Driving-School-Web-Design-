@@ -1518,7 +1518,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
     const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    const badge = card ? card.querySelector(".badge") : null;
+    if (!card) return;
+
+    const badge = card.querySelector(".badge");
     if (badge) badge.style.display = "block";
 
     const hiddenPlan = document.getElementById("hiddenPlan");
@@ -1530,7 +1532,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (card) {
       setTimeout(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+
+        // Use offsetTop for vertical scroll
+        const cardTop = card.offsetTop;
+
+        // Smooth scroll to bring card fully into view below header
+        window.scrollTo({
+          top: cardTop - headerHeight - 20, // 20px padding
+          behavior: "smooth"
+        });
+
+        // Highlight glow effect
         card.classList.add("highlight");
         setTimeout(() => card.classList.remove("highlight"), 2000);
       }, 500);
