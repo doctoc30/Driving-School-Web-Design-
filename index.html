@@ -1743,6 +1743,51 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
+
+
+
+ function calculatePlan() {
+  let finalPlan = "basic";
+
+  // Pick plan based on scores
+  if (planScores.pro > planScores.basic && planScores.pro >= planScores.premium) {
+    finalPlan = "pro";
+  } else if (planScores.premium > planScores.basic && planScores.premium > planScores.pro) {
+    finalPlan = "premium";
+  }
+
+  // Hide all badges
+  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+
+  // Highlight chosen card
+  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+  const badge = card ? card.querySelector(".badge") : null;
+  if (badge) badge.style.display = "block";
+
+  // Save hidden form values
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+
+  // 🔥 Scroll horizontally to center the recommended card
+  if (card) {
+    setTimeout(() => {
+      const container = document.querySelector(".pricing-container");
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+        const scrollLeft = container.scrollLeft + (cardRect.left - containerRect.left) 
+                          - (containerRect.width / 2 - cardRect.width / 2);
+        container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+      }
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 500);
+  }
+}
 </script>
 </body>
 </html>
