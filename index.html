@@ -1519,20 +1519,23 @@ function calculatePlan(finalPlan) {
   if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-  if (card) {
-    setTimeout(() => {
-      // 👇 Detect portrait mode
-      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+if (card) {
+  setTimeout(() => {
+    const headerHeight = document.querySelector('header')?.offsetHeight || 80;
 
-      card.scrollIntoView({
-        behavior: "smooth",
-        block: isPortrait ? "start" : "center", // top for portrait, center for desktop/landscape
-      });
+    // Get card’s position relative to the page
+    const rect = card.getBoundingClientRect();
+    const absoluteY = window.scrollY + rect.top;
 
-      card.classList.add("highlight");
-      setTimeout(() => card.classList.remove("highlight"), 2000);
-    }, 500);
-  }
+    // Scroll so card top is just below the header
+    window.scrollTo({
+      top: absoluteY - headerHeight - 20, // 20px padding
+      behavior: "smooth"
+    });
+
+    card.classList.add("highlight");
+    setTimeout(() => card.classList.remove("highlight"), 2000);
+  }, 500);
 }
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
