@@ -995,6 +995,40 @@ body header + .form-screen {
   box-shadow: 0 0 20px 5px rgba(0, 150, 255, 0.6);
   transition: box-shadow 0.5s ease;
 }
+
+
+
+ /* Pricing container: horizontal scroll on small screens */
+.pricing-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  overflow-x: auto;   /* enables horizontal scrolling */
+  scroll-snap-type: x mandatory; /* smooth snapping */
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 0;
+}
+
+/* Cards */
+.pricing-card {
+  flex: 0 0 80%;   /* each card takes ~80% of viewport width */
+  max-width: 350px;
+  min-width: 280px;
+  scroll-snap-align: start;  /* snap to card when swiping */
+}
+
+/* Desktop view — show all side by side */
+@media (min-width: 1024px) {
+  .pricing-container {
+    justify-content: center;
+    overflow-x: visible;
+  }
+
+  .pricing-card {
+    flex: 1 1 300px;
+    max-width: 350px;
+  }
+}
 </style>
 
 </head>
