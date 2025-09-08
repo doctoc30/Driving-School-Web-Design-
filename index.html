@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
 
-<style> 
+<style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -1518,9 +1518,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
     const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    if (!card) return;
-
-    const badge = card.querySelector(".badge");
+    const badge = card ? card.querySelector(".badge") : null;
     if (badge) badge.style.display = "block";
 
     const hiddenPlan = document.getElementById("hiddenPlan");
@@ -1532,18 +1530,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (card) {
       setTimeout(() => {
-        const headerHeight = document.querySelector("header")?.offsetHeight || 80;
-
-        // Use offsetTop for vertical scroll
-        const cardTop = card.offsetTop;
-
-        // Smooth scroll to bring card fully into view below header
-        window.scrollTo({
-          top: cardTop - headerHeight - 20, // 20px padding
-          behavior: "smooth"
-        });
-
-        // Highlight glow effect
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
         card.classList.add("highlight");
         setTimeout(() => card.classList.remove("highlight"), 2000);
       }, 500);
