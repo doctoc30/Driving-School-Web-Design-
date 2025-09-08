@@ -1381,7 +1381,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
 
-  // Scoring buckets (optional for future use)
+  // Scoring buckets (optional)
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
   window.setPath = (path) => { userPath = path; };
@@ -1389,7 +1389,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
 
-    // Score tracking
     if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
     else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
     else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
@@ -1426,10 +1425,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Show Recommended Plan ------------------
   function showRecommendedPlan() {
-    let recommendedTier = "Basic";
+    // Count yes features per tier
+    const tierCounts = {};
+    for (let tier in planTiers) {
+      tierCounts[tier] = yesFeatures.filter(f => planTiers[tier].includes(f)).length;
+    }
 
-    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+    // Determine recommended tier based on highest tier with yes features
+    let recommendedTier = "Basic"; // default
+    const tiersWithYes = Object.keys(tierCounts).filter(t => tierCounts[t] > 0);
+    if (tiersWithYes.length > 0) {
+      const priority = ["Premium", "Standard", "Basic"];
+      tiersWithYes.sort((a, b) => priority.indexOf(a) - priority.indexOf(b));
+      recommendedTier = tiersWithYes[0];
+    }
 
     let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
     let html = `<strong>${planName}</strong>`;
@@ -1437,22 +1446,20 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let tier in planTiers) {
       html += `<h3>${tier} Plan Features:</h3>`;
       const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
-      const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+      const noInTier = planTiers[tier].filter(f => !yesFeatures.includes(f)); // all unselected features
 
-      if (yesInTier.length > 0 || noInTier.length > 0) {
-        html += "<ul>";
+      html += "<ul>";
 
-        yesInTier.forEach(f => {
-          const label = (tier !== recommendedTier) ? " (Optional)" : "";
-          html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
-        });
+      yesInTier.forEach(f => {
+        const label = (tier.toLowerCase() !== recommendedTier.toLowerCase()) ? " (Optional)" : "";
+        html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
+      });
 
-        noInTier.forEach(f => {
-          html += `<li>❌ ${formatFeatureName(f)}</li>`;
-        });
+      noInTier.forEach(f => {
+        html += `<li>❌ ${formatFeatureName(f)}</li>`;
+      });
 
-        html += "</ul>";
-      }
+      html += "</ul>";
     }
 
     const recEl = document.getElementById('recommended-plan');
@@ -1460,7 +1467,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
-    calculatePlan(recommendedTier);
+    calculatePlan(recommendedTier.toLowerCase());
   }
 
   // ------------------ Format Feature Names ------------------
