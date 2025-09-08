@@ -1503,40 +1503,102 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Calculate & Highlight Final Plan ------------------
-function calculatePlan(finalPlan) {
-  finalPlan = finalPlan.toLowerCase();
+  function calculatePlan(suggestedTier) {
+    // Decide final plan attr: 'basic' | 'pro' | 'premium'
+    let finalPlanAttr = "basic";
 
-  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+    // If suggestedTier provided, prefer it (map Standard/Pro -> pro)
+    if (suggestedTier) {
+      const s = String(suggestedTier).toLowerCase();
+      if (s.includes("premium")) finalPlanAttr = "premium";
+      else if (s.includes("standard") || s.includes("pro")) finalPlanAttr = "pro";
+      else finalPlanAttr = "basic";
+    } else {
+      // fallback: choose based on selected features (premium > pro > basic)
+      if (yesFeatures.some(f => planTiers.Premium.includes(f))) finalPlanAttr = "premium";
+      else if (yesFeatures.some(f => planTiers.Standard.includes(f))) finalPlanAttr = "pro";
+      else finalPlanAttr = "basic";
+    }
 
-  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-  const badge = card ? card.querySelector(".badge") : null;
-  if (badge) badge.style.display = "block";
-
-  const hiddenPlan = document.getElementById("hiddenPlan");
-  const hiddenFeatures = document.getElementById("hiddenFeatures");
-  const hiddenLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
-
-if (card) {
-  setTimeout(() => {
-    const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-
-    // Get card’s position relative to the page
-    const rect = card.getBoundingClientRect();
-    const absoluteY = window.scrollY + rect.top;
-
-    // Scroll so card top is just below the header
-    window.scrollTo({
-      top: absoluteY - headerHeight - 20, // 20px padding
-      behavior: "smooth"
+    // Hide all badges first
+    document.querySelectorAll(".pricing-card .badge").forEach(b => {
+      b.style.display = "none";
     });
 
-    card.classList.add("highlight");
-    setTimeout(() => card.classList.remove("highlight"), 2000);
-  }, 500);
-}
+    // Find the card for the final plan
+    const card = document.querySelector(`.pricing-card[data-plan='${finalPlanAttr}']`);
+    const badge = card ? card.querySelector(".badge") : null;
+    if (badge) {
+      badge.style.display = "block";
+    }
+
+    // Save hidden form values (safe-check planLinks)
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = finalPlanAttr.charAt(0).toUpperCase() + finalPlanAttr.slice(1);
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink) {
+      try {
+        hiddenLink.value = (typeof planLinks !== "undefined" && planLinks[finalPlanAttr]) ? planLinks[finalPlanAttr] : "";
+      } catch (e) {
+        hiddenLink.value = "";
+      }
+    }
+
+    // If we couldn't find the card, bail
+    if (!card) return;
+
+    // Smoothly bring the pricing section into view and center the selected card.
+    // We handle two layouts:
+    // 1) Horizontal scroll container (mobile swipe): .pricing-container overflow-x
+    // 2) Regular flow layout (desktop): scroll the page to card top (account for fixed header)
+
+    const container = document.querySelector(".pricing-container");
+    const headerHeight = document.querySelector("header") ? document.querySelector("header").offsetHeight : 0;
+
+    // small helper: clamp
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    // Wait a tick so layout settles (e.g. when screen just became visible)
+    setTimeout(() => {
+      // If container exists and is horizontally scrollable:
+      if (container && container.scrollWidth > container.clientWidth + 5) {
+        // Horizontal center calculation
+        const cardRect = card.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        // card's left relative to container's scroll area
+        const cardLeftRel = cardRect.left - containerRect.left + container.scrollLeft;
+
+        // target scroll so card is centered in container
+        const targetScrollLeft = clamp(
+          Math.round(cardLeftRel + (cardRect.width / 2) - (container.clientWidth / 2)),
+          0,
+          container.scrollWidth - container.clientWidth
+        );
+
+        // Scroll container horizontally
+        container.scrollTo({ left: targetScrollLeft, behavior: "smooth" });
+
+        // Also scroll page vertically so the pricing container is visible below header
+        const absoluteY = window.scrollY + containerRect.top;
+        const targetTop = Math.max(0, absoluteY - headerHeight - 16); // 16px padding
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      } else {
+        // Non-horizontal layout: compute card absolute Y and scroll so card is below header
+        const rect = card.getBoundingClientRect();
+        const absoluteY = window.scrollY + rect.top;
+        const targetTop = Math.max(0, absoluteY - headerHeight - 16);
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      }
+
+      // small visual highlight
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 1600);
+    }, 120); // small delay to allow rendering
+  }
+
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
