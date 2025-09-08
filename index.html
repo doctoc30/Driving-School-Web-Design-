@@ -1381,19 +1381,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
 
-  // Scoring buckets (optional for future use)
-  let planScores = { basic: 0, pro: 0, premium: 0 };
-
   window.setPath = (path) => { userPath = path; };
 
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-
-    // Score tracking
-    if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
-    else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
-
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   };
@@ -1413,31 +1404,44 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Q19 Ownership Buttons ------------------
   const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
   const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
-
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
   // ------------------ Plan Tiers ------------------
   const planTiers = {
     Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    Standard: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+    Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
     Premium: ['packages', 'social', 'email', 'content', 'guide']
   };
 
   // ------------------ Show Recommended Plan ------------------
   function showRecommendedPlan() {
+    // Count Yes features per tier, excluding any 'no' features
+    const tierCounts = {};
+    for (let tier in planTiers) {
+      tierCounts[tier] = planTiers[tier].filter(f => yesFeatures.includes(f) && !noFeatures.includes(f)).length;
+    }
+
+    // Determine recommended tier based on max count of yes features
     let recommendedTier = "Basic";
+    let maxCount = tierCounts.Basic;
 
-    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+    if (tierCounts.Pro > maxCount) {
+      recommendedTier = "Pro";
+      maxCount = tierCounts.Pro;
+    }
+    if (tierCounts.Premium > maxCount) {
+      recommendedTier = "Premium";
+    }
 
+    // Build plan HTML
     let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
     let html = `<strong>${planName}</strong>`;
 
     for (let tier in planTiers) {
       html += `<h3>${tier} Plan Features:</h3>`;
-      const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
-      const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+      const yesInTier = planTiers[tier].filter(f => yesFeatures.includes(f) && !noFeatures.includes(f));
+      const noInTier = planTiers[tier].filter(f => noFeatures.includes(f));
 
       if (yesInTier.length > 0 || noInTier.length > 0) {
         html += "<ul>";
@@ -1460,7 +1464,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
-    calculatePlan(recommendedTier);
+    highlightPlan(recommendedTier);
   }
 
   // ------------------ Format Feature Names ------------------
@@ -1487,22 +1491,20 @@ document.addEventListener("DOMContentLoaded", () => {
     return featureNames[f] || f;
   }
 
-  // ------------------ Calculate & Highlight Final Plan ------------------
-  function calculatePlan(finalPlan) {
-    finalPlan = finalPlan.toLowerCase();
-
+  // ------------------ Highlight Plan ------------------
+  function highlightPlan(plan) {
+    plan = plan.toLowerCase();
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
-
-    const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+    const card = document.querySelector(`.pricing-card[data-plan='${plan}']`);
     const badge = card ? card.querySelector(".badge") : null;
     if (badge) badge.style.display = "block";
 
     const hiddenPlan = document.getElementById("hiddenPlan");
     const hiddenFeatures = document.getElementById("hiddenFeatures");
     const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+    if (hiddenPlan) hiddenPlan.value = plan.charAt(0).toUpperCase() + plan.slice(1);
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
 
     if (card) {
       setTimeout(() => {
@@ -1521,12 +1523,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!code) { alert("Please enter a design code."); return; }
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   };
-
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
 
   // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
@@ -1586,7 +1582,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingSpeed = 100;
     const lineDelay = 500;
     const cursor = document.createElement('span');
-        cursor.classList.add('cursor');
+    cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
