@@ -988,7 +988,13 @@ body header + .form-screen {
   gap: 6px;
 }
 .lock-icon { font-size: 1.1rem; color: #0070ba; }
- 
+
+
+
+ .pricing-card.highlight {
+  box-shadow: 0 0 20px 5px rgba(0, 150, 255, 0.6);
+  transition: box-shadow 0.5s ease;
+}
 </style>
 
 </head>
@@ -1343,7 +1349,11 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+    if (screen.id === "recommended-plan-screen") {
+      showRecommendedPlan();
+      calculatePlan(); // <-- NEW: call scoring logic
+    }
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1372,10 +1382,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
 
+  // NEW scoring buckets
+  let planScores = { basic: 0, pro: 0, premium: 0 };
+
   window.setPath = (path) => { userPath = path; };
 
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+
+    // --- NEW: scoring rules ---
+    if (["booking","mobile","cta","contact","bio"].includes(feature)) {
+      planScores.basic++;
+    } else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) {
+      planScores.pro++;
+    } else if (["packages","social","email","content","guide"].includes(feature)) {
+      planScores.premium++;
+    }
+
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   };
@@ -1390,6 +1413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenPlan = document.getElementById('hiddenPlan');
     if (hiddenPlan) hiddenPlan.value = choice;
     showRecommendedPlan();
+    calculatePlan(); // <-- NEW: update plan on ownership
   };
 
   // ------------------ Q19 Ownership Buttons ------------------
@@ -1463,6 +1487,29 @@ document.addEventListener("DOMContentLoaded", () => {
       monthlySupport: "Monthly Support"
     };
     return featureNames[f] || f;
+  }
+
+  // ------------------ NEW: Calculate Final Plan ------------------
+  function calculatePlan() {
+    let finalPlan = "basic";
+    if (planScores.pro > planScores.basic && planScores.pro >= planScores.premium) {
+      finalPlan = "pro";
+    } else if (planScores.premium > planScores.basic && planScores.premium > planScores.pro) {
+      finalPlan = "premium";
+    }
+
+    // Highlight chosen card
+    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+    const badge = document.querySelector(`.pricing-card[data-plan='${finalPlan}'] .badge`);
+    if (badge) badge.style.display = "block";
+
+    // Save hidden form values
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
   }
 
   // ------------------ Step 3: Design Code ------------------
@@ -1655,6 +1702,41 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
+
+
+
+ // ------------------ NEW: Calculate Final Plan ------------------
+function calculatePlan() {
+  let finalPlan = "basic";
+  if (planScores.pro > planScores.basic && planScores.pro >= planScores.premium) {
+    finalPlan = "pro";
+  } else if (planScores.premium > planScores.basic && planScores.premium > planScores.pro) {
+    finalPlan = "premium";
+  }
+
+  // Highlight chosen card
+  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+  const badge = card ? card.querySelector(".badge") : null;
+  if (badge) badge.style.display = "block";
+
+  // Save hidden form values
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+
+  // 🔥 Scroll into view smoothly
+  if (card) {
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("highlight"); // optional CSS glow effect
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 500);
+  }
+}
 </script>
 </body>
 </html>
