@@ -995,6 +995,11 @@ body header + .form-screen {
   box-shadow: 0 0 20px 5px rgba(0, 150, 255, 0.6);
   transition: box-shadow 0.5s ease;
 }
+
+ /* Prevent header overlap when scrolled into view */
+.pricing-card {
+  scroll-margin-top: 80px; /* adjust to your header height */
+}
 </style>
 
 </head>
@@ -1488,31 +1493,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Calculate & Highlight Final Plan ------------------
-  function calculatePlan(finalPlan) {
-    finalPlan = finalPlan.toLowerCase();
+function calculatePlan(finalPlan) {
+  finalPlan = finalPlan.toLowerCase();
 
-    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
-    const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    const badge = card ? card.querySelector(".badge") : null;
-    if (badge) badge.style.display = "block";
+  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+  const badge = card ? card.querySelector(".badge") : null;
+  if (badge) badge.style.display = "block";
 
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-    if (card) {
-      setTimeout(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.classList.add("highlight");
-        setTimeout(() => card.classList.remove("highlight"), 2000);
-      }, 500);
-    }
+  if (card) {
+    setTimeout(() => {
+      // 👇 Detect portrait mode
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+
+      card.scrollIntoView({
+        behavior: "smooth",
+        block: isPortrait ? "start" : "center", // top for portrait, center for desktop/landscape
+      });
+
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 500);
   }
-
+}
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
