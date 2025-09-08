@@ -855,35 +855,24 @@ body header + .form-screen {
   background-color: #33a7d4; /* retain brand background */
 }
 
-.pricing-container { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 40px; 
-  width: 100%; 
-  max-width: 1200px; 
-  overflow-x: auto;       /* horizontal scroll for small screens */
+.pricing-container {
+  display: flex;
+  flex-direction: row;        /* always side by side */
+  justify-content: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  overflow-x: auto;           /* enable horizontal scroll */
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 20px 0;
+  padding: 20px;
 }
 
 .pricing-card {
-  flex: 0 0 80%;          /* 80% width on mobile */
+  flex: 0 0 85%;              /* each card takes 85% width on mobile */
   max-width: 350px;
   min-width: 280px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.8s ease;
-  opacity: 0;
-  transform: translateY(50px);
-  scroll-snap-align: start;
-  position: relative;
+  scroll-snap-align: center;
 }
 
 .pricing-card.in-view {
@@ -1038,6 +1027,9 @@ body header + .form-screen {
   }
 }
 
+
+
+ 
 </style>
 
 </head>
@@ -1532,30 +1524,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Calculate & Highlight Final Plan ------------------
   function calculatePlan(finalPlan) {
-    finalPlan = finalPlan.toLowerCase();
+  finalPlan = finalPlan.toLowerCase();
 
-    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
-    const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    const badge = card ? card.querySelector(".badge") : null;
-    if (badge) badge.style.display = "block";
+  const container = document.querySelector(".pricing-container");
+  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+  const badge = card ? card.querySelector(".badge") : null;
+  if (badge) badge.style.display = "block";
 
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+  if (card && container) {
+    setTimeout(() => {
+      // 🔥 horizontal centering logic
+      const containerRect = container.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const scrollLeft = container.scrollLeft + (cardRect.left - containerRect.left)
+                        - (containerRect.width / 2 - cardRect.width / 2);
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
-    if (card) {
-      setTimeout(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.classList.add("highlight");
-        setTimeout(() => card.classList.remove("highlight"), 2000);
-      }, 500);
-    }
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 500);
   }
 
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+}
   // ------------------ Step 3: Design Code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
