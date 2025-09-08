@@ -6,433 +6,382 @@
 <title>D S W D</title>
 
 <style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #33a7d4;
-    color: white;
-    overflow-x: hidden;
-  }
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background-color: #33a7d4;
-    z-index: 2000;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-  }
-  .logo {
-    font-weight: 900;
-    font-size: 1.7rem;
-    letter-spacing: 2px;
-    user-select: none;
-    cursor: default;
-  }
-  .hamburger {
-    width: 28px;
-    height: 22px;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 2100;
-  }
-  .hamburger span {
-    display: block;
-    height: 3.5px;
-    background: white;
-    border-radius: 2px;
-    transition: all 0.35s ease-in-out;
-  }
-  .hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-  }
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-  }
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #33a7d4;
+  color: white;
+  overflow-x: hidden;
+}
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: #33a7d4;
+  z-index: 2000;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+}
+.logo {
+  font-weight: 900;
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  user-select: none;
+  cursor: default;
+}
+.hamburger {
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2100;
+}
+.hamburger span {
+  display: block;
+  height: 3.5px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.35s ease-in-out;
+}
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
 
+nav.menu {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #33a7d4;
+  transform: translateX(-100%);
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 4rem;
+  z-index: 2050;
+}
+nav.menu.open {
+  transform: translateX(0);
+}
+nav.menu ul {
+  list-style: none;
+}
+nav.menu ul li {
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  transform: translateX(-40px);
+  font-weight: 900;
+  font-size: 3rem;
+  letter-spacing: 0.1em;
+}
+nav.menu ul li a {
+  color: white;
+  text-decoration: none;
+  user-select: none;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+nav.menu ul li a:hover {
+  color: #222;
+}
+nav.menu.open ul li {
+  animation: slideInFade 0.4s forwards;
+}
+nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
+nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
+nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
+nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
+nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
+
+@keyframes slideInFade {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (min-width: 1024px) {
+  .hamburger { display: none; }
   nav.menu {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #33a7d4;
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 4rem;
-    z-index: 2050;
-  }
-  nav.menu.open {
-    transform: translateX(0);
+    position: static;
+    height: auto;
+    width: auto;
+    background: transparent;
+    transform: none !important;
+    padding-left: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
   }
   nav.menu ul {
-    list-style: none;
+    display: flex;
+    gap: 3rem;
   }
   nav.menu ul li {
-    margin-bottom: 2.2rem;
-    opacity: 0;
-    transform: translateX(-40px);
-    font-weight: 900;
-    font-size: 3rem;
-    letter-spacing: 0.1em;
+    margin: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    font-size: 1.25rem;
+    animation: none !important;
   }
   nav.menu ul li a {
+    font-weight: 900;
+    font-size: 1.1rem;
     color: white;
-    text-decoration: none;
-    user-select: none;
-    display: inline-block;
-    transition: color 0.3s ease;
+    letter-spacing: 0.15em;
   }
-  nav.menu ul li a:hover {
-    color: #222;
-  }
-  nav.menu.open ul li {
-    animation: slideInFade 0.4s forwards;
-  }
-  nav.menu.open ul li:nth-child(1) {
-    animation-delay: 0.15s;
-  }
-  nav.menu.open ul li:nth-child(2) {
-    animation-delay: 0.35s;
-  }
-  nav.menu.open ul li:nth-child(3) {
-    animation-delay: 0.55s;
-  }
-  nav.menu.open ul li:nth-child(4) {
-    animation-delay: 0.75s;
-  }
-  nav.menu.open ul li:nth-child(5) {
-    animation-delay: 0.95s;
-  }
-  @keyframes slideInFade {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* Desktop view - raised breakpoint to 1024px */
-  @media (min-width: 1024px) {
-    .hamburger {
-      display: none;
-    }
-    nav.menu {
-      position: static;
-      height: auto;
-      width: auto;
-      background: transparent;
-      transform: none !important;
-      padding-left: 0;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    nav.menu ul {
-      display: flex;
-      gap: 3rem;
-    }
-    nav.menu ul li {
-      margin: 0;
-      opacity: 1 !important;
-      transform: none !important;
-      font-size: 1.25rem;
-      animation: none !important;
-    }
-    nav.menu ul li a {
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: white;
-      letter-spacing: 0.15em;
-    }
-    nav.menu ul li a:hover {
-      color: #222;
-    }
-  }
-
-<title>Splash + Form</title>
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-    background: white;
-  }
-
-  .color-rise {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: white;
-    animation: solidRise 8s ease-in-out forwards;
-    z-index: 0;
-  }
-
-  @keyframes solidRise {
-    0% { background-color: white; }
-    100% { background-color: #33a7d4; }
-  }
-
-  .overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 0 30px #227090; /* Adjusted shadow to complement new color */
-    z-index: 1;
-    text-align: center;
-    opacity: 0;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 1.2;
-    white-space: pre-line;
-  }
-
-  @keyframes rocketRise {
-    0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
-    100% { transform: translate(-50%, -150%) translateY(-100vh); opacity: 0; }
-  }
-
-  .typed-line { display: block; }
-
-  .cursor {
-    display: inline-block;
-    width: 1ch;
-    animation: blink 0.8s infinite;
-  }
-
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
-
-
-
-
-  select, input[type="text"], input[type="email"] {
-    padding: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    width: 80%;
-    max-width: 400px;
-    cursor: pointer;
-    appearance: none;
-    background-color: white;
-    color: #333;
-    height: 3.5rem;
-    padding-right: 2.5rem;
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    font-family: inherit;
-  }
-
-  select {
-    background-image: url("data:image/svg+xml;utf8,<svg fill='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  }
-
-  input[type="text"],
-  input[type="email"] {
-    background-image: none;
-    cursor: text;
-  }
-
-.button-row {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem; /* Increased spacing */
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 2rem;
+  nav.menu ul li a:hover { color: #222; }
 }
 
-button {
-    background: white;
-    color: #33a7d4;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: background 0.3s ease;
-    min-width: 140px; /* Further ensures button sizing */
-}
-
-  button:hover {
-    background: #227090; /* Adjusted hover color to complement new color */
-    color: white;
-  }
-
-
- 
- /* ---------- BASE STYLES ---------- */
-
-nav ul {
-  display: block;
-}
-
-nav ul li {
+html, body {
   margin: 0;
   padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: white;
 }
 
-nav ul li a {
-  padding: 0.5rem 1rem;
+.color-rise {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  animation: solidRise 8s ease-in-out forwards;
+  z-index: 0;
 }
 
-select,
-input[type="text"],
-input[type="email"] {
-  width: 60%;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  padding: 1rem;
+@keyframes solidRise {
+  0% { background-color: white; }
+  100% { background-color: #33a7d4; }
 }
 
 .overlay-text {
-  font-size: calc(6vw + 0.5rem);
-}
-
-#typewriter {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Arial Black', Arial, sans-serif;
-  font-weight: 600;
-  text-align: center;
+  font-weight: bold;
   color: white;
-  opacity: 1;
-  pointer-events: none;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  max-width: 90vw;
-  line-height: 1.3;
+  text-shadow: 0 0 30px #227090;
+  z-index: 1;
+  text-align: center;
+  opacity: 0;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.2;
+  white-space: pre-line;
 }
 
-#typewriter .typed-line {
-  font-size: inherit;
-  margin: 0.1em 0;
-  white-space: normal;
+@keyframes rocketRise {
+  0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
+  100% { transform: translate(-50%, -150%) translateY(-100vh); opacity: 0; }
 }
 
-.cursor {
-  display: inline-block;
-  width: 2px;
+.typed-line { display: block; }
+.cursor { display: inline-block; width: 1ch; animation: blink 0.8s infinite; }
+
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+select, input[type="text"], input[type="email"] {
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  width: 80%;
+  max-width: 400px;
+  cursor: pointer;
+  appearance: none;
+  background-color: white;
+  color: #333;
+  height: 3.5rem;
+  padding-right: 2.5rem;
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  font-family: inherit;
+}
+
+select { background-image: url("data:image/svg+xml;utf8,<svg fill='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); }
+input[type="text"], input[type="email"] { background-image: none; cursor: text; }
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+button {
   background: white;
-  animation: blink 1s step-start infinite;
-  vertical-align: bottom;
-  margin-left: 2px;
+  color: #33a7d4;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: background 0.3s ease;
+  min-width: 140px;
 }
 
-@keyframes blink {
-  50% {
-    background: transparent;
-  }
-}
+button:hover { background: #227090; color: white; }
 
-/* ---------- Base Typewriter Styles ---------- */
-#typewriter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Arial Black', Arial, sans-serif;
-  font-weight: 600;
+/* Funnel screens */
+.form-screen {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
   text-align: center;
+  transition: all 0.3s ease;
+}
+.form-screen.active { display: flex; }
+
+#main-intro-options { justify-content: center !important; min-height: 100vh; padding-top: 0 !important; }
+
+/* Brand buttons */
+.brand-btn {
+  background: #fff;
+  color: #33a7d4;
+  border: 2px solid #33a7d4;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  margin: 0.5rem 0;
+  transition: all 0.2s ease;
+}
+.brand-btn:hover { background: #f0f8ff; }
+.btn-subtext { display: block; font-size: 0.85rem; font-weight: normal; margin-top: 0.3rem; }
+
+/* Pricing cards */
+#pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+.pricing-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding: 20px 0;
+}
+.pricing-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  flex: 0 0 85%;
+  max-width: 360px;
+  min-width: 280px;
+  scroll-snap-align: center;
+}
+.pricing-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
+.pricing-card.recommended .badge {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: #227090;
   color: white;
-  opacity: 1;
-  pointer-events: none;
-  line-height: 1.3;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
+.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
+.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
+.pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
+.pricing-card.in-view { opacity: 1; transform: translateY(0); }
+.pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
+@keyframes glow {
+  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
+  100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
 }
 
-.typewriter-text {
-  white-space: normal;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-  line-height: 1.4;
+@media (min-width: 1024px) {
+  .pricing-container { justify-content: center; overflow-x: visible; }
+  .pricing-card { flex: 1 1 300px; max-width: 350px; min-height: 65vh; }
+}
+@media (max-width: 768px) {
+  .pricing-card { min-height: 90vh; padding: 60px 20px; }
 }
 
-/* ---------- Mobile (Up to 599px) ---------- */
-@media screen and (max-width: 599px) {
-  #typewriter {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    max-width: 90vw;
-  }
+/* PayPal and badge styles remain same */
+.pay-now { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: linear-gradient(135deg, #0070ba 0%, #00457c 100%); color: #fff; font-size: 1.05rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35); }
+.pay-now img { height: 22px; }
+.pay-now:hover { background: linear-gradient(135deg, #004f8c 0%, #00345c 100%); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,112,186,0.45); }
+.pay-now:active { transform: translateY(0); box-shadow: 0 3px 6px rgba(0,112,186,0.3); }
 
-  .typewriter-text {
-    font-size: clamp(2rem, 6vw, 3rem);
-    max-width: 90vw;
-  }
+.paypal-badge {
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #e0e5eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.paypal-badge img { max-width: 140px; height: auto; margin-bottom: 8px; }
+.paypal-badge p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lock-icon { font-size: 1.1rem; color: #0070ba; }
+
+.pricing-card.highlight {
+  box-shadow: 0 0 20px 5px rgba(0, 150, 255, 0.6);
+  transition: box-shadow 0.5s ease;
 }
 
-/* ---------- Tablet Portrait (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
-  #typewriter {
-    font-size: 6rem !important;
-    max-width: 90vw !important;
-  }
+/* Typewriter */
+#typewriter { display: none; }
+#typewriter.active { display: block; }
+.color-rise { display: none; transition: none; }
+.color-rise.active { display: block; transition: background-color 2s ease; }
 
-  .typewriter-text {
-    font-size: 3.5rem !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* ---------- Tablet Landscape (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
-  #typewriter {
-    font-size: 5.5rem !important;
-    max-width: 85vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.2rem !important;
-    max-width: 80vw !important;
-  }
-}
-
-/* ---------- Desktop (1025px+) ---------- */
-@media screen and (min-width: 1025px) {
-  #typewriter {
-    font-size: 6.5rem !important;
-    max-width: 75vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 4rem !important;
-    max-width: 60vw !important;
-  }
-}
-
- /* ---------- iPhone Landscape Final Fix ---------- */
+/* Responsive typewriter adjustments for iPhone landscape */
 @media screen and (max-width: 812px) and (orientation: landscape) {
   #typewriter {
     top: 60% !important;
@@ -441,7 +390,6 @@ input[type="email"] {
     line-height: 1.2 !important;
     max-width: 90vw !important;
   }
-
   .typewriter-text {
     font-size: clamp(1rem, 3vw, 1.8rem) !important;
     line-height: 1.2 !important;
@@ -449,23 +397,45 @@ input[type="email"] {
   }
 }
 
-/* Tablet: Ensure space between buttons */
+/* Mobile & tablet button adjustments */
 @media screen and (min-width: 600px) and (max-width: 1024px) {
   .button-row {
-    gap: 3rem;         /* Increase spacing */
-    flex-wrap: wrap;   /* Allow buttons to wrap to next line if needed */
+    gap: 3rem;
+    flex-wrap: wrap;
     justify-content: center;
   }
-
-  .button-row button {
-    min-width: 140px;  /* Prevent buttons from shrinking too much */
-    margin: 0.5rem 1rem; /* Extra spacing around each button */
-  }
+  .button-row button { min-width: 140px; margin: 0.5rem 1rem; }
 }
 
- /* --------------------------------------------
-   1. FIRST QUESTION SCREEN (#form-start-choice)
---------------------------------------------- */
+/* Skip link */
+.skip-link {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  color: #ffffff;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  font-weight: normal;
+  text-decoration: none;
+  z-index: 10000;
+  box-shadow: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.skip-link:hover { opacity: 0.8; }
+
+/* Logo image */
+.logo img { height: 40px; width: auto; display: block; }
+
+/* First screen & intro options */
+#main-intro-options { justify-content: flex-start !important; }
+#main-intro-options h2 { margin-top: 40px; }
+#main-intro-options .button-row { margin-top: 60px; }
+
+/* Funnel form screens adjustments */
 #form-start-choice {
   position: fixed;
   top: 50%;
@@ -487,17 +457,8 @@ input[type="email"] {
   opacity: 0;
   transition: opacity 1s ease;
 }
+#form-start-choice.show { display: flex; opacity: 1; }
 
-#form-start-choice.show {
-  display: flex;
-  opacity: 1;
-}
-
-
- 
-/* --------------------------------------------
-   2. MULTI-STEP FORM SCREENS (.form-screen)
---------------------------------------------- */
 .form-screen {
   position: fixed;
   top: 50%;
@@ -514,19 +475,13 @@ input[type="email"] {
   z-index: 1000;
   display: none;
   flex-direction: column;
-  justify-content: center;   /* Center vertically */
-  align-items: center;       /* Center horizontally */
+  justify-content: center;
+  align-items: center;
   overflow-y: auto;
   border-radius: 12px;
 }
+.form-screen.active { display: flex; }
 
-/* Show active screen */
-.form-screen.active {
-  display: flex;
-}
-
-/* On small-height screens, remove vertical centering
-   so content scrolls naturally */
 @media (max-height: 600px) {
   .form-screen {
     top: 0;
@@ -538,34 +493,10 @@ input[type="email"] {
   }
 }
 
-.form-screen.active {
-  display: flex;
-}
+.form-screen h2 { font-size: 1.8rem; margin-bottom: 3rem; max-width: 500px; line-height: 1.4; }
 
-.form-screen h2 {
-  font-size: 1.8rem;
-  margin-bottom: 3rem;
-  max-width: 500px;
-  line-height: 1.4;
-}
-
-/* Optional: adjust if very small screens */
-@media (max-height: 600px) {
-  .form-screen {
-    justify-content: flex-start;
-    padding-top: 4rem;
-  }
-}
-
-
-
-/* --------------------------------------------
-   3. FORM FIELDS (input, select)
---------------------------------------------- */
-select,
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
+/* Inputs and selects */
+select, input[type="text"], input[type="email"], input[type="tel"] {
   padding: 1rem;
   border: none;
   border-radius: 8px;
@@ -581,9 +512,7 @@ input[type="tel"] {
   font-family: inherit;
 }
 
-/* --------------------------------------------
-   4. CONSENT CHECKBOX SECTION
---------------------------------------------- */
+/* Consent checkbox */
 .consent-wrapper {
   display: flex;
   flex-direction: column;
@@ -592,443 +521,13 @@ input[type="tel"] {
   color: white;
   margin-bottom: 2rem;
 }
+.consent-wrapper input[type="checkbox"] { margin-right: 8px; }
 
-.consent-wrapper input[type="checkbox"] {
-  margin-right: 8px;
-}
-
-/* --------------------------------------------
-   5. BUTTONS
---------------------------------------------- */
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: bold;
-  margin: 0.5rem;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* Optional: group buttons side-by-side */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 1rem;
-}
-
-/* --------------------------------------------
-   6. MOBILE HEIGHT ADJUSTMENTS
---------------------------------------------- */
-
-
-.button-row {
-  display: flex;
-  justify-content: center;  /* Center the buttons */
-  gap: 1rem;                /* Space between buttons */
-  margin-top: 2rem;
-}
-
-.button-row button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: bold;
-  cursor: pointer;
-  width: auto;              /* Make sure buttons size to content */
-  min-width: 100px;         /* Optional: consistent width */
-}
-
-.button-row button:hover {
-  opacity: 0.9;
-}
-
-
-
-.skip-link {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  color: #ffffff; /* Or use your brand color */
-  border: none;
-  padding: 0;
-  font-size: 16px;
-  font-weight: normal;
-  text-decoration: none;
-  z-index: 10000;
-  box-shadow: none;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-.skip-link:hover {
-  opacity: 0.8;
-}
- 
-.logo img {
-  height: 40px;   /* fits within your 60px header */
-  width: auto;    /* keeps proportions */
-  display: block;
-}
-
-
-#main-intro-options {
-  justify-content: flex-start !important; /* push content to the top */
-}
-
-#main-intro-options h2 {
-  margin-top: 40px; /* push heading down a little if needed */
-}
-
-#main-intro-options .button-row {
-  margin-top: 60px; /* this moves ONLY the 3 buttons further down */
-}
-
-
-
- #typewriter { display: none; }
-#typewriter.active { display: block; }
-
-.color-rise { display: none; transition: none; }
-.color-rise.active { display: block; transition: background-color 2s ease; }
-
-
-
-
-
-/* ------------------------ */
-/* General funnel screen styling */
-/* ------------------------ */
-.form-screen {
-  display: none;              /* hidden by default */
-  flex-direction: column;     /* stack content vertically */
-  justify-content: center;    /* vertical centering */
-  align-items: center;        /* horizontal centering */
-  min-height: 100vh;          /* full viewport height */
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-/* Active screen */
-.form-screen.active {
-  display: flex;
-}
-
-/* Buttons row styling */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-/* ------------------------ */
-/* First screen adjustment */
-/* ------------------------ */
-#main-intro-options {
-  padding-top: 120px;   /* ⬅️ adjust this number to move down */
-}
-
-/* ------------------------ */
-/* Tablet / landscape adjustments */
-/* ------------------------ */
-@media (min-width: 768px) {
-  .form-screen {
-    padding: 40px;
-  }
-  #main-intro-options {
-    padding-top: 140px; /* slightly lower on tablet */
-  }
-}
-
-/* ------------------------ */
-/* Desktop adjustments */
-/* ------------------------ */
-@media (min-width: 1024px) {
-  .form-screen {
-    padding: 60px;
-  }
-  #main-intro-options {
-    padding-top: 160px; /* even lower on desktop */
-  }
-}
-
-/* ------------------------ */
-/* Optional: adjust for fixed header */
-/* ------------------------ */
-body header + .form-screen {
-  padding-top: 80px;
-}
-
-
- /* Funnel screen global */
-.form-screen {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-
- #main-intro-options {
-  justify-content: center !important; /* center vertically */
-  min-height: 100vh;                   /* full viewport height */
-  padding-top: 0 !important;           /* remove any extra top spacing */
-}
-
-
-/* ===== FUNNEL SCREEN ===== */
-.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
-.form-screen.active { display: flex; }
-
-
-
- 
-.brand-btn {
-  background: #fff;
-  color: #33a7d4;
-  border: 2px solid #33a7d4;
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  margin: 0.5rem 0;
-  transition: all 0.2s ease;
-}
-
-.brand-btn:hover {
-  background: #f0f8ff;
-}
-
-.btn-subtext {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: normal;
-  margin-top: 0.3rem;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-
-/* Pricing Card Section */
-#pricing-section { 
-  padding: 80px 20px; 
-  min-height: 100vh; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-}
-.pricing-container { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 40px; 
-  width: 100%; 
-  max-width: 1200px; 
-}
-
-/* Unified Pricing Card */
-.pricing-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-.pricing-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-}
-
-.pricing-card.recommended .badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #227090;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: bold;
-}
-
-.pricing-card h3 { 
-  font-size: 2rem; 
-  margin-bottom: 1rem; 
-  font-weight: 900; 
-}
-.pricing-card .price { 
-  font-size: 2.5rem; 
-  margin-bottom: 2rem; 
-  font-weight: bold; 
-}
-.pricing-card ul { 
-  list-style: none; 
-  margin-bottom: 2rem; 
-  padding: 0; 
-}
-.pricing-card ul li { 
-  margin: 10px 0; 
-  font-size: 1.1rem; 
-}
-
-.pricing-card.in-view { 
-  opacity: 1; 
-  transform: translateY(0); 
-}
-.pricing-card.recommended.in-view { 
-  animation: glow 2s ease infinite alternate; 
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
-  100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
-}
-
-@media (min-width: 1024px) {
-  .pricing-container { flex-direction: row; gap: 20px; }
-  .pricing-card { min-height: 65vh; }
-}
-@media (max-width: 768px) {
-  .pricing-card { min-height: 90vh; padding: 60px 20px; }
-}
-
-/* PayPal Button */
-.pay-now {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 50px; /* pill shape */
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
-}
-.pay-now img { height: 22px; }
-.pay-now:hover {
-  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
-}
-.pay-now:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-}
-
-/* Trust Badge */
-.paypal-badge {
-  margin-top: 15px;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid #e0e5eb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.paypal-badge img { 
-  max-width: 140px; 
-  height: auto; 
-  margin-bottom: 8px; 
-}
-.paypal-badge p {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1d1d1d;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.lock-icon { font-size: 1.1rem; color: #0070ba; }
-
-
-
- .pricing-card.highlight {
-  box-shadow: 0 0 20px 5px rgba(0, 150, 255, 0.6);
-  transition: box-shadow 0.5s ease;
-}
-
-
-
- /* Pricing container: horizontal scroll on small screens */
-.pricing-container {
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-  overflow-x: auto;   /* enables horizontal scrolling */
-  scroll-snap-type: x mandatory; /* smooth snapping */
-  -webkit-overflow-scrolling: touch;
-  padding: 20px 0;
-}
-
-/* Cards */
-.pricing-card {
-  flex: 0 0 80%;   /* each card takes ~80% of viewport width */
-  max-width: 350px;
-  min-width: 280px;
-  scroll-snap-align: start;  /* snap to card when swiping */
-}
-
-/* Desktop view — show all side by side */
-@media (min-width: 1024px) {
-  .pricing-container {
-    justify-content: center;
-    overflow-x: visible;
-  }
-
-  .pricing-card {
-    flex: 1 1 300px;
-    max-width: 350px;
-  }
-}
+/* Funnel buttons */
+.button-group { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.button-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+.button-row button { padding: 1rem 2rem; font-size: 1rem; border-radius: 8px; background: white; color: #33a7d4; font-weight: bold; min-width: 100px; cursor: pointer; }
+.button-row button:hover { opacity: 0.9; }
 </style>
 
 </head>
@@ -1751,6 +1250,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+});
+
+
+ document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".pricing-container");
+  const recommended = document.querySelector(".pricing-card.recommended");
+
+  if (container && recommended) {
+    const containerWidth = container.offsetWidth;
+    const cardWidth = recommended.offsetWidth;
+    const cardLeft = recommended.offsetLeft;
+
+    // Scroll so the recommended card is centered
+    const scrollPos = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+    container.scrollTo({ left: scrollPos, behavior: "smooth" });
+  }
+
+  // Optional: recenter on window resize
+  window.addEventListener("resize", () => {
+    if (container && recommended) {
+      const containerWidth = container.offsetWidth;
+      const cardWidth = recommended.offsetWidth;
+      const cardLeft = recommended.offsetLeft;
+      const scrollPos = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+      container.scrollTo({ left: scrollPos, behavior: "smooth" });
+    }
+  });
 });
 </script>
 </body>
