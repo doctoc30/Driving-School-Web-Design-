@@ -1028,10 +1028,11 @@ body header + .form-screen {
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <!-- Hidden fields to capture selected plan and features -->
+  <!-- Hidden fields for JS to populate -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
+  <input type="hidden" id="hiddenOwnership" name="Ownership">
 
   <!-- ===================== INTRO ===================== -->
   <div class="form-screen active" id="main-intro-options">
@@ -1063,10 +1064,10 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q3 ===================== -->
+  <!-- ===================== Q3: Design Code ===================== -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
@@ -1235,7 +1236,7 @@ body header + .form-screen {
     </div>
   </div>
 
-  <!-- ===================== Q19: Ownership ===================== -->
+  <!-- ===================== OWNERSHIP ===================== -->
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <div class="button-row">
@@ -1320,6 +1321,7 @@ body header + .form-screen {
 
       </div>
     </section>
+  </div>
 </form>
 
 <script>
@@ -1491,9 +1493,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
+    const container = document.querySelector('.pricing-cards-container'); // parent container
     const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
     const badge = card ? card.querySelector(".badge") : null;
     if (badge) badge.style.display = "block";
+
+    // ✅ Move recommended plan card to the top so it’s visible on all devices
+    if (card && container) {
+      container.prepend(card);
+    }
 
     const hiddenPlan = document.getElementById("hiddenPlan");
     const hiddenFeatures = document.getElementById("hiddenFeatures");
@@ -1502,10 +1510,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-    // Scroll fix for mobile and tablet: use 'nearest'
     if (card) {
       setTimeout(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
         card.classList.add("highlight");
         setTimeout(() => card.classList.remove("highlight"), 2000);
       }, 500);
