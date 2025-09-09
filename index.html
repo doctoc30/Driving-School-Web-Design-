@@ -1359,8 +1359,6 @@ body header + .form-screen {
       </div>
     </section>
 </form>
-
-<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1530,61 +1528,67 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Calculate & Highlight Final Plan ------------------
-  function calculatePlan(finalPlan) {
-    finalPlan = finalPlan.toLowerCase();
+function showRecommendedPlan() {
+  let recommendedTier = "Basic";
 
-    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-    const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    if (!card) return;
+  let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
+  let html = `<strong>${planName}</strong>`;
 
-    const badge = card.querySelector(".badge");
-    if (badge) badge.style.display = "block";
+  for (let tier in planTiers) {
+    html += `<h3>${tier} Plan Features:</h3>`;
+    const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
+    const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
 
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
-
-    setTimeout(() => {
-      const headerHeight = document.querySelector("header")?.offsetHeight || 80;
-      const rect = card.getBoundingClientRect();
-      const absoluteY = window.scrollY + rect.top;
-
-      window.scrollTo({
-        top: absoluteY - headerHeight - 40,
-        behavior: "smooth"
+    if (yesInTier.length > 0 || noInTier.length > 0) {
+      html += "<ul>";
+      yesInTier.forEach(f => {
+        const label = (tier !== recommendedTier) ? " (Optional)" : "";
+        html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
       });
-
-      setTimeout(() => {
-        const cardRect = card.getBoundingClientRect();
-        if (cardRect.top < headerHeight) {
-          card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 800);
-
-      card.classList.add("highlight");
-      setTimeout(() => card.classList.remove("highlight"), 2000);
-    }, 500);
+      noInTier.forEach(f => {
+        html += `<li>❌ ${formatFeatureName(f)}</li>`;
+      });
+      html += "</ul>";
+    }
   }
 
-  // ------------------ Step 3: Design Code ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  };
+  const recEl = document.getElementById('recommended-plan');
+  if (recEl) recEl.innerHTML = html;
 
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
+  if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
+  // Use requestAnimationFrame to ensure screen is visible before scrolling
+  requestAnimationFrame(() => calculatePlan(recommendedTier));
+}
+
+function calculatePlan(finalPlan) {
+  finalPlan = finalPlan.toLowerCase();
+  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+
+  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
+  if (!card) return;
+
+  const badge = card.querySelector(".badge");
+  if (badge) badge.style.display = "block";
+
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+
+  // Scroll to card with sticky header offset
+  const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  // Highlight effect
+  card.classList.add("highlight");
+  setTimeout(() => card.classList.remove("highlight"), 2000);
+}
   // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
   const planLinks = {
@@ -1758,6 +1762,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
+<script>
+
 </script>
 </body>
 </html>
