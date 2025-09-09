@@ -1513,12 +1513,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function calculatePlan(finalPlan) {
     finalPlan = finalPlan.toLowerCase();
 
+    // Hide all badges
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
     const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-    const badge = card ? card.querySelector(".badge") : null;
+    if (!card) return;
+
+    // Show badge
+    const badge = card.querySelector(".badge");
     if (badge) badge.style.display = "block";
 
+    // Update hidden form values
     const hiddenPlan = document.getElementById("hiddenPlan");
     const hiddenFeatures = document.getElementById("hiddenFeatures");
     const hiddenLink = document.getElementById("hiddenPaymentLink");
@@ -1526,13 +1531,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-    if (card) {
+    // Scroll to card
+    setTimeout(() => {
+      const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+      const rect = card.getBoundingClientRect();
+      const absoluteY = window.scrollY + rect.top;
+
+      // Scroll with clearance
+      window.scrollTo({
+        top: absoluteY - headerHeight - 40,
+        behavior: "smooth"
+      });
+
+      // Safety check: force into view if still clipped
       setTimeout(() => {
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
-        card.classList.add("highlight");
-        setTimeout(() => card.classList.remove("highlight"), 2000);
-      }, 500);
-    }
+        const cardRect = card.getBoundingClientRect();
+        if (cardRect.top < headerHeight) {
+          card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 800);
+
+      // Highlight effect
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 500);
   }
 
   // ------------------ Step 3: Design Code ------------------
