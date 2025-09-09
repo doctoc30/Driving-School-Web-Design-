@@ -1359,6 +1359,8 @@ body header + .form-screen {
       </div>
     </section>
 </form>
+
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1475,16 +1477,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (yesInTier.length > 0 || noInTier.length > 0) {
         html += "<ul>";
-
         yesInTier.forEach(f => {
           const label = (tier !== recommendedTier) ? " (Optional)" : "";
           html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
         });
-
         noInTier.forEach(f => {
           html += `<li>❌ ${formatFeatureName(f)}</li>`;
         });
-
         html += "</ul>";
       }
     }
@@ -1492,15 +1491,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerHTML = html;
 
+    // Show recommended plan screen
     if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
-    // Scroll to recommended plan
-    calculatePlan(recommendedTier);
-
-    // Force Basic plan into view to ensure it’s visible
-    setTimeout(() => {
-      calculatePlan("basic");
-    }, 600);
+    // Scroll AFTER rendering
+    requestAnimationFrame(() => scrollToPlan(recommendedTier));
   }
 
   // ------------------ Format Feature Names ------------------
@@ -1527,68 +1522,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return featureNames[f] || f;
   }
 
-  // ------------------ Calculate & Highlight Final Plan ------------------
-function showRecommendedPlan() {
-  let recommendedTier = "Basic";
+  // ------------------ Scroll & Highlight Plan ------------------
+  function scrollToPlan(plan) {
+    plan = plan.toLowerCase();
+    const card = document.querySelector(`.pricing-card[data-plan='${plan}']`);
+    if (!card) return;
 
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+    const badge = card.querySelector(".badge");
+    if (badge) badge.style.display = "block";
 
-  let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
-  let html = `<strong>${planName}</strong>`;
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = plan.charAt(0).toUpperCase() + plan.slice(1);
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
 
-  for (let tier in planTiers) {
-    html += `<h3>${tier} Plan Features:</h3>`;
-    const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
-    const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+    // Scroll with sticky header offset
+    const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+    const rect = card.getBoundingClientRect();
+    const absoluteY = window.scrollY + rect.top - headerHeight - 20;
 
-    if (yesInTier.length > 0 || noInTier.length > 0) {
-      html += "<ul>";
-      yesInTier.forEach(f => {
-        const label = (tier !== recommendedTier) ? " (Optional)" : "";
-        html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
-      });
-      noInTier.forEach(f => {
-        html += `<li>❌ ${formatFeatureName(f)}</li>`;
-      });
-      html += "</ul>";
-    }
+    window.scrollTo({ top: absoluteY, behavior: "smooth" });
+
+    // Highlight effect
+    card.classList.add("highlight");
+    setTimeout(() => card.classList.remove("highlight"), 2000);
   }
 
-  const recEl = document.getElementById('recommended-plan');
-  if (recEl) recEl.innerHTML = html;
-
-  if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
-
-  // Use requestAnimationFrame to ensure screen is visible before scrolling
-  requestAnimationFrame(() => calculatePlan(recommendedTier));
-}
-
-function calculatePlan(finalPlan) {
-  finalPlan = finalPlan.toLowerCase();
-  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
-
-  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-  if (!card) return;
-
-  const badge = card.querySelector(".badge");
-  if (badge) badge.style.display = "block";
-
-  const hiddenPlan = document.getElementById("hiddenPlan");
-  const hiddenFeatures = document.getElementById("hiddenFeatures");
-  const hiddenLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
-
-  // Scroll to card with sticky header offset
-  const headerHeight = document.querySelector("header")?.offsetHeight || 80;
-  card.scrollIntoView({ behavior: "smooth", block: "center" });
-
-  // Highlight effect
-  card.classList.add("highlight");
-  setTimeout(() => card.classList.remove("highlight"), 2000);
-}
   // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
   const planLinks = {
@@ -1622,6 +1583,7 @@ function calculatePlan(finalPlan) {
     if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
   });
 
+  // ------------------ Intersection Observer for Animations ------------------
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1632,11 +1594,12 @@ function calculatePlan(finalPlan) {
   }, { threshold: 0.3 });
   cards.forEach(card => observer.observe(card));
 
+  // ------------------ Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
   function startTypewriterAnimation() {
-        if (!typewriterEl) return;
+    if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
     let lines = [];
     let currentLine = 0;
@@ -1762,8 +1725,6 @@ function calculatePlan(finalPlan) {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
-<script>
-
 </script>
 </body>
 </html>
