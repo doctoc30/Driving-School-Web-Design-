@@ -929,7 +929,6 @@ body header + .form-screen {
     margin-top: 0;
   }
 }
- 🔥
  
  #pricing-section {
   padding: 100px 20px 40px 20px; /* top padding ensures first card is visible under header */
@@ -1017,6 +1016,23 @@ body header + .form-screen {
 @media (min-width: 1024px) { .pricing-container { flex-direction: row; gap: 20px;} .pricing-card { min-height: 65vh;} }
 @media (max-width: 768px) { .pricing-card { min-height: 90vh; padding: 60px 20px;} }
 
+
+
+
+ /* Ensure the parent container allows scrolling */
+.form-screen {
+  overflow: visible; /* or auto if it has a scrollbar */
+}
+
+/* Optional: force pricing cards to display properly */
+.pricing-card {
+  display: block; /* prevent flex collapsing issues */
+}
+
+/* Optional: make sure hidden elements are not interfering */
+.pricing-card .badge {
+  display: none; /* badges hidden by default */
+}
 </style>
 
 </head>
