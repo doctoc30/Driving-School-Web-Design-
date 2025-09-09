@@ -1401,9 +1401,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
-  let ownershipChoice = ""; // Q19 ownership choice
+  let ownershipChoice = "";
 
-  // Scoring buckets (optional for future use)
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
   window.setPath = (path) => { userPath = path; };
@@ -1411,7 +1410,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
 
-    // Score tracking
     if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
     else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
     else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
@@ -1482,7 +1480,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
+    // Scroll to recommended plan
     calculatePlan(recommendedTier);
+
+    // Force Basic plan into view to ensure it’s visible
+    setTimeout(() => {
+      calculatePlan("basic");
+    }, 600);
   }
 
   // ------------------ Format Feature Names ------------------
@@ -1513,17 +1517,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function calculatePlan(finalPlan) {
     finalPlan = finalPlan.toLowerCase();
 
-    // Hide all badges
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
     const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
     if (!card) return;
 
-    // Show badge
     const badge = card.querySelector(".badge");
     if (badge) badge.style.display = "block";
 
-    // Update hidden form values
     const hiddenPlan = document.getElementById("hiddenPlan");
     const hiddenFeatures = document.getElementById("hiddenFeatures");
     const hiddenLink = document.getElementById("hiddenPaymentLink");
@@ -1531,32 +1532,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-    // Scroll to the card
     setTimeout(() => {
       const headerHeight = document.querySelector("header")?.offsetHeight || 80;
-
-      // Always scroll so the card’s top is just below the header
       const rect = card.getBoundingClientRect();
       const absoluteY = window.scrollY + rect.top;
 
       window.scrollTo({
-        top: absoluteY - headerHeight - 20,
+        top: absoluteY - headerHeight - 40,
         behavior: "smooth"
       });
 
-      // Force correction if still clipped after scroll
       setTimeout(() => {
         const cardRect = card.getBoundingClientRect();
-        if (cardRect.top < headerHeight + 10) {
+        if (cardRect.top < headerHeight) {
           card.scrollIntoView({ behavior: "smooth", block: "start" });
-          window.scrollBy({ top: -headerHeight - 20, behavior: "smooth" });
         }
-      }, 700);
+      }, 800);
 
-      // Highlight effect
       card.classList.add("highlight");
       setTimeout(() => card.classList.remove("highlight"), 2000);
-    }, 400);
+    }, 500);
   }
 
   // ------------------ Step 3: Design Code ------------------
@@ -1607,7 +1602,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
   });
 
-  // ------------------ Intersection Observer for Pricing Animation ------------------
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1618,12 +1612,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { threshold: 0.3 });
   cards.forEach(card => observer.observe(card));
 
-  // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
   function startTypewriterAnimation() {
-    if (!typewriterEl) return;
+        if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
     let lines = [];
     let currentLine = 0;
@@ -1632,7 +1625,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingSpeed = 100;
     const lineDelay = 500;
     const cursor = document.createElement('span');
-        cursor.classList.add('cursor');
+    cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
