@@ -1531,30 +1531,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
 
-    // Scroll to card
+    // Scroll to the card
     setTimeout(() => {
       const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+
+      // Always scroll so the card’s top is just below the header
       const rect = card.getBoundingClientRect();
       const absoluteY = window.scrollY + rect.top;
 
-      // Scroll with clearance
       window.scrollTo({
-        top: absoluteY - headerHeight - 40,
+        top: absoluteY - headerHeight - 20,
         behavior: "smooth"
       });
 
-      // Safety check: force into view if still clipped
+      // Force correction if still clipped after scroll
       setTimeout(() => {
         const cardRect = card.getBoundingClientRect();
-        if (cardRect.top < headerHeight) {
+        if (cardRect.top < headerHeight + 10) {
           card.scrollIntoView({ behavior: "smooth", block: "start" });
+          window.scrollBy({ top: -headerHeight - 20, behavior: "smooth" });
         }
-      }, 800);
+      }, 700);
 
       // Highlight effect
       card.classList.add("highlight");
       setTimeout(() => card.classList.remove("highlight"), 2000);
-    }, 500);
+    }, 400);
   }
 
   // ------------------ Step 3: Design Code ------------------
