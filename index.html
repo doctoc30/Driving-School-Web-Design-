@@ -1018,6 +1018,99 @@ body header + .form-screen {
     margin-top: 0;
   }
 }
+
+
+
+
+ /* ------------------ General Body ------------------ */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: white;
+  overflow-x: hidden; /* allow vertical scroll if needed */
+}
+
+/* ------------------ Form Screens ------------------ */
+.form-screen {
+  display: none; /* hidden by default, JS will show */
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2rem;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto; /* allow scrolling within the screen */
+}
+
+/* Active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* ------------------ Recommended Plan Section ------------------ */
+#recommended-plan-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ------------------ Pricing Cards ------------------ */
+.pricing-card {
+  display: block; /* ensure visible */
+  opacity: 1; /* fully visible */
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Highlight animation when selected */
+.pricing-card.highlight {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Intersection Observer fade-in */
+.pricing-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Initially hidden for animation */
+.pricing-card:not(.in-view) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Pricing badges */
+.pricing-card .badge {
+  display: none; /* JS will show the correct one */
+  background: #ff6f61;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+}
 </style>
 
 </head>
