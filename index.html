@@ -1346,7 +1346,7 @@ body header + .form-screen {
 </form>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
@@ -1458,35 +1458,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let tier in planTiers) {
       html += `<h3>${tier} Plan Features:</h3>`;
-      const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
-      const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+      html += "<ul>";
 
-      if (yesInTier.length > 0 || noInTier.length > 0) {
-        html += "<ul>";
+      planTiers[tier].forEach(f => {
+        const isYes = yesFeatures.includes(f);
+        const icon = isYes ? "✅" : "❌";
+        const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+        html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
+      });
 
-        yesInTier.forEach(f => {
-          const label = (tier !== recommendedTier) ? " (Optional)" : "";
-          html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
-        });
-
-        noInTier.forEach(f => {
-          html += `<li>❌ ${formatFeatureName(f)}</li>`;
-        });
-
-        html += "</ul>";
-      }
+      html += "</ul>";
     }
 
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerHTML = html;
 
-    // Make sure all cards are visible immediately
+    // Ensure all cards are visible
     document.querySelectorAll('.pricing-card').forEach(card => {
       card.style.display = 'block';
       card.classList.add('in-view');
     });
 
-    // Delay to let cards render before scroll
+    // Delay to calculate and scroll to correct plan
     setTimeout(() => {
       calculatePlan(recommendedTier);
       if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
@@ -1616,7 +1609,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingSpeed = 100;
     const lineDelay = 500;
     const cursor = document.createElement('span');
-        cursor.classList.add('cursor');
+    cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
@@ -1701,18 +1694,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ AOS Init ------------------
   if (typeof AOS !== 'undefined') AOS.init();
 
- // ------------------ Initialize Funnel ------------------
-hideAllScreens();
-if (!codeParam && !stepParam) {
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
-} else {
-  if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-  if (colorRiseEl) colorRiseEl.classList.remove('active');
-  if (stepParam) showScreen(`instructor-q${stepParam}`);
-  else showScreen('instructor-q2');
-}
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
 
   // ------------------ Water & Progress ------------------
   function updateWaterProgress() {
@@ -1732,7 +1725,7 @@ if (!codeParam && !stepParam) {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-});                                            
+});                                
 </script>
 </body>
 </html>
