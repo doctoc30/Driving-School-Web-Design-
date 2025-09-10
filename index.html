@@ -1447,45 +1447,50 @@ body header + .form-screen {
   };
 
   // ------------------ Show Recommended Plan ------------------
-  function showRecommendedPlan() {
-    let recommendedTier = "Basic";
+function showRecommendedPlan() {
+  const recEl = document.getElementById('recommended-plan');
+  if (!recEl) return; // exit if container doesn't exist yet
 
-    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+  // Determine recommended tier
+  let recommendedTier = "Basic";
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-    let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
-    let html = `<strong>${planName}</strong>`;
+  let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
+  let html = `<strong>${planName}</strong>`;
 
-    for (let tier in planTiers) {
-      html += `<h3>${tier} Plan Features:</h3>`;
-      html += "<ul>";
+  for (let tier in planTiers) {
+    html += `<h3>${tier} Plan Features:</h3><ul>`;
+    planTiers[tier].forEach(f => {
+      const isYes = yesFeatures.includes(f);
+      const icon = isYes ? "✅" : "❌";
+      const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
+    });
+    html += "</ul>";
+  }
 
-      planTiers[tier].forEach(f => {
-        const isYes = yesFeatures.includes(f);
-        const icon = isYes ? "✅" : "❌";
-        const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-        html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
-      });
+  recEl.innerHTML = html;
 
-      html += "</ul>";
-    }
-
-    const recEl = document.getElementById('recommended-plan');
-    if (recEl) recEl.innerHTML = html;
-
-    // Ensure all cards are visible
-    document.querySelectorAll('.pricing-card').forEach(card => {
+  // Make sure pricing cards exist and are visible
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  if (cards.length) {
+    cards.forEach(card => {
       card.style.display = 'block';
       card.classList.add('in-view');
     });
 
-    // Delay to calculate and scroll to correct plan
-    setTimeout(() => {
-      calculatePlan(recommendedTier);
-      if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
-    }, 100);
+    // Scroll to recommended card
+    const recommendedCard = document.querySelector(`.pricing-card[data-plan='${recommendedTier.toLowerCase()}']`);
+    if (recommendedCard) {
+      setTimeout(() => {
+        recommendedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        recommendedCard.classList.add('highlight');
+        setTimeout(() => recommendedCard.classList.remove('highlight'), 2000);
+      }, 200);
+    }
   }
-
+}
   // ------------------ Format Feature Names ------------------
   function formatFeatureName(f) {
     const featureNames = {
