@@ -1701,18 +1701,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ AOS Init ------------------
   if (typeof AOS !== 'undefined') AOS.init();
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active
-         if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
+ // ------------------ Initialize Funnel ------------------
+hideAllScreens();
+if (!codeParam && !stepParam) {
+  if (typewriterEl) typewriterEl.classList.add('active');
+  if (colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
+} else {
+  if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+  if (colorRiseEl) colorRiseEl.classList.remove('active');
+  if (stepParam) showScreen(`instructor-q${stepParam}`);
+  else showScreen('instructor-q2');
+}
 
   // ------------------ Water & Progress ------------------
   function updateWaterProgress() {
