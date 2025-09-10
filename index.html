@@ -1404,7 +1404,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
 
-  // Scoring buckets (optional for future use)
+  // Scoring buckets
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
   window.setPath = (path) => { userPath = path; };
@@ -1412,7 +1412,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
 
-    // Score tracking
     if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
     else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
     else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
@@ -1481,9 +1480,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerHTML = html;
 
-    if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
+    // Make sure all cards are visible immediately
+    document.querySelectorAll('.pricing-card').forEach(card => {
+      card.style.display = 'block';
+      card.classList.add('in-view');
+    });
 
-    calculatePlan(recommendedTier);
+    // Delay to let cards render before scroll
+    setTimeout(() => {
+      calculatePlan(recommendedTier);
+      if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
+    }, 100);
   }
 
   // ------------------ Format Feature Names ------------------
@@ -1532,7 +1539,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.scrollIntoView({ behavior: "smooth", block: "center" });
         card.classList.add("highlight");
         setTimeout(() => card.classList.remove("highlight"), 2000);
-      }, 500);
+      }, 200);
     }
   }
 
@@ -1697,8 +1704,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
   if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
+    if (typewriterEl) typewriterEl.classList.add('active
+         if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
@@ -1725,7 +1732,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-});
+});                                            
 </script>
 </body>
 </html>
