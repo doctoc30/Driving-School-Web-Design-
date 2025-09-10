@@ -1019,7 +1019,21 @@ body header + .form-screen {
   }
 }
 
+/* Ensure pricing cards are visible and not blocked */
+#recommended-plan-screen {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto; /* allow scroll */
+}
 
+.pricing-card {
+  display: block !important;
+  opacity: 1 !important;
+}
 
 </style>
 
@@ -1451,11 +1465,8 @@ body header + .form-screen {
 
   // ------------------ Show Recommended Plan ------------------
 function showRecommendedPlan() {
-  const recEl = document.getElementById('recommended-plan');
-  if (!recEl) return; // exit if container doesn't exist yet
-
-  // Determine recommended tier
   let recommendedTier = "Basic";
+
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
   else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
@@ -1473,26 +1484,23 @@ function showRecommendedPlan() {
     html += "</ul>";
   }
 
-  recEl.innerHTML = html;
+  const recEl = document.getElementById('recommended-plan');
+  if (recEl) recEl.innerHTML = html;
 
-  // Make sure pricing cards exist and are visible
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  if (cards.length) {
-    cards.forEach(card => {
-      card.style.display = 'block';
-      card.classList.add('in-view');
-    });
+  // Make cards visible immediately
+  const cards = document.querySelectorAll('.pricing-card');
+  cards.forEach(card => {
+    card.style.display = 'block';
+    card.classList.add('in-view');
+  });
 
-    // Scroll to recommended card
-    const recommendedCard = document.querySelector(`.pricing-card[data-plan='${recommendedTier.toLowerCase()}']`);
-    if (recommendedCard) {
-      setTimeout(() => {
-        recommendedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        recommendedCard.classList.add('highlight');
-        setTimeout(() => recommendedCard.classList.remove('highlight'), 2000);
-      }, 200);
-    }
-  }
+  // Show the recommended plan screen
+  showScreen('recommended-plan-screen');
+
+  // Scroll to correct card
+  setTimeout(() => {
+    calculatePlan(recommendedTier);
+  }, 100);
 }
   // ------------------ Format Feature Names ------------------
   function formatFeatureName(f) {
