@@ -1412,32 +1412,36 @@ document.addEventListener("DOMContentLoaded", () => {
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership("Monthly Support"); });
 
   // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const screen = document.getElementById("recommended-plan-screen");
-    if (screen) screen.style.display = "flex";
+function showRecommendedPlan() {
+  const screen = document.getElementById("recommended-plan-screen");
+  if (!screen) return;
+  screen.style.display = "flex";
 
-    // Determine recommended tier
-    let recommendedTier = "basic";
-    if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = "premium";
-    else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = "pro";
+  // Determine recommended tier
+  let recommendedTier = "basic";
+  if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = "premium";
+  else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = "pro";
 
-    // Populate each plan's features
-    Object.keys(planTiers).forEach(tier => {
-      const ul = document.getElementById(`${tier}-features`);
-      if (!ul) return;
-      ul.innerHTML = "";
-      planTiers[tier].forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = `${yesFeatures.includes(f) ? "✅" : "❌"} ${formatFeatureName(f)}`;
-        ul.appendChild(li);
-      });
+  // Populate each plan's features
+  Object.keys(planTiers).forEach(tier => {
+    const ul = document.getElementById(`${tier}-features`);
+    if (!ul) return;
+    ul.innerHTML = "";
+    planTiers[tier].forEach(f => {
+      const li = document.createElement("li");
+      const isYes = yesFeatures.includes(f);
+      li.textContent = `${isYes ? "✅" : "❌"} ${formatFeatureName(f)}`;
+      ul.appendChild(li);
     });
+  });
 
-    // Show all cards
-    document.querySelectorAll(".pricing-card").forEach(card => card.style.display = "block");
+  // Show all pricing cards
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.style.display = "block"; // ensures cards are visible
+  });
 
-    highlightPlan(recommendedTier);
-  }
+  highlightPlan(recommendedTier);
+}
 
   function formatFeatureName(key) {
     const names = {
