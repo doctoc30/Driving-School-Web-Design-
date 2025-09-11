@@ -1408,37 +1408,38 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 // ------------------ Show Recommended Plan ------------------
-function showRecommendedPlan() {
-  let recommendedTier = "Basic";
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-  else if (yesFeatures.some(f => planTiers.Pro.includes(f))) recommendedTier = "Pro";
+ function showRecommendedPlan() {
+    let recommendedTier = "Basic";
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+    else if (yesFeatures.some(f => planTiers.Pro.includes(f))) recommendedTier = "Pro";
 
-  for (let tier in planTiers) {
-    const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
-    if (!cardFeaturesEl) continue;
+    // Update icons in existing <li> elements without removing them
+    for (let tier in planTiers) {
+      const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
+      if (!cardFeaturesEl) continue;
 
-    const lis = cardFeaturesEl.querySelectorAll('li'); // use existing <li>
-    planTiers[tier].forEach((feature, index) => {
-      const li = lis[index];
-      if (!li) return;
-      const isYes = yesFeatures.includes(feature);
-      const icon = isYes ? "✅" : "❌";
-      const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      li.textContent = `${icon} ${formatFeatureName(feature)}${optionalLabel}`;
+      const lis = cardFeaturesEl.querySelectorAll('li');
+      planTiers[tier].forEach((feature, i) => {
+        const li = lis[i];
+        if (!li) return;
+
+        const isYes = yesFeatures.includes(feature);
+        const icon = isYes ? "✅" : "❌";
+        const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+
+        li.textContent = `${icon} ${formatFeatureName(feature)}${optionalLabel}`;
+      });
+    }
+
+    // Show cards without affecting swipe
+    const cards = document.querySelectorAll('.pricing-card');
+    cards.forEach(card => {
+      card.style.display = 'block';
+      card.classList.add('in-view');
     });
+
+    calculatePlan(recommendedTier);
   }
-
-  // Show pricing cards without affecting swipe
-  const cards = document.querySelectorAll('.pricing-card');
-  cards.forEach(card => {
-    card.style.display = 'block';
-    card.classList.add('in-view');
-  });
-
-  // Highlight recommended plan
-  calculatePlan(recommendedTier);
-}
-
 
  
 // Mapping helper
