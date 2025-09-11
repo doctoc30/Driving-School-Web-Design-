@@ -1363,7 +1363,7 @@ body header + .form-screen {
 </form>
 
 <script>
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
@@ -1464,44 +1464,44 @@ body header + .form-screen {
   };
 
   // ------------------ Show Recommended Plan ------------------
-function showRecommendedPlan() {
-  let recommendedTier = "Basic";
+  function showRecommendedPlan() {
+    let recommendedTier = "Basic";
 
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+    else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-  let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
-  let html = `<strong>${planName}</strong>`;
+    let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
+    let html = `<strong>${planName}</strong>`;
 
-  for (let tier in planTiers) {
-    html += `<h3>${tier} Plan Features:</h3><ul>`;
-    planTiers[tier].forEach(f => {
-      const isYes = yesFeatures.includes(f);
-      const icon = isYes ? "✅" : "❌";
-      const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
+    for (let tier in planTiers) {
+      html += `<h3>${tier} Plan Features:</h3><ul>`;
+      planTiers[tier].forEach(f => {
+        const isYes = yesFeatures.includes(f);
+        const icon = isYes ? "✅" : "❌";
+        const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+        html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
+      });
+      html += "</ul>";
+    }
+
+    const recEl = document.getElementById('recommended-plan');
+    if (recEl) recEl.innerHTML = html;
+
+    // Make cards visible immediately
+    const cards = document.querySelectorAll('.pricing-card');
+    cards.forEach(card => {
+      card.style.display = 'block';
+      card.classList.add('in-view');
     });
-    html += "</ul>";
+
+    // 👉 Only calculate plan if user is already on pricing screen
+    if (screens[currentScreen].id === "recommended-plan-screen") {
+      setTimeout(() => {
+        calculatePlan(recommendedTier);
+      }, 100);
+    }
   }
 
-  const recEl = document.getElementById('recommended-plan');
-  if (recEl) recEl.innerHTML = html;
-
-  // Make cards visible immediately
-  const cards = document.querySelectorAll('.pricing-card');
-  cards.forEach(card => {
-    card.style.display = 'block';
-    card.classList.add('in-view');
-  });
-
-  // Show the recommended plan screen
-  showScreen('recommended-plan-screen');
-
-  // Scroll to correct card
-  setTimeout(() => {
-    calculatePlan(recommendedTier);
-  }, 100);
-}
   // ------------------ Format Feature Names ------------------
   function formatFeatureName(f) {
     const featureNames = {
@@ -1741,7 +1741,7 @@ function showRecommendedPlan() {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-});                                
+});                        
 </script>
 </body>
 </html>
