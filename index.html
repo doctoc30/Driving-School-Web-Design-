@@ -1400,38 +1400,43 @@ document.addEventListener("DOMContentLoaded", () => {
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
-  // ------------------ Plan Tiers ------------------
-  const planTiers = {
-    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    Standard: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    Premium: ['packages', 'social', 'email', 'content', 'guide']
-  };
+// ------------------ Plan Tiers ------------------
+const planTiers = {
+  Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+  Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+  Premium: ['packages', 'social', 'email', 'content', 'guide']
+};
 
 // ------------------ Show Recommended Plan ------------------
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
+    recommendedTier = "Premium";
+  } else if (yesFeatures.some(f => planTiers.Pro.includes(f))) {
+    recommendedTier = "Pro";
+  }
 
   // Populate feature lists per pricing card
-  for (let tier in planTiers) {
+  Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
-    if (!cardFeaturesEl) continue;
+    if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = ''; // clear previous
 
     planTiers[tier].forEach(f => {
       const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
-      const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      const optionalLabel =
+        (!isYes && tier !== recommendedTier)
+          ? ""
+          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement('li');
       li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
     });
-  }
+  });
 
   // Show pricing cards
-  const cards = document.querySelectorAll('.pricing-card');
-  cards.forEach(card => {
+  document.querySelectorAll('.pricing-card').forEach(card => {
     card.style.display = 'block';
     card.classList.add('in-view'); // fade-in
   });
@@ -1466,73 +1471,79 @@ function formatFeatureName(f) {
 
 // ------------------ Calculate & Highlight Final Plan ------------------
 function calculatePlan(finalPlan) {
-  finalPlan = finalPlan.toLowerCase();
+  const planKey = finalPlan.toLowerCase();
   document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
 
-  const card = document.querySelector(`.pricing-card[data-plan='${finalPlan}']`);
-  const badge = card ? card.querySelector(".badge") : null;
+  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+  if (!card) return;
+
+  const badge = card.querySelector(".badge");
   if (badge) badge.style.display = "block";
 
+  // Hidden inputs for submission
   const hiddenPlan = document.getElementById("hiddenPlan");
   const hiddenFeatures = document.getElementById("hiddenFeatures");
   const hiddenLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPlan) hiddenPlan.value = finalPlan.charAt(0).toUpperCase() + finalPlan.slice(1);
+  if (hiddenPlan) hiddenPlan.value = finalPlan;
   if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink) hiddenLink.value = planLinks[finalPlan];
+  if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
 
-  if (card) {
-    setTimeout(() => {
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-      card.classList.add("highlight");
-      setTimeout(() => card.classList.remove("highlight"), 2000);
-    }, 200);
-  }
+  setTimeout(() => {
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.classList.add("highlight");
+    setTimeout(() => card.classList.remove("highlight"), 2000);
+  }, 200);
 }
-  // ------------------ Design Code Redirect ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  };
 
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
+// ------------------ Design Code Redirect ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim();
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
   }
+  window.location.href =
+    `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+};
 
-  // ------------------ Pricing Card Buttons ------------------
-  const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
-  };
+if (codeParam && stepParam && stepParam === "4") {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showScreen(`instructor-q4`);
+}
 
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  window.goToPayPal = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
-    window.location.href = planLinks[plan];
-  };
-  window.submitLead = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = "";
-    const form = document.getElementById('formWrapper');
-    if (form) form.submit();
-  };
-  cards.forEach(card => {
-    const plan = card.dataset.plan;
-    const payBtn = card.querySelector("button:first-of-type");
-    const infoBtn = card.querySelector("button:last-of-type");
-    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
-  });
+// ------------------ Pricing Card Buttons ------------------
+const planLinks = {
+  basic: "https://www.paypal.com/paypal-link-basic",
+  pro: "https://www.paypal.com/paypal-link-pro",
+  premium: "https://www.paypal.com/paypal-link-premium"
+};
+
+const cards = document.querySelectorAll('.pricing-card[data-plan]');
+window.goToPayPal = (plan) => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = planLinks[plan];
+  window.location.href = planLinks[plan];
+};
+window.submitLead = (plan) => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = "";
+  const form = document.getElementById('formWrapper');
+  if (form) form.submit();
+};
+cards.forEach(card => {
+  const plan = card.dataset.plan;
+  const payBtn = card.querySelector("button:first-of-type");
+  const infoBtn = card.querySelector("button:last-of-type");
+  if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+  if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
+});
 
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
