@@ -1323,6 +1323,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
 
+  // ------------------ Global State ------------------
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
+  let ownershipChoice = "";
+  const planScores = { basic: 0, pro: 0, premium: 0 };
+
+  const planTiers = {
+    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+    Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+    Premium: ['packages', 'social', 'email', 'content', 'guide']
+  };
+
+  const planLinks = {
+    basic: "https://www.paypal.com/paypal-link-basic",
+    pro: "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
+
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
     screens.forEach(screen => {
@@ -1341,57 +1360,41 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan();
-    }
-
+    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
+    if (currentScreen < screens.length - 1) showScreen(screens[currentScreen + 1].id);
   }
 
   function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
+    if (currentScreen > 0) showScreen(screens[currentScreen - 1].id);
   }
 
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User Path & Features ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = ""; // Q19 ownership choice
-  let planScores = { basic: 0, pro: 0, premium: 0 };
+  // ------------------ Feature Recording ------------------
+  window.setPath = path => { userPath = path; };
 
-  window.setPath = (path) => { userPath = path; };
-
-  window.recordFeature = (feature) => {
+  window.recordFeature = feature => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-
-    if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
-    else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
-
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    const noIndex = noFeatures.indexOf(feature);
+    if (noIndex > -1) noFeatures.splice(noIndex, 1);
+    showRecommendedPlan();
   };
 
-  window.recordNoFeature = (feature) => {
+  window.recordNoFeature = feature => {
     if (!noFeatures.includes(feature)) noFeatures.push(feature);
+    const yesIndex = yesFeatures.indexOf(feature);
+    if (yesIndex > -1) yesFeatures.splice(yesIndex, 1);
+    showRecommendedPlan();
   };
 
-  window.recordOwnership = (choice) => {
+  window.recordOwnership = choice => {
     ownershipChoice = choice;
     recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
     const hiddenPlan = document.getElementById('hiddenPlan');
@@ -1405,150 +1408,102 @@ document.addEventListener("DOMContentLoaded", () => {
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
-// ------------------ Plan Tiers ------------------
-const planTiers = {
-  Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-  Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-  Premium: ['packages', 'social', 'email', 'content', 'guide']
-};
+  // ------------------ Pricing Cards ------------------
+  function showRecommendedPlan() {
+    let recommendedTier = "Basic";
+    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+    else if (yesFeatures.some(f => planTiers.Pro.includes(f))) recommendedTier = "Pro";
 
-// ------------------ Show Recommended Plan ------------------
-function showRecommendedPlan() {
-  let recommendedTier = "Basic";
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
-    recommendedTier = "Premium";
-  } else if (yesFeatures.some(f => planTiers.Pro.includes(f))) {
-    recommendedTier = "Pro";
-  }
+    Object.keys(planTiers).forEach(tier => {
+      const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
+      if (!cardFeaturesEl) return;
+      cardFeaturesEl.innerHTML = '';
 
-  // Populate feature lists per pricing card
-  Object.keys(planTiers).forEach(tier => {
-    const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
-    if (!cardFeaturesEl) return;
-    cardFeaturesEl.innerHTML = ''; // clear previous
-
-    planTiers[tier].forEach(f => {
-      const isYes = yesFeatures.includes(f);
-      const icon = isYes ? "✅" : "❌";
-      const optionalLabel =
-        (!isYes && tier !== recommendedTier)
-          ? ""
-          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      const li = document.createElement('li');
-      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
-      cardFeaturesEl.appendChild(li);
+      planTiers[tier].forEach(f => {
+        const isYes = yesFeatures.includes(f);
+        const icon = isYes ? "✅" : "❌";
+        const li = document.createElement('li');
+        li.textContent = `${icon} ${formatFeatureName(f)}`;
+        cardFeaturesEl.appendChild(li);
+      });
     });
-  });
 
-  // Show pricing cards
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.style.display = 'block';
-    card.classList.add('in-view'); // fade-in
-  });
+    document.querySelectorAll('.pricing-card').forEach(card => {
+      card.style.display = 'block';
+      card.classList.add('in-view');
+    });
 
-  // Highlight recommended plan
-  calculatePlan(recommendedTier);
-}
-
-// ------------------ Format Feature Names ------------------
-function formatFeatureName(f) {
-  const featureNames = {
-    booking: "Online Booking & Payment",
-    mobile: "Mobile Optimized",
-    cta: "Strong Call-to-Action Buttons",
-    contact: "Simple Contact Form",
-    bio: "About Me / Instructor Bio",
-    seo: "Local SEO Optimization",
-    reviews: "Student Reviews Section",
-    branding: "Branding Help (Logo & Colors)",
-    faq: "FAQ / Student Guide Section",
-    newsletter: "Newsletter Signup / Mailing List",
-    packages: "Lesson Packages & Gift Vouchers",
-    social: "Social Media Integration",
-    email: "Professional Email Address",
-    content: "Content Creation Help",
-    guide: "What to Expect Guide",
-    buyOutright: "Owned Outright",
-    monthlySupport: "Monthly Support"
-  };
-  return featureNames[f] || f;
-}
-
-// ------------------ Calculate & Highlight Final Plan ------------------
-function calculatePlan(finalPlan) {
-  const planKey = finalPlan.toLowerCase();
-  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
-
-  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
-  if (!card) return;
-
-  const badge = card.querySelector(".badge");
-  if (badge) badge.style.display = "block";
-
-  // Hidden inputs for submission
-  const hiddenPlan = document.getElementById("hiddenPlan");
-  const hiddenFeatures = document.getElementById("hiddenFeatures");
-  const hiddenLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPlan) hiddenPlan.value = finalPlan;
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
-
-  setTimeout(() => {
-    card.scrollIntoView({ behavior: "smooth", block: "center" });
-    card.classList.add("highlight");
-    setTimeout(() => card.classList.remove("highlight"), 2000);
-  }, 200);
-}
-
-// ------------------ Design Code Redirect ------------------
-window.goToConcept = () => {
-  const input = document.getElementById('designInput');
-  if (!input) return;
-  const code = input.value.trim();
-  if (!code) {
-    alert("Please enter a design code.");
-    return;
+    calculatePlan(recommendedTier);
   }
-  window.location.href =
-    `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-};
 
-if (codeParam && stepParam && stepParam === "4") {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showScreen(`instructor-q4`);
-}
+  function formatFeatureName(f) {
+    const featureNames = {
+      booking: "Online Booking & Payment",
+      mobile: "Mobile Optimized",
+      cta: "Strong Call-to-Action Buttons",
+      contact: "Simple Contact Form",
+      bio: "About Me / Instructor Bio",
+      seo: "Local SEO Optimization",
+      reviews: "Student Reviews Section",
+      branding: "Branding Help (Logo & Colors)",
+      faq: "FAQ / Student Guide Section",
+      newsletter: "Newsletter Signup / Mailing List",
+      packages: "Lesson Packages & Gift Vouchers",
+      social: "Social Media Integration",
+      email: "Professional Email Address",
+      content: "Content Creation Help",
+      guide: "What to Expect Guide",
+      buyOutright: "Owned Outright",
+      monthlySupport: "Monthly Support"
+    };
+    return featureNames[f] || f;
+  }
 
-// ------------------ Pricing Card Buttons ------------------
-const planLinks = {
-  basic: "https://www.paypal.com/paypal-link-basic",
-  pro: "https://www.paypal.com/paypal-link-pro",
-  premium: "https://www.paypal.com/paypal-link-premium"
-};
+  function calculatePlan(finalPlan) {
+    const planKey = finalPlan.toLowerCase();
+    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+    const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+    if (!card) return;
+    const badge = card.querySelector(".badge");
+    if (badge) badge.style.display = "block";
 
-const cards = document.querySelectorAll('.pricing-card[data-plan]');
-window.goToPayPal = (plan) => {
-  const hiddenPlan = document.getElementById('hiddenPlan');
-  const hiddenLink = document.getElementById('hiddenPaymentLink');
-  if (hiddenPlan) hiddenPlan.value = plan;
-  if (hiddenLink) hiddenLink.value = planLinks[plan];
-  window.location.href = planLinks[plan];
-};
-window.submitLead = (plan) => {
-  const hiddenPlan = document.getElementById('hiddenPlan');
-  const hiddenLink = document.getElementById('hiddenPaymentLink');
-  if (hiddenPlan) hiddenPlan.value = plan;
-  if (hiddenLink) hiddenLink.value = "";
-  const form = document.getElementById('formWrapper');
-  if (form) form.submit();
-};
-cards.forEach(card => {
-  const plan = card.dataset.plan;
-  const payBtn = card.querySelector("button:first-of-type");
-  const infoBtn = card.querySelector("button:last-of-type");
-  if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-  if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
-});
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = finalPlan;
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
+
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    }, 200);
+  }
+
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
+  window.goToPayPal = plan => {
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
+    window.location.href = planLinks[plan];
+  };
+  window.submitLead = plan => {
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = "";
+    const form = document.getElementById('formWrapper');
+    if (form) form.submit();
+  };
+  cards.forEach(card => {
+    const plan = card.dataset.plan;
+    const payBtn = card.querySelector("button:first-of-type");
+    const infoBtn = card.querySelector("button:last-of-type");
+    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+    if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
+  });
 
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
@@ -1658,7 +1613,7 @@ cards.forEach(card => {
   }
 
   // ------------------ AOS Init ------------------
-  if (typeof AOS !== 'undefined') AOS.init();
+    if (typeof AOS !== 'undefined') AOS.init();
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
@@ -1668,7 +1623,7 @@ cards.forEach(card => {
     startTypewriterAnimation();
   } else {
     if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (colorRiseEl) colorRiseEl.classList.remove('active');
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen('instructor-q2');
   }
