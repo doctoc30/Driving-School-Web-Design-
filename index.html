@@ -164,14 +164,15 @@
 
 <title>Splash + Form</title>
 
- html, body {
-  height: auto !important;
-  width: auto !important;
-  overflow-x: hidden; /* allow vertical scroll */
-  overflow-y: auto !important;
-  background: #f9f9f9; /* or whatever your site background is */
-}
-
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: white;
+  }
 
   .color-rise {
     position: absolute;
@@ -1018,32 +1019,6 @@ body header + .form-screen {
     margin-top: 0;
   }
 }
-
-/* Ensure pricing cards are visible and not blocked */
-#recommended-plan-screen {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  min-height: 100vh;
-  overflow-y: auto; /* allow scroll */
-}
-
-
-
-
- .pricing-card {
-  display: none; /* hidden until JS / observer makes it visible */
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.pricing-card.in-view {
-  display: block;
-  opacity: 1;
-}
-
 </style>
 
 </head>
@@ -1430,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
 
-  // Scoring buckets
+  // Scoring buckets (optional for future use)
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
   window.setPath = (path) => { userPath = path; };
@@ -1438,6 +1413,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
 
+    // Score tracking
     if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
     else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
     else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
@@ -1483,32 +1459,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let html = `<strong>${planName}</strong>`;
 
     for (let tier in planTiers) {
-      html += `<h3>${tier} Plan Features:</h3><ul>`;
-      planTiers[tier].forEach(f => {
-        const isYes = yesFeatures.includes(f);
-        const icon = isYes ? "✅" : "❌";
-        const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-        html += `<li>${icon} ${formatFeatureName(f)}${label}</li>`;
-      });
-      html += "</ul>";
+      html += `<h3>${tier} Plan Features:</h3>`;
+      const yesInTier = yesFeatures.filter(f => planTiers[tier].includes(f));
+      const noInTier = noFeatures.filter(f => planTiers[tier].includes(f));
+
+      if (yesInTier.length > 0 || noInTier.length > 0) {
+        html += "<ul>";
+
+        yesInTier.forEach(f => {
+          const label = (tier !== recommendedTier) ? " (Optional)" : "";
+          html += `<li>✅ ${formatFeatureName(f)}${label}</li>`;
+        });
+
+        noInTier.forEach(f => {
+          html += `<li>❌ ${formatFeatureName(f)}</li>`;
+        });
+
+        html += "</ul>";
+      }
     }
 
     const recEl = document.getElementById('recommended-plan');
     if (recEl) recEl.innerHTML = html;
 
-    // Make cards visible immediately
-    const cards = document.querySelectorAll('.pricing-card');
-    cards.forEach(card => {
-      card.style.display = 'block';
-      card.classList.add('in-view');
-    });
+    if (screens[currentScreen].id !== "recommended-plan-screen") showScreen('recommended-plan-screen');
 
-    // 👉 Only calculate plan if user is already on pricing screen
-    if (screens[currentScreen].id === "recommended-plan-screen") {
-      setTimeout(() => {
-        calculatePlan(recommendedTier);
-      }, 100);
-    }
+    calculatePlan(recommendedTier);
   }
 
   // ------------------ Format Feature Names ------------------
@@ -1557,7 +1533,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.scrollIntoView({ behavior: "smooth", block: "center" });
         card.classList.add("highlight");
         setTimeout(() => card.classList.remove("highlight"), 2000);
-      }, 200);
+      }, 500);
     }
   }
 
@@ -1634,7 +1610,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingSpeed = 100;
     const lineDelay = 500;
     const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
+        cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
@@ -1732,25 +1708,6 @@ document.addEventListener("DOMContentLoaded", () => {
     else showScreen('instructor-q2');
   }
 
-  // ------------------ Water & Progress ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
 
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-});                        
-</script>
 </body>
 </html>
