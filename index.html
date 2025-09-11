@@ -1030,9 +1030,18 @@ body header + .form-screen {
   overflow-y: auto; /* allow scroll */
 }
 
-.pricing-card {
-  display: block !important;
-  opacity: 1 !important;
+
+
+
+ .pricing-card {
+  display: none; /* hidden until JS / observer makes it visible */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.pricing-card.in-view {
+  display: block;
+  opacity: 1;
 }
 
 </style>
