@@ -1323,43 +1323,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
 
-  // ------------------ User State ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = "";
+  // ------------------ PLAN TIER & LINKS ------------------
   const planTiers = {
-    basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    premium: ['packages', 'social', 'email', 'content', 'guide']
+    basic: ['booking','mobile','cta','contact','bio'],
+    pro: ['seo','reviews','branding','faq','newsletter'],
+    premium: ['packages','social','email','content','guide']
   };
+
   const planLinks = {
     basic: "https://www.paypal.com/paypal-link-basic",
     pro: "https://www.paypal.com/paypal-link-pro",
     premium: "https://www.paypal.com/paypal-link-premium"
   };
 
-  // ------------------ Navigation ------------------
+  // ------------------ USER FEATURES ------------------
+  let yesFeatures = [];
+  let noFeatures = [];
+  let ownershipChoice = "";
+
+  // ------------------ SCREEN NAVIGATION ------------------
   function hideAllScreens() {
-    screens.forEach(s => {
-      s.classList.remove("active");
-      s.style.display = "none";
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
     });
   }
 
   function showScreen(id) {
     const screen = document.getElementById(id);
     if (!screen) return;
-    hideAllScreens();
-    screen.style.display = "flex";
-    screen.classList.add("active");
-    currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (id === "recommended-plan-screen") showRecommendedPlan();
+    hideAllScreens();
+    screen.classList.add("active");
+    screen.style.display = "flex";
+    currentScreen = Array.from(screens).indexOf(screen);
 
     updateWaterProgress();
     updateProgress(currentScreen + 1);
+
+    if (screen.id === "recommended-plan-screen") {
+      showRecommendedPlan();
+    }
   }
 
   function next() {
@@ -1380,15 +1384,11 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  window.setPath = (path) => { userPath = path; };
-
-  // ------------------ Feature Recording ------------------
+  // ------------------ RECORD FEATURES ------------------
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
     const noIndex = noFeatures.indexOf(feature);
     if (noIndex > -1) noFeatures.splice(noIndex, 1);
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   };
 
   window.recordNoFeature = (feature) => {
@@ -1399,52 +1399,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    recordFeature(choice === "Owned Outright" ? "buyOutright" : "monthlySupport");
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    if (hiddenPlan) hiddenPlan.value = choice;
-    showScreen("recommended-plan-screen");
+    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
+    showRecommendedPlan();
   };
 
-  // ------------------ Q19 Buttons ------------------
+  // ------------------ Q19 BUTTONS ------------------
   const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
   const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
-  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { recordOwnership("Owned Outright"); });
-  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership("Monthly Support"); });
+  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
+  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
-  // ------------------ Recommended Plan ------------------
-function showRecommendedPlan() {
-  const screen = document.getElementById("recommended-plan-screen");
-  if (!screen) return;
-  screen.style.display = "flex";
-
-  // Determine recommended tier
-  let recommendedTier = "basic";
-  if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = "premium";
-  else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = "pro";
-
-  // Populate each plan's features
-  Object.keys(planTiers).forEach(tier => {
-    const ul = document.getElementById(`${tier}-features`);
-    if (!ul) return;
-    ul.innerHTML = "";
-    planTiers[tier].forEach(f => {
-      const li = document.createElement("li");
-      const isYes = yesFeatures.includes(f);
-      li.textContent = `${isYes ? "✅" : "❌"} ${formatFeatureName(f)}`;
-      ul.appendChild(li);
-    });
-  });
-
-  // Show all pricing cards
-  document.querySelectorAll(".pricing-card").forEach(card => {
-    card.style.display = "block"; // ensures cards are visible
-  });
-
-  highlightPlan(recommendedTier);
-}
-
-  function formatFeatureName(key) {
-    const names = {
+  // ------------------ PRICING CARDS ------------------
+  function formatFeatureName(f) {
+    const featureNames = {
       booking: "Online Booking & Payment",
       mobile: "Mobile Optimized",
       cta: "Strong Call-to-Action Buttons",
@@ -1463,32 +1430,70 @@ function showRecommendedPlan() {
       buyOutright: "Owned Outright",
       monthlySupport: "Monthly Support"
     };
-    return names[key] || key;
+    return featureNames[f] || f;
   }
 
   function highlightPlan(plan) {
     const planKey = plan.toLowerCase();
     document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
-    const card = document.querySelector(`.pricing-card[data-plan="${planKey}"]`);
+    const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
     if (!card) return;
     const badge = card.querySelector(".badge");
     if (badge) badge.style.display = "block";
+  }
 
-    // Set hidden inputs
+  function showRecommendedPlan() {
+    const screen = document.getElementById("recommended-plan-screen");
+    if (!screen) return;
+
+    hideAllScreens();
+    screen.style.display = "flex";
+    screen.classList.add("active");
+
+    // Determine recommended plan
+    let recommendedTier = "basic";
+    if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = "premium";
+    else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = "pro";
+
+    // Populate features
+    Object.keys(planTiers).forEach(tier => {
+      const ul = document.getElementById(`${tier}-features`);
+      if (!ul) return;
+      ul.innerHTML = "";
+      planTiers[tier].forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = `${yesFeatures.includes(f) ? "✅" : "❌"} ${formatFeatureName(f)}`;
+        ul.appendChild(li);
+      });
+    });
+
+    // Show all cards
+    document.querySelectorAll(".pricing-card").forEach(card => card.style.display = "block");
+
+    highlightPlan(recommendedTier);
+
+    // Update hidden inputs
     const hiddenPlan = document.getElementById("hiddenPlan");
     const hiddenFeatures = document.getElementById("hiddenFeatures");
     const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenPlan) hiddenPlan.value = recommendedTier;
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
+    if (hiddenLink && planLinks[recommendedTier]) hiddenLink.value = planLinks[recommendedTier];
   }
 
-  // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll(".pricing-card[data-plan]");
   window.goToPayPal = (plan) => {
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
     window.location.href = planLinks[plan];
   };
   window.submitLead = (plan) => {
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = "";
     const form = document.getElementById("formWrapper");
     if (form) form.submit();
   };
@@ -1500,7 +1505,18 @@ function showRecommendedPlan() {
     if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
   });
 
-  // ------------------ Typewriter ------------------
+  // ------------------ INTERSECTION OBSERVER ------------------
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  cards.forEach(card => observer.observe(card));
+
+  // ------------------ TYPEWRITER ------------------
   const typewriterEl = document.getElementById("typewriter");
   const colorRiseEl = document.querySelector(".color-rise");
 
@@ -1558,7 +1574,7 @@ function showRecommendedPlan() {
       currentLine = 0;
       currentChar = 0;
       lineEl = null;
-      typewriterEl.textContent = '';
+      typewriterEl.textContent = "";
       typewriterEl.appendChild(cursor);
       setLinesByOrientation();
       typeChar();
@@ -1573,7 +1589,7 @@ function showRecommendedPlan() {
     };
   }
 
-  // ------------------ Hamburger ------------------
+  // ------------------ HAMBURGER MENU ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
@@ -1596,36 +1612,38 @@ function showRecommendedPlan() {
     });
   }
 
-  // ------------------ Progress ------------------
+  // ------------------ WATER & PROGRESS ------------------
   function updateWaterProgress() {
     const wave = document.getElementById("progress-wave");
     if (!wave) return;
-    const percent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = percent + "%";
-  }
-  function updateProgress(step) {
-    const bar = document.querySelector(".progress-bar");
-    const label = document.querySelector(".progress-label");
-    const percent = Math.round((step / screens.length) * 100);
-    if (bar) bar.style.width = percent + "%";
-    if (label) label.textContent = percent + "%";
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + "%";
   }
 
-  // ------------------ Initialize ------------------
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector(".progress-bar");
+    const progressLabel = document.querySelector(".progress-label");
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + "%";
+    if (progressLabel) progressLabel.textContent = percent + "%";
+  }
+
+  // ------------------ INITIALIZE FUNNEL ------------------
   hideAllScreens();
   if (!codeParam && !stepParam) {
     if (typewriterEl) typewriterEl.classList.add("active");
     if (colorRiseEl) colorRiseEl.classList.add("active");
     startTypewriterAnimation();
   } else {
+    if (typewriterEl) typewriterEl.classList.remove("active","rocketRise");
+    if (colorRiseEl) colorRiseEl.classList.remove("active");
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen("instructor-q1");
   }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
+  // ------------------ AOS ------------------
+  if (typeof AOS !== "undefined") AOS.init();
 });
-
  
 </script>
 </body>
