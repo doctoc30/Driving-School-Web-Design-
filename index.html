@@ -1316,105 +1316,27 @@ body header + .form-screen {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ URL Params ------------------
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
+  // ------------------ DOM Elements ------------------
   const screens = document.querySelectorAll(".form-screen");
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+  const cards = document.querySelectorAll('.pricing-card[data-plan]');
   let currentScreen = 0;
 
-  // ------------------ Screen Navigation ------------------
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
-  }
-
-  function showScreen(id) {
-    const screen = document.getElementById(id);
-    if (!screen) return;
-
-    hideAllScreens();
-    screen.classList.add("active");
-    screen.style.display = "flex";
-    currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan();
-    }
-
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-  }
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  window.showScreen = showScreen;
-  window.next = next;
-  window.prev = prev;
-
-  // ------------------ User Path & Features ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = ""; // Q19 ownership choice
-  let planScores = { basic: 0, pro: 0, premium: 0 };
-
-  window.setPath = (path) => { userPath = path; };
-
-  window.recordFeature = (feature) => {
-    if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-
-    if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
-    else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
-
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  };
-
-  window.recordNoFeature = (feature) => {
-    if (!noFeatures.includes(feature)) noFeatures.push(feature);
-  };
-
-  window.recordOwnership = (choice) => {
-    ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) hiddenPlan.value = choice;
-    showRecommendedPlan();
-  };
-
-  // ------------------ Q19 Ownership Buttons ------------------
-  const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
-  const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
-  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
-  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
-
-
   // ------------------ Global State ------------------
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = ""; // Q19 ownership choice
+  let yesFeatures = [];
+  let noFeatures = [];
+  let ownershipChoice = "";
 
   const planTiers = {
-    basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    premium: ['packages', 'social', 'email', 'content', 'guide']
+    basic: ['booking','mobile','cta','contact','bio'],
+    pro: ['seo','reviews','branding','faq','newsletter'],
+    premium: ['packages','social','email','content','guide']
   };
 
   const planLinks = {
@@ -1423,7 +1345,7 @@ document.addEventListener("DOMContentLoaded", () => {
     premium: "https://www.paypal.com/paypal-link-premium"
   };
 
-  // ------------------ Screen Navigation ------------------
+  // ------------------ Navigation ------------------
   function hideAllScreens() {
     screens.forEach(screen => {
       screen.classList.remove("active");
@@ -1441,27 +1363,13 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = Array.from(screens).indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan();
-    }
-
+    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
     updateWaterProgress?.();
     updateProgress?.(currentScreen + 1);
   }
 
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  }
+  function next() { if (currentScreen < screens.length - 1) showScreen(screens[currentScreen + 1].id); }
+  function prev() { if (currentScreen > 0) showScreen(screens[currentScreen - 1].id); }
 
   window.showScreen = showScreen;
   window.next = next;
@@ -1485,22 +1393,24 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
     recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    showRecommendedPlan();
   };
+
+  // ------------------ Q19 Buttons ------------------
+  const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
+  const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
+  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
+  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
   // ------------------ Pricing Cards ------------------
   function showRecommendedPlan() {
-    // Determine recommended tier
     let recommendedTier = 'basic';
     if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = 'premium';
     else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = 'pro';
 
-    // Populate features for each plan
     Object.keys(planTiers).forEach(tier => {
       const ul = document.getElementById(`${tier}-features`);
       if (!ul) return;
       ul.innerHTML = '';
-
       planTiers[tier].forEach(f => {
         const li = document.createElement('li');
         li.textContent = (yesFeatures.includes(f) ? '✅ ' : '') + formatFeatureName(f);
@@ -1508,16 +1418,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Show all cards
-    document.querySelectorAll('.pricing-card').forEach(card => {
-      card.style.display = 'block';
-      card.classList.add('in-view');
-    });
-
-    // Highlight recommended plan
+    cards.forEach(card => { card.style.display = 'block'; card.classList.add('in-view'); });
     highlightPlan(recommendedTier);
 
-    // Update hidden fields
     const hiddenPlan = document.getElementById('hiddenPlan');
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenPlan) hiddenPlan.value = recommendedTier.charAt(0).toUpperCase() + recommendedTier.slice(1);
@@ -1526,23 +1429,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function formatFeatureName(key) {
     const names = {
-      booking: 'Online Booking & Payment',
-      mobile: 'Mobile Optimized',
-      cta: 'Strong Call-to-Action Buttons',
-      contact: 'Simple Contact Form',
-      bio: 'About Me / Instructor Bio',
-      seo: 'Local SEO Optimization',
-      reviews: 'Student Reviews Section',
-      branding: 'Branding Help (Logo & Colors)',
-      faq: 'FAQ / Student Guide Section',
-      newsletter: 'Newsletter Signup / Mailing List',
-      packages: 'Lesson Packages & Gift Vouchers',
-      social: 'Social Media Integration',
-      email: 'Professional Email Address',
-      content: 'Content Creation Help',
-      guide: 'What to Expect Guide',
-      buyOutright: 'Owned Outright',
-      monthlySupport: 'Monthly Support'
+      booking: 'Online Booking & Payment', mobile: 'Mobile Optimized', cta: 'Strong Call-to-Action Buttons',
+      contact: 'Simple Contact Form', bio: 'About Me / Instructor Bio', seo: 'Local SEO Optimization',
+      reviews: 'Student Reviews Section', branding: 'Branding Help (Logo & Colors)',
+      faq: 'FAQ / Student Guide Section', newsletter: 'Newsletter Signup / Mailing List',
+      packages: 'Lesson Packages & Gift Vouchers', social: 'Social Media Integration',
+      email: 'Professional Email Address', content: 'Content Creation Help', guide: 'What to Expect Guide',
+      buyOutright: 'Owned Outright', monthlySupport: 'Monthly Support'
     };
     return names[key] || key;
   }
@@ -1556,23 +1449,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (badge) badge.style.display = 'block';
   }
 
-  // ------------------ Card Buttons ------------------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  window.goToPayPal = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
-    window.location.href = planLinks[plan];
-  };
-  window.submitLead = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = "";
-    const form = document.getElementById('formWrapper');
-    if (form) form.submit();
-  };
   cards.forEach(card => {
     const plan = card.dataset.plan;
     const payBtn = card.querySelector("button:first-of-type");
@@ -1581,43 +1457,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
   });
 
-  // ------------------ Intersection Observer for Cards ------------------
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  cards.forEach(card => observer.observe(card));
+  window.goToPayPal = (plan) => {
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = planLinks[plan];
+    window.location.href = planLinks[plan];
+  };
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  if (!codeParam && !stepParam) {
-    startTypewriterAnimation?.();
-  } else {
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
-
-});
+  window.submitLead = (plan) => {
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    const hiddenLink = document.getElementById('hiddenPaymentLink');
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenLink) hiddenLink.value = "";
+    const form = document.getElementById('formWrapper');
+    if (form) form.submit();
+  };
 
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
+      if (entry.isIntersecting) { entry.target.classList.add('in-view'); obs.unobserve(entry.target); }
     });
   }, { threshold: 0.3 });
   cards.forEach(card => observer.observe(card));
 
   // ------------------ Typewriter ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
@@ -1640,74 +1505,32 @@ document.addEventListener("DOMContentLoaded", () => {
     function typeChar() {
       if (currentLine >= lines.length) {
         cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 1000);
+        setTimeout(() => { typewriterEl.style.animation = 'rocketRise 2s ease forwards'; setTimeout(() => showScreen('main-intro-options'), 2000); }, 1000);
         return;
       }
       const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
+      if (!lineEl) { lineEl = document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
+      if (currentChar < text.length) { lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor); currentChar++; setTimeout(typeChar, typingSpeed); }
+      else { currentLine++; currentChar = 0; lineEl = null; setTimeout(typeChar, lineDelay); }
     }
 
     setLinesByOrientation();
     typeChar();
 
     window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
+      currentLine = 0; currentChar = 0; lineEl = null; typewriterEl.textContent = ''; typewriterEl.appendChild(cursor);
+      setLinesByOrientation(); typeChar();
     }, 300));
   }
 
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
+  function debounce(func, wait) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
+    hamburger.addEventListener('click', e => { e.stopPropagation(); const isOpen = menu.classList.toggle('open'); hamburger.classList.toggle('active'); hamburger.setAttribute('aria-expanded', isOpen); menu.setAttribute('aria-hidden', !isOpen); document.body.style.overflow = isOpen ? 'hidden' : ''; });
+    document.addEventListener('click', e => { if (!menu.contains(e.target) && !hamburger.contains(e.target)) { menu.classList.remove('open'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', false); menu.setAttribute('aria-hidden', true); document.body.style.overflow = ''; }});
   }
 
   // ------------------ AOS Init ------------------
@@ -1715,36 +1538,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
-  if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-if (colorRiseEl) colorRiseEl.classList.remove('active');
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
-  }
+  if (!codeParam && !stepParam) { if (typewriterEl) typewriterEl.classList.add('active'); if (colorRiseEl) colorRiseEl.classList.add('active'); startTypewriterAnimation(); }
+  else { if (typewriterEl) typewriterEl.classList.remove('active','rocketRise'); if (colorRiseEl) colorRiseEl.classList.remove('active'); if (stepParam) showScreen(`instructor-q${stepParam}`); else showScreen('instructor-q2'); }
 
-  // ------------------ Water & Progress ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
 });
+
 </script>
 </body>
 </html>
