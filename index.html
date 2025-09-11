@@ -1413,33 +1413,37 @@ function showRecommendedPlan() {
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
   else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-  // Update each plan's <li> icons and optional labels
+  // Loop through each plan
   for (let tier in planTiers) {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) continue;
 
-    const featureKeys = planTiers[tier];
+    // Get existing <li> elements
     const lis = cardFeaturesEl.querySelectorAll('li');
 
-    lis.forEach((li, index) => {
-      const key = featureKeys[index];
-      if (!key) return;
+    // Loop through plan features and update icons
+    planTiers[tier].forEach((feature, index) => {
+      const li = lis[index];
+      if (!li) return;
 
-      const isYes = yesFeatures.includes(key);
+      const isYes = yesFeatures.includes(feature);
       const icon = isYes ? "✅" : "❌";
       const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      li.textContent = `${icon} ${formatFeatureName(key)}${optionalLabel}`;
+      li.textContent = `${icon} ${formatFeatureName(feature)}${optionalLabel}`;
     });
   }
 
-  // Make sure pricing cards are visible
+  // Show pricing cards
   const cards = document.querySelectorAll('.pricing-card');
-  cards.forEach(card => card.style.display = 'block');
+  cards.forEach(card => {
+    card.style.display = 'block';
+    card.classList.add('in-view'); // fade-in
+  });
 
   // Highlight recommended plan
   calculatePlan(recommendedTier);
 }
-
+ 
 // Mapping helper
 const formatFeatureNameMap = {
   booking: "Online Booking & Payment",
