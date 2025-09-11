@@ -1413,19 +1413,21 @@ function showRecommendedPlan() {
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
   else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-  // Populate feature lists per pricing card
+  // Populate feature lists per pricing card without removing default items
   for (let tier in planTiers) {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) continue;
-    cardFeaturesEl.innerHTML = ''; // clear previous
 
-    planTiers[tier].forEach(f => {
-      const isYes = yesFeatures.includes(f);
+    const items = cardFeaturesEl.querySelectorAll('li');
+    items.forEach(li => {
+      const featureKey = Object.keys(formatFeatureNameMap).find(
+        key => formatFeatureName(key) === li.textContent.replace(/ ✅| ❌| \(Optional\)/g, '')
+      );
+      if (!featureKey) return;
+      const isYes = yesFeatures.includes(featureKey);
       const icon = isYes ? "✅" : "❌";
-      const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      const li = document.createElement('li');
-      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
-      cardFeaturesEl.appendChild(li);
+      const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      li.textContent = `${icon} ${formatFeatureName(featureKey)}${label}`;
     });
   }
 
@@ -1433,11 +1435,39 @@ function showRecommendedPlan() {
   const cards = document.querySelectorAll('.pricing-card');
   cards.forEach(card => {
     card.style.display = 'block';
-    card.classList.add('in-view'); // fade-in
+    setTimeout(() => card.classList.add('in-view'), 50);
   });
 
   // Highlight recommended plan
-  calculatePlan(recommendedTier);
+  setTimeout(() => {
+    calculatePlan(recommendedTier);
+    showScreen('recommended-plan-screen');
+  }, 100);
+}
+
+// Helper mapping to retrieve feature key from feature name
+const formatFeatureNameMap = {
+  booking: "Online Booking & Payment",
+  mobile: "Mobile Optimized",
+  cta: "Strong Call-to-Action Buttons",
+  contact: "Simple Contact Form",
+  bio: "About Me / Instructor Bio",
+  seo: "Local SEO Optimization",
+  reviews: "Student Reviews Section",
+  branding: "Branding Help (Logo & Colors)",
+  faq: "FAQ / Student Guide Section",
+  newsletter: "Newsletter Signup / Mailing List",
+  packages: "Lesson Packages & Gift Vouchers",
+  social: "Social Media Integration",
+  email: "Professional Email Address",
+  content: "Content Creation Help",
+  guide: "What to Expect Guide",
+  buyOutright: "Owned Outright",
+  monthlySupport: "Monthly Support"
+};
+
+function formatFeatureName(f) {
+  return formatFeatureNameMap[f] || f;
 }
 
 // ------------------ Format Feature Names ------------------
