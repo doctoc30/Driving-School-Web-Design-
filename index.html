@@ -1316,19 +1316,34 @@ body header + .form-screen {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ------------------ URL Params ------------------
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // ------------------ Screens ------------------
   const screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
 
+  // ------------------ User State ------------------
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
+  let ownershipChoice = "";
+  const planTiers = {
+    basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+    pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+    premium: ['packages', 'social', 'email', 'content', 'guide']
+  };
+  const planLinks = {
+    basic: "https://www.paypal.com/paypal-link-basic",
+    pro: "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
+
+  // ------------------ Navigation ------------------
   function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
+    screens.forEach(s => {
+      s.classList.remove("active");
+      s.style.display = "none";
     });
   }
 
@@ -1336,90 +1351,77 @@ document.addEventListener("DOMContentLoaded", () => {
     const screen = document.getElementById(id);
     if (!screen) return;
     hideAllScreens();
-    screen.classList.add("active");
     screen.style.display = "flex";
+    screen.classList.add("active");
     currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+    if (id === "recommended-plan-screen") showRecommendedPlan();
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) currentScreen++, showScreen(screens[currentScreen].id);
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   function prev() {
-    if (currentScreen > 0) currentScreen--, showScreen(screens[currentScreen].id);
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User Data ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = "";
+  window.setPath = (path) => { userPath = path; };
 
-  const planTiers = {
-    basic: ["booking", "mobile", "cta", "contact", "bio"],
-    pro: ["seo", "reviews", "branding", "faq", "newsletter"],
-    premium: ["packages", "social", "email", "content", "guide"]
-  };
-
-  const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
-  };
-
-  window.setPath = path => (userPath = path);
-
-  window.recordFeature = feature => {
+  // ------------------ Feature Recording ------------------
+  window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-    const index = noFeatures.indexOf(feature);
-    if (index > -1) noFeatures.splice(index, 1);
-    updateHiddenFields();
-    showRecommendedPlan();
+    const noIndex = noFeatures.indexOf(feature);
+    if (noIndex > -1) noFeatures.splice(noIndex, 1);
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   };
 
-  window.recordNoFeature = feature => {
+  window.recordNoFeature = (feature) => {
     if (!noFeatures.includes(feature)) noFeatures.push(feature);
-    const index = yesFeatures.indexOf(feature);
-    if (index > -1) yesFeatures.splice(index, 1);
-    updateHiddenFields();
-    showRecommendedPlan();
+    const yesIndex = yesFeatures.indexOf(feature);
+    if (yesIndex > -1) yesFeatures.splice(yesIndex, 1);
   };
 
-  window.recordOwnership = choice => {
+  window.recordOwnership = (choice) => {
     ownershipChoice = choice;
     recordFeature(choice === "Owned Outright" ? "buyOutright" : "monthlySupport");
-    updateHiddenFields();
-    next();
-  };
-
-  function updateHiddenFields() {
     const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    if (hiddenPlan) hiddenPlan.value = ownershipChoice || "";
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  }
+    if (hiddenPlan) hiddenPlan.value = choice;
+    showScreen("recommended-plan-screen");
+  };
 
   // ------------------ Q19 Buttons ------------------
   const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
   const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
-  if (q19YesBtn) q19YesBtn.addEventListener("click", () => window.recordOwnership("Owned Outright"));
-  if (q19NoBtn) q19NoBtn.addEventListener("click", () => window.recordOwnership("Monthly Support"));
+  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { recordOwnership("Owned Outright"); });
+  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { recordOwnership("Monthly Support"); });
 
   // ------------------ Recommended Plan ------------------
   function showRecommendedPlan() {
+    const screen = document.getElementById("recommended-plan-screen");
+    if (screen) screen.style.display = "flex";
+
+    // Determine recommended tier
     let recommendedTier = "basic";
     if (yesFeatures.some(f => planTiers.premium.includes(f))) recommendedTier = "premium";
     else if (yesFeatures.some(f => planTiers.pro.includes(f))) recommendedTier = "pro";
 
+    // Populate each plan's features
     Object.keys(planTiers).forEach(tier => {
       const ul = document.getElementById(`${tier}-features`);
       if (!ul) return;
@@ -1431,11 +1433,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Show all cards
+    document.querySelectorAll(".pricing-card").forEach(card => card.style.display = "block");
+
     highlightPlan(recommendedTier);
   }
 
-  function formatFeatureName(f) {
-    return {
+  function formatFeatureName(key) {
+    const names = {
       booking: "Online Booking & Payment",
       mobile: "Mobile Optimized",
       cta: "Strong Call-to-Action Buttons",
@@ -1453,32 +1458,33 @@ document.addEventListener("DOMContentLoaded", () => {
       guide: "What to Expect Guide",
       buyOutright: "Owned Outright",
       monthlySupport: "Monthly Support"
-    }[f] || f;
+    };
+    return names[key] || key;
   }
 
   function highlightPlan(plan) {
     const planKey = plan.toLowerCase();
-    document.querySelectorAll(".pricing-card .badge").forEach(b => (b.style.display = "none"));
-    const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+    document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+    const card = document.querySelector(`.pricing-card[data-plan="${planKey}"]`);
     if (!card) return;
     const badge = card.querySelector(".badge");
     if (badge) badge.style.display = "block";
+
+    // Set hidden inputs
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPlan) hiddenPlan.value = plan;
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
   }
 
   // ------------------ Pricing Card Buttons ------------------
   const cards = document.querySelectorAll(".pricing-card[data-plan]");
-  window.goToPayPal = plan => {
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
+  window.goToPayPal = (plan) => {
     window.location.href = planLinks[plan];
   };
-  window.submitLead = plan => {
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = "";
+  window.submitLead = (plan) => {
     const form = document.getElementById("formWrapper");
     if (form) form.submit();
   };
@@ -1544,29 +1550,26 @@ document.addEventListener("DOMContentLoaded", () => {
     setLinesByOrientation();
     typeChar();
 
-    window.addEventListener(
-      "resize",
-      debounce(() => {
-        currentLine = 0;
-        currentChar = 0;
-        lineEl = null;
-        typewriterEl.textContent = "";
-        typewriterEl.appendChild(cursor);
-        setLinesByOrientation();
-        typeChar();
-      }, 300)
-    );
+    window.addEventListener("resize", debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
   function debounce(func, wait) {
     let timeout;
-    return function (...args) {
+    return function(...args) {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
 
-  // ------------------ Hamburger Menu ------------------
+  // ------------------ Hamburger ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
@@ -1596,13 +1599,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const percent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = percent + "%";
   }
-
   function updateProgress(step) {
-    const progressBar = document.querySelector(".progress-bar");
-    const progressLabel = document.querySelector(".progress-label");
+    const bar = document.querySelector(".progress-bar");
+    const label = document.querySelector(".progress-label");
     const percent = Math.round((step / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + "%";
-    if (progressLabel) progressLabel.textContent = percent + "%";
+    if (bar) bar.style.width = percent + "%";
+    if (label) label.textContent = percent + "%";
   }
 
   // ------------------ Initialize ------------------
@@ -1612,11 +1614,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (colorRiseEl) colorRiseEl.classList.add("active");
     startTypewriterAnimation();
   } else {
-    if (typewriterEl) typewriterEl.classList.remove("active", "rocketRise");
-    if (colorRiseEl) colorRiseEl.classList.remove("active");
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen("instructor-q1");
   }
+
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
