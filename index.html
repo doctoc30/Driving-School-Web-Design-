@@ -1408,63 +1408,36 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 // ------------------ Show Recommended Plan ------------------
- function showRecommendedPlan() {
-    let recommendedTier = "Basic";
-    if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
-    else if (yesFeatures.some(f => planTiers.Pro.includes(f))) recommendedTier = "Pro";
+function showRecommendedPlan() {
+  let recommendedTier = "Basic";
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
+  else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-    // Update icons in existing <li> elements without removing them
-    for (let tier in planTiers) {
-      const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
-      if (!cardFeaturesEl) continue;
+  // Populate feature lists per pricing card
+  for (let tier in planTiers) {
+    const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
+    if (!cardFeaturesEl) continue;
+    cardFeaturesEl.innerHTML = ''; // clear previous
 
-      const lis = cardFeaturesEl.querySelectorAll('li');
-      planTiers[tier].forEach((feature, i) => {
-        const li = lis[i];
-        if (!li) return;
-
-        const isYes = yesFeatures.includes(feature);
-        const icon = isYes ? "✅" : "❌";
-        const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-
-        li.textContent = `${icon} ${formatFeatureName(feature)}${optionalLabel}`;
-      });
-    }
-
-    // Show cards without affecting swipe
-    const cards = document.querySelectorAll('.pricing-card');
-    cards.forEach(card => {
-      card.style.display = 'block';
-      card.classList.add('in-view');
+    planTiers[tier].forEach(f => {
+      const isYes = yesFeatures.includes(f);
+      const icon = isYes ? "✅" : "❌";
+      const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      const li = document.createElement('li');
+      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
+      cardFeaturesEl.appendChild(li);
     });
-
-    calculatePlan(recommendedTier);
   }
 
- 
-// Mapping helper
-const formatFeatureNameMap = {
-  booking: "Online Booking & Payment",
-  mobile: "Mobile Optimized",
-  cta: "Strong Call-to-Action Buttons",
-  contact: "Simple Contact Form",
-  bio: "About Me / Instructor Bio",
-  seo: "Local SEO Optimization",
-  reviews: "Student Reviews Section",
-  branding: "Branding Help (Logo & Colors)",
-  faq: "FAQ / Student Guide Section",
-  newsletter: "Newsletter Signup / Mailing List",
-  packages: "Lesson Packages & Gift Vouchers",
-  social: "Social Media Integration",
-  email: "Professional Email Address",
-  content: "Content Creation Help",
-  guide: "What to Expect Guide",
-  buyOutright: "Owned Outright",
-  monthlySupport: "Monthly Support"
-};
+  // Show pricing cards
+  const cards = document.querySelectorAll('.pricing-card');
+  cards.forEach(card => {
+    card.style.display = 'block';
+    card.classList.add('in-view'); // fade-in
+  });
 
-function formatFeatureName(f) {
-  return formatFeatureNameMap[f] || f;
+  // Highlight recommended plan
+  calculatePlan(recommendedTier);
 }
 
 // ------------------ Format Feature Names ------------------
