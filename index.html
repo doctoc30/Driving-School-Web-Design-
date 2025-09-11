@@ -1423,12 +1423,12 @@ function showRecommendedPlan() {
     cardFeaturesEl.innerHTML = ''; // clear previous
 
     planTiers[tier].forEach(f => {
-      const isYes = yesFeatures.includes(f);
+      // ✅ only if user actually selected this feature
+      const isYes = Array.isArray(yesFeatures) && yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
       const optionalLabel =
         (!isYes && tier !== recommendedTier)
-          ? ""
-          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+          ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement('li');
       li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
@@ -1438,7 +1438,7 @@ function showRecommendedPlan() {
   // Show pricing cards
   document.querySelectorAll('.pricing-card').forEach(card => {
     card.style.display = 'block';
-    card.classList.add('in-view'); // fade-in
+    card.classList.add('in-view');
   });
 
   // Highlight recommended plan
@@ -1480,12 +1480,11 @@ function calculatePlan(finalPlan) {
   const badge = card.querySelector(".badge");
   if (badge) badge.style.display = "block";
 
-  // Hidden inputs for submission
   const hiddenPlan = document.getElementById("hiddenPlan");
   const hiddenFeatures = document.getElementById("hiddenFeatures");
   const hiddenLink = document.getElementById("hiddenPaymentLink");
   if (hiddenPlan) hiddenPlan.value = finalPlan;
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenFeatures) hiddenFeatures.value = Array.isArray(yesFeatures) ? yesFeatures.join(", ") : "";
   if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
 
   setTimeout(() => {
@@ -1500,10 +1499,7 @@ window.goToConcept = () => {
   const input = document.getElementById('designInput');
   if (!input) return;
   const code = input.value.trim();
-  if (!code) {
-    alert("Please enter a design code.");
-    return;
-  }
+  if (!code) { alert("Please enter a design code."); return; }
   window.location.href =
     `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
 };
@@ -1521,23 +1517,7 @@ const planLinks = {
   premium: "https://www.paypal.com/paypal-link-premium"
 };
 
-const cards = document.querySelectorAll('.pricing-card[data-plan]');
-window.goToPayPal = (plan) => {
-  const hiddenPlan = document.getElementById('hiddenPlan');
-  const hiddenLink = document.getElementById('hiddenPaymentLink');
-  if (hiddenPlan) hiddenPlan.value = plan;
-  if (hiddenLink) hiddenLink.value = planLinks[plan];
-  window.location.href = planLinks[plan];
-};
-window.submitLead = (plan) => {
-  const hiddenPlan = document.getElementById('hiddenPlan');
-  const hiddenLink = document.getElementById('hiddenPaymentLink');
-  if (hiddenPlan) hiddenPlan.value = plan;
-  if (hiddenLink) hiddenLink.value = "";
-  const form = document.getElementById('formWrapper');
-  if (form) form.submit();
-};
-cards.forEach(card => {
+document.querySelectorAll('.pricing-card[data-plan]').forEach(card => {
   const plan = card.dataset.plan;
   const payBtn = card.querySelector("button:first-of-type");
   const infoBtn = card.querySelector("button:last-of-type");
@@ -1545,6 +1525,21 @@ cards.forEach(card => {
   if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
 });
 
+window.goToPayPal = plan => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = planLinks[plan];
+  window.location.href = planLinks[plan];
+};
+window.submitLead = plan => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = "";
+  const form = document.getElementById('formWrapper');
+  if (form) form.submit();
+};
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
