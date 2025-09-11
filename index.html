@@ -1413,8 +1413,6 @@ function showRecommendedPlan() {
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
   else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-  let planName = `Recommended Plan (${ownershipChoice || 'TBD'})`;
-
   // Populate feature lists per pricing card
   for (let tier in planTiers) {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
@@ -1424,25 +1422,22 @@ function showRecommendedPlan() {
     planTiers[tier].forEach(f => {
       const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
-      const label = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement('li');
-      li.textContent = `${icon} ${formatFeatureName(f)}${label}`;
+      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
     });
   }
 
-  // Show pricing cards with fade-in
+  // Show pricing cards
   const cards = document.querySelectorAll('.pricing-card');
   cards.forEach(card => {
     card.style.display = 'block';
-    setTimeout(() => card.classList.add('in-view'), 50);
+    card.classList.add('in-view'); // fade-in
   });
 
-  // Highlight recommended plan and scroll
-  setTimeout(() => {
-    calculatePlan(recommendedTier);
-    showScreen('recommended-plan-screen');
-  }, 100);
+  // Highlight recommended plan
+  calculatePlan(recommendedTier);
 }
 
 // ------------------ Format Feature Names ------------------
