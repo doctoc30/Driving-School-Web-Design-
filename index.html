@@ -1413,27 +1413,26 @@ function showRecommendedPlan() {
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) recommendedTier = "Premium";
   else if (yesFeatures.some(f => planTiers.Standard.includes(f))) recommendedTier = "Pro";
 
-  // Update features for all plans without removing HTML structure
+  // Update each plan's <li> icons and optional labels
   for (let tier in planTiers) {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) continue;
 
-    const items = cardFeaturesEl.querySelectorAll('li');
-    items.forEach(li => {
-      // Match feature text to key
-      const featureKey = Object.keys(formatFeatureNameMap).find(
-        key => formatFeatureNameMap[key] === li.textContent.replace(/ ✅| ❌| \(Optional\)/g, '')
-      );
-      if (!featureKey) return;
+    const featureKeys = planTiers[tier];
+    const lis = cardFeaturesEl.querySelectorAll('li');
 
-      const isYes = yesFeatures.includes(featureKey);
+    lis.forEach((li, index) => {
+      const key = featureKeys[index];
+      if (!key) return;
+
+      const isYes = yesFeatures.includes(key);
       const icon = isYes ? "✅" : "❌";
       const optionalLabel = (!isYes && tier !== recommendedTier) ? "" : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      li.textContent = `${icon} ${formatFeatureNameMap[featureKey]}${optionalLabel}`;
+      li.textContent = `${icon} ${formatFeatureName(key)}${optionalLabel}`;
     });
   }
 
-  // Show all pricing cards
+  // Make sure pricing cards are visible
   const cards = document.querySelectorAll('.pricing-card');
   cards.forEach(card => card.style.display = 'block');
 
