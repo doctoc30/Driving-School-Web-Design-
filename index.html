@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"> 
-<head> 
+<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
@@ -1373,40 +1373,6 @@ html {
 .pricing-card.in-view {
   opacity: 1;
   transform: translateY(0);
-}
-
-
- /* === FIX: Remove white feature-box background === */
-.pricing-card ul {
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-/* === FIX: Force full-width cards across all devices === */
-.pricing-wrapper,
-.pricing-container {
-  max-width: none !important;
-  width: 100% !important;
-  padding: 0 !important;
-}
-
-.pricing-card {
-  width: 100% !important;     /* single column full width on small screens */
-  max-width: 100% !important; /* prevent side bars */
-  margin: 0 auto !important;
-}
-
-@media (min-width: 1024px) {
-  .pricing-wrapper,
-  .pricing-container {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-  }
-  .pricing-card {
-    width: 32% !important;    /* three cards evenly spaced on desktop */
-  }
 }
 </style>
 
