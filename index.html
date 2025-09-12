@@ -1013,18 +1013,34 @@ header {
 
 
 
- /* ===== Fix: Make the Basic plan card fully visible when linked/scrollIntoView ===== */
+ /* Add this to ensure basic plan is visible when targeted */
+.pricing-card:target {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-/* Provide global padding so anchor links aren't hidden behind fixed header */
+/* Add smooth scrolling for the anchor links */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 120px; /* match or slightly exceed your header height */
 }
 
-/* Add a scroll offset to each pricing card itself, so any #anchor or JS scroll works */
-.pricing-card {
-  scroll-margin-top: 120px; /* ensures the card sits below the header */
+/* Keep your existing styles but modify the animation */
+.pricing-card.in-view { 
+  opacity: 1; 
+  transform: translateY(0); 
 }
+
+/* Add a small adjustment for when a card is targeted */
+.pricing-card:target {
+  animation: pulse 1s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
 </style>
 
 </head>
