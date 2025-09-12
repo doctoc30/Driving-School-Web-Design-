@@ -1708,17 +1708,19 @@ const planTiers = {
 // ------------------ Show Recommended Plan ------------------
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
+
+  // Decide which plan to recommend
   if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
     recommendedTier = "Premium";
   } else if (yesFeatures.some(f => planTiers.Pro.includes(f))) {
     recommendedTier = "Pro";
   }
 
-  // Populate feature lists per pricing card
+  // Populate each pricing card with its features
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
-    cardFeaturesEl.innerHTML = ''; // clear previous
+    cardFeaturesEl.innerHTML = "";
 
     planTiers[tier].forEach(f => {
       const isYes = yesFeatures.includes(f);
@@ -1727,19 +1729,19 @@ function showRecommendedPlan() {
         (!isYes && tier !== recommendedTier)
           ? ""
           : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      const li = document.createElement('li');
+      const li = document.createElement("li");
       li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
     });
   });
 
-  // Show pricing cards
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.style.display = 'block';
-    card.classList.add('in-view'); // fade-in
+  // Reveal all pricing cards with fade-in
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.style.display = "block";
+    card.classList.add("in-view");
   });
 
-  // Highlight recommended plan
+  // Highlight and scroll to the recommended plan
   calculatePlan(recommendedTier);
 }
 
@@ -1770,15 +1772,19 @@ function formatFeatureName(f) {
 // ------------------ Calculate & Highlight Final Plan ------------------
 function calculatePlan(finalPlan) {
   const planKey = finalPlan.toLowerCase();
-  document.querySelectorAll(".pricing-card .badge").forEach(b => b.style.display = "none");
+
+  // Hide all badges first
+  document.querySelectorAll(".pricing-card .badge")
+    .forEach(b => b.style.display = "none");
 
   const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
   if (!card) return;
 
+  // Show badge on the recommended card
   const badge = card.querySelector(".badge");
   if (badge) badge.style.display = "block";
 
-  // Hidden inputs for submission
+  // Update hidden inputs for form submission
   const hiddenPlan = document.getElementById("hiddenPlan");
   const hiddenFeatures = document.getElementById("hiddenFeatures");
   const hiddenLink = document.getElementById("hiddenPaymentLink");
@@ -1786,11 +1792,12 @@ function calculatePlan(finalPlan) {
   if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
 
-  setTimeout(() => {
+  // Smooth scroll to the recommended card once it’s painted
+  requestAnimationFrame(() => {
     card.scrollIntoView({ behavior: "smooth", block: "center" });
     card.classList.add("highlight");
     setTimeout(() => card.classList.remove("highlight"), 2000);
-  }, 200);
+  });
 }
 
 // ------------------ Design Code Redirect ------------------
