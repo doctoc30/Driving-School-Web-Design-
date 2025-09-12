@@ -841,7 +841,9 @@ body header + .form-screen {
 }
 
 
-/* ===================== MOBILE PORTRAIT VIEW FIX ===================== */
+
+
+ /* ===================== MOBILE PORTRAIT & LANDSCAPE VIEW FIX ===================== */
 
 /* Base styles from pricing.html - maintaining consistency */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -868,6 +870,14 @@ header {
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
 }
 
+.logo {
+  font-weight: 900; 
+  font-size: 1.7rem; 
+  letter-spacing: 2px;
+  user-select: none; 
+  cursor: default;
+}
+
 /* Main pricing section - with proper header offset */
 #pricing-section { 
   padding: 80px 20px; 
@@ -875,8 +885,6 @@ header {
   display: flex; 
   justify-content: center; 
   align-items: center;
-  /* Ensure proper spacing from fixed header */
-  margin-top: 60px;
 }
 
 .pricing-wrapper,
@@ -1096,15 +1104,10 @@ small {
   .pricing-card { 
     min-height: 65vh; 
   }
-  
-  /* Remove extra margin on desktop */
-  #pricing-section {
-    margin-top: 0;
-  }
 }
 
-/* CRITICAL FIX: Mobile portrait view adjustments */
-@media (max-width: 768px) {
+/* Mobile portrait view adjustments */
+@media (max-width: 768px) and (orientation: portrait) {
   /* Ensure pricing section accounts for fixed header */
   #pricing-section {
     padding-top: 140px !important; /* Extra padding to clear fixed header */
@@ -1113,47 +1116,123 @@ small {
   }
   
   .pricing-card { 
-    min-height: 80vh !important; /* Reduced from 90vh to prevent overflow */
+    min-height: 75vh !important; /* Reduced from 90vh to prevent overflow */
+    max-height: 85vh !important; /* Prevent cards from being too tall */
     padding: 40px 15px !important; /* Slightly reduced padding */
     margin-bottom: 20px !important; /* Add space between cards */
+    overflow-y: auto !important; /* Allow scrolling within card if needed */
   }
   
   /* Ensure first card is visible */
   .pricing-card:first-child {
     margin-top: 20px !important;
   }
+  
+  /* Reduce font sizes for mobile portrait */
+  .pricing-card .price {
+    font-size: 2rem !important;
+  }
+  
+  .pricing-card h3 {
+    font-size: 1.8rem !important;
+  }
 }
 
-/* EXTRA SPECIFIC FIX: Mobile portrait orientation */
-@media (max-width: 600px) and (orientation: portrait) {
+/* CRITICAL FIX: Mobile landscape view adjustments */
+@media (max-width: 1024px) and (orientation: landscape) {
+  /* Landscape has limited height, so we need different approach */
   #pricing-section {
-    padding-top: 160px !important; /* Even more padding for portrait */
+    padding-top: 100px !important; /* Less padding than portrait but still clear header */
     padding-bottom: 40px !important;
+    min-height: calc(100vh - 60px) !important;
+    align-items: flex-start !important; /* Don't center vertically */
   }
   
   .pricing-wrapper,
   .pricing-container {
-    gap: 30px !important; /* Reduced gap between cards */
+    gap: 20px !important; /* Reduced gap for landscape */
   }
   
   .pricing-card {
-    min-height: 75vh !important; /* Further reduced height */
-    max-height: 85vh !important; /* Prevent cards from being too tall */
-    overflow-y: auto !important; /* Allow scrolling within card if needed */
+    min-height: 60vh !important; /* Much smaller height for landscape */
+    max-height: 70vh !important; /* Prevent overflow in landscape */
+    padding: 30px 15px !important; /* Reduced padding */
+    margin-bottom: 15px !important;
+    overflow-y: auto !important; /* Allow scrolling if content is too tall */
   }
   
-  /* Ensure proper scrolling behavior */
-  body {
-    scroll-behavior: smooth !important;
+  /* Smaller fonts for landscape */
+  .pricing-card h3 {
+    font-size: 1.6rem !important;
+    margin-bottom: 0.8rem !important;
   }
   
-  /* Make sure content doesn't get cut off */
   .pricing-card .price {
-    font-size: 2rem !important; /* Slightly smaller on mobile */
+    font-size: 1.8rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .features,
+  .pricing-card ul {
+    padding: 15px !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .features li,
+  .pricing-card ul li {
+    font-size: 1rem !important;
+    margin: 8px 0 !important;
+    padding: 6px 0 !important;
+  }
+  
+  .pay-now {
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .paypal-badge {
+    padding: 10px !important;
+    margin-top: 10px !important;
+  }
+  
+  small {
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Extra specific fix for very small landscape screens (phones) */
+@media (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+  #pricing-section {
+    padding-top: 80px !important;
+    padding-bottom: 20px !important;
+  }
+  
+  .pricing-card {
+    min-height: 50vh !important;
+    max-height: 60vh !important;
+    padding: 20px 10px !important;
   }
   
   .pricing-card h3 {
-    font-size: 1.8rem !important; /* Slightly smaller on mobile */
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .pricing-card .price {
+    font-size: 1.6rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .features,
+  .pricing-card ul {
+    padding: 10px !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .features li,
+  .pricing-card ul li {
+    font-size: 0.9rem !important;
+    margin: 6px 0 !important;
   }
 }
 
@@ -1181,7 +1260,7 @@ small {
 .features[id*="-features"] {
   background-color: rgba(255, 255, 255, 0.95) !important;
   color: #333333 !important;
-  min-height: 150px !important;
+  min-height: 120px !important;
 }
 
 .features[id*="-features"] li {
@@ -1189,17 +1268,23 @@ small {
   background-color: transparent !important;
 }
 
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth !important;
+}
+
 /* Debug helper */
 .features:empty::after {
   content: "Loading features...";
   color: #666;
   font-style: italic;
-  padding: 20px;
+  padding: 15px;
   display: block;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
 }
+
 </style>
 
 </head>
