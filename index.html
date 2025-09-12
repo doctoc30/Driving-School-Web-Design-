@@ -1287,6 +1287,122 @@ html {
 
 
 
+
+
+ /* === Pricing & overlay fixes (paste near your other CSS) === */
+
+/* Prevent the color-rise or other overlay from capturing clicks */
+.color-rise { pointer-events: none; z-index: 0; }
+
+/* Ensure the typewriter doesn't capture clicks either */
+#typewriter { pointer-events: none; z-index: 1000; }
+
+/* Make recommended-plan screen scrollable and allow content to flow */
+#recommended-plan-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* allow content to start from top */
+  min-height: 100vh;
+  padding: 2.5rem 1rem 4rem;
+  box-sizing: border-box;
+  overflow: auto; /* critical: allow scrolling if cards taller than viewport */
+  position: relative;
+  background: transparent;
+  z-index: 1;
+}
+
+/* Pricing section container */
+#pricing-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  background: transparent;
+  overflow: visible; /* ensure cards are visible */
+}
+
+/* Layout: on narrow screens allow horizontal swipe, on wider show grid */
+.pricing-wrapper {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Mobile: horizontal swipe container (only when viewport narrow) */
+@media (max-width: 820px) {
+  .pricing-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 12px;
+    scroll-snap-type: x mandatory;
+  }
+  .pricing-card {
+    scroll-snap-align: center;
+    margin: 0 0.6rem;
+    flex: 0 0 85%;
+    width: 85%;
+  }
+}
+
+/* Desktop / tablet: wrap into rows */
+@media (min-width: 821px) {
+  .pricing-wrapper {
+    flex-wrap: wrap;
+  }
+  .pricing-card {
+    flex: 0 0 320px;
+    width: 320px;
+    margin: 0;
+  }
+}
+
+/* Card base */
+.pricing-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 1.25rem 1.25rem 1.5rem;
+  box-sizing: border-box;
+  transform: translateY(18px);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(.2,.9,.2,1), opacity 0.45s ease;
+  display: block; /* keep in flow so scrollIntoView works */
+}
+
+/* Reveal animation */
+.pricing-card.in-view {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Keep header / title visible */
+.card-header { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.card-header h3 { margin:0; font-size:1.25rem; color:#111; }
+.price { font-size:1.6rem; font-weight:700; margin: 0.5rem 0 1rem; color:#1f2937; }
+
+/* badge hidden by default - shown by JS */
+.badge { display: none; background:#0070ba; color:#fff; padding:6px 10px; border-radius:999px; font-size:0.75rem; }
+
+/* features list styling */
+.features { list-style:none; padding:0; margin:0 0 1rem; color:#333; }
+.features li { padding: 6px 0; font-size:0.95rem; }
+
+/* stop automatic checkmarks if any earlier rule added them */
+.pricing-card ul.features li::before { content: none !important; }
+
+/* actions */
+.card-actions { display:flex; gap: 0.6rem; flex-direction:column; }
+.card-actions .primary { background:#0070ba; color:#fff; border:none; padding:0.8rem; border-radius:8px; cursor:pointer; }
+.card-actions .secondary { background:#e6e6e6; color:#222; border:none; padding:0.8rem; border-radius:8px; cursor:pointer; }
+
+/* small visual highlight used by JS */
+.pricing-card.highlight { box-shadow: 0 22px 40px rgba(0,0,0,0.18); transform: translateY(-6px) scale(1.01); transition: all 0.25s ease; }
 /* --- Pricing Section Final Override --- */
 
 #recommended-plan-screen {
@@ -1298,43 +1414,7 @@ html {
   padding-top: 2rem;
 }
 
-/* Pricing section must allow scrolling */
-#pricing-section {
-  display: block !important;
-  padding: 4rem 1rem;
-  background: #f9fafb;
-  position: relative;
-  z-index: 1;
-  overflow: visible !important;   /* <— critical */
-}
 
-/* Wrapper layout */
-.pricing-wrapper {
-  display: flex !important;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Cards always in flow */
-.pricing-card {
-  display: block;             /* never none */
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 2rem;
-  width: 320px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.pricing-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
 </style>
 
 </head>
