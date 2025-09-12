@@ -1013,34 +1013,17 @@ header {
 
 
 
- /* Add this to ensure basic plan is visible when targeted */
-.pricing-card:target {
-  opacity: 1;
-  transform: translateY(0);
+
+
+
+#pricing-section::before {
+    content: "";
+    display: block;
+    height: 80px; /* Exact height of your fixed header */
+    margin-top: -80px; /* Negative value of the height */
 }
 
-/* Add smooth scrolling for the anchor links */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Keep your existing styles but modify the animation */
-.pricing-card.in-view { 
-  opacity: 1; 
-  transform: translateY(0); 
-}
-
-/* Add a small adjustment for when a card is targeted */
-.pricing-card:target {
-  animation: pulse 1s ease;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
+ 
 </style>
 
 </head>
