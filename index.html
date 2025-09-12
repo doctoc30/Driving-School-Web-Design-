@@ -841,35 +841,54 @@ body header + .form-screen {
 }
 
 
+/* ===================== MOBILE PORTRAIT VIEW FIX ===================== */
 
-/* ===================== PRICING SECTION - CONSISTENT WITH PRICING.HTML ===================== */
-
-/* Base body styling for consistency */
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #33a7d4;
-  color: white;
-  overflow-x: hidden;
+/* Base styles from pricing.html - maintaining consistency */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background-color: #33a7d4; 
+  color: white; 
+  overflow-x: hidden; 
 }
 
-/* Main pricing section */
-#pricing-section {
-  padding: 80px 20px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+/* Header styling - maintaining original */
+header {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0;
+  height: 60px; 
+  display: flex; 
   align-items: center;
+  justify-content: space-between; 
+  padding: 0 20px;
+  background-color: #33a7d4; 
+  z-index: 2000;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
 }
 
-.pricing-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
-  max-width: 1200px;
+/* Main pricing section - with proper header offset */
+#pricing-section { 
+  padding: 80px 20px; 
+  min-height: 100vh; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  /* Ensure proper spacing from fixed header */
+  margin-top: 60px;
 }
 
-/* Unified Pricing Card - Matching pricing.html exactly */
+.pricing-wrapper,
+.pricing-container { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 40px; 
+  width: 100%; 
+  max-width: 1200px; 
+}
+
+/* Unified Pricing Card - maintaining original styling */
 .pricing-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
   border-radius: 16px;
@@ -891,7 +910,7 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
-/* Badge styling for recommended cards */
+/* Badge styling */
 .pricing-card.recommended .badge,
 .pricing-card .badge {
   position: absolute;
@@ -905,29 +924,28 @@ body {
   font-weight: bold;
 }
 
-/* Card header styling */
+/* Card content styling */
 .card-header h3,
-.pricing-card h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 900;
+.pricing-card h3 { 
+  font-size: 2rem; 
+  margin-bottom: 1rem; 
+  font-weight: 900; 
   color: white;
 }
 
-/* Price styling */
 .price,
-.pricing-card .price {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
+.pricing-card .price { 
+  font-size: 2.5rem; 
+  margin-bottom: 2rem; 
+  font-weight: bold; 
   color: white;
 }
 
-/* MAIN FIX: Features list styling - ensuring white background and visibility */
+/* Features list styling - with white background fix */
 .features,
-.pricing-card ul {
-  list-style: none !important;
-  margin-bottom: 2rem !important;
+.pricing-card ul { 
+  list-style: none !important; 
+  margin-bottom: 2rem !important; 
   padding: 20px !important;
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-radius: 12px !important;
@@ -936,9 +954,9 @@ body {
 }
 
 .features li,
-.pricing-card ul li {
-  margin: 12px 0 !important;
-  font-size: 1.1rem !important;
+.pricing-card ul li { 
+  margin: 12px 0 !important; 
+  font-size: 1.1rem !important; 
   color: #333333 !important;
   background-color: transparent !important;
   padding: 8px 0 !important;
@@ -953,7 +971,7 @@ body {
   border-bottom: none !important;
 }
 
-/* Add checkmark icons to features */
+/* Add checkmark icons */
 .features li::before,
 .pricing-card ul li::before {
   content: "✓" !important;
@@ -972,35 +990,27 @@ body {
 }
 
 /* Animation classes */
-.pricing-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
+.pricing-card.in-view { 
+  opacity: 1; 
+  transform: translateY(0); 
 }
 
-.pricing-card.recommended.in-view {
-  animation: glow 2s ease infinite alternate;
+.pricing-card.recommended.in-view { 
+  animation: glow 2s ease infinite alternate; 
 }
 
 @keyframes glow {
-  0% {
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  0% { 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35); 
     transform: translateY(0) scale(1.03);
   }
-  100% {
-    box-shadow: 0 25px 50px rgba(255,255,255,0.4);
+  100% { 
+    box-shadow: 0 25px 50px rgba(255,255,255,0.4); 
     transform: translateY(-5px) scale(1.05);
   }
 }
 
-/* Card actions styling */
-.card-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-/* PayPal Button - App-like, Brand Consistent */
+/* PayPal Button styling */
 .pay-now,
 .card-actions button.primary {
   display: inline-flex;
@@ -1020,9 +1030,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
 }
 
-.pay-now img {
-  height: 22px;
-}
+.pay-now img { height: 22px; }
 
 .pay-now:hover,
 .card-actions button.primary:hover {
@@ -1035,23 +1043,6 @@ body {
 .card-actions button.primary:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-}
-
-/* Secondary button styling */
-.card-actions button.secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  padding: 12px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.card-actions button.secondary:hover {
-  background: white;
-  color: #33a7d4;
 }
 
 /* Trust Badge */
@@ -1084,46 +1075,86 @@ body {
   gap: 6px;
 }
 
-.lock-icon {
-  font-size: 1.1rem;
-  color: #0070ba;
+.lock-icon { 
+  font-size: 1.1rem; 
+  color: #0070ba; 
 }
 
-/* Small text styling */
 small {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   margin: 10px 0;
 }
 
-/* Responsive design */
+/* Desktop responsive */
 @media (min-width: 1024px) {
-  .pricing-wrapper {
-    flex-direction: row;
-    gap: 20px;
+  .pricing-wrapper,
+  .pricing-container { 
+    flex-direction: row; 
+    gap: 20px; 
   }
-  .pricing-card {
-    min-height: 65vh;
+  .pricing-card { 
+    min-height: 65vh; 
+  }
+  
+  /* Remove extra margin on desktop */
+  #pricing-section {
+    margin-top: 0;
   }
 }
 
+/* CRITICAL FIX: Mobile portrait view adjustments */
 @media (max-width: 768px) {
-  .pricing-card {
-    min-height: 90vh;
-    padding: 60px 20px;
+  /* Ensure pricing section accounts for fixed header */
+  #pricing-section {
+    padding-top: 140px !important; /* Extra padding to clear fixed header */
+    margin-top: 0 !important;
+    min-height: calc(100vh - 60px) !important; /* Account for header height */
+  }
+  
+  .pricing-card { 
+    min-height: 80vh !important; /* Reduced from 90vh to prevent overflow */
+    padding: 40px 15px !important; /* Slightly reduced padding */
+    margin-bottom: 20px !important; /* Add space between cards */
+  }
+  
+  /* Ensure first card is visible */
+  .pricing-card:first-child {
+    margin-top: 20px !important;
   }
 }
 
-/* Ensure dynamically loaded content is visible */
-.features[id*="-features"] {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  color: #333333 !important;
-  min-height: 150px !important;
-}
-
-.features[id*="-features"] li {
-  color: #333333 !important;
-  background-color: transparent !important;
+/* EXTRA SPECIFIC FIX: Mobile portrait orientation */
+@media (max-width: 600px) and (orientation: portrait) {
+  #pricing-section {
+    padding-top: 160px !important; /* Even more padding for portrait */
+    padding-bottom: 40px !important;
+  }
+  
+  .pricing-wrapper,
+  .pricing-container {
+    gap: 30px !important; /* Reduced gap between cards */
+  }
+  
+  .pricing-card {
+    min-height: 75vh !important; /* Further reduced height */
+    max-height: 85vh !important; /* Prevent cards from being too tall */
+    overflow-y: auto !important; /* Allow scrolling within card if needed */
+  }
+  
+  /* Ensure proper scrolling behavior */
+  body {
+    scroll-behavior: smooth !important;
+  }
+  
+  /* Make sure content doesn't get cut off */
+  .pricing-card .price {
+    font-size: 2rem !important; /* Slightly smaller on mobile */
+  }
+  
+  .pricing-card h3 {
+    font-size: 1.8rem !important; /* Slightly smaller on mobile */
+  }
 }
 
 /* Animation for dynamically loaded features */
@@ -1146,7 +1177,19 @@ small {
   }
 }
 
-/* Debug helper - shows loading state */
+/* Ensure dynamically loaded content is visible */
+.features[id*="-features"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #333333 !important;
+  min-height: 150px !important;
+}
+
+.features[id*="-features"] li {
+  color: #333333 !important;
+  background-color: transparent !important;
+}
+
+/* Debug helper */
 .features:empty::after {
   content: "Loading features...";
   color: #666;
@@ -1157,10 +1200,6 @@ small {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
 }
-
-
-
-
 </style>
 
 </head>
