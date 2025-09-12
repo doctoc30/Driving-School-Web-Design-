@@ -842,214 +842,291 @@ body header + .form-screen {
 
 
 
-/* ===================== PRICING SECTION FIX ===================== */
+/* ===================== PRICING SECTION - CONSISTENT WITH PRICING.HTML ===================== */
 
-/* Main pricing section styling */
+/* Base body styling for consistency */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #33a7d4;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Main pricing section */
 #pricing-section {
-  padding: 2rem 1rem;
-  background-color: #f8f9fa;
+  padding: 80px 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pricing-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
 }
 
-/* Pricing card styling */
+/* Unified Pricing Card - Matching pricing.html exactly */
 .pricing-card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  flex: 1;
-  min-width: 280px;
-  max-width: 350px;
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 .pricing-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #007bff;
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* Badge styling for recommended cards */
+.pricing-card.recommended .badge,
+.pricing-card .badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #227090;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 
 /* Card header styling */
-.card-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.card-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 0.5rem 0;
-}
-
-.badge {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+.card-header h3,
+.pricing-card h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 900;
   color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 /* Price styling */
-.price {
+.price,
+.pricing-card .price {
   font-size: 2.5rem;
-  font-weight: 800;
-  color: #007bff;
-  text-align: center;
   margin-bottom: 2rem;
+  font-weight: bold;
+  color: white;
 }
 
-.price::before {
-  content: "$";
-  font-size: 1.5rem;
-  vertical-align: top;
-}
-
-/* MAIN FIX: Features list styling */
-.features {
-  background-color: #ffffff !important;
-  color: #333333 !important;
-  padding: 1.5rem !important;
-  margin: 1rem 0 2rem 0 !important;
-  border-radius: 8px !important;
-  border: 1px solid #e9ecef !important;
+/* MAIN FIX: Features list styling - ensuring white background and visibility */
+.features,
+.pricing-card ul {
   list-style: none !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 2rem !important;
+  padding: 20px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.features li {
-  background-color: #ffffff !important;
+.features li,
+.pricing-card ul li {
+  margin: 12px 0 !important;
+  font-size: 1.1rem !important;
   color: #333333 !important;
-  padding: 0.75rem 0 !important;
-  border-bottom: 1px solid #f1f3f4 !important;
-  font-size: 0.95rem !important;
-  line-height: 1.4 !important;
+  background-color: transparent !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
   display: flex !important;
   align-items: center !important;
-  position: relative !important;
+  text-align: left !important;
 }
 
-.features li:last-child {
+.features li:last-child,
+.pricing-card ul li:last-child {
   border-bottom: none !important;
 }
 
-.features li::before {
+/* Add checkmark icons to features */
+.features li::before,
+.pricing-card ul li::before {
   content: "✓" !important;
   color: #28a745 !important;
   font-weight: bold !important;
-  margin-right: 0.75rem !important;
-  font-size: 1rem !important;
+  margin-right: 12px !important;
+  font-size: 1.2rem !important;
   background-color: #d4edda !important;
   border-radius: 50% !important;
-  width: 20px !important;
-  height: 20px !important;
+  width: 24px !important;
+  height: 24px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
 }
 
-/* Alternative styling for unavailable features */
-.features li.unavailable {
-  color: #6c757d !important;
-  opacity: 0.6 !important;
+/* Animation classes */
+.pricing-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.features li.unavailable::before {
-  content: "✗" !important;
-  color: #dc3545 !important;
-  background-color: #f8d7da !important;
+.pricing-card.recommended.in-view {
+  animation: glow 2s ease infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    transform: translateY(0) scale(1.03);
+  }
+  100% {
+    box-shadow: 0 25px 50px rgba(255,255,255,0.4);
+    transform: translateY(-5px) scale(1.05);
+  }
 }
 
 /* Card actions styling */
 .card-actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.card-actions button {
-  flex: 1;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
+/* PayPal Button - App-like, Brand Consistent */
+.pay-now,
 .card-actions button.primary {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  border-color: #007bff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
 }
 
+.pay-now img {
+  height: 22px;
+}
+
+.pay-now:hover,
 .card-actions button.primary:hover {
-  background: linear-gradient(135deg, #0056b3, #004085);
+  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
 }
 
+.pay-now:active,
+.card-actions button.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
+}
+
+/* Secondary button styling */
 .card-actions button.secondary {
   background: transparent;
-  color: #007bff;
-  border-color: #007bff;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .card-actions button.secondary:hover {
-  background: #007bff;
-  color: white;
+  background: white;
+  color: #33a7d4;
+}
+
+/* Trust Badge */
+.paypal-badge {
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #e0e5eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.paypal-badge img {
+  max-width: 140px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.paypal-badge p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1d1d1d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lock-icon {
+  font-size: 1.1rem;
+  color: #0070ba;
+}
+
+/* Small text styling */
+small {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin: 10px 0;
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
   .pricing-wrapper {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    gap: 20px;
   }
-  
   .pricing-card {
-    max-width: 100%;
-    width: 100%;
-  }
-  
-  .card-actions {
-    flex-direction: column;
-  }
-  
-  .price {
-    font-size: 2rem;
+    min-height: 65vh;
   }
 }
 
-/* Enhanced visibility for dynamically added content */
+@media (max-width: 768px) {
+  .pricing-card {
+    min-height: 90vh;
+    padding: 60px 20px;
+  }
+}
+
+/* Ensure dynamically loaded content is visible */
 .features[id*="-features"] {
-  min-height: 200px !important;
-  background-color: #ffffff !important;
-  border: 2px solid #dee2e6 !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #333333 !important;
+  min-height: 150px !important;
 }
 
-/* Ensure text is always visible */
-.features * {
+.features[id*="-features"] li {
   color: #333333 !important;
   background-color: transparent !important;
 }
 
-/* Animation for when content loads */
+/* Animation for dynamically loaded features */
 .features li {
   animation: fadeInUp 0.3s ease forwards;
   opacity: 0;
@@ -1069,15 +1146,20 @@ body header + .form-screen {
   }
 }
 
-/* Debug styles - remove after testing */
+/* Debug helper - shows loading state */
 .features:empty::after {
   content: "Loading features...";
-  color: #6c757d;
+  color: #666;
   font-style: italic;
-  padding: 1rem;
+  padding: 20px;
   display: block;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
 }
+
+
+
 
 </style>
 
