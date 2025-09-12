@@ -1016,14 +1016,18 @@ header {
 
 
 
-#pricing-section::before {
-    content: "";
-    display: block;
-    height: 80px; /* Exact height of your fixed header */
-    margin-top: -80px; /* Negative value of the height */
+/* --- Force Basic Plan into clear view below the fixed header --- */
+
+/* Add a top scroll margin so anchors / scrollIntoView don't hide behind header */
+.pricing-card {
+  scroll-margin-top: 80px;   /* match your fixed header height */
 }
 
- 
+/* Make sure hidden input picks up the chosen plan text reliably */
+#hiddenPlan {
+  display: block !important; /* ensure the hidden field is not accidentally hidden by other CSS */
+  visibility: hidden;        /* still not visible to users */
+}
 </style>
 
 </head>
