@@ -1329,10 +1329,7 @@ html {
 .pricing-card.in-view { opacity: 1; transform: translateY(0); }
 .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
 
-@keyframes glow {
-  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
-  100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
-}
+
 
 @media (min-width: 1024px) {
   .pricing-container { display:flex; flex-direction: row; gap: 20px; justify-content:center; }
@@ -2071,25 +2068,7 @@ if (colorRiseEl) colorRiseEl.classList.remove('active');
     else showScreen('instructor-q2');
   }
 
-  // ------------------ Water & Progress ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
 
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-});
 </script>
 </body>
 </html>
