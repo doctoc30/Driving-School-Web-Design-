@@ -1288,22 +1288,19 @@ html {
 
 
 
- /* --- Pricing Section Fix Overrides --- */
+/* --- Pricing Section Clean Fix --- */
 
-/* Make sure the whole section is visible */
+/* Show the full pricing section */
 #pricing-section {
-  display: block !important;
   padding: 4rem 1rem;
-  background: #f9fafb;      /* or transparent if you prefer */
-  visibility: visible !important;
-  opacity: 1 !important;
+  background: #f9fafb;       /* change to transparent if you want */
   position: relative;
   z-index: 1;
 }
 
-/* Wrapper must also be visible and laid out */
+/* Wrapper layout */
 .pricing-wrapper {
-  display: flex !important;
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
@@ -1311,23 +1308,33 @@ html {
   margin: 0 auto;
 }
 
-/* Cards default hidden until JS toggles them */
+/* Each pricing card – start hidden for fade-in */
 .pricing-card {
-  display: none;                 /* initial state */
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   padding: 2rem;
+  width: 320px;
+  opacity: 0;                 /* fade start */
   transform: translateY(40px);
-  opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
+  /* no display:none so internal text (titles, prices) isn’t lost */
+  visibility: hidden;
 }
 
-/* When JS adds .in-view, reveal the card */
+/* When JS adds .in-view, reveal the card smoothly */
 .pricing-card.in-view {
-  display: block !important;     /* force visible */
-  opacity: 1 !important;
+  visibility: visible;
+  opacity: 1;
   transform: translateY(0);
+}
+
+/* Make sure headings & price text are visible */
+.pricing-card h3,
+.pricing-card .price {
+  color: #222;   /* dark text so it shows */
+  font-weight: bold;
+  margin: 0 0 1rem;
 }
 
 </style>
