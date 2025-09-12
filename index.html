@@ -1287,13 +1287,12 @@ html {
 
 
 
+/* --- Pricing Section Final Fix --- */
 
-/* --- Pricing Section Clean Fix --- */
-
-/* Show the full pricing section */
+/* Container */
 #pricing-section {
   padding: 4rem 1rem;
-  background: #f9fafb;       /* change to transparent if you want */
+  background: #f9fafb;       /* or transparent */
   position: relative;
   z-index: 1;
 }
@@ -1308,35 +1307,32 @@ html {
   margin: 0 auto;
 }
 
-/* Each pricing card – start hidden for fade-in */
+/* Cards: always take up space so scroll works */
 .pricing-card {
+  display: block;            /* keep in flow */
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   padding: 2rem;
   width: 320px;
-  opacity: 0;                 /* fade start */
+  opacity: 0;                /* fade start */
   transform: translateY(40px);
   transition: opacity 0.6s ease, transform 0.6s ease;
-  /* no display:none so internal text (titles, prices) isn’t lost */
-  visibility: hidden;
 }
 
-/* When JS adds .in-view, reveal the card smoothly */
+/* Reveal when JS adds .in-view */
 .pricing-card.in-view {
-  visibility: visible;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Make sure headings & price text are visible */
+/* Titles & prices */
 .pricing-card h3,
 .pricing-card .price {
-  color: #222;   /* dark text so it shows */
+  color: #222;
   font-weight: bold;
-  margin: 0 0 1rem;
+  margin-bottom: 1rem;
 }
-
 </style>
 
 </head>
