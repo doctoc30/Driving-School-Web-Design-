@@ -1010,17 +1010,21 @@ header {
 }
 .lock-icon { font-size: 1.1rem; color: #0070ba; }
 
- /* --- Ensure pricing section isn't hidden behind sticky header --- */
+
+
+
+ /* ===== Fix: Make the Basic plan card fully visible when linked/scrollIntoView ===== */
+
+/* Provide global padding so anchor links aren't hidden behind fixed header */
 html {
-  scroll-padding-top: 100px; /* height of your fixed header (adjust if needed) */
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px; /* match or slightly exceed your header height */
 }
 
-/* In case the browser doesn't honor scroll-padding, add a safe offset */
-#pricing-section {
-  scroll-margin-top: 100px;   /* same value as scroll-padding-top */
+/* Add a scroll offset to each pricing card itself, so any #anchor or JS scroll works */
+.pricing-card {
+  scroll-margin-top: 120px; /* ensures the card sits below the header */
 }
-
-
 </style>
 
 </head>
