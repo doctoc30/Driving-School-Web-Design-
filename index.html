@@ -1442,6 +1442,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
   if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
+
+
 // ------------------ Plan Tiers ------------------
 const planTiers = {
   Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
@@ -1451,13 +1453,22 @@ const planTiers = {
 
 // ------------------ Show Recommended Plan ------------------
 function showRecommendedPlan() {
+  // Calculate the recommended tier based on the highest score
   let recommendedTier = "Basic";
-
-  // Decide which plan to recommend
-  if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
-    recommendedTier = "Premium";
-  } else if (yesFeatures.some(f => planTiers.Pro.includes(f))) {
-    recommendedTier = "Pro";
+  const scores = [
+    { tier: "Basic", score: planScores.basic },
+    { tier: "Pro", score: planScores.pro },
+    { tier: "Premium", score: planScores.premium }
+  ];
+  const maxScore = Math.max(planScores.basic, planScores.pro, planScores.premium);
+  
+  // If there's a tie, prioritize the higher tier (Premium > Pro > Basic)
+  if (maxScore > 0) {
+    const highestScoredTiers = scores.filter(s => s.score === maxScore);
+    recommendedTier = highestScoredTiers.reduce((highest, current) => {
+      const tierOrder = { Premium: 3, Pro: 2, Basic: 1 };
+      return tierOrder[current.tier] > tierOrder[highest.tier] ? current : highest;
+    }, highestScoredTiers[0]).tier;
   }
 
   // Populate each pricing card with its features
@@ -1489,54 +1500,36 @@ function showRecommendedPlan() {
   calculatePlan(recommendedTier);
 }
 
-// ------------------ Format Feature Names ------------------
-function formatFeatureName(f) {
-  const featureNames = {
-    booking: "Online Booking & Payment",
-    mobile: "Mobile Optimized",
-    cta: "Strong Call-to-Action Buttons",
-    contact: "Simple Contact Form",
-    bio: "About Me / Instructor Bio",
-    seo: "Local SEO Optimization",
-    reviews: "Student Reviews Section",
-    branding: "Branding Help (Logo & Colors)",
-    faq: "FAQ / Student Guide Section",
-    newsletter: "Newsletter Signup / Mailing List",
-    packages: "Lesson Packages & Gift Vouchers",
-    social: "Social Media Integration",
-    email: "Professional Email Address",
-    content: "Content Creation Help",
-    guide: "What to Expect Guide",
-    buyOutright: "Owned Outright",
-    monthlySupport: "Monthly Support"
-  };
-  return featureNames[f] || f;
-}
-
 // ------------------ Calculate & Highlight Final Plan ------------------
 function calculatePlan(finalPlan) {
   const planKey = finalPlan.toLowerCase();
 
-  // Hide all badges first
-  document.querySelectorAll(".pricing-card .badge")
-    .forEach(b => b.style.display = "none");
+  // Remove 'recommended' class from all cards
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.classList.remove("recommended");
+  });
 
+  // Add 'recommended' class to the selected card
   const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
   if (!card) return;
+  card.classList.add("recommended");
 
   // Show badge on the recommended card
+  document.querySelectorAll(".pricing-card .badge").forEach(b => {
+    b.style.display = "none";
+  });
   const badge = card.querySelector(".badge");
   if (badge) badge.style.display = "block";
 
   // Update hidden inputs for form submission
   const hiddenPlan = document.getElementById("hiddenPlan");
   const hiddenFeatures = document.getElementById("hiddenFeatures");
-  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
   if (hiddenPlan) hiddenPlan.value = finalPlan;
   if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
+  if (hiddenPaymentLink && planLinks[planKey]) hiddenPaymentLink.value = planLinks[planKey];
 
-  // Smooth scroll to the recommended card once it’s painted
+  // Smooth scroll to the recommended card
   requestAnimationFrame(() => {
     card.scrollIntoView({ behavior: "smooth", block: "center" });
     card.classList.add("highlight");
