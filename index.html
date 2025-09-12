@@ -2056,7 +2056,7 @@ cards.forEach(card => {
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+    if (typewriterEl) typewriterEl .classList.remove('active', 'rocketRise');
 if (colorRiseEl) colorRiseEl.classList.remove('active');
     if (stepParam) showScreen(`instructor-q${stepParam}`);
     else showScreen('instructor-q2');
