@@ -1287,19 +1287,30 @@ html {
 
 
 
-/* --- Pricing Section Final Fix --- */
+/* --- Pricing Section Final Override --- */
 
-/* Container */
-#pricing-section {
-  padding: 4rem 1rem;
-  background: #f9fafb;       /* or transparent */
+#recommended-plan-screen {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   position: relative;
   z-index: 1;
+  padding-top: 2rem;
+}
+
+/* Pricing section must allow scrolling */
+#pricing-section {
+  display: block !important;
+  padding: 4rem 1rem;
+  background: #f9fafb;
+  position: relative;
+  z-index: 1;
+  overflow: visible !important;   /* <— critical */
 }
 
 /* Wrapper layout */
 .pricing-wrapper {
-  display: flex;
+  display: flex !important;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
@@ -1307,31 +1318,22 @@ html {
   margin: 0 auto;
 }
 
-/* Cards: always take up space so scroll works */
+/* Cards always in flow */
 .pricing-card {
-  display: block;            /* keep in flow */
+  display: block;             /* never none */
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   padding: 2rem;
   width: 320px;
-  opacity: 0;                /* fade start */
+  opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* Reveal when JS adds .in-view */
 .pricing-card.in-view {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Titles & prices */
-.pricing-card h3,
-.pricing-card .price {
-  color: #222;
-  font-weight: bold;
-  margin-bottom: 1rem;
 }
 </style>
 
