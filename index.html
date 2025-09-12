@@ -1287,10 +1287,49 @@ html {
 
 
 
- #recommended-plan-screen {
-  overflow: auto;   /* or visible */
-  height: auto;     /* ensure it can scroll */
+
+ /* --- Pricing Section Fix Overrides --- */
+
+/* Make sure the whole section is visible */
+#pricing-section {
+  display: block !important;
+  padding: 4rem 1rem;
+  background: #f9fafb;      /* or transparent if you prefer */
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 1;
 }
+
+/* Wrapper must also be visible and laid out */
+.pricing-wrapper {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cards default hidden until JS toggles them */
+.pricing-card {
+  display: none;                 /* initial state */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 2rem;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* When JS adds .in-view, reveal the card */
+.pricing-card.in-view {
+  display: block !important;     /* force visible */
+  opacity: 1 !important;
+  transform: translateY(0);
+}
+
 </style>
 
 </head>
