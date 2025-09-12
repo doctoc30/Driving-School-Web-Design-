@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D S W D</title>
 
-<style> 
+<style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -878,30 +878,25 @@ header {
   cursor: default;
 }
 
-
-
-
-
- 
-
-#pricing-section {
-  padding: 80px 20px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+/* Main pricing section - with proper header offset */
+#pricing-section { 
+  padding: 80px 20px; 
+  min-height: 100vh; 
+  display: flex; 
+  justify-content: center; 
   align-items: center;
-  background-color: #33a7d4; /* match pricing.html page */
-  color: #fff;
-}
-.pricing-container {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
-  max-width: 1200px;
 }
 
-/* Unified Pricing Card */
+.pricing-wrapper,
+.pricing-container { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 40px; 
+  width: 100%; 
+  max-width: 1200px; 
+}
+
+/* Unified Pricing Card - maintaining original styling */
 .pricing-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
   border-radius: 16px;
@@ -917,11 +912,15 @@ header {
   position: relative;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
+
 .pricing-card:hover {
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
-.pricing-card.recommended .badge {
+
+/* Badge styling */
+.pricing-card.recommended .badge,
+.pricing-card .badge {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -932,28 +931,96 @@ header {
   font-size: 0.85rem;
   font-weight: bold;
 }
-.pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-.pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
-.pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-.pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
-.pricing-card.in-view { opacity: 1; transform: translateY(0); }
-.pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
+
+/* Card content styling */
+.card-header h3,
+.pricing-card h3 { 
+  font-size: 2rem; 
+  margin-bottom: 1rem; 
+  font-weight: 900; 
+  color: white;
+}
+
+.price,
+.pricing-card .price { 
+  font-size: 2.5rem; 
+  margin-bottom: 2rem; 
+  font-weight: bold; 
+  color: white;
+}
+
+/* Features list styling - with white background fix */
+.features,
+.pricing-card ul { 
+  list-style: none !important; 
+  margin-bottom: 2rem !important; 
+  padding: 20px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.features li,
+.pricing-card ul li { 
+  margin: 12px 0 !important; 
+  font-size: 1.1rem !important; 
+  color: #333333 !important;
+  background-color: transparent !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  text-align: left !important;
+}
+
+.features li:last-child,
+.pricing-card ul li:last-child {
+  border-bottom: none !important;
+}
+
+/* Add checkmark icons */
+.features li::before,
+.pricing-card ul li::before {
+  content: "✓" !important;
+  color: #28a745 !important;
+  font-weight: bold !important;
+  margin-right: 12px !important;
+  font-size: 1.2rem !important;
+  background-color: #d4edda !important;
+  border-radius: 50% !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* Animation classes */
+.pricing-card.in-view { 
+  opacity: 1; 
+  transform: translateY(0); 
+}
+
+.pricing-card.recommended.in-view { 
+  animation: glow 2s ease infinite alternate; 
+}
 
 @keyframes glow {
-  0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
-  100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
+  0% { 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35); 
+    transform: translateY(0) scale(1.03);
+  }
+  100% { 
+    box-shadow: 0 25px 50px rgba(255,255,255,0.4); 
+    transform: translateY(-5px) scale(1.05);
+  }
 }
 
-@media (min-width: 1024px) {
-  .pricing-container { flex-direction: row; gap: 20px; }
-  .pricing-card { min-height: 65vh; }
-}
-@media (max-width: 768px) {
-  .pricing-card { min-height: 90vh; padding: 60px 20px; }
-}
-
-/* PayPal Button */
-.pay-now {
+/* PayPal Button styling */
+.pay-now,
+.card-actions button.primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -970,13 +1037,18 @@ header {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
 }
+
 .pay-now img { height: 22px; }
-.pay-now:hover {
+
+.pay-now:hover,
+.card-actions button.primary:hover {
   background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
 }
-.pay-now:active {
+
+.pay-now:active,
+.card-actions button.primary:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
 }
@@ -994,11 +1066,13 @@ header {
   width: 100%;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+
 .paypal-badge img {
   max-width: 140px;
   height: auto;
   margin-bottom: 8px;
 }
+
 .paypal-badge p {
   font-size: 0.9rem;
   font-weight: 600;
@@ -1008,26 +1082,332 @@ header {
   align-items: center;
   gap: 6px;
 }
-.lock-icon { font-size: 1.1rem; color: #0070ba; }
 
+.lock-icon { 
+  font-size: 1.1rem; 
+  color: #0070ba; 
+}
 
+small {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
 
-/* Force all pricing cards to fade/slide from top */
-.pricing-card {
+/* Desktop responsive */
+@media (min-width: 1024px) {
+  .pricing-wrapper,
+  .pricing-container { 
+    flex-direction: row; 
+    gap: 20px; 
+  }
+  .pricing-card { 
+    min-height: 65vh; 
+  }
+}
+
+/* Mobile portrait view adjustments */
+@media (max-width: 768px) and (orientation: portrait) {
+  /* Ensure pricing section accounts for fixed header */
+  #pricing-section {
+    padding-top: 140px !important; /* Extra padding to clear fixed header */
+    margin-top: 0 !important;
+    min-height: calc(100vh - 60px) !important; /* Account for header height */
+  }
+  
+  .pricing-card { 
+    min-height: 75vh !important; /* Reduced from 90vh to prevent overflow */
+    max-height: 85vh !important; /* Prevent cards from being too tall */
+    padding: 40px 15px !important; /* Slightly reduced padding */
+    margin-bottom: 20px !important; /* Add space between cards */
+    overflow-y: auto !important; /* Allow scrolling within card if needed */
+  }
+  
+  /* Ensure first card is visible */
+  .pricing-card:first-child {
+    margin-top: 20px !important;
+  }
+  
+  /* Reduce font sizes for mobile portrait */
+  .pricing-card .price {
+    font-size: 2rem !important;
+  }
+  
+  .pricing-card h3 {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* CRITICAL FIX: Mobile landscape view adjustments */
+@media (max-width: 1024px) and (orientation: landscape) {
+  /* Landscape has limited height, so we need different approach */
+  #pricing-section {
+    padding-top: 100px !important; /* Less padding than portrait but still clear header */
+    padding-bottom: 40px !important;
+    min-height: calc(100vh - 60px) !important;
+    align-items: flex-start !important; /* Don't center vertically */
+  }
+  
+  .pricing-wrapper,
+  .pricing-container {
+    gap: 20px !important; /* Reduced gap for landscape */
+  }
+  
+  .pricing-card {
+    min-height: 60vh !important; /* Much smaller height for landscape */
+    max-height: 70vh !important; /* Prevent overflow in landscape */
+    padding: 30px 15px !important; /* Reduced padding */
+    margin-bottom: 15px !important;
+    overflow-y: auto !important; /* Allow scrolling if content is too tall */
+  }
+  
+  /* Smaller fonts for landscape */
+  .pricing-card h3 {
+    font-size: 1.6rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
+  .pricing-card .price {
+    font-size: 1.8rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .features,
+  .pricing-card ul {
+    padding: 15px !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .features li,
+  .pricing-card ul li {
+    font-size: 1rem !important;
+    margin: 8px 0 !important;
+    padding: 6px 0 !important;
+  }
+  
+  .pay-now {
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .paypal-badge {
+    padding: 10px !important;
+    margin-top: 10px !important;
+  }
+  
+  small {
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Extra specific fix for very small landscape screens (phones) */
+@media (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+  #pricing-section {
+    padding-top: 80px !important;
+    padding-bottom: 20px !important;
+  }
+  
+  .pricing-card {
+    min-height: 50vh !important;
+    max-height: 60vh !important;
+    padding: 20px 10px !important;
+  }
+  
+  .pricing-card h3 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .pricing-card .price {
+    font-size: 1.6rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .features,
+  .pricing-card ul {
+    padding: 10px !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .features li,
+  .pricing-card ul li {
+    font-size: 0.9rem !important;
+    margin: 6px 0 !important;
+  }
+}
+
+/* Animation for dynamically loaded features */
+.features li {
+  animation: fadeInUp 0.3s ease forwards;
   opacity: 0;
-  transform: translateY(-50px); /* slide from above */
-  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transform: translateY(10px);
 }
 
-/* When in-view, make it visible and in place */
-.pricing-card.in-view {
+.features li:nth-child(1) { animation-delay: 0.1s; }
+.features li:nth-child(2) { animation-delay: 0.2s; }
+.features li:nth-child(3) { animation-delay: 0.3s; }
+.features li:nth-child(4) { animation-delay: 0.4s; }
+.features li:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure dynamically loaded content is visible */
+.features[id*="-features"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #333333 !important;
+  min-height: 120px !important;
+}
+
+.features[id*="-features"] li {
+  color: #333333 !important;
+  background-color: transparent !important;
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth !important;
+}
+
+/* Debug helper */
+.features:empty::after {
+  content: "Loading features...";
+  color: #666;
+  font-style: italic;
+  padding: 15px;
+  display: block;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+}
+
+
+
+
+ /* --- Pricing Section Fix Overrides --- */
+
+/* Make sure the whole section is visible */
+#pricing-section {
+  display: block !important;
+  padding: 4rem 1rem;
+  background: #f9fafb;      /* or transparent if you prefer */
+  visibility: visible !important;
   opacity: 1 !important;
-  transform: translateY(0) !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Wrapper must also be visible and laid out */
+.pricing-wrapper {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cards default hidden until JS toggles them */
+.pricing-card {
+  display: none;                 /* initial state */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 2rem;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* When JS adds .in-view, reveal the card */
+.pricing-card.in-view {
+  display: block !important;     /* force visible */
+  opacity: 1 !important;
+  transform: translateY(0);
 }
 
 
 
 
+ /* --- Ensure plan titles and prices always show --- */
+.pricing-card h3,
+.pricing-card .price {
+  display: block;           /* force visibility */
+  color: #fff;              /* bright text for dark/gradient backgrounds */
+  font-weight: 900;
+  text-align: center;
+  margin: 0 0 1rem 0;
+  z-index: 2;               /* keep above gradients/overlays */
+}
+
+/* Price styling to stand out */
+.pricing-card .price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Keep entire pricing card visible and not clipped */
+.pricing-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 1;                     /* always visible when loaded */
+  transform: translateY(0);
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Reveal when JS adds .in-view */
+.pricing-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+ /* === FIX: Remove white feature-box background === */
+.pricing-card ul {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* === FIX: Force full-width cards across all devices === */
+.pricing-wrapper,
+.pricing-container {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+.pricing-card {
+  width: 100% !important;     /* single column full width on small screens */
+  max-width: 100% !important; /* prevent side bars */
+  margin: 0 auto !important;
+}
+
+@media (min-width: 1024px) {
+  .pricing-wrapper,
+  .pricing-container {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+  .pricing-card {
+    width: 32% !important;    /* three cards evenly spaced on desktop */
+  }
+}
 </style>
 
 </head>
@@ -1284,73 +1664,68 @@ header {
 
 <!-- ===================== PRICING CARDS ===================== -->
 <section id="pricing-section">
-  <div class="pricing-container">
-    <!-- Basic -->
-    <div class="pricing-card" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£499</p>
-      <ul>
-        <li>5 Pages Website</li>
-        <li>5 Revisions</li>
-        <li>Mobile Friendly</li>
+  <div class="pricing-wrapper">
+
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-plan="basic">
+      <div class="card-header">
+        <h3>Basic Plan</h3>
+        <span class="badge">Recommended</span>
+      </div>
+      <div class="price">$199</div>
+      <ul class="features" id="basic-features">
+        <li>Online Booking & Payment</li>
+        <li>Mobile Optimized</li>
+        <li>Strong Call-to-Action Buttons</li>
+        <li>Simple Contact Form</li>
+        <li>About Me / Instructor Bio</li>
       </ul>
-      <button class="pay-now"
-        onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      <div class="card-actions">
+        <button class="primary">Pay</button>
+        <button class="secondary">Info</button>
       </div>
     </div>
 
-    <!-- Pro -->
-    <div class="pricing-card recommended" data-animate>
-      <div class="badge">Recommended</div>
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-      <ul>
-        <li>10 Pages Website</li>
-        <li>15 Revisions</li>
-        <li>SEO Optimization</li>
-        <li>Booking System</li>
+    <!-- Pro Plan -->
+    <div class="pricing-card" data-plan="pro">
+      <div class="card-header">
+        <h3>Pro Plan</h3>
+        <span class="badge">Recommended</span>
+      </div>
+      <div class="price">$399</div>
+      <ul class="features" id="pro-features">
+        <li>Local SEO Optimization</li>
+        <li>Student Reviews Section</li>
+        <li>Branding Help (Logo & Colors)</li>
+        <li>FAQ / Student Guide Section</li>
+        <li>Newsletter Signup / Mailing List</li>
       </ul>
-      <button class="pay-now"
-        onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      <div class="card-actions">
+        <button class="primary">Pay</button>
+        <button class="secondary">Info</button>
       </div>
     </div>
 
-    <!-- Premium -->
-    <div class="pricing-card" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£1499</p>
-      <ul>
-        <li>50+ Pages Website</li>
-        <li>30 Revisions</li>
-        <li>Full Branding</li>
-        <li>Booking & Payment Integration</li>
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-plan="premium">
+      <div class="card-header">
+        <h3>Premium Plan</h3>
+        <span class="badge">Recommended</span>
+      </div>
+      <div class="price">$599</div>
+      <ul class="features" id="premium-features">
+        <li>Lesson Packages & Gift Vouchers</li>
         <li>Social Media Integration</li>
+        <li>Professional Email Address</li>
+        <li>Content Creation Help</li>
+        <li>What to Expect Guide</li>
       </ul>
-      <button class="pay-now"
-        onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      <div class="card-actions">
+        <button class="primary">Pay</button>
+        <button class="secondary">Info</button>
       </div>
     </div>
+
   </div>
 </section>
    </form>
@@ -1411,15 +1786,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ User Path & Features ------------------
   let userPath = "";
   const yesFeatures = [];
+  const noFeatures = [];
   let ownershipChoice = ""; // Q19 ownership choice
+  let planScores = { basic: 0, pro: 0, premium: 0 };
 
   window.setPath = (path) => { userPath = path; };
 
   window.recordFeature = (feature) => {
     if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
 
+    if (["booking","mobile","cta","contact","bio"].includes(feature)) planScores.basic++;
+    else if (["seo","reviews","branding","faq","newsletter"].includes(feature)) planScores.pro++;
+    else if (["packages","social","email","content","guide"].includes(feature)) planScores.premium++;
+
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  };
+
+  window.recordNoFeature = (feature) => {
+    if (!noFeatures.includes(feature)) noFeatures.push(feature);
   };
 
   window.recordOwnership = (choice) => {
@@ -1430,77 +1815,163 @@ document.addEventListener("DOMContentLoaded", () => {
     showRecommendedPlan();
   };
 
-  // ------------------ Plan Tiers ------------------
-  const planTiers = {
-    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    Premium: ['packages', 'social', 'email', 'content', 'guide']
-  };
+  // ------------------ Q19 Ownership Buttons ------------------
+  const q19YesBtn = document.querySelector("#instructor-q19 button:nth-child(1)");
+  const q19NoBtn = document.querySelector("#instructor-q19 button:nth-child(2)");
+  if (q19YesBtn) q19YesBtn.addEventListener("click", () => { window.recordOwnership('Owned Outright'); next(); });
+  if (q19NoBtn) q19NoBtn.addEventListener("click", () => { window.recordOwnership('Monthly Support'); next(); });
 
-  // ------------------ Show Recommended Plan ------------------
-  function showRecommendedPlan() {
-    // Calculate scores
-    const scores = { basic: 0, pro: 0, premium: 0 };
-    yesFeatures.forEach(f => {
-      if (planTiers.Basic.includes(f)) scores.basic++;
-      if (planTiers.Pro.includes(f)) scores.pro++;
-      if (planTiers.Premium.includes(f)) scores.premium++;
-    });
+// ------------------ Plan Tiers ------------------
+const planTiers = {
+  Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
+  Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
+  Premium: ['packages', 'social', 'email', 'content', 'guide']
+};
 
-    // Determine recommended tier
-    let recommendedTier = "Basic";
-    if (scores.premium > scores.pro && scores.premium > scores.basic) {
-      recommendedTier = "Premium";
-    } else if (scores.pro > scores.basic) {
-      recommendedTier = "Pro";
-    }
+// ------------------ Show Recommended Plan ------------------
+function showRecommendedPlan() {
+  let recommendedTier = "Basic";
 
-    // Reveal all pricing cards with fade-in
-    document.querySelectorAll(".pricing-card").forEach(card => {
-      card.style.display = "block";
-      card.classList.add("in-view");
-    });
-
-    // Highlight the recommended card
-    const card = document.querySelector(`.pricing-card[data-plan='${recommendedTier.toLowerCase()}']`);
-    if (card) {
-      const badge = card.querySelector(".badge");
-      if (badge) badge.style.display = "block";
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      card.classList.add('highlight');
-      setTimeout(() => card.classList.remove('highlight'), 2000);
-    }
-
-    // Update hidden inputs
-    const hiddenPlan = document.getElementById("hiddenPlan");
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
-    const hiddenLink = document.getElementById("hiddenPaymentLink");
-    if (hiddenPlan) hiddenPlan.value = recommendedTier;
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if (hiddenLink && planLinks[recommendedTier.toLowerCase()]) hiddenLink.value = planLinks[recommendedTier.toLowerCase()];
+  // Decide which plan to recommend
+  if (yesFeatures.some(f => planTiers.Premium.includes(f))) {
+    recommendedTier = "Premium";
+  } else if (yesFeatures.some(f => planTiers.Pro.includes(f))) {
+    recommendedTier = "Pro";
   }
 
-  // ------------------ Pricing Card Buttons ------------------
-  const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
-  };
+  // Populate each pricing card with its features
+  Object.keys(planTiers).forEach(tier => {
+    const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
+    if (!cardFeaturesEl) return;
+    cardFeaturesEl.innerHTML = "";
 
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  window.goToPayPal = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
-    window.location.href = planLinks[plan];
-  };
-
-  cards.forEach(card => {
-    const plan = card.dataset.plan;
-    const payBtn = card.querySelector("button:first-of-type");
-    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+    planTiers[tier].forEach(f => {
+      const isYes = yesFeatures.includes(f);
+      const icon = isYes ? "✅" : "❌";
+      const optionalLabel =
+        (!isYes && tier !== recommendedTier)
+          ? ""
+          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+      const li = document.createElement("li");
+      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
+      cardFeaturesEl.appendChild(li);
+    });
   });
+
+  // Reveal all pricing cards with fade-in
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.style.display = "block";
+    card.classList.add("in-view");
+  });
+
+  // Highlight and scroll to the recommended plan
+  calculatePlan(recommendedTier);
+}
+
+// ------------------ Format Feature Names ------------------
+function formatFeatureName(f) {
+  const featureNames = {
+    booking: "Online Booking & Payment",
+    mobile: "Mobile Optimized",
+    cta: "Strong Call-to-Action Buttons",
+    contact: "Simple Contact Form",
+    bio: "About Me / Instructor Bio",
+    seo: "Local SEO Optimization",
+    reviews: "Student Reviews Section",
+    branding: "Branding Help (Logo & Colors)",
+    faq: "FAQ / Student Guide Section",
+    newsletter: "Newsletter Signup / Mailing List",
+    packages: "Lesson Packages & Gift Vouchers",
+    social: "Social Media Integration",
+    email: "Professional Email Address",
+    content: "Content Creation Help",
+    guide: "What to Expect Guide",
+    buyOutright: "Owned Outright",
+    monthlySupport: "Monthly Support"
+  };
+  return featureNames[f] || f;
+}
+
+// ------------------ Calculate & Highlight Final Plan ------------------
+function calculatePlan(finalPlan) {
+  const planKey = finalPlan.toLowerCase();
+
+  // Hide all badges first
+  document.querySelectorAll(".pricing-card .badge")
+    .forEach(b => b.style.display = "none");
+
+  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+  if (!card) return;
+
+  // Show badge on the recommended card
+  const badge = card.querySelector(".badge");
+  if (badge) badge.style.display = "block";
+
+  // Update hidden inputs for form submission
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  const hiddenLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan) hiddenPlan.value = finalPlan;
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  if (hiddenLink && planLinks[planKey]) hiddenLink.value = planLinks[planKey];
+
+  // Smooth scroll to the recommended card once it’s painted
+  requestAnimationFrame(() => {
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.classList.add("highlight");
+    setTimeout(() => card.classList.remove("highlight"), 2000);
+  });
+}
+
+// ------------------ Design Code Redirect ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim();
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+  window.location.href =
+    `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+};
+
+if (codeParam && stepParam && stepParam === "4") {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showScreen(`instructor-q4`);
+}
+
+// ------------------ Pricing Card Buttons ------------------
+const planLinks = {
+  basic: "https://www.paypal.com/paypal-link-basic",
+  pro: "https://www.paypal.com/paypal-link-pro",
+  premium: "https://www.paypal.com/paypal-link-premium"
+};
+
+const cards = document.querySelectorAll('.pricing-card[data-plan]');
+window.goToPayPal = (plan) => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = planLinks[plan];
+  window.location.href = planLinks[plan];
+};
+window.submitLead = (plan) => {
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  const hiddenLink = document.getElementById('hiddenPaymentLink');
+  if (hiddenPlan) hiddenPlan.value = plan;
+  if (hiddenLink) hiddenLink.value = "";
+  const form = document.getElementById('formWrapper');
+  if (form) form.submit();
+};
+cards.forEach(card => {
+  const plan = card.dataset.plan;
+  const payBtn = card.querySelector("button:first-of-type");
+  const infoBtn = card.querySelector("button:last-of-type");
+  if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
+  if (infoBtn) infoBtn.addEventListener("click", () => submitLead(plan));
+});
 
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
@@ -1513,34 +1984,137 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { threshold: 0.3 });
   cards.forEach(card => observer.observe(card));
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  showScreen('main-intro-options');
-});
+  // ------------------ Typewriter ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
 
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
 
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
 
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 1000);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
 
- // Highlight and scroll recommended plan
-function showRecommendedPlan() {
-  // ...existing code to calculate recommendedTier...
+    setLinesByOrientation();
+    typeChar();
 
-  const card = document.querySelector(`.pricing-card[data-plan='${recommendedTier.toLowerCase()}']`);
-  if (card) {
-    // force animation even if already in DOM
-    card.classList.add('in-view');
-    card.style.display = "block";
-
-    // scroll smoothly from top
-    setTimeout(() => {
-      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      card.classList.add('highlight');
-      setTimeout(() => card.classList.remove('highlight'), 2000);
-    }, 100);
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
-  // ...update hidden inputs...
-}
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ------------------ AOS Init ------------------
+  if (typeof AOS !== 'undefined') AOS.init();
+
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+  if (!codeParam && !stepParam) {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  } else {
+    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
+if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    else showScreen('instructor-q2');
+  }
+
+  // ------------------ Water & Progress ------------------
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
+  }
+
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
+  }
+
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
+});
 </script>
 </body>
 </html>
