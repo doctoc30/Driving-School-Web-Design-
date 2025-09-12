@@ -878,6 +878,12 @@ header {
   cursor: default;
 }
 
+
+
+
+
+ 
+
 #pricing-section {
   padding: 80px 20px;
   min-height: 100vh;
@@ -1003,6 +1009,18 @@ header {
   gap: 6px;
 }
 .lock-icon { font-size: 1.1rem; color: #0070ba; }
+
+ /* --- Ensure pricing section isn't hidden behind sticky header --- */
+html {
+  scroll-padding-top: 100px; /* height of your fixed header (adjust if needed) */
+}
+
+/* In case the browser doesn't honor scroll-padding, add a safe offset */
+#pricing-section {
+  scroll-margin-top: 100px;   /* same value as scroll-padding-top */
+}
+
+
 </style>
 
 </head>
