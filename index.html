@@ -1039,36 +1039,29 @@ header {
 }
 
 
-
-/* Make recommended plan section full width and swipeable */
+/* Full-width pricing cards on portrait */
 @media (orientation: portrait) {
-  /* Full-width wrapper ignoring parent restrictions */
   #recommended-plan-screen {
-    position: relative;
     width: 100vw !important;
     max-width: 100vw !important;
     padding: 0 !important;
     margin: 0 !important;
-    overflow-x: auto;
-    overflow-y: hidden;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+    overflow: visible !important;
   }
 
-  /* Container that holds the cards horizontally */
   #recommended-plan-screen .pricing-cards {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1rem;
-    padding: 1rem;
-    min-width: max-content; /* allows cards to expand horizontally */
+    display: block !important;
+    width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Each pricing card */
   #recommended-plan-screen .pricing-card {
-    flex: 0 0 90%; /* almost full viewport width */
-    max-width: 90%;
-    box-sizing: border-box;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    border-radius: 0 !important; /* remove any card border-radius */
+    box-shadow: none !important; /* remove box-shadow if present */
   }
 }
 </style>
