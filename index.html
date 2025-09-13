@@ -1038,42 +1038,6 @@ header {
   transform: translateY(0) !important;
 }
 
-
-
-
-
- @media (orientation: portrait) {
-  #recommended-plan-screen {
-    width: 100vw;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding: 1rem 0; /* vertical padding */
-  }
-
-  #recommended-plan-screen .pricing-cards {
-    display: flex;
-    gap: 1rem;
-    padding: 0 1rem; /* small horizontal padding for frame */
-    scroll-snap-type: x mandatory;
-  }
-
-  #recommended-plan-screen .pricing-card {
-    flex: 0 0 80%; /* slightly smaller than full width to show frame */
-    max-width: 80%;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    scroll-snap-align: center;
-    background: #fff;
-    margin: 0 auto; /* center in container */
-    min-height: 300px; /* optional: keeps consistent height */
-  }
-
-  /* Optional: hide native scrollbar for a cleaner look */
-  #recommended-plan-screen::-webkit-scrollbar {
-    display: none;
-  }
-}
 </style>
 
 </head>
