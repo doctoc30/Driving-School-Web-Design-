@@ -1012,28 +1012,32 @@ header {
 
 
 
-#pricing-section::before {
-    content: "";
-    display: block;
-    height: 80px; /* Exact height of your fixed header */
-    margin-top: -80px; /* Negative value of the height */
-}
 
 
 
 
- /* --- Ensure Basic plan scrolls fully below the fixed header --- */
+ 
+ /* ----- Force section to start below fixed header on all viewports ----- */
 #pricing-section {
-  scroll-margin-top: 90px;   /* adjust to your header height */
+  display: block !important;      /* remove flex centering */
+  padding-top: 100px !important;  /* leave space for header */
+  scroll-margin-top: 100px !important; /* offset when using anchor/JS scroll */
 }
 
-/* Animate cards from slightly higher so they appear from header area */
+/* Keep cards stacked and fully visible on small screens */
+@media (max-width: 768px) {
+  .pricing-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+/* Preserve reveal animation */
 .pricing-card {
   opacity: 0;
-  transform: translateY(-60px);       /* start above */
+  transform: translateY(40px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
 .pricing-card.in-view {
   opacity: 1 !important;
   transform: translateY(0) !important;
