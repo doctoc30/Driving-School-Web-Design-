@@ -1040,31 +1040,32 @@ header {
 
 
 
- 
  @media (orientation: portrait) {
   #recommended-plan-screen {
-    width: 100vw;
-    overflow-x: auto;             /* allow horizontal swipe */
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;                          /* space between cards */
+    padding: 1rem;                       /* so card frames are visible */
+    overflow-x: auto;                     /* enable horizontal scroll */
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* smooth swipe on iOS */
-    padding: 1rem 0;
-  }
-
-  #recommended-plan-screen .pricing-cards {
-    display: inline-flex;         /* inline-flex allows scroll */
-    gap: 1rem;
-    padding: 0 1rem;              /* shows card frame */
+    -webkit-overflow-scrolling: touch;    /* smooth scroll for iOS */
+    scroll-snap-type: x mandatory;        /* optional smooth snapping */
+    width: 100vw;
+    box-sizing: border-box;
   }
 
   #recommended-plan-screen .pricing-card {
-    flex: 0 0 90%;                /* slightly smaller than viewport to show frame */
-    max-width: 90%;
-    scroll-snap-align: center;
-    border-radius: 16px;          /* preserves rounded frame */
+    flex: 0 0 85%;                        /* slightly smaller than full width */
+    max-width: 85%;
+    min-width: 300px;                      /* optional, ensures readability on very small screens */
+    scroll-snap-align: center;             /* optional for snap effect */
+    border-radius: 16px;                    /* keeps full curved frame visible */
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    background: #fff;
+    margin: 0 auto;                        /* center card in container */
   }
 
-  /* Optional: hide scrollbar for cleaner look */
+  /* Optional: hide native scrollbar */
   #recommended-plan-screen::-webkit-scrollbar {
     display: none;
   }
