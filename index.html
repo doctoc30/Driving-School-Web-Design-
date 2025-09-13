@@ -1012,10 +1012,6 @@ header {
 
 
 
-
-
-
-
 #pricing-section::before {
     content: "";
     display: block;
@@ -1023,7 +1019,25 @@ header {
     margin-top: -80px; /* Negative value of the height */
 }
 
- 
+
+
+
+ /* --- Ensure Basic plan scrolls fully below the fixed header --- */
+#pricing-section {
+  scroll-margin-top: 90px;   /* adjust to your header height */
+}
+
+/* Animate cards from slightly higher so they appear from header area */
+.pricing-card {
+  opacity: 0;
+  transform: translateY(-60px);       /* start above */
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.pricing-card.in-view {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
 </style>
 
 </head>
