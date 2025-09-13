@@ -1040,34 +1040,23 @@ header {
 
 
 
- @media (orientation: portrait) {
+@media (orientation: portrait) {
   #recommended-plan-screen {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;                          /* space between cards */
-    padding: 1rem;                       /* so card frames are visible */
-    overflow-x: auto;                     /* enable horizontal scroll */
+    overflow-x: auto;          /* allow horizontal scroll */
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;    /* smooth scroll for iOS */
-    scroll-snap-type: x mandatory;        /* optional smooth snapping */
+    padding: 1rem 0;           /* some spacing top/bottom */
     width: 100vw;
     box-sizing: border-box;
+    display: block;            /* keep container simple */
+    white-space: nowrap;       /* keep cards in a row */
   }
 
   #recommended-plan-screen .pricing-card {
-    flex: 0 0 85%;                        /* slightly smaller than full width */
-    max-width: 85%;
-    min-width: 300px;                      /* optional, ensures readability on very small screens */
-    scroll-snap-align: center;             /* optional for snap effect */
-    border-radius: 16px;                    /* keeps full curved frame visible */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-    background: #fff;
-    margin: 0 auto;                        /* center card in container */
-  }
-
-  /* Optional: hide native scrollbar */
-  #recommended-plan-screen::-webkit-scrollbar {
-    display: none;
+    display: inline-block;     /* allows horizontal scroll */
+    width: 90%;                /* slightly less than full width to show frame */
+    max-width: 400px;          /* optional max width for readability */
+    margin: 0 5%;              /* center within visible viewport */
+    vertical-align: top;       /* fixes inline-block spacing issues */
   }
 }
 
