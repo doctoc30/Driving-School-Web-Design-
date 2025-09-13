@@ -1431,58 +1431,62 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User Path & Features ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = "";
-  let planScores = { basic: 0, pro: 0, premium: 0 };
+ 
+// ------------------ User Path & Features ------------------
+let userPath = "";
+const yesFeatures = [];
+const noFeatures = [];
+let ownershipChoice = "";
+let planScores = { basic: 0, pro: 0, premium: 0 };
 
-  /* ✅ NEW: Track the most recent choice for every feature */
-  const featureState = {};   // { featureKey : true/false }
+/* ✅ Track the latest Yes/No for every feature */
+const featureState = {};   // { featureKey : true|false }
 
-  window.setPath = (path) => {
-    userPath = path;
-  };
+/* Recalculate arrays + scores whenever an answer changes */
+function syncFeatureState() {
+  // reset
+  yesFeatures.length = 0;
+  noFeatures.length = 0;
+  planScores = { basic: 0, pro: 0, premium: 0 };
 
-  // keep arrays and scores perfectly in sync with latest answers
-  function syncFeatureState() {
-    yesFeatures.length = 0;
-    noFeatures.length = 0;
-    planScores = { basic: 0, pro: 0, premium: 0 };
+  // rebuild from featureState
+  Object.entries(featureState).forEach(([f, isYes]) => {
+    if (isYes) {
+      yesFeatures.push(f);
+      if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
+    } else {
+      noFeatures.push(f);
+    }
+  });
 
-    Object.entries(featureState).forEach(([f, isYes]) => {
-      if (isYes) {
-        yesFeatures.push(f);
-        if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
-        else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
-        else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
-      } else {
-        noFeatures.push(f);
-      }
-    });
+  // keep hidden field updated
+  const hiddenFeatures = document.getElementById('hiddenFeatures');
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+}
 
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  }
+window.setPath = (path) => {
+  userPath = path;
+};
 
-  window.recordFeature = (feature) => {
-    console.log(`Recording feature: ${feature}`); // Debug
-    featureState[feature] = true;   // overwrite old choice
-    syncFeatureState();
-  };
+window.recordFeature = (feature) => {
+  console.log(`Recording feature: ${feature}`);
+  featureState[feature] = true;   // overwrite any previous choice
+  syncFeatureState();
+};
 
-  window.recordNoFeature = (feature) => {
-    featureState[feature] = false;  // overwrite old choice
-    syncFeatureState();
-  };
+window.recordNoFeature = (feature) => {
+  featureState[feature] = false;  // overwrite any previous choice
+  syncFeatureState();
+};
 
-  window.recordOwnership = (choice) => {
-    console.log(`Recording ownership: ${choice}`); // Debug
-    ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    next();
-  };
+window.recordOwnership = (choice) => {
+  console.log(`Recording ownership: ${choice}`);
+  ownershipChoice = choice;
+  recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
+  next();
+};
 
   // ------------------ Q19 Ownership Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
