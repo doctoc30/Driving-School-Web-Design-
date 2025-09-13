@@ -1042,6 +1042,30 @@ header {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
+
+
+ /* Full-width pricing cards on phones / portrait */
+@media (max-width: 768px) {
+  .pricing-container {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;         /* remove 1200px limit */
+    padding: 0;              /* no inner padding */
+    margin: 0;               /* no side margins */
+  }
+
+  .pricing-card {
+    width: 100%;             /* take entire screen width */
+    max-width: 100%;         /* ensure no leftover limit */
+    border-radius: 0;        /* optional: remove rounded sides if desired */
+  }
+
+  /* Remove accidental horizontal scroll */
+  body, html {
+    overflow-x: hidden;
+  }
+}
 </style>
 
 </head>
