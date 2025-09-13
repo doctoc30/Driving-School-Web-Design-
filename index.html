@@ -1041,32 +1041,31 @@ header {
 
 
 
- /* Full-width pricing cards only in portrait / mobile */
+/* Full-width pricing cards in portrait/mobile */
 @media (max-width: 768px) {
-  /* Target the funnel step containing the pricing cards */
-  #recommended-plan-screen {
-    width: 100vw;          /* full viewport width */
-    margin: 0;             /* remove wrapper margins */
-    padding: 0;            /* remove wrapper padding */
-    position: relative;    /* ensure proper layout */
-    left: 0;               /* align to left edge */
-  }
-
+  /* Make container scroll horizontally */
   #recommended-plan-screen .pricing-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
-    gap: 16px;             /* optional spacing between cards */
-    flex-direction: column;
+    display: flex;
+    flex-direction: row; /* keep cards in a row if needed, else column */
+    overflow-x: auto;   /* allow scroll if multiple cards */
+    width: 100vw;       /* full viewport width */
+    padding: 0 16px;    /* optional padding */
+    gap: 16px;          /* space between cards */
+    box-sizing: border-box;
   }
 
+  /* Each card takes full viewport width */
   #recommended-plan-screen .pricing-card {
-    width: 100%;
+    flex: 0 0 100%;     /* take 100% of container width */
     max-width: 100%;
     margin: 0;
-    border-radius: 0;      /* optional: remove rounded corners */
   }
 
+  /* Optional: hide horizontal scrollbar visually */
+  #recommended-plan-screen .pricing-container::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 </style>
 
