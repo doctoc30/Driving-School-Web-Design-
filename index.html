@@ -1011,11 +1011,6 @@ header {
 .lock-icon { font-size: 1.1rem; color: #0070ba; }
 
 
-
-
-
-
-
  
  /* ----- Force section to start below fixed header on all viewports ----- */
 #pricing-section {
@@ -1044,24 +1039,35 @@ header {
 }
 
 
- /* Full-width pricing cards on phones / portrait */
+
+
+ /* Full-width pricing cards only in portrait / mobile */
 @media (max-width: 768px) {
-  .pricing-container {
-    flex-direction: column;
-    gap: 20px;
+  /* Target the funnel step containing the pricing cards */
+  #recommended-plan-screen {
+    width: 100vw;          /* full viewport width */
+    margin: 0;             /* remove wrapper margins */
+    padding: 0;            /* remove wrapper padding */
+    position: relative;    /* ensure proper layout */
+    left: 0;               /* align to left edge */
+  }
+
+  #recommended-plan-screen .pricing-container {
     width: 100%;
-    max-width: 100%;         /* remove 1200px limit */
-    padding: 0;              /* no inner padding */
-    margin: 0;               /* no side margins */
+    max-width: 100%;
+    padding: 0;
+    gap: 16px;             /* optional spacing between cards */
+    flex-direction: column;
   }
 
-  .pricing-card {
-    width: 100%;             /* take entire screen width */
-    max-width: 100%;         /* ensure no leftover limit */
-    border-radius: 0;        /* optional: remove rounded sides if desired */
+  #recommended-plan-screen .pricing-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;      /* optional: remove rounded corners */
   }
 
-  /* Remove accidental horizontal scroll */
+  /* prevent horizontal scroll */
   body, html {
     overflow-x: hidden;
   }
