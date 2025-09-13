@@ -1438,35 +1438,49 @@ document.addEventListener("DOMContentLoaded", () => {
   let ownershipChoice = "";
   let planScores = { basic: 0, pro: 0, premium: 0 };
 
+  /* ✅ NEW: Track the most recent choice for every feature */
+  const featureState = {};   // { featureKey : true/false }
+
   window.setPath = (path) => {
     userPath = path;
   };
 
-  window.recordFeature = (feature) => {
-    console.log(`Recording feature: ${feature}`); // Debug
-    if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+  // keep arrays and scores perfectly in sync with latest answers
+  function syncFeatureState() {
+    yesFeatures.length = 0;
+    noFeatures.length = 0;
+    planScores = { basic: 0, pro: 0, premium: 0 };
 
-    if (["booking", "mobile", "cta", "contact", "bio"].includes(feature)) planScores.basic++;
-    else if (["seo", "reviews", "branding", "faq", "newsletter"].includes(feature)) planScores.pro++;
-    else if (["packages", "social", "email", "content", "guide"].includes(feature)) planScores.premium++;
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) {
+        yesFeatures.push(f);
+        if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
+        else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
+        else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
+      } else {
+        noFeatures.push(f);
+      }
+    });
 
     const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) {
-      hiddenFeatures.value = yesFeatures.join(", ");
-    } else {
-      console.error("hiddenFeatures input not found");
-    }
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  }
+
+  window.recordFeature = (feature) => {
+    console.log(`Recording feature: ${feature}`); // Debug
+    featureState[feature] = true;   // overwrite old choice
+    syncFeatureState();
   };
 
   window.recordNoFeature = (feature) => {
-    if (!noFeatures.includes(feature)) noFeatures.push(feature);
+    featureState[feature] = false;  // overwrite old choice
+    syncFeatureState();
   };
 
   window.recordOwnership = (choice) => {
     console.log(`Recording ownership: ${choice}`); // Debug
     ownershipChoice = choice;
     recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    // Move showRecommendedPlan to next() to ensure it’s called after navigation
     next();
   };
 
@@ -1541,7 +1555,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, highestScoredTiers[0]).tier;
     }
 
-    // Update hiddenPlan with the recommended tier, not ownership choice
     const hiddenPlan = document.getElementById("hiddenPlan");
     if (hiddenPlan) {
       hiddenPlan.value = recommendedTier;
@@ -1660,7 +1673,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const plan = card.dataset.plan;
     const payBtn = card.querySelector(".pay-now");
     if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-    // Note: infoBtn removed as HTML has only one button per card
   });
 
   // ------------------ Intersection Observer ------------------
