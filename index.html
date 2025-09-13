@@ -1040,6 +1040,11 @@ header {
 
 
 
+
+
+
+
+ 
 @media (orientation: portrait) {
   #recommended-plan-screen {
     overflow-x: auto;          /* allow horizontal scroll */
@@ -1060,6 +1065,22 @@ header {
   }
 }
 
+
+
+ .card-container {
+  max-height: 500px; /* adjust as needed */
+  overflow-y: auto; /* enable vertical scrolling */
+  display: flex;
+  flex-direction: column; /* stack cards vertically */
+  gap: 20px; /* optional spacing between cards */
+}
+
+.card {
+  flex: 0 0 auto; /* prevent cards from stretching */
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
 </style>
 
 </head>
