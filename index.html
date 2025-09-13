@@ -1041,62 +1041,6 @@ header {
 
 
 
-/* -------------------- Fullscreen Pricing Section -------------------- */
-#recommended-plan-screen {
-  width: 100vw;
-  height: 100vh;           /* full viewport height */
-  padding: 0;              /* remove funnel padding */
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;        /* prevent parent from clipping cards */
-}
-
-/* Container for swipeable cards */
-#recommended-plan-screen .pricing-container {
-  display: flex;
-  flex-direction: row;       /* horizontal swipe layout */
-  gap: 16px;
-  padding: 16px;
-  overflow-x: auto;          /* enable horizontal scroll/swipe */
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Each card */
-#recommended-plan-screen .pricing-card {
-  flex: 0 0 80%;            /* 80% of viewport width, adjust if needed */
-  max-width: 90vw;           /* prevent overflow */
-  scroll-snap-align: start;
-  box-sizing: border-box;
-  margin: 0;
-}
-
-/* Optional: hide horizontal scrollbar */
-#recommended-plan-screen .pricing-container::-webkit-scrollbar {
-  display: none;
-}
-#recommended-plan-screen .pricing-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Desktop fallback: stack cards vertically */
-@media (min-width: 768px) {
-  #recommended-plan-screen .pricing-container {
-    flex-direction: row;       /* horizontal cards on desktop too if desired */
-    justify-content: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  #recommended-plan-screen .pricing-card {
-    flex: 0 0 300px;           /* fixed width on desktop */
-  }
-}
 
 </style>
 
