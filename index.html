@@ -1675,6 +1675,8 @@ function showRecommendedPlan() {
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
+  const tierOrder = { Basic: 1, Pro: 2, Premium: 3 };
+
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
@@ -1686,13 +1688,13 @@ function showRecommendedPlan() {
       groups = [{ title: "Basic Features", items: planTiers.Basic }];
     } else if (tier === "Pro") {
       groups = [
-        { title: "Basic Features (Included)", items: planTiers.Basic },
+        { title: "Basic Features (Included if upgrade)", items: planTiers.Basic },
         { title: "Pro Features", items: planTiers.Pro }
       ];
     } else if (tier === "Premium") {
       groups = [
-        { title: "Basic Features (Included)", items: planTiers.Basic },
-        { title: "Pro Features (Included)", items: planTiers.Pro },
+        { title: "Basic Features (Included if upgrade)", items: planTiers.Basic },
+        { title: "Pro Features (Included if upgrade)", items: planTiers.Pro },
         { title: "Premium Features", items: planTiers.Premium }
       ];
     }
@@ -1706,7 +1708,13 @@ function showRecommendedPlan() {
       group.items.forEach(f => {
         const isYes = yesFeatures.includes(f);
         const icon = isYes ? "✅" : "❌";
-        const note = !isYes ? " (You said no—still included if you upgrade)" : "";
+
+        // Only show the note if this feature is in a higher-tier card than the user's recommended plan
+        let note = "";
+        if (!isYes && tierOrder[tier] > tierOrder[recommendedTier]) {
+          note = " (You said no—still included if you upgrade)";
+        }
+
         const li = document.createElement("li");
         li.textContent = `${icon} ${formatFeatureName(f)}${note}`;
         cardFeaturesEl.appendChild(li);
