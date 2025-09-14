@@ -1579,18 +1579,28 @@ function showRecommendedPlan() {
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Render pricing cards with cumulative features
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    let cumulativeFeatures = [];
-    if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
-    if (tier === "Pro") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
-    if (tier === "Premium") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
+    let lowerTiers = [];
+    if (tier === "Pro") lowerTiers = ["Basic"];
+    if (tier === "Premium") lowerTiers = ["Basic", "Pro"];
 
-    cumulativeFeatures.forEach(f => {
+    // Show previous yes features with tier label
+    lowerTiers.forEach(lowerTier => {
+      const lowerYes = planTiers[lowerTier].filter(f => yesFeatures.includes(f));
+      if (lowerYes.length > 0) {
+        const li = document.createElement("li");
+        li.textContent = `You said yes to ${lowerTier}: ${lowerYes.map(formatFeatureName).join(", ")}`;
+        li.style.fontWeight = "bold";
+        cardFeaturesEl.appendChild(li);
+      }
+    });
+
+    // Show features of current tier
+    planTiers[tier].forEach(f => {
       const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
       const optionalLabel =
@@ -1618,11 +1628,9 @@ function showRecommendedPlan() {
     if (badge) badge.style.display = "block";
   }
 
-  // Update hidden payment link
   const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
   if (hiddenPaymentLink && planLinks[planKey]) hiddenPaymentLink.value = planLinks[planKey];
 
-  // Smooth scroll & highlight
   if (card) {
     requestAnimationFrame(() => {
       card.scrollIntoView({ behavior: "smooth", block: "center" });
