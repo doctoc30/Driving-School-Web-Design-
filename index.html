@@ -1039,7 +1039,39 @@ header {
 }
 
 
+.pricing-card .tier-section {
+  padding: 10px 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
 
+.pricing-card .tier-basic {
+  background-color: #d0ebff; /* light blue */
+}
+
+.pricing-card .tier-pro {
+  background-color: #d3f9d8; /* light green */
+}
+
+.pricing-card .tier-premium {
+  background-color: #fff3bf; /* light gold */
+}
+
+.pricing-card .tier-section h4 {
+  margin: 0 0 5px;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.pricing-card .tier-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.pricing-card .tier-section li {
+  margin-bottom: 4px;
+  font-size: 0.85em;
+}
  </style>
 
 </head>
@@ -1570,68 +1602,78 @@ function syncFeatureState() {
 // ------------------ Show Recommended Plan (Cumulative + single yes recommendation) ------------------
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
+  const scores = [
+    { tier: "Basic", score: planScores.basic },
+    { tier: "Pro", score: planScores.pro },
+    { tier: "Premium", score: planScores.premium }
+  ];
+  const maxScore = Math.max(planScores.basic, planScores.pro, planScores.premium);
 
-  // Determine highest tier with any yes
-  if (planScores.premium > 0) recommendedTier = "Premium";
-  else if (planScores.pro > 0) recommendedTier = "Pro";
-  else if (planScores.basic > 0) recommendedTier = "Basic";
+  if (maxScore > 0) {
+    const highestScoredTiers = scores.filter(s => s.score === maxScore);
+    recommendedTier = highestScoredTiers.reduce((highest, current) => {
+      const tierOrder = { Premium: 3, Pro: 2, Basic: 1 };
+      return tierOrder[current.tier] > tierOrder[highest.tier] ? current : highest;
+    }, highestScoredTiers[0]).tier;
+  }
 
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Render pricing cards with cumulative features
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    let cumulativeFeatures = [];
-    if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
-    if (tier === "Pro") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
-    if (tier === "Premium") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
+    // Collect features from current tier + all lower tiers
+    let allFeatures = [];
+    if (tier === "Basic") allFeatures = [...planTiers.Basic];
+    if (tier === "Pro") allFeatures = [...planTiers.Basic, ...planTiers.Pro];
+    if (tier === "Premium") allFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
 
-    cumulativeFeatures.forEach(f => {
-      const isYes = yesFeatures.includes(f);
-      const icon = isYes ? "✅" : "❌";
-      const optionalLabel =
-        (!isYes && tier !== recommendedTier)
-          ? ""
-          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-      const li = document.createElement("li");
-      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
-      cardFeaturesEl.appendChild(li);
+    const sections = [];
+
+    // Lower-tier inclusion sections
+    if (tier === "Pro") {
+      sections.push({ title: "Included from Basic", features: planTiers.Basic, className: "included-basic" });
+      sections.push({ title: "Pro Services", features: planTiers.Pro, className: "pro-services" });
+    } else if (tier === "Premium") {
+      sections.push({ title: "Included from Basic", features: planTiers.Basic, className: "included-basic" });
+      sections.push({ title: "Included from Pro", features: planTiers.Pro, className: "included-pro" });
+      sections.push({ title: "Premium Services", features: planTiers.Premium, className: "premium-services" });
+    } else {
+      sections.push({ title: "Basic Services", features: planTiers.Basic, className: "basic-services" });
+    }
+
+    sections.forEach(sec => {
+      const div = document.createElement("div");
+      div.classList.add("tier-section", sec.className);
+
+      const h4 = document.createElement("h4");
+      h4.textContent = sec.title;
+      div.appendChild(h4);
+
+      const ul = document.createElement("ul");
+      sec.features.forEach(f => {
+        const li = document.createElement("li");
+        const isYes = yesFeatures.includes(f);
+        const icon = isYes ? "✅" : "❌";
+        li.textContent = `${icon} ${formatFeatureName(f)}`;
+        ul.appendChild(li);
+      });
+      div.appendChild(ul);
+      cardFeaturesEl.appendChild(div);
     });
   });
 
-  // Display & highlight final plan
+  // Show cards
   document.querySelectorAll(".pricing-card").forEach(card => {
     card.style.display = "block";
     card.classList.add("in-view");
-    card.classList.remove("recommended");
   });
 
-  const planKey = recommendedTier.toLowerCase();
-  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
-  if (card) {
-    card.classList.add("recommended");
-    const badge = card.querySelector(".badge");
-    if (badge) badge.style.display = "block";
-  }
-
-  // Update hidden payment link
-  const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPaymentLink && planLinks[planKey]) hiddenPaymentLink.value = planLinks[planKey];
-
-  // Smooth scroll & highlight
-  if (card) {
-    requestAnimationFrame(() => {
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-      card.classList.add("highlight");
-      setTimeout(() => card.classList.remove("highlight"), 2000);
-    });
-  }
+  calculatePlan(recommendedTier);
 }
-
   // ------------------ Calculate & Highlight Final Plan ------------------
   function calculatePlan(finalPlan) {
     const planKey = finalPlan.toLowerCase();
