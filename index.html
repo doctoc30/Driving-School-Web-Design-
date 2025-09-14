@@ -1476,6 +1476,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
+  // ------------------ Intro Buttons ------------------
+  const introButtons = document.querySelectorAll('.intro-option-btn');
+  introButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      next();
+    });
+  });
+
   // ------------------ User Features ------------------
   const yesFeatures = [];
   const noFeatures = [];
@@ -1501,20 +1509,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
-    // Recalculate plan immediately
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
   }
 
-  window.recordFeature = (feature) => {
-    featureState[feature] = true;
-    syncFeatureState();
-  };
-  window.recordNoFeature = (feature) => {
-    featureState[feature] = false;
-    syncFeatureState();
-  };
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
   // ------------------ Plan Tiers ------------------
   const planTiers = {
@@ -1567,12 +1568,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!cardEl) return;
       cardEl.innerHTML = "";
 
-      // --- Lower-tier features inside Premium card
+      // --- Lower-tier features inside Premium card ---
       if (tier === "Premium") {
         ["Basic","Pro"].forEach(lower => {
-          const included = planTiers[lower].map(f=>{
-            return {feature:f, selected:yesFeatures.includes(f)}
-          });
+          const included = planTiers[lower].map(f=>({feature:f, selected:yesFeatures.includes(f)}));
           if(included.length>0){
             const section = document.createElement("li");
             section.textContent = `Included from ${lower}:`;
@@ -1590,16 +1589,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // --- Current tier features
+      // --- Current tier features ---
       planTiers[tier].forEach(f=>{
-        // Skip lower tiers for Premium card
         if(tier==="Premium" && (planTiers["Basic"].includes(f) || planTiers["Pro"].includes(f))) return;
-        // Skip Basic for Pro card if already included
         if(tier==="Pro" && planTiers["Basic"].includes(f)) return;
 
         const isYes = yesFeatures.includes(f);
         const li = document.createElement("li");
-        // Final recommended tier shows X for unselected, others only show yes
         if(tier===recommendedTier){
           li.textContent = isYes?`✅ ${formatFeatureName(f)}`:`❌ ${formatFeatureName(f)}`;
         }else{
@@ -1608,6 +1604,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         cardEl.appendChild(li);
       });
+
+      // --- Show all services in Basic & Pro cards with ❌ if user said No ---
+      if(tier === "Basic" || tier === "Pro"){
+        planTiers[tier].forEach(f=>{
+          if(cardEl.querySelector(`li:contains('${formatFeatureName(f)}')`)) return;
+          const li = document.createElement("li");
+          li.textContent = yesFeatures.includes(f)?`✅ ${formatFeatureName(f)}`:`❌ ${formatFeatureName(f)}`;
+          cardEl.appendChild(li);
+        });
+      }
     });
 
     document.querySelectorAll(".pricing-card").forEach(c=>{
@@ -1650,6 +1656,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pro: "https://www.paypal.com/paypal-link-pro",
     premium: "https://www.paypal.com/paypal-link-premium"
   };
+
   const cards = document.querySelectorAll('.pricing-card[data-plan]');
   window.goToPayPal = (plan)=>{
     const hiddenPlan = document.getElementById('hiddenPlan');
@@ -1671,17 +1678,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const payBtn = card.querySelector(".pay-now");
     if(payBtn) payBtn.addEventListener("click",()=>goToPayPal(plan));
   });
-
-  // ------------------ Intersection Observer ------------------
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  cards.forEach(card => observer.observe(card));
 
   // ------------------ Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
@@ -1748,41 +1744,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300));
   }
 
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-
-// ------------------ Hamburger Menu ------------------
-const hamburger = document.querySelector('.hamburger');
-const menu = document.querySelector('nav.menu');
-if (hamburger && menu) {
-  hamburger.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
-  document.addEventListener('click', e => {
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', false);
-      menu.setAttribute('aria-hidden', true);
-      document.body.style.overflow = '';
-    }
-  });
-}
-
-  // ------------------ AOS Init ------------------
-  if (typeof AOS !== 'undefined') AOS.init();
-
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
   if (!codeParam && !stepParam) {
@@ -1814,25 +1775,6 @@ if (hamburger && menu) {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-
-  // ------------------ Design Code Redirect ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-    window.location.href =
-      `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  };
-
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
 });
  
 </script>
