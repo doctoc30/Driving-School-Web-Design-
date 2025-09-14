@@ -1581,79 +1581,45 @@ header {
 
   // ------------------ Show Recommended Plan ------------------
 function showRecommendedPlan() {
+  const tierOrder = { Basic: 1, Pro: 2, Premium: 3 };
   let recommendedTier = "Basic";
 
-  // Calculate scores based on featureState
-  planScores = { basic: 0, pro: 0, premium: 0 };
-  Object.entries(featureState).forEach(([f, isYes]) => {
-    if (!isYes) return;
-    if (planTiers.Basic.includes(f)) planScores.basic++;
-    else if (planTiers.Pro.includes(f)) planScores.pro++;
-    else if (planTiers.Premium.includes(f)) planScores.premium++;
-  });
+  if (planScores.premium > 0) recommendedTier = "Premium";
+  else if (planScores.pro > 0) recommendedTier = "Pro";
+  else if (planScores.basic > 0) recommendedTier = "Basic";
 
-  // Determine recommended tier
-  const scores = [
-    { tier: "Basic", score: planScores.basic },
-    { tier: "Pro", score: planScores.pro },
-    { tier: "Premium", score: planScores.premium }
-  ];
-  const maxScore = Math.max(planScores.basic, planScores.pro, planScores.premium);
-  if (maxScore > 0) {
-    const highest = scores.filter(s => s.score === maxScore);
-    const tierOrder = { Basic: 1, Pro: 2, Premium: 3 };
-    recommendedTier = highest.reduce((prev, curr) => {
-      return tierOrder[curr.tier] > tierOrder[prev.tier] ? curr : prev;
-    }, highest[0]).tier;
-  }
+  const hiddenPlan = document.getElementById("hiddenPlan");
+  if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Fill the cards
   Object.keys(planTiers).forEach(tier => {
     const el = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!el) return;
     el.innerHTML = "";
 
-    // Include lower tiers only if recommended plan is higher
-    if (tier === "Pro" || tier === "Premium") {
-      const lowerTiers = tier === "Pro" ? ["Basic"] : ["Basic", "Pro"];
-      lowerTiers.forEach(lp => {
-        const lowerFeatures = planTiers[lp].filter(f => featureState[f]);
-        if (lowerFeatures.length > 0) {
-          const sectionTitle = document.createElement("li");
-          sectionTitle.textContent = `Included from ${lp}:`;
-          sectionTitle.style.fontWeight = "bold";
-          el.appendChild(sectionTitle);
-          lowerFeatures.forEach(f => {
-            const li = document.createElement("li");
-            li.textContent = `✅ ${formatFeatureName(f)}`;
-            el.appendChild(li);
-          });
-        }
+    // Determine if this tier is included in the final plan
+    const includeInFinal = tierOrder[tier] <= tierOrder[recommendedTier];
+
+    if (includeInFinal) {
+      const sectionTitle = document.createElement("li");
+      sectionTitle.textContent = `${tier} ${tier !== recommendedTier ? "(included in final plan)" : ""}`;
+      sectionTitle.style.fontWeight = "bold";
+      el.appendChild(sectionTitle);
+
+      planTiers[tier].forEach(f => {
+        const li = document.createElement("li");
+        const isYes = !!featureState[f];
+
+        // Only show ❌ for final plan or included tiers
+        if (tier === recommendedTier) li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
+        else li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)} (you said no)`;
+
+        el.appendChild(li);
       });
     }
-
-    // Add this tier's features
-    planTiers[tier].forEach(f => {
-      // Skip lower-tier features already included above
-      if ((tier === "Pro" && planTiers["Basic"].includes(f)) ||
-          (tier === "Premium" && (planTiers["Basic"].includes(f) || planTiers["Pro"].includes(f)))) {
-        return;
-      }
-      const isYes = !!featureState[f];
-      let icon = "";
-      if (tier === recommendedTier) icon = isYes ? "✅" : "❌"; // final plan shows yes/no
-      else if (isYes) icon = "✅"; // show only yes for lower tiers
-      else return; // skip no for lower tiers
-
-      const li = document.createElement("li");
-      li.textContent = `${icon} ${formatFeatureName(f)}`;
-      el.appendChild(li);
-    });
   });
 
   calculatePlan(recommendedTier);
 }
-
 
   
   // ------------------ Calculate & Highlight Final Plan ------------------
