@@ -1425,6 +1425,7 @@ header {
    </form>
 
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1755,28 +1756,29 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEvent.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
+
+// ------------------ Hamburger Menu ------------------
+const hamburger = document.querySelector('.hamburger');
+const menu = document.querySelector('nav.menu');
+if (hamburger && menu) {
+  hamburger.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  document.addEventListener('click', e => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', false);
+      menu.setAttribute('aria-hidden', true);
+      document.body.style.overflow = '';
+    }
+  });
+}
 
   // ------------------ AOS Init ------------------
   if (typeof AOS !== 'undefined') AOS.init();
@@ -1832,6 +1834,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen(`instructor-q4`);
   }
 });
+ 
 </script>
 </body>
 </html>
