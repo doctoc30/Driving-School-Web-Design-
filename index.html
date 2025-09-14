@@ -1648,48 +1648,46 @@ function showRecommendedPlan() {
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    // Collect features from current tier + all lower tiers
-    let allFeatures = [];
-    if (tier === "Basic") allFeatures = [...planTiers.Basic];
-    if (tier === "Pro") allFeatures = [...planTiers.Basic, ...planTiers.Pro];
-    if (tier === "Premium") allFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
-
-    const sections = [];
-
-    // Lower-tier inclusion sections
-    if (tier === "Pro") {
-      sections.push({ title: "Included from Basic", features: planTiers.Basic, className: "included-basic" });
-      sections.push({ title: "Pro Services", features: planTiers.Pro, className: "pro-services" });
-    } else if (tier === "Premium") {
-      sections.push({ title: "Included from Basic", features: planTiers.Basic, className: "included-basic" });
-      sections.push({ title: "Included from Pro", features: planTiers.Pro, className: "included-pro" });
-      sections.push({ title: "Premium Services", features: planTiers.Premium, className: "premium-services" });
-    } else {
-      sections.push({ title: "Basic Services", features: planTiers.Basic, className: "basic-services" });
+    // Include lower-tier services if this is Pro or Premium
+    if (tier === "Pro" || tier === "Premium") {
+      const lowerPlans = tier === "Pro" ? ["Basic"] : ["Basic", "Pro"];
+      lowerPlans.forEach(lp => {
+        const lowerIncluded = planTiers[lp].filter(f => yesFeatures.includes(f));
+        if (lowerIncluded.length > 0) {
+          const sectionTitle = document.createElement("li");
+          sectionTitle.textContent = `Included from ${lp}:`;
+          sectionTitle.style.fontWeight = "bold";
+          cardFeaturesEl.appendChild(sectionTitle);
+          lowerIncluded.forEach(f => {
+            const li = document.createElement("li");
+            li.textContent = `✅ ${formatFeatureName(f)}`;
+            cardFeaturesEl.appendChild(li);
+          });
+        }
+      });
     }
 
-    sections.forEach(sec => {
-      const div = document.createElement("div");
-      div.classList.add("tier-section", sec.className);
-
-      const h4 = document.createElement("h4");
-      h4.textContent = sec.title;
-      div.appendChild(h4);
-
-      const ul = document.createElement("ul");
-      sec.features.forEach(f => {
-        const li = document.createElement("li");
-        const isYes = yesFeatures.includes(f);
-        const icon = isYes ? "✅" : "❌";
-        li.textContent = `${icon} ${formatFeatureName(f)}`;
-        ul.appendChild(li);
-      });
-      div.appendChild(ul);
-      cardFeaturesEl.appendChild(div);
+    // Then list this tier's services, with ✅ or ❌ for final recommended plan
+    planTiers[tier].forEach(f => {
+      // Skip lower-tier services if already included above
+      if ((tier === "Pro" && planTiers["Basic"].includes(f)) ||
+          (tier === "Premium" && (planTiers["Basic"].includes(f) || planTiers["Pro"].includes(f)))) {
+        return;
+      }
+      const isYes = yesFeatures.includes(f);
+      let icon = "";
+      if (tier === recommendedTier) {
+        icon = isYes ? "✅" : "❌"; // final plan shows ❌ for unselected
+      } else {
+        if (!isYes) return; // don't show unselected for lower tiers
+        icon = "✅";
+      }
+      const li = document.createElement("li");
+      li.textContent = `${icon} ${formatFeatureName(f)}`;
+      cardFeaturesEl.appendChild(li);
     });
   });
 
-  // Show cards
   document.querySelectorAll(".pricing-card").forEach(card => {
     card.style.display = "block";
     card.classList.add("in-view");
@@ -1697,6 +1695,8 @@ function showRecommendedPlan() {
 
   calculatePlan(recommendedTier);
 }
+
+ 
   // ------------------ Calculate & Highlight Final Plan ------------------
   function calculatePlan(finalPlan) {
     const planKey = finalPlan.toLowerCase();
