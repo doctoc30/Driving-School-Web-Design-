@@ -1095,6 +1095,16 @@ header {
   margin-bottom: 0.5rem;
 }
 
+
+
+ .feature-group-heading {
+  font-weight: bold;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  border-top: 1px solid #ccc;
+  padding-top: 6px;
+}
+
  </style>
 
 </head>
@@ -1642,10 +1652,39 @@ function showRecommendedPlan() {
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
+    /* ✅ NEW: custom sectioning for Premium */
+    if (tier === "Premium") {
+      const groups = [
+        { title: "Basic Features",   items: planTiers.Basic },
+        { title: "Pro Features",     items: planTiers.Pro },
+        { title: "Premium Features", items: planTiers.Premium }
+      ];
+
+      groups.forEach(group => {
+        const heading = document.createElement("li");
+        heading.textContent = `— ${group.title} —`;
+        heading.classList.add("feature-group-heading");
+        cardFeaturesEl.appendChild(heading);
+
+        group.items.forEach(f => {
+          const isYes = yesFeatures.includes(f);
+          const icon = isYes ? "✅" : "❌";
+          const optionalLabel =
+            (!isYes && tier !== recommendedTier)
+              ? ""
+              : (tier !== recommendedTier && isYes ? " (Optional)" : "");
+          const li = document.createElement("li");
+          li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
+          cardFeaturesEl.appendChild(li);
+        });
+      });
+      return; // skip normal block for Premium
+    }
+
+    /* 🔹 Unchanged code for Basic & Pro cards */
     let cumulativeFeatures = [];
     if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
     if (tier === "Pro") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
-    if (tier === "Premium") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
 
     cumulativeFeatures.forEach(f => {
       const isYes = yesFeatures.includes(f);
@@ -1659,6 +1698,9 @@ function showRecommendedPlan() {
       cardFeaturesEl.appendChild(li);
     });
   });
+
+  // keep rest of function (highlighting, scrolling, etc.) exactly as before…
+}
 
   // Display & highlight final plan
   document.querySelectorAll(".pricing-card").forEach(card => {
