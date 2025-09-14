@@ -1596,28 +1596,38 @@ function showRecommendedPlan() {
     if (!el) return;
     el.innerHTML = "";
 
-    // Determine if this tier is included in the final plan
     const includeInFinal = tierOrder[tier] <= tierOrder[recommendedTier];
+    if (!includeInFinal) return;
 
-    if (includeInFinal) {
-      const sectionTitle = document.createElement("li");
-      sectionTitle.textContent = `${tier} ${tier !== recommendedTier ? "(included in final plan)" : ""}`;
-      sectionTitle.style.fontWeight = "bold";
-      el.appendChild(sectionTitle);
+    // Create a visual container for the tier
+    const tierContainer = document.createElement("div");
+    tierContainer.style.border = "2px solid #aaa";
+    tierContainer.style.borderRadius = "10px";
+    tierContainer.style.padding = "8px";
+    tierContainer.style.marginBottom = "8px";
+    tierContainer.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+    tierContainer.style.backgroundColor = "#fff";
 
-      planTiers[tier].forEach(f => {
-        const li = document.createElement("li");
-        const isYes = !!featureState[f];
+    // Tier header
+    const header = document.createElement("strong");
+    header.textContent = tier + (tier !== recommendedTier ? " (included in final plan)" : "");
+    header.style.display = "block";
+    header.style.marginBottom = "6px";
+    tierContainer.appendChild(header);
 
-        // Only show ❌ for final plan or included tiers
-        if (tier === recommendedTier) li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
-        else li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)} (you said no)`;
+    // List all features in this tier
+    planTiers[tier].forEach(f => {
+      const li = document.createElement("li");
+      const isYes = !!featureState[f];
+      // Show ✅ if user said yes, ❌ if no
+      li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
+      tierContainer.appendChild(li);
+    });
 
-        el.appendChild(li);
-      });
-    }
+    el.appendChild(tierContainer);
   });
 
+  // Show final plan highlight
   calculatePlan(recommendedTier);
 }
 
