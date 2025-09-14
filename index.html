@@ -1112,6 +1112,30 @@ header {
   border-top: 2px solid #eee;
   color: #333;
 }
+
+
+ /* Full width pricing cards */
+.pricing-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0; /* optional spacing between cards */
+  box-sizing: border-box;
+}
+
+/* Optional: make sure cards stack vertically on smaller screens */
+@media (max-width: 1024px) {
+  .pricing-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Optional: remove float or flex wrapping if any */
+.pricing-cards-container {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  gap: 15px; /* spacing between cards */
+}
  </style>
 
 </head>
