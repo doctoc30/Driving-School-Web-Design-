@@ -1104,6 +1104,14 @@ header {
   border-top: 1px solid #ccc;
   padding-top: 6px;
 }
+
+ .feature-group-heading {
+  font-weight: bold;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 2px solid #eee;
+  color: #333;
+}
  </style>
 
 </head>
@@ -1650,28 +1658,28 @@ function showRecommendedPlan() {
     cardFeaturesEl.innerHTML = "";
 
     // ✅ Premium card: show Basic & Pro grouped with dividers
-    if (tier === "Premium") {
-      const groups = [
-        { title: "Basic Features",   items: planTiers.Basic },
-        { title: "Pro Features",     items: planTiers.Pro },
-        { title: "Premium Features", items: planTiers.Premium }
-      ];
-      groups.forEach(group => {
-        const heading = document.createElement("li");
-        heading.textContent = `— ${group.title} —`;
-        heading.classList.add("feature-group-heading");
-        cardFeaturesEl.appendChild(heading);
+  if (tier === "Premium") {
+  const groups = [
+    { title: "Basic Features (Included in Premium)",   items: planTiers.Basic },
+    { title: "Pro Features (Included in Premium)",     items: planTiers.Pro },
+    { title: "Premium-Exclusive Features",             items: planTiers.Premium }
+  ];
+  groups.forEach(group => {
+    const heading = document.createElement("li");
+    heading.textContent = `— ${group.title} —`;
+    heading.classList.add("feature-group-heading");
+    cardFeaturesEl.appendChild(heading);
 
-        group.items.forEach(f => {
-          const isYes = yesFeatures.includes(f);
-          const icon = isYes ? "✅" : "❌";
-          const li = document.createElement("li");
-          li.textContent = `${icon} ${formatFeatureName(f)}`;
-          cardFeaturesEl.appendChild(li);
-        });
-      });
-      return; // skip normal build for Premium
-    }
+    group.items.forEach(f => {
+      const isYes = yesFeatures.includes(f);
+      const icon = isYes ? "✅" : "❌";
+      const li = document.createElement("li");
+      li.textContent = `${icon} ${formatFeatureName(f)}`;
+      cardFeaturesEl.appendChild(li);
+    });
+  });
+  return; // skip normal build for Premium
+}
 
     // 🔹 Normal build for Basic & Pro (cumulative)
     let cumulativeFeatures = [];
