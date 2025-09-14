@@ -1643,6 +1643,7 @@ function syncFeatureState() {
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
 
+  // Determine highest tier with any yes
   if (planScores.premium > 0) recommendedTier = "Premium";
   else if (planScores.pro > 0) recommendedTier = "Pro";
   else if (planScores.basic > 0) recommendedTier = "Basic";
@@ -1650,8 +1651,8 @@ function showRecommendedPlan() {
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Plan metrics
-  const planMetrics = {
+  // Plan meta data
+  const planMeta = {
     Basic: { pages: 5, delivery: 10, revisions: 5 },
     Pro: { pages: 15, delivery: 15, revisions: 10 },
     Premium: { pages: 50, delivery: 30, revisions: 20 }
@@ -1662,27 +1663,32 @@ function showRecommendedPlan() {
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    // ✅ Add metrics at the top
-    const metrics = planMetrics[tier];
-    const metricsEl = document.createElement("li");
-    metricsEl.classList.add("plan-metrics");
-    metricsEl.innerHTML = `
-      Pages: ${metrics.pages} | Delivery: ${metrics.delivery} days | Revisions: ${metrics.revisions}/page
+    // Add plan meta
+    const metaLi = document.createElement("li");
+    metaLi.innerHTML = `
+      📄 Pages: ${planMeta[tier].pages} <br>
+      ⏱ Delivery: ${planMeta[tier].delivery} days <br>
+      ✏️ Revisions: ${planMeta[tier].revisions} per page
     `;
-    cardFeaturesEl.appendChild(metricsEl);
+    metaLi.classList.add("plan-meta");
+    cardFeaturesEl.appendChild(metaLi);
 
     let groups = [];
+
     if (tier === "Basic") {
       groups = [{ title: "Basic Features", items: planTiers.Basic }];
     } else if (tier === "Pro") {
       groups = [
-        { title: "Basic Features (Included)", items: planTiers.Basic },
+        { title: "Basic Features", items: planTiers.Basic },
         { title: "Pro Features", items: planTiers.Pro }
       ];
     } else if (tier === "Premium") {
+      const includeLabel = recommendedTier === "Premium" ? " (Included)" : "";
+      const basicYes = planTiers.Basic.filter(f => yesFeatures.includes(f));
+      const proYes = planTiers.Pro.filter(f => yesFeatures.includes(f));
       groups = [
-        { title: "Basic Features (Included)", items: planTiers.Basic },
-        { title: "Pro Features (Included)", items: planTiers.Pro },
+        { title: "Basic Features" + includeLabel, items: basicYes },
+        { title: "Pro Features" + includeLabel, items: proYes },
         { title: "Premium Features", items: planTiers.Premium }
       ];
     }
@@ -1696,16 +1702,9 @@ function showRecommendedPlan() {
       group.items.forEach(f => {
         const isYes = yesFeatures.includes(f);
         const icon = isYes ? "✅" : "❌";
-        const optionalLabel =
-          (!isYes && tier !== recommendedTier)
-            ? ""
-            : (tier !== recommendedTier && isYes ? " (Optional)" : "");
-
         const li = document.createElement("li");
-        li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
-
-        if (group.title.includes("Included")) li.classList.add("included-feature");
-
+        li.textContent = `${icon} ${formatFeatureName(f)}${isYes ? " — You said yes" : " — You said no"}`;
+        if (!isYes) li.style.opacity = "0.6";
         cardFeaturesEl.appendChild(li);
       });
     });
@@ -1726,9 +1725,11 @@ function showRecommendedPlan() {
     if (badge) badge.style.display = "block";
   }
 
+  // Update hidden payment link
   const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
   if (hiddenPaymentLink && planLinks[planKey]) hiddenPaymentLink.value = planLinks[planKey];
 
+  // Smooth scroll & highlight
   if (card) {
     requestAnimationFrame(() => {
       card.scrollIntoView({ behavior: "smooth", block: "center" });
