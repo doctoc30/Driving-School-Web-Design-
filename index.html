@@ -1635,6 +1635,7 @@ function syncFeatureState() {
 }
 
 // ------------------ Show Recommended Plan (Cumulative + single yes recommendation) ------------------
+
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
 
@@ -1646,13 +1647,13 @@ function showRecommendedPlan() {
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Render pricing cards with cumulative features
+  // Render pricing cards
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    /* ✅ NEW: custom sectioning for Premium */
+    // ✅ Premium card: show Basic & Pro grouped inside
     if (tier === "Premium") {
       const groups = [
         { title: "Basic Features",   items: planTiers.Basic },
@@ -1678,13 +1679,13 @@ function showRecommendedPlan() {
           cardFeaturesEl.appendChild(li);
         });
       });
-      return; // skip normal block for Premium
+      return; // skip normal build for Premium
     }
 
-    /* 🔹 Unchanged code for Basic & Pro cards */
+    // 🔹 Normal build for Basic & Pro
     let cumulativeFeatures = [];
     if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
-    if (tier === "Pro") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
+    if (tier === "Pro")   cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
 
     cumulativeFeatures.forEach(f => {
       const isYes = yesFeatures.includes(f);
@@ -1699,9 +1700,36 @@ function showRecommendedPlan() {
     });
   });
 
-  // keep rest of function (highlighting, scrolling, etc.) exactly as before…
+  // 🔻 KEEP the remainder of the original logic
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.style.display = "block";
+    card.classList.add("in-view");
+    card.classList.remove("recommended");
+  });
+
+  const planKey = recommendedTier.toLowerCase();
+  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+  if (card) {
+    card.classList.add("recommended");
+    const badge = card.querySelector(".badge");
+    if (badge) badge.style.display = "block";
+  }
+
+  const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPaymentLink && planLinks[planKey]) {
+    hiddenPaymentLink.value = planLinks[planKey];
+  }
+
+  if (card) {
+    requestAnimationFrame(() => {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    });
+  }
 }
 
+ 
   // Display & highlight final plan
   document.querySelectorAll(".pricing-card").forEach(card => {
     card.style.display = "block";
