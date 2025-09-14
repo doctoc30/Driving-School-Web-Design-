@@ -1650,20 +1650,28 @@ function showRecommendedPlan() {
 
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
+Object.keys(planTiers).forEach(tier => {
+  const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
+  if (!cardFeaturesEl) return;
+  cardFeaturesEl.innerHTML = "";
 
-  // Render pricing cards
-  Object.keys(planTiers).forEach(tier => {
-    const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
-    if (!cardFeaturesEl) return;
-    cardFeaturesEl.innerHTML = "";
+  let groups = [];
 
-    // ✅ Premium card: show Basic & Pro grouped with dividers
-  if (tier === "Premium") {
-  const groups = [
-    { title: "Basic Features (Included in Premium)",   items: planTiers.Basic },
-    { title: "Pro Features (Included in Premium)",     items: planTiers.Pro },
-    { title: "Premium-Exclusive Features",             items: planTiers.Premium }
-  ];
+  if (tier === "Basic") {
+    groups = [{ title: "Basic Features", items: planTiers.Basic }];
+  } else if (tier === "Pro") {
+    groups = [
+      { title: "Basic Features (Included)", items: planTiers.Basic },
+      { title: "Pro Features", items: planTiers.Pro }
+    ];
+  } else if (tier === "Premium") {
+    groups = [
+      { title: "Basic Features (Included)", items: planTiers.Basic },
+      { title: "Pro Features (Included)", items: planTiers.Pro },
+      { title: "Premium Features", items: planTiers.Premium }
+    ];
+  }
+
   groups.forEach(group => {
     const heading = document.createElement("li");
     heading.textContent = `— ${group.title} —`;
@@ -1673,11 +1681,16 @@ function showRecommendedPlan() {
     group.items.forEach(f => {
       const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
+      const optionalLabel =
+        (!isYes && tier !== recommendedTier)
+          ? ""
+          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement("li");
-      li.textContent = `${icon} ${formatFeatureName(f)}`;
+      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
     });
   });
+});
   return; // skip normal build for Premium
 }
 
