@@ -1568,99 +1568,71 @@ function syncFeatureState() {
 }
 
 // ------------------ Show Recommended Plan (Cumulative + single yes recommendation) ------------------
+(Cumulative + single yes recommendation) ------------------
 function showRecommendedPlan() {
-  // Compute scores for each tier
-  planScores = { basic: 0, pro: 0, premium: 0 };
-
-  const cumulativeYes = {
-    basic: [],
-    pro: [],
-    premium: []
-  };
-
-  // Fill cumulative arrays
-  Object.entries(featureState).forEach(([f, isYes]) => {
-    if (isYes) {
-      if (["booking","mobile","cta","contact","bio"].includes(f)) cumulativeYes.basic.push(f);
-      if (["seo","reviews","branding","faq","newsletter"].includes(f)) cumulativeYes.pro.push(f);
-      if (["packages","social","email","content","guide"].includes(f)) cumulativeYes.premium.push(f);
-    }
-  });
-
-  // Include lower tier yes features in higher tiers
-  cumulativeYes.pro = [...new Set([...cumulativeYes.basic, ...cumulativeYes.pro])];
-  cumulativeYes.premium = [...new Set([...cumulativeYes.basic, ...cumulativeYes.pro, ...cumulativeYes.premium])];
-
-  // Compute scores for recommendation logic
-  planScores.basic = cumulativeYes.basic.length;
-  planScores.pro = cumulativeYes.pro.length;
-  planScores.premium = cumulativeYes.premium.length;
-
-  // Determine recommended tier (highest score wins, tie-breaker Premium > Pro > Basic)
   let recommendedTier = "Basic";
-  const scores = [
-    { tier: "Basic", score: planScores.basic },
-    { tier: "Pro", score: planScores.pro },
-    { tier: "Premium", score: planScores.premium }
-  ];
-  const maxScore = Math.max(planScores.basic, planScores.pro, planScores.premium);
-  if (maxScore > 0) {
-    const highestScoredTiers = scores.filter(s => s.score === maxScore);
-    recommendedTier = highestScoredTiers.reduce((highest, current) => {
-      const tierOrder = { Premium: 3, Pro: 2, Basic: 1 };
-      return tierOrder[current.tier] > tierOrder[highest.tier] ? current : highest;
-    }, highestScoredTiers[0]).tier;
-  }
+
+  // Determine highest tier with any yes
+  if (planScores.premium > 0) recommendedTier = "Premium";
+  else if (planScores.pro > 0) recommendedTier = "Pro";
+  else if (planScores.basic > 0) recommendedTier = "Basic";
 
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Display features in cards with cumulative info
+  // Render pricing cards with cumulative features
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    // Use cumulative yes array for this tier
-    const tierYesFeatures = cumulativeYes[tier.toLowerCase()];
+    let cumulativeFeatures = [];
+    if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
+    if (tier === "Pro") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
+    if (tier === "Premium") cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro, ...planTiers.Premium];
 
-    planTiers[tier].forEach(f => {
-      const isYes = tierYesFeatures.includes(f);
+    cumulativeFeatures.forEach(f => {
+      const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
-      const label = isYes && !planTiers[tier].includes(f) ? ` (Included from lower tier)` : "";
+      const optionalLabel =
+        (!isYes && tier !== recommendedTier)
+          ? ""
+          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement("li");
-      li.textContent = `${icon} ${formatFeatureName(f)}${label}`;
+      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
       cardFeaturesEl.appendChild(li);
     });
-
-    // Add cumulative lower-tier services not originally in this tier
-    if (tier === "Pro") {
-      cumulativeYes.basic.forEach(f => {
-        if (!planTiers.Pro.includes(f)) {
-          const li = document.createElement("li");
-          li.textContent = `✅ ${formatFeatureName(f)} (Included from Basic)`;
-          cardFeaturesEl.appendChild(li);
-        }
-      });
-    }
-    if (tier === "Premium") {
-      [...cumulativeYes.basic, ...cumulativeYes.pro].forEach(f => {
-        if (!planTiers.Premium.includes(f)) {
-          const li = document.createElement("li");
-          li.textContent = `✅ ${formatFeatureName(f)} (Included from lower tier)`;
-          cardFeaturesEl.appendChild(li);
-        }
-      });
-    }
   });
 
+  // Display & highlight final plan
   document.querySelectorAll(".pricing-card").forEach(card => {
     card.style.display = "block";
     card.classList.add("in-view");
+    card.classList.remove("recommended");
   });
 
-  calculatePlan(recommendedTier);
+  const planKey = recommendedTier.toLowerCase();
+  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
+  if (card) {
+    card.classList.add("recommended");
+    const badge = card.querySelector(".badge");
+    if (badge) badge.style.display = "block";
+  }
+
+  // Update hidden payment link
+  const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
+  if (hiddenPaymentLink && planLinks[planKey]) hiddenPaymentLink.value = planLinks[planKey];
+
+  // Smooth scroll & highlight
+  if (card) {
+    requestAnimationFrame(() => {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("highlight");
+      setTimeout(() => card.classList.remove("highlight"), 2000);
+    });
+  }
 }
+
   // ------------------ Calculate & Highlight Final Plan ------------------
   function calculatePlan(finalPlan) {
     const planKey = finalPlan.toLowerCase();
