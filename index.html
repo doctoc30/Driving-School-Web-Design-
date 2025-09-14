@@ -1599,38 +1599,35 @@ function showRecommendedPlan() {
     const includeInFinal = tierOrder[tier] <= tierOrder[recommendedTier];
     if (!includeInFinal) return;
 
-    // Create a visual container for the tier
-    const tierContainer = document.createElement("div");
-    tierContainer.style.border = "2px solid #aaa";
-    tierContainer.style.borderRadius = "10px";
-    tierContainer.style.padding = "8px";
-    tierContainer.style.marginBottom = "8px";
-    tierContainer.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
-    tierContainer.style.backgroundColor = "#fff";
+    // Add a header if this is a lower tier included in final plan
+    if (tier !== recommendedTier) {
+      const sectionTitle = document.createElement("li");
+      sectionTitle.textContent = `Included from ${tier}:`;
+      sectionTitle.style.fontWeight = "bold";
+      sectionTitle.style.marginTop = "6px";
+      el.appendChild(sectionTitle);
+    }
 
-    // Tier header
-    const header = document.createElement("strong");
-    header.textContent = tier + (tier !== recommendedTier ? " (included in final plan)" : "");
-    header.style.display = "block";
-    header.style.marginBottom = "6px";
-    tierContainer.appendChild(header);
-
-    // List all features in this tier
+    // Add all features for this tier
     planTiers[tier].forEach(f => {
       const li = document.createElement("li");
       const isYes = !!featureState[f];
-      // Show ✅ if user said yes, ❌ if no
-      li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
-      tierContainer.appendChild(li);
-    });
 
-    el.appendChild(tierContainer);
+      // final plan tier shows ❌ for no
+      if (tier === recommendedTier) {
+        li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
+      } else {
+        // included lower tiers: show ✅/❌ depending on user input
+        li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
+      }
+
+      el.appendChild(li);
+    });
   });
 
   // Show final plan highlight
   calculatePlan(recommendedTier);
 }
-
   
   // ------------------ Calculate & Highlight Final Plan ------------------
   function calculatePlan(finalPlan) {
