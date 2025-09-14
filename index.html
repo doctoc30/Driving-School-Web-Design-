@@ -1675,27 +1675,10 @@ function showRecommendedPlan() {
   const hiddenPlan = document.getElementById("hiddenPlan");
   if (hiddenPlan) hiddenPlan.value = recommendedTier;
 
-  // Plan meta data
-  const planMeta = {
-    Basic: { pages: 5, delivery: 10, revisions: 5 },
-    Pro: { pages: 15, delivery: 15, revisions: 10 },
-    Premium: { pages: 50, delivery: 30, revisions: 20 }
-  };
-
   Object.keys(planTiers).forEach(tier => {
     const cardFeaturesEl = document.getElementById(`${tier.toLowerCase()}-features`);
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
-
-    // Add plan meta
-    const metaLi = document.createElement("li");
-    metaLi.innerHTML = `
-      📄 Pages: ${planMeta[tier].pages} <br>
-      ⏱ Delivery: ${planMeta[tier].delivery} days <br>
-      ✏️ Revisions: ${planMeta[tier].revisions} per page
-    `;
-    metaLi.classList.add("plan-meta");
-    cardFeaturesEl.appendChild(metaLi);
 
     let groups = [];
 
@@ -1703,16 +1686,13 @@ function showRecommendedPlan() {
       groups = [{ title: "Basic Features", items: planTiers.Basic }];
     } else if (tier === "Pro") {
       groups = [
-        { title: "Basic Features", items: planTiers.Basic },
+        { title: "Basic Features (Included)", items: planTiers.Basic },
         { title: "Pro Features", items: planTiers.Pro }
       ];
     } else if (tier === "Premium") {
-      const includeLabel = recommendedTier === "Premium" ? " (Included)" : "";
-      const basicYes = planTiers.Basic.filter(f => yesFeatures.includes(f));
-      const proYes = planTiers.Pro.filter(f => yesFeatures.includes(f));
       groups = [
-        { title: "Basic Features" + includeLabel, items: basicYes },
-        { title: "Pro Features" + includeLabel, items: proYes },
+        { title: "Basic Features (Included)", items: planTiers.Basic },
+        { title: "Pro Features (Included)", items: planTiers.Pro },
         { title: "Premium Features", items: planTiers.Premium }
       ];
     }
@@ -1726,9 +1706,9 @@ function showRecommendedPlan() {
       group.items.forEach(f => {
         const isYes = yesFeatures.includes(f);
         const icon = isYes ? "✅" : "❌";
+        const note = !isYes ? " (You said no—still included if you upgrade)" : "";
         const li = document.createElement("li");
-        li.textContent = `${icon} ${formatFeatureName(f)}${isYes ? " — You said yes" : " — You said no"}`;
-        if (!isYes) li.style.opacity = "0.6";
+        li.textContent = `${icon} ${formatFeatureName(f)}${note}`;
         cardFeaturesEl.appendChild(li);
       });
     });
