@@ -1580,6 +1580,7 @@ header {
   }
 
   // ------------------ Show Recommended Plan ------------------
+
 function showRecommendedPlan() {
   const tierOrder = { Basic: 1, Pro: 2, Premium: 3 };
   let recommendedTier = "Basic";
@@ -1596,36 +1597,37 @@ function showRecommendedPlan() {
     if (!el) return;
     el.innerHTML = "";
 
-    const includeInFinal = tierOrder[tier] <= tierOrder[recommendedTier];
-    if (!includeInFinal) return;
-
-    // Add a header if this is a lower tier included in final plan
-    if (tier !== recommendedTier) {
-      const sectionTitle = document.createElement("li");
-      sectionTitle.textContent = `Included from ${tier}:`;
-      sectionTitle.style.fontWeight = "bold";
-      sectionTitle.style.marginTop = "6px";
-      el.appendChild(sectionTitle);
-    }
-
-    // Add all features for this tier
+    // Determine if we should show this tier normally
     planTiers[tier].forEach(f => {
       const li = document.createElement("li");
       const isYes = !!featureState[f];
 
-      // final plan tier shows ❌ for no
-      if (tier === recommendedTier) {
-        li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
+      // For final Pro/Premium card: include ✅ for lower-tier features
+      if ((recommendedTier === "Pro" || recommendedTier === "Premium") && tierOrder[tier] < tierOrder[recommendedTier]) {
+        if (!isYes) return; // skip ❌ for lower tiers
+        li.textContent = `✅ ${formatFeatureName(f)}`;
       } else {
-        // included lower tiers: show ✅/❌ depending on user input
+        // For individual lower-tier cards or final tier itself
         li.textContent = isYes ? `✅ ${formatFeatureName(f)}` : `❌ ${formatFeatureName(f)}`;
       }
 
       el.appendChild(li);
     });
+
+    // Add visual separator in final Premium card for included lower tiers
+    if (recommendedTier === "Premium" && tierOrder[tier] < tierOrder[recommendedTier] && yesFeatures.some(f => planTiers[tier].includes(f))) {
+      el.style.border = "1px solid #ccc";
+      el.style.padding = "6px";
+      el.style.marginBottom = "6px";
+      el.style.borderRadius = "6px";
+      const title = document.createElement("div");
+      title.textContent = `Included from ${tier}:`;
+      title.style.fontWeight = "bold";
+      el.insertBefore(title, el.firstChild);
+    }
   });
 
-  // Show final plan highlight
+  // Highlight final plan
   calculatePlan(recommendedTier);
 }
   
