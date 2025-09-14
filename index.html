@@ -1097,14 +1097,13 @@ header {
 
 
 
- .feature-group-heading {
+.feature-group-heading {
   font-weight: bold;
   margin-top: 8px;
   margin-bottom: 4px;
   border-top: 1px solid #ccc;
   padding-top: 6px;
 }
-
  </style>
 
 </head>
@@ -1435,8 +1434,6 @@ header {
    </form>
 
 <script>
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1634,8 +1631,7 @@ function syncFeatureState() {
   }
 }
 
-// ------------------ Show Recommended Plan (Cumulative + single yes recommendation) ------------------
-
+// ------------------ Show Recommended Plan (Cumulative + grouped Premium) ------------------
 function showRecommendedPlan() {
   let recommendedTier = "Basic";
 
@@ -1653,14 +1649,13 @@ function showRecommendedPlan() {
     if (!cardFeaturesEl) return;
     cardFeaturesEl.innerHTML = "";
 
-    // ✅ Premium card: show Basic & Pro grouped inside
+    // ✅ Premium card: show Basic & Pro grouped with dividers
     if (tier === "Premium") {
       const groups = [
         { title: "Basic Features",   items: planTiers.Basic },
         { title: "Pro Features",     items: planTiers.Pro },
         { title: "Premium Features", items: planTiers.Premium }
       ];
-
       groups.forEach(group => {
         const heading = document.createElement("li");
         heading.textContent = `— ${group.title} —`;
@@ -1670,19 +1665,15 @@ function showRecommendedPlan() {
         group.items.forEach(f => {
           const isYes = yesFeatures.includes(f);
           const icon = isYes ? "✅" : "❌";
-          const optionalLabel =
-            (!isYes && tier !== recommendedTier)
-              ? ""
-              : (tier !== recommendedTier && isYes ? " (Optional)" : "");
           const li = document.createElement("li");
-          li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
+          li.textContent = `${icon} ${formatFeatureName(f)}`;
           cardFeaturesEl.appendChild(li);
         });
       });
       return; // skip normal build for Premium
     }
 
-    // 🔹 Normal build for Basic & Pro
+    // 🔹 Normal build for Basic & Pro (cumulative)
     let cumulativeFeatures = [];
     if (tier === "Basic") cumulativeFeatures = [...planTiers.Basic];
     if (tier === "Pro")   cumulativeFeatures = [...planTiers.Basic, ...planTiers.Pro];
@@ -1690,46 +1681,12 @@ function showRecommendedPlan() {
     cumulativeFeatures.forEach(f => {
       const isYes = yesFeatures.includes(f);
       const icon = isYes ? "✅" : "❌";
-      const optionalLabel =
-        (!isYes && tier !== recommendedTier)
-          ? ""
-          : (tier !== recommendedTier && isYes ? " (Optional)" : "");
       const li = document.createElement("li");
-      li.textContent = `${icon} ${formatFeatureName(f)}${optionalLabel}`;
+      li.textContent = `${icon} ${formatFeatureName(f)}`;
       cardFeaturesEl.appendChild(li);
     });
   });
 
-  // 🔻 KEEP the remainder of the original logic
-  document.querySelectorAll(".pricing-card").forEach(card => {
-    card.style.display = "block";
-    card.classList.add("in-view");
-    card.classList.remove("recommended");
-  });
-
-  const planKey = recommendedTier.toLowerCase();
-  const card = document.querySelector(`.pricing-card[data-plan='${planKey}']`);
-  if (card) {
-    card.classList.add("recommended");
-    const badge = card.querySelector(".badge");
-    if (badge) badge.style.display = "block";
-  }
-
-  const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
-  if (hiddenPaymentLink && planLinks[planKey]) {
-    hiddenPaymentLink.value = planLinks[planKey];
-  }
-
-  if (card) {
-    requestAnimationFrame(() => {
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-      card.classList.add("highlight");
-      setTimeout(() => card.classList.remove("highlight"), 2000);
-    });
-  }
-}
-
- 
   // Display & highlight final plan
   document.querySelectorAll(".pricing-card").forEach(card => {
     card.style.display = "block";
@@ -1925,19 +1882,6 @@ function showRecommendedPlan() {
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-
-
-
-// ------------------ Intro Option Buttons ------------------
-const introButtons = document.querySelectorAll('.intro-option-btn');
-introButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Optionally, record the path if needed
-    const choice = btn.dataset.path; // add data-path="new" etc. in HTML
-    if(choice) window.setPath(choice);
-    next(); // go to the next screen
-  });
-});
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
