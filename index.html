@@ -1576,8 +1576,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const section = document.createElement("li");
             section.textContent = `Included from ${lower}:`;
             section.style.fontWeight="bold";
-            section.style.borderTop="1px solid #ccc";
+            section.style.borderTop="2px solid #ccc";
             section.style.marginTop="10px";
+            section.style.paddingTop="5px";
             cardEl.appendChild(section);
             included.forEach(i=>{
               const li = document.createElement("li");
@@ -1669,55 +1670,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const payBtn = card.querySelector(".pay-now");
     if(payBtn) payBtn.addEventListener("click",()=>goToPayPal(plan));
   });
-});
-
-  // ------------------ Design Code Redirect ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-    window.location.href =
-      `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  };
-
-  if (codeParam && stepParam && stepParam === "4") {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showScreen(`instructor-q4`);
-  }
-
-  // ------------------ Pricing Card Buttons ------------------
-  const planLinks = {
-    basic: "https://www.paypal.com/paypal-link-basic",
-    pro: "https://www.paypal.com/paypal-link-pro",
-    premium: "https://www.paypal.com/paypal-link-premium"
-  };
-
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  window.goToPayPal = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = planLinks[plan];
-    window.location.href = planLinks[plan];
-  };
-  window.submitLead = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
-    if (hiddenPlan) hiddenPlan.value = plan;
-    if (hiddenLink) hiddenLink.value = "";
-    const form = document.getElementById('formWrapper');
-    if (form) form.submit();
-  };
-  cards.forEach(card => {
-    const plan = card.dataset.plan;
-    const payBtn = card.querySelector(".pay-now");
-    if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
-  });
 
   // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
@@ -1807,7 +1759,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
+    hamburger.addEvent.addEventListener('click', e => {
       e.stopPropagation();
       const isOpen = menu.classList.toggle('open');
       hamburger.classList.toggle('active');
@@ -1860,6 +1812,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+
+  // ------------------ Design Code Redirect ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
+    window.location.href =
+      `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  };
+
+  if (codeParam && stepParam && stepParam === "4") {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showScreen(`instructor-q4`);
+  }
 });
 </script>
 </body>
