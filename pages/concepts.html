@@ -703,10 +703,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const isWide = window.innerWidth >= 992;
 
     if (codeParam && isWide) {
-      // ===== Desktop w/ code =====
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
-
       slides.forEach((slide, idx) => {
         const img = slide.querySelector("img");
         if (idx === currentIndex) {
@@ -725,9 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       wrapper.style.transform = "none";
-
     } else if (codeParam && !isWide) {
-      // ===== Mobile/tablet w/ code =====
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -738,9 +734,7 @@ document.addEventListener("DOMContentLoaded", () => {
         slide.style.height = "auto";
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-
     } else {
-      // ===== No code: show full library slider =====
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -753,7 +747,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Arrows
+  // Arrow navigation
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -775,9 +769,11 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // Funnel redirect
+  // ✅ Click handler to go back to funnel
   document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();            // Important: stop default button behaviour
+      e.stopPropagation();           // Make sure nothing else interferes
       const code = btn.dataset.code;
       if (code) {
         window.location.href =
