@@ -1517,12 +1517,12 @@ header {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  let screens = document.querySelectorAll(".form-screen");
+  let currentScreen = 0;
+
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-
-  let screens = document.querySelectorAll(".form-screen");
-  let currentScreen = 0;
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1538,12 +1538,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(`Screen with ID ${id} not found`);
       return;
     }
-
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (screen.id === "recommended-plan-screen") showRecommendedPlan();
     updateWaterProgress();
@@ -1574,7 +1573,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const noFeatures = [];
   let ownershipChoice = "";
   let planScores = { basic: 0, pro: 0, premium: 0 };
-  const featureState = {};   // { featureKey : true|false }
+  const featureState = {};
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1587,10 +1586,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
         else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
         else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
-      } else noFeatures.push(f);
+      } else {
+        noFeatures.push(f);
+      }
     });
 
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
@@ -1598,27 +1599,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  window.setPath = (path) => userPath = path;
-  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+  window.setPath = path => (userPath = path);
+  window.recordFeature = feature => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = feature => { featureState[feature] = false; syncFeatureState(); };
 
-  window.recordOwnership = (choice) => {
+  window.recordOwnership = choice => {
     ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
+    recordFeature(choice === "Owned Outright" ? "buyOutright" : "monthlySupport");
     next();
   };
 
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership("Owned Outright"));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership("Monthly Support"));
 
   // ------------------ Plan Tiers & Formatting ------------------
   const planTiers = {
-    Basic: ['booking', 'mobile', 'cta', 'contact', 'bio'],
-    Pro: ['seo', 'reviews', 'branding', 'faq', 'newsletter'],
-    Premium: ['packages', 'social', 'email', 'content', 'guide']
+    Basic: ["booking", "mobile", "cta", "contact", "bio"],
+    Pro: ["seo", "reviews", "branding", "faq", "newsletter"],
+    Premium: ["packages", "social", "email", "content", "guide"]
   };
 
   function formatFeatureName(f) {
@@ -1711,16 +1712,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const badge = card.querySelector(".badge");
       if (badge) badge.style.display = "block";
       const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
-      if (hiddenPaymentLink && planLinks[recommendedTier.toLowerCase()]) hiddenPaymentLink.value = planLinks[recommendedTier.toLowerCase()];
+      if (hiddenPaymentLink && planLinks[recommendedTier.toLowerCase()]) {
+        hiddenPaymentLink.value = planLinks[recommendedTier.toLowerCase()];
+      }
       card.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
 
   // ------------------ PayPal Buttons ------------------
-  const cards = document.querySelectorAll('.pricing-card[data-plan]');
-  window.goToPayPal = (plan) => {
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    const hiddenLink = document.getElementById('hiddenPaymentLink');
+  const cards = document.querySelectorAll(".pricing-card[data-plan]");
+  window.goToPayPal = plan => {
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    const hiddenLink = document.getElementById("hiddenPaymentLink");
     if (hiddenPlan) hiddenPlan.value = plan;
     if (hiddenLink) hiddenLink.value = planLinks[plan];
     window.location.href = planLinks[plan];
@@ -1733,10 +1736,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
-    const input = document.getElementById('designInput');
+    const input = document.getElementById("designInput");
     if (!input) return;
-    const code = input.value.trim().toUpperCase();
-    if (!code) { alert("Please enter a design code."); return; }
+    const code = input.value.trim();
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
     showFilteredTemplate(code);
   };
 
@@ -1744,33 +1750,58 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAllScreens();
 
     // Get or create template results screen
-    let templateScreen = document.getElementById('template-results');
+    let templateScreen = document.getElementById("template-results");
     if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = document.querySelectorAll('.form-screen'); // update screens NodeList
+      templateScreen = document.createElement("div");
+      templateScreen.id = "template-results";
+      templateScreen.classList.add("form-screen");
+      document.getElementById("formWrapper").appendChild(templateScreen);
+      screens = document.querySelectorAll(".form-screen");
     }
 
+    // Template content with full-width desktop layout
     templateScreen.innerHTML = `
-      <h2>Showing template for code: ${code}</h2>
-      <div class="template-card">Preview of template <strong>${code}</strong> here</div>
-      <div class="button-row">
-        <button type="button" onclick="next()">Continue</button>
-        <button type="button" onclick="showScreen('instructor-q2')">Back</button>
+      <div class="template-container">
+        <h2>Showing template for code: ${code}</h2>
+        <div class="template-card">Template ${code} preview here</div>
+        <div class="button-row">
+          <button type="button" onclick="next()">Continue</button>
+        </div>
       </div>
     `;
 
-    templateScreen.style.display = 'flex';
-    templateScreen.classList.add('active');
+    // Full-width styling for larger screens
+    templateScreen.style.display = "flex";
+    templateScreen.style.justifyContent = "center";
+    templateScreen.style.alignItems = "flex-start";
+    templateScreen.style.padding = "20px";
+
+    const card = templateScreen.querySelector(".template-card");
+    card.style.width = "100%";
+    card.style.maxWidth = "1200px";
+    card.style.margin = "0 auto";
+    card.style.boxSizing = "border-box";
+
+    function adjustForScreen() {
+      if (window.innerWidth <= 1024) {
+        card.style.width = "100%";
+        card.style.padding = "0 10px";
+      } else {
+        card.style.width = "100%";
+        card.style.padding = "0";
+      }
+    }
+    adjustForScreen();
+    window.addEventListener("resize", adjustForScreen);
+
+    templateScreen.classList.add("active");
     currentScreen = Array.from(screens).indexOf(templateScreen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
+  const typewriterEl = document.getElementById("typewriter");
+  const colorRiseEl = document.querySelector(".color-rise");
 
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
@@ -1781,8 +1812,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let lineEl = null;
     const typingSpeed = 100;
     const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
+    const cursor = document.createElement("span");
+    cursor.classList.add("cursor");
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
@@ -1795,15 +1826,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentLine >= lines.length) {
         cursor.remove();
         setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
+          typewriterEl.style.animation = "rocketRise 2s ease forwards";
+          setTimeout(() => showScreen("main-intro-options"), 2000);
         }, 1000);
         return;
       }
       const text = lines[currentLine];
       if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
+        lineEl = document.createElement("div");
+        lineEl.classList.add("typed-line");
         typewriterEl.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
@@ -1822,93 +1853,99 @@ document.addEventListener("DOMContentLoaded", () => {
     setLinesByOrientation();
     typeChar();
 
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        currentLine = 0;
+        currentChar = 0;
+        lineEl = null;
+        typewriterEl.textContent = "";
+        typewriterEl.appendChild(cursor);
+        setLinesByOrientation();
+        typeChar();
+      }, 300)
+    );
   }
 
   function debounce(func, wait) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
 
   // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
+  const hamburger = document.querySelector(".hamburger");
+  const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
+    hamburger.addEventListener("click", e => {
       e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+      const isOpen = menu.classList.toggle("open");
+      hamburger.classList.toggle("active");
+      hamburger.setAttribute("aria-expanded", isOpen);
+      menu.setAttribute("aria-hidden", !isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
     });
-    document.addEventListener('click', e => {
+    document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+        menu.classList.remove("open");
+        hamburger.classList.remove("active");
+        hamburger.setAttribute("aria-expanded", false);
+        menu.setAttribute("aria-hidden", true);
+        document.body.style.overflow = "";
       }
     });
   }
 
-  // ------------------ Intersection Observer ------------------
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
+  // ------------------ Intersection Observer for Cards ------------------
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
   cards.forEach(card => observer.observe(card));
 
   // ------------------ Progress & Water ------------------
   function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
+    const wave = document.getElementById("progress-wave");
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
+    wave.style.height = progressPercent + "%";
   }
 
   function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
+    const progressBar = document.querySelector(".progress-bar");
+    const progressLabel = document.querySelector(".progress-label");
     const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
+    if (progressBar) progressBar.style.width = percent + "%";
+    if (progressLabel) progressLabel.textContent = percent + "%";
   }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
   if (!codeParam && !stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
+    if (typewriterEl) typewriterEl.classList.add("active");
+    if (colorRiseEl) colorRiseEl.classList.add("active");
     startTypewriterAnimation();
   } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
+    if (typewriterEl) typewriterEl.classList.remove("active", "rocketRise");
+    if (colorRiseEl) colorRiseEl.classList.remove("active");
     if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
+    else showScreen("instructor-q2");
   }
 
   // ------------------ If Code Param Exists ------------------
   if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam.toUpperCase());
+    showFilteredTemplate(codeParam);
   }
 
   updateWaterProgress();
