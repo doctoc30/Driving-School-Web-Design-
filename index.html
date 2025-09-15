@@ -2008,11 +2008,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- function showFilteredTemplate(code) {
-  // instantly jump to the concepts page and pass the code
-  window.location.href =
-    `/pages/concepts.html?code=${encodeURIComponent(code)}`;
-}
+ // concepts.js – filters templates when a ?code= parameter is present
+
+document.addEventListener('DOMContentLoaded', () => {
+  // read the ?code parameter from the URL
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+
+  if (!code) return; // no code → show full library as normal
+
+  // find all template cards
+  const allCards = document.querySelectorAll('.template-card');
+
+  // hide all non-matching templates
+  let found = false;
+  allCards.forEach(card => {
+    if (card.dataset.code === code) {
+      card.style.display = 'block';
+      found = true;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // optional: if a matching card was found, scroll to it and highlight
+  if (found) {
+    const matchingCard = document.querySelector(`.template-card[data-code="${code}"]`);
+    matchingCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    matchingCard.classList.add('highlight');
+    setTimeout(() => matchingCard.classList.remove('highlight'), 2000);
+  } else {
+    // fallback if no match exists
+    const container = document.querySelector('#templates-container') || document.body;
+    const msg = document.createElement('p');
+    msg.textContent = `No template found for code: ${code}`;
+    msg.style.fontSize = '1.2em';
+    msg.style.padding = '20px';
+    container.prepend(msg);
+  }
+});
 </script>
 </body>
 </html>
