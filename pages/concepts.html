@@ -676,11 +676,8 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
-  
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get('code'); // e.g. SDI-5
@@ -705,54 +702,44 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // Initialize AOS animations
-  if (AOS) AOS.init();
+  // Initialize AOS
+  if (typeof AOS !== 'undefined') AOS.init();
 
-  // Update slider positioning and sizing
+  // Update slider layout
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
 
     if (isPortrait) {
-      // Mobile/Tablet: swipeable slider
-      sliderWrapper.style.display = 'flex';
-      sliderWrapper.style.justifyContent = 'flex-start';
+      // Mobile / tablet: standard slider
       slides.forEach(slide => {
         slide.style.display = 'flex';
-        slide.style.width = '100%';
-        slide.style.height = 'auto';
-        slide.style.margin = '0';
-        slide.style.justifyContent = 'flex-start';
-        slide.style.opacity = 1; // remove desktop fade effect
+        slide.style.width = '';
+        slide.style.margin = '';
       });
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Desktop/Laptop: full-screen selected template with fade-in
-      sliderWrapper.style.display = 'block';
-      slides.forEach((slide, idx) => {
-        const img = slide.querySelector('img');
-        if (idx === currentIndex) {
-          slide.style.display = 'flex';
-          slide.style.width = '100vw';
-          slide.style.height = '100vh';
-          slide.style.justifyContent = 'center';
-          slide.style.alignItems = 'center';
-          slide.style.margin = '0';
-          slide.style.padding = '0';
-          slide.style.opacity = 0; // start hidden for fade
-          slide.style.transition = 'opacity 0.5s ease-in-out';
-          if (img) {
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '100%';
-            img.style.width = 'auto';
-            img.style.height = 'auto';
+      // Desktop / laptop
+      if (codeParam) {
+        // Only show the selected slide full width and centered
+        slides.forEach((slide, idx) => {
+          if (idx === currentIndex) {
+            slide.style.display = 'flex';
+            slide.style.width = '100%';
+            slide.style.margin = '0 auto';
+          } else {
+            slide.style.display = 'none';
           }
-          setTimeout(() => slide.style.opacity = 1, 50); // fade in
-        } else {
-          slide.style.display = 'none';
-          slide.style.opacity = 0;
-        }
-      });
-      sliderWrapper.style.transform = 'none';
+        });
+        sliderWrapper.style.transform = 'none';
+      } else {
+        // Show all slides for full library
+        slides.forEach(slide => {
+          slide.style.display = 'flex';
+          slide.style.width = '';
+          slide.style.margin = '';
+        });
+        sliderWrapper.style.transform = 'none';
+      }
     }
   }
 
@@ -779,7 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateSlider);
   updateSlider();
 
-  // "I want this concept" → funnel
+  // "I want this concept" → straight to funnel
   document.querySelectorAll('.want-concept').forEach(button => {
     button.addEventListener('click', () => {
       const selectedCode = button.dataset.code;
@@ -789,10 +776,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ------------------ Hamburger Menu ------------------
+  // Hamburger menu
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
-
   if (hamburger && menu) {
     hamburger.addEventListener('click', e => {
       e.stopPropagation();
@@ -800,8 +786,6 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.classList.toggle('open');
       document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
     });
-
-    // Close menu if click outside
     document.addEventListener('click', e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
