@@ -1164,6 +1164,32 @@ header {
   border-bottom: none;
 }
 
+
+
+ @media (min-width: 992px) {
+  /* Pricing cards container */
+  .pricing-cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;        /* allow cards to move to next row */
+    justify-content: center; /* center cards horizontally */
+    gap: 20px;              /* spacing between cards */
+    max-width: 100%;        /* prevent horizontal scroll */
+    overflow: visible;      /* remove inner scroll */
+  }
+
+  /* Individual pricing cards */
+  .pricing-card {
+    flex: 1 1 300px;        /* cards take minimum 300px but can grow */
+    max-width: 350px;       /* optional: limit max width */
+    box-sizing: border-box;
+  }
+
+  /* Hide horizontal scroll arrows on desktop */
+  .arrow {
+    display: none;
+  }
+}
+
  </style>
 
 </head>
