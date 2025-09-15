@@ -2005,6 +2005,14 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
+
+
+
+ function showFilteredTemplate(code) {
+  // instantly jump to the concepts page and pass the code
+  window.location.href =
+    `/pages/concepts.html?code=${encodeURIComponent(code)}`;
+}
 </script>
 </body>
 </html>
