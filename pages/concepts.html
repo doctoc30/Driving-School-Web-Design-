@@ -683,17 +683,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeParam = params.get("code");
 
   const slides = Array.from(document.querySelectorAll(".slide"));
-  const sliderWrapper = document.querySelector(".slider-wrapper");
+  const wrapper = document.querySelector(".slider-wrapper");
   const nextBtn = document.querySelector(".arrow.next");
   const prevBtn = document.querySelector(".arrow.prev");
   let currentIndex = 0;
 
-  if (!sliderWrapper || slides.length === 0) return;
+  if (!wrapper || slides.length === 0) return;
 
-  // Make all slides flex for consistent layout
-  slides.forEach(slide => slide.style.display = "flex");
+  // show all initially
+  slides.forEach(slide => (slide.style.display = "flex"));
 
-  // If URL has ?code= jump to that slide
+  // find requested code
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -702,24 +702,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  function showCurrentSlide() {
-    const isMobile = window.innerWidth < 768 || window.matchMedia("(orientation: portrait)").matches;
+  function updateSlider() {
+    const isWide = window.innerWidth >= 992; // treat as desktop
 
-    if (isMobile) {
-      // ----- Mobile / Tablet -----
-      sliderWrapper.style.display = "flex";
-      sliderWrapper.style.justifyContent = "flex-start";
-      slides.forEach(slide => {
-        slide.style.width = "100%";
-        slide.style.height = "auto";
-      });
-      sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-      // Hide arrows on small screens
-      nextBtn.style.display = "none";
-      prevBtn.style.display = "none";
-    } else {
-      // ----- Desktop / Laptop -----
+    if (isWide) {
+      // ===== Desktop / Laptop =====
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
 
@@ -731,7 +718,7 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.height = "100vh";
           slide.style.justifyContent = "center";
           slide.style.alignItems = "center";
-          slide.style.background = "#000"; // optional dark backdrop
+          slide.style.background = "transparent";
           if (img) {
             img.style.maxWidth = "100%";
             img.style.maxHeight = "100%";
@@ -741,44 +728,58 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.display = "none";
         }
       });
-      sliderWrapper.style.transform = "none";
+
+      wrapper.style.transform = "none";
+    } else {
+      // ===== Mobile / Tablet (portrait/narrow) =====
+      nextBtn.style.display = "none";
+      prevBtn.style.display = "none";
+
+      wrapper.style.display = "flex";
+      wrapper.style.justifyContent = "flex-start";
+      slides.forEach(slide => {
+        slide.style.display = "flex";
+        slide.style.width = "100%";
+        slide.style.height = "auto";
+      });
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
   }
 
-  // Desktop arrows
+  // arrow events
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
-    showCurrentSlide();
+    updateSlider();
   });
   prevBtn.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    showCurrentSlide();
+    updateSlider();
   });
 
-  // Swipe navigation (mobile only)
+  // swipe for mobile
   let startX = 0;
-  sliderWrapper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-  sliderWrapper.addEventListener("touchend", e => {
+  wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
+  wrapper.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
     if (startX - endX > 50) nextBtn.click();
     else if (endX - startX > 50) prevBtn.click();
   });
 
-  window.addEventListener("resize", showCurrentSlide);
-  showCurrentSlide();
+  window.addEventListener("resize", updateSlider);
+  updateSlider();
 
-  // “I want this concept” button → funnel
+  // funnel link
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
-      const selectedCode = btn.dataset.code;
-      if (selectedCode) {
+      const code = btn.dataset.code;
+      if (code) {
         window.location.href =
-          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       }
     });
   });
 
-  // Hamburger menu
+  // hamburger menu
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
