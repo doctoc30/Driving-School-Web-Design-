@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
-  // Locate initial slide if ?code= is present
+  // Jump to ?code= slide
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -700,11 +700,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateSlider() {
-    const isWide = window.innerWidth >= 992;
+    const isDesktop = window.innerWidth >= 992;
 
-    if (codeParam && isWide) {
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
+    if (codeParam && isDesktop) {
+      // show only matched slide
       slides.forEach((slide, idx) => {
         const img = slide.querySelector("img");
         if (idx === currentIndex) {
@@ -718,22 +717,24 @@ document.addEventListener("DOMContentLoaded", () => {
             img.style.maxHeight = "100%";
             img.style.objectFit = "contain";
           }
-        } else {
-          slide.style.display = "none";
-        }
+        } else slide.style.display = "none";
       });
       wrapper.style.transform = "none";
-    } else if (codeParam && !isWide) {
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+    } else if (codeParam && !isDesktop) {
+      // mobile: swipe mode
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
       slides.forEach(slide => {
         slide.style.display = "flex";
         slide.style.width = "100%";
         slide.style.height = "auto";
       });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
+      // full library view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -746,7 +747,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Arrow navigation
+  // Arrow navigation only affects desktop
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -756,7 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support
+  // Swipe
   let startX = 0;
   wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
   wrapper.addEventListener("touchend", e => {
@@ -768,24 +769,21 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ✅ Reliable click-to-funnel redirect
+  // Click "I want this concept" → go to funnel
   document.querySelectorAll(".want-concept").forEach(btn => {
-    // force type="button" in case markup lacks it
-    if (!btn.hasAttribute("type")) btn.setAttribute("type", "button");
-
+    btn.setAttribute("type", "button");
     btn.addEventListener("click", e => {
       e.preventDefault();
       e.stopPropagation();
       const code = btn.dataset.code;
       if (code) {
-        window.location.assign(
-          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`
-        );
+        // Redirect to index.html with the code
+        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       }
     });
   });
 
-  // Hamburger menu toggle
+  // Hamburger menu
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
