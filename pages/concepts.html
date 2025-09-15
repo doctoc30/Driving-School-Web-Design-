@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
-  // ------------------ Find slide by code if ?code= present ------------------
+  // If ?code= present, jump to that slide
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -699,15 +699,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // ------------------ Slider update ------------------
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
     if (codeParam && isDesktop) {
-      // Desktop single template view
+      // Show only the selected template full-screen
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
-
       slides.forEach((slide, idx) => {
         const img = slide.querySelector("img");
         if (idx === currentIndex) {
@@ -717,8 +715,8 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.justifyContent = "center";
           slide.style.alignItems = "center";
           if (img) {
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "100%";
+            img.style.width = "100%";
+            img.style.height = "100%";
             img.style.objectFit = "contain";
           }
         } else {
@@ -727,7 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = "none";
     } else if (codeParam && !isDesktop) {
-      // Mobile single template view with swipe
+      // Mobile: allow swipe
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -739,7 +737,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Full library view
+      // Default full library view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -752,7 +750,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ------------------ Arrow navigation (desktop only) ------------------
+  // Arrow navigation (desktop)
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -762,33 +760,33 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // ------------------ Swipe support ------------------
+  // Swipe support (mobile)
   let startX = 0;
   wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
   wrapper.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextBtn.click();
-    else if (endX - startX > 50) prevBtn.click();
+    if (startX - endX > 50 && nextBtn) nextBtn.click();
+    else if (endX - startX > 50 && prevBtn) prevBtn.click();
   });
 
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I want this concept" button ------------------
+  // ---------------- "I want this concept" ----------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", e => {
       e.preventDefault();
       e.stopPropagation();
       const code = btn.dataset.code;
-      if (code) {
-        // Redirect to funnel with step 4
-        window.location.href =
-          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      }
+      if (!code) return;
+      const funnelURL = new URL("https://doctoc30.github.io/Driving-School-Web-Design-/index.html");
+      funnelURL.searchParams.set("code", code);
+      funnelURL.searchParams.set("step", "4"); // Directly to Q4
+      window.location.href = funnelURL.toString();
     });
   });
 
-  // ------------------ Hamburger menu ------------------
+  // ---------------- Hamburger menu ----------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
@@ -807,7 +805,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ Initialize AOS animations ------------------
+  // Initialize AOS (if used)
   if (window.AOS) AOS.init();
 });
 </script>
