@@ -680,7 +680,7 @@ footer {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code'); // e.g. SDI-6
+  const codeParam = params.get('code'); // e.g. SDI-5
 
   const slides = Array.from(document.querySelectorAll('.slide'));
   const sliderWrapper = document.querySelector('.slider-wrapper');
@@ -691,42 +691,53 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!sliderWrapper || slides.length === 0) return;
 
   // Show all slides initially
-  slides.forEach(slide => slide.style.display = 'flex');
+  slides.forEach(slide => slide.style.display = 'flex'); 
 
-  // Jump to specific slide if ?code= exists
+  // Jump to slide if ?code= in URL
   if (codeParam) {
     const match = slides.find(slide => {
       const slideCodeElem = slide.querySelector('.buttons span');
       return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
     });
-    if (match) {
-      currentIndex = slides.indexOf(match);
-
-      // Hide all other slides
-      slides.forEach((slide, idx) => {
-        slide.style.display = idx === currentIndex ? 'flex' : 'none';
-      });
-
-      // Center the selected slide in the slider wrapper for desktop
-      sliderWrapper.style.transform = 'none';
-    }
+    if (match) currentIndex = slides.indexOf(match);
   }
 
   // Initialize AOS
-  if (AOS) AOS.init();
+  if (typeof AOS !== 'undefined') AOS.init();
 
-  // Slider positioning for portrait (mobile/tablet)
+  // Update slider layout
   function updateSlider() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
+
     if (isPortrait) {
-      slides.forEach(slide => slide.style.display = 'flex'); // show all slides in slider for swipe
+      // Mobile / tablet: standard slider
+      slides.forEach(slide => {
+        slide.style.display = 'flex';
+        slide.style.width = '';
+        slide.style.margin = '';
+      });
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Desktop/laptop: only show the selected slide if code exists
+      // Desktop / laptop
       if (codeParam) {
-        slides.forEach((slide, idx) => slide.style.display = idx === currentIndex ? 'flex' : 'none');
+        // Only show the selected slide full width and centered
+        slides.forEach((slide, idx) => {
+          if (idx === currentIndex) {
+            slide.style.display = 'flex';
+            slide.style.width = '100%';
+            slide.style.margin = '0 auto';
+          } else {
+            slide.style.display = 'none';
+          }
+        });
+        sliderWrapper.style.transform = 'none';
       } else {
-        slides.forEach(slide => slide.style.display = 'flex'); // full slider view
+        // Show all slides for full library
+        slides.forEach(slide => {
+          slide.style.display = 'flex';
+          slide.style.width = '';
+          slide.style.margin = '';
+        });
         sliderWrapper.style.transform = 'none';
       }
     }
@@ -743,7 +754,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support
+  // Swipe support for mobile
   let startX = 0;
   sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
   sliderWrapper.addEventListener('touchend', e => {
@@ -782,15 +793,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = '';
       }
     });
-  }
-});
-
-// Close menu if click outside
-document.addEventListener('click', e => {
-  if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-    menu.classList.remove('open');
-    hamburger.classList.remove('active');
-    document.body.style.overflow = '';
   }
 });
 </script>
