@@ -1153,17 +1153,14 @@ header {
   color: #fff;                     /* text stays white for dark cards */
 }
 
-
-
- /* Remove the extra bottom border/line only for Premium */
+/* ✅ Remove the default bottom border/line ONLY for the Premium card */
 .pricing-card.premium {
-  border-bottom: none;
+  border-bottom: none;       /* kill any card-level bottom border */
 }
 
-/* If the line is inside a footer element instead */
-.pricing-card.premium footer,
-.pricing-card.premium .card-footer {
-  border-top: none;
+.pricing-card.premium .card-footer,
+.pricing-card.premium footer {
+  border-top: none;          /* kill a footer’s top line if present */
   border-bottom: none;
 }
 
