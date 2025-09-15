@@ -677,20 +677,18 @@ footer {
   </div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
-
-  const slides = Array.from(document.querySelectorAll(".slide"));
   const wrapper = document.querySelector(".slider-wrapper");
+  const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
   const prevBtn = document.querySelector(".arrow.prev");
   let currentIndex = 0;
 
   if (!wrapper || slides.length === 0) return;
 
-  // If ?code= present, find that slide index
+  // ------------------ Filter slide if ?code= is present ------------------
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -699,11 +697,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (match) currentIndex = slides.indexOf(match);
   }
 
+  // ------------------ Update Slider Layout ------------------
   function updateSlider() {
-    const isDesktop = window.innerWidth >= 992; // desktop / laptop breakpoint
+    const isDesktop = window.innerWidth >= 992;
 
     if (codeParam && isDesktop) {
-      // Show only the selected template in full desktop view
+      // Desktop full-screen view for selected template
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -725,7 +724,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = "none";
     } else if (codeParam && !isDesktop) {
-      // Mobile / tablet: show as swipeable slides
+      // Mobile swipeable
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -750,7 +749,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Arrow navigation (desktop only)
+  // ------------------ Arrow Navigation ------------------
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -760,42 +759,39 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support for mobile / tablet
+  // ------------------ Swipe for Mobile ------------------
   let startX = 0;
-  wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
+  wrapper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
   wrapper.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50 && nextBtn) nextBtn.click();
-    else if (endX - startX > 50 && prevBtn) prevBtn.click();
+    if (startX - endX > 50) nextBtn.click();
+    else if (endX - startX > 50) prevBtn.click();
   });
 
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ✅ Click handler for "I want this concept" button
+  // ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
-      const code = btn.getAttribute("data-code");
+      const code = btn.dataset.code;
       if (!code) return;
-
-      // Redirect to index.html funnel step 4 with the selected code
-      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
-                        + encodeURIComponent(code) + "&step=4";
+      // Redirect to funnel step 4 with code param
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       window.location.assign(funnelURL);
     });
   });
 
-  // Hamburger menu
+  // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
     hamburger.addEventListener("click", e => {
       e.stopPropagation();
+      const isOpen = menu.classList.toggle("open");
       hamburger.classList.toggle("active");
-      menu.classList.toggle("open");
-      document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
+      document.body.style.overflow = isOpen ? "hidden" : "";
     });
-    // Close menu if click outside
     document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove("open");
@@ -805,9 +801,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initialize AOS (optional animations)
-  if (AOS) AOS.init();
+  // ------------------ Initialize AOS (optional) ------------------
+  if (window.AOS) AOS.init();
 });
-</script>
 </body>
 </html>
