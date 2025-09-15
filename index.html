@@ -1154,10 +1154,19 @@ header {
 }
 
 
-/* Remove duplicate bottom border only on Premium */
-.pricing-card.premium .plan-specs {
+
+ /* Remove the extra bottom border/line only for Premium */
+.pricing-card.premium {
   border-bottom: none;
 }
+
+/* If the line is inside a footer element instead */
+.pricing-card.premium footer,
+.pricing-card.premium .card-footer {
+  border-top: none;
+  border-bottom: none;
+}
+
  </style>
 
 </head>
