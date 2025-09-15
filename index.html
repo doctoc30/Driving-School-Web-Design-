@@ -1734,7 +1734,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (payBtn) payBtn.addEventListener("click", () => goToPayPal(plan));
   });
 
-  // ------------------ Design Code Handling (IMMEDIATE show) ------------------
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.getAttribute("data-code");
+      if (!code) return;
+      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
+                        + encodeURIComponent(code) + "&step=4";
+      window.location.assign(funnelURL);
+    });
+  });
+
+  // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
@@ -1752,70 +1763,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hideAllScreens();
 
-    // Create or get results screen
+    if (stepParam === "4") {
+      const designInput = document.getElementById("designInput");
+      if (designInput) designInput.value = code;
+      showScreen("instructor-q4");
+      return;
+    }
+
     let templateScreen = document.getElementById('template-results');
     if (!templateScreen) {
       templateScreen = document.createElement('div');
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = document.querySelectorAll('.form-screen'); // refresh
+      screens = document.querySelectorAll('.form-screen');
     }
 
-    // Build container
     const container = document.createElement('div');
     container.className = 'template-container';
     const heading = document.createElement('h2');
     heading.textContent = `Showing template for code: ${code}`;
     container.appendChild(heading);
 
-    // Try to find a matching template element already on this page:
-    let foundEl = null;
+    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+    if (!foundEl) foundEl = document.getElementById(code);
 
-    // 1) Search for common data-attributes
-    const dataAttrs = ['data-code', 'data-template-code', 'data-template', 'data-concept-code'];
-    for (const attr of dataAttrs) {
-      const list = document.querySelectorAll('[' + attr + ']');
-      for (const el of list) {
-        const val = (el.getAttribute(attr) || '').toString().trim().toUpperCase();
-        if (val === code) { foundEl = el; break; }
-      }
-      if (foundEl) break;
-    }
-
-    // 2) Search by id (exact match)
-    if (!foundEl) {
-      const byId = document.getElementById(code) || document.getElementById(code.toLowerCase());
-      if (byId) foundEl = byId;
-    }
-
-    // 3) Search common classes and check textContent / dataset values
-    if (!foundEl) {
-      const candidates = document.querySelectorAll('.concept-card, .template-card, .concept, .template, .card, .concept-item');
-      for (const el of candidates) {
-        // dataset exact match
-        for (const key in el.dataset) {
-          if (String(el.dataset[key]).trim().toUpperCase() === code) { foundEl = el; break; }
-        }
-        if (foundEl) break;
-        // text content contains code (useful if code appears as visible text)
-        if (el.textContent && el.textContent.toUpperCase().includes(code)) {
-          foundEl = el;
-          break;
-        }
-      }
-    }
-
-    // If we found a matching element on the current page - clone it and show inline
     if (foundEl) {
       const clone = foundEl.cloneNode(true);
       clone.classList.add('template-preview-clone');
-      // optional styling: make clone responsive / full-width container
       clone.style.width = '100%';
-      clone.style.boxSizing = 'border-box';
       container.appendChild(clone);
 
-      // Add a simple button-row for navigation if you want
       const buttonRow = document.createElement('div');
       buttonRow.className = 'button-row';
       const contBtn = document.createElement('button');
@@ -1823,29 +1801,10 @@ document.addEventListener("DOMContentLoaded", () => {
       contBtn.textContent = 'Continue';
       contBtn.onclick = () => next();
       buttonRow.appendChild(contBtn);
-      const backBtn = document.createElement('button');
-      backBtn.type = 'button';
-      backBtn.textContent = 'Back';
-      backBtn.onclick = () => showScreen('instructor-q2');
-      buttonRow.appendChild(backBtn);
       container.appendChild(buttonRow);
 
-      // Inject into templateScreen
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
-
-      // styling for full-width desktop while preserving mobile behaviour
-      templateScreen.style.display = 'flex';
-      templateScreen.style.justifyContent = 'center';
-      templateScreen.style.alignItems = 'flex-start';
-      templateScreen.style.padding = '20px';
-      const clonedCard = templateScreen.querySelector('.template-preview-clone');
-      if (clonedCard) {
-        clonedCard.style.maxWidth = '1200px';
-        clonedCard.style.margin = '0 auto';
-        clonedCard.style.display = 'block';
-      }
-
       templateScreen.classList.add('active');
       currentScreen = Array.from(screens).indexOf(templateScreen);
       updateWaterProgress();
@@ -1854,9 +1813,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // If not found on current page, FALL BACK to redirect to concepts page (will show actual template there)
     const conceptsUrl = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
-    // redirect with code param so the concepts page can show the correct template immediately
     window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
@@ -1956,7 +1913,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ Intersection Observer for Cards ------------------
+  // ------------------ Intersection Observer ------------------
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1986,8 +1943,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
-  if (codeParam) {
-    // immediate show of template (no other funnel steps)
+  if (codeParam && stepParam === "4") {
+    const designInput = document.getElementById("designInput");
+    if (designInput) designInput.value = codeParam.trim().toUpperCase();
+    showScreen("instructor-q4");
+  } else if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
@@ -1996,56 +1956,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    if (typewriterEl) typewriterEl.classList.remove('active', 'rocketRise');
-    if (colorRiseEl) colorRiseEl.classList.remove('active');
     if (stepParam) showScreen(`instructor-q${stepParam}`);
-    else showScreen('instructor-q2');
   }
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-});
-
-
-
- // concepts.js – filters templates when a ?code= parameter is present
-
-document.addEventListener('DOMContentLoaded', () => {
-  // read the ?code parameter from the URL
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-
-  if (!code) return; // no code → show full library as normal
-
-  // find all template cards
-  const allCards = document.querySelectorAll('.template-card');
-
-  // hide all non-matching templates
-  let found = false;
-  allCards.forEach(card => {
-    if (card.dataset.code === code) {
-      card.style.display = 'block';
-      found = true;
-    } else {
-      card.style.display = 'none';
-    }
-  });
-
-  // optional: if a matching card was found, scroll to it and highlight
-  if (found) {
-    const matchingCard = document.querySelector(`.template-card[data-code="${code}"]`);
-    matchingCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    matchingCard.classList.add('highlight');
-    setTimeout(() => matchingCard.classList.remove('highlight'), 2000);
-  } else {
-    // fallback if no match exists
-    const container = document.querySelector('#templates-container') || document.body;
-    const msg = document.createElement('p');
-    msg.textContent = `No template found for code: ${code}`;
-    msg.style.fontSize = '1.2em';
-    msg.style.padding = '20px';
-    container.prepend(msg);
-  }
 });
 </script>
 </body>
