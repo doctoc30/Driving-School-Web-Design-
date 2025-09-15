@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
-  // If ?code= present, jump to that slide
+  // If ?code= present, find that slide index
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -700,10 +700,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateSlider() {
-    const isDesktop = window.innerWidth >= 992;
+    const isDesktop = window.innerWidth >= 992; // desktop / laptop breakpoint
 
     if (codeParam && isDesktop) {
-      // Show only the selected template full-screen
+      // Show only the selected template in full desktop view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -715,8 +715,8 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.justifyContent = "center";
           slide.style.alignItems = "center";
           if (img) {
-            img.style.width = "100%";
-            img.style.height = "100%";
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "100%";
             img.style.objectFit = "contain";
           }
         } else {
@@ -725,7 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = "none";
     } else if (codeParam && !isDesktop) {
-      // Mobile: allow swipe
+      // Mobile / tablet: show as swipeable slides
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -737,7 +737,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Default full library view
+      // Full library view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -750,7 +750,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Arrow navigation (desktop)
+  // Arrow navigation (desktop only)
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -760,7 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe support (mobile)
+  // Swipe support for mobile / tablet
   let startX = 0;
   wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
   wrapper.addEventListener("touchend", e => {
@@ -772,21 +772,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ---------------- "I want this concept" ----------------
+  // ✅ Click handler for "I want this concept" button
   document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
-      const code = btn.dataset.code;
+    btn.addEventListener("click", () => {
+      const code = btn.getAttribute("data-code");
       if (!code) return;
-      const funnelURL = new URL("https://doctoc30.github.io/Driving-School-Web-Design-/index.html");
-      funnelURL.searchParams.set("code", code);
-      funnelURL.searchParams.set("step", "4"); // Directly to Q4
-      window.location.href = funnelURL.toString();
+
+      // Redirect to index.html funnel step 4 with the selected code
+      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
+                        + encodeURIComponent(code) + "&step=4";
+      window.location.assign(funnelURL);
     });
   });
 
-  // ---------------- Hamburger menu ----------------
+  // Hamburger menu
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
@@ -796,6 +795,7 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.classList.toggle("open");
       document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
     });
+    // Close menu if click outside
     document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove("open");
@@ -805,8 +805,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initialize AOS (if used)
-  if (window.AOS) AOS.init();
+  // Initialize AOS (optional animations)
+  if (AOS) AOS.init();
 });
 </script>
 </body>
