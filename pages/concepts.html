@@ -680,130 +680,129 @@ footer {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code'); // e.g. SDI-5
+  const codeParam = params.get("code");
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const sliderWrapper = document.querySelector('.slider-wrapper');
-  const nextBtn = document.querySelector('.arrow.next');
-  const prevBtn = document.querySelector('.arrow.prev');
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const sliderWrapper = document.querySelector(".slider-wrapper");
+  const nextBtn = document.querySelector(".arrow.next");
+  const prevBtn = document.querySelector(".arrow.prev");
   let currentIndex = 0;
 
   if (!sliderWrapper || slides.length === 0) return;
 
-  // Show all slides initially
-  slides.forEach(slide => slide.style.display = 'flex'); 
+  // Show all slides for initial setup
+  slides.forEach(slide => (slide.style.display = "flex"));
 
-  // Jump to slide if ?code= in URL
+  // Jump to code if present
   if (codeParam) {
     const match = slides.find(slide => {
-      const slideCodeElem = slide.querySelector('.buttons span');
-      return slideCodeElem && slideCodeElem.textContent.trim().toUpperCase() === codeParam.toUpperCase();
+      const codeSpan = slide.querySelector(".buttons span");
+      return codeSpan && codeSpan.textContent.trim().toUpperCase() === codeParam.toUpperCase();
     });
     if (match) currentIndex = slides.indexOf(match);
   }
 
-  // Initialize AOS animations
-  if (AOS) AOS.init();
-
-  // Update slider positioning and sizing
   function updateSlider() {
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches || window.innerWidth < 768;
+    const isMobile = window.innerWidth < 768 || window.matchMedia("(orientation: portrait)").matches;
 
-    if (isPortrait) {
-      // Mobile/Tablet: swipeable slider
-      sliderWrapper.style.display = 'flex';
-      sliderWrapper.style.justifyContent = 'flex-start';
+    if (isMobile) {
+      // ----- Mobile/Tablet -----
+      sliderWrapper.style.display = "flex";
+      sliderWrapper.style.justifyContent = "flex-start";
       slides.forEach(slide => {
-        slide.style.display = 'flex';
-        slide.style.width = '100%';
-        slide.style.height = 'auto';
-        slide.style.margin = '0';
-        slide.style.justifyContent = 'flex-start';
-        slide.style.opacity = 1; // remove desktop fade effect
+        slide.style.width = "100%";
+        slide.style.height = "auto";
+        slide.style.opacity = 1;
+        slide.style.transition = "none";
       });
       sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      // Hide arrows on mobile/tablet
+      if (nextBtn && prevBtn) {
+        nextBtn.style.display = "none";
+        prevBtn.style.display = "none";
+      }
     } else {
-      // Desktop/Laptop: full-screen selected template with fade-in
-      sliderWrapper.style.display = 'block';
+      // ----- Desktop/Laptop -----
+      sliderWrapper.style.display = "block";
+      if (nextBtn && prevBtn) {
+        nextBtn.style.display = "block";
+        prevBtn.style.display = "block";
+      }
+
       slides.forEach((slide, idx) => {
-        const img = slide.querySelector('img');
+        const img = slide.querySelector("img");
         if (idx === currentIndex) {
-          slide.style.display = 'flex';
-          slide.style.width = '100vw';
-          slide.style.height = '100vh';
-          slide.style.justifyContent = 'center';
-          slide.style.alignItems = 'center';
-          slide.style.margin = '0';
-          slide.style.padding = '0';
-          slide.style.opacity = 0; // start hidden for fade
-          slide.style.transition = 'opacity 0.5s ease-in-out';
+          slide.style.display = "flex";
+          slide.style.width = "100vw";
+          slide.style.height = "100vh";
+          slide.style.justifyContent = "center";
+          slide.style.alignItems = "center";
+          slide.style.opacity = 0;
+          slide.style.transition = "opacity 0.5s ease-in-out";
           if (img) {
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '100%';
-            img.style.width = 'auto';
-            img.style.height = 'auto';
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "100%";
           }
-          setTimeout(() => slide.style.opacity = 1, 50); // fade in
+          setTimeout(() => (slide.style.opacity = 1), 50);
         } else {
-          slide.style.display = 'none';
+          slide.style.display = "none";
           slide.style.opacity = 0;
         }
       });
-      sliderWrapper.style.transform = 'none';
+      sliderWrapper.style.transform = "none";
     }
   }
 
-  // Navigation arrows
-  if (nextBtn) nextBtn.addEventListener('click', () => {
+  // Desktop arrows
+  if (nextBtn) nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
   });
 
-  if (prevBtn) prevBtn.addEventListener('click', () => {
+  if (prevBtn) prevBtn.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     updateSlider();
   });
 
-  // Swipe support for mobile
+  // Swipe support (mobile/tablet only)
   let startX = 0;
-  sliderWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-  sliderWrapper.addEventListener('touchend', e => {
+  sliderWrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
+  sliderWrapper.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50 && nextBtn) nextBtn.click();
-    else if (endX - startX > 50 && prevBtn) prevBtn.click();
+    if (startX - endX > 50) nextBtn?.click();
+    else if (endX - startX > 50) prevBtn?.click();
   });
 
-  window.addEventListener('resize', updateSlider);
+  window.addEventListener("resize", updateSlider);
   updateSlider();
 
   // "I want this concept" → funnel
-  document.querySelectorAll('.want-concept').forEach(button => {
-    button.addEventListener('click', () => {
-      const selectedCode = button.dataset.code;
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const selectedCode = btn.dataset.code;
       if (selectedCode) {
-        window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
+        window.location.href =
+          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(selectedCode)}&step=4`;
       }
     });
   });
 
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-
+  // Hamburger menu
+  const hamburger = document.querySelector(".hamburger");
+  const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
+    hamburger.addEventListener("click", e => {
       e.stopPropagation();
-      hamburger.classList.toggle('active');
-      menu.classList.toggle('open');
-      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+      hamburger.classList.toggle("active");
+      menu.classList.toggle("open");
+      document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
     });
-
-    // Close menu if click outside
-    document.addEventListener('click', e => {
+    document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        document.body.style.overflow = '';
+        menu.classList.remove("open");
+        hamburger.classList.remove("active");
+        document.body.style.overflow = "";
       }
     });
   }
