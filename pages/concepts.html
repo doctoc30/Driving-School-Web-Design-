@@ -690,10 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
-  // show all initially
-  slides.forEach(slide => (slide.style.display = "flex"));
-
-  // find requested code
+  // If ?code= present, find that slide index
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -703,10 +700,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateSlider() {
-    const isWide = window.innerWidth >= 992; // treat as desktop
+    const isWide = window.innerWidth >= 992;
 
-    if (isWide) {
-      // ===== Desktop / Laptop =====
+    if (codeParam && isWide) {
+      // ===== Desktop w/ code =====
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
 
@@ -718,7 +715,6 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.height = "100vh";
           slide.style.justifyContent = "center";
           slide.style.alignItems = "center";
-          slide.style.background = "transparent";
           if (img) {
             img.style.maxWidth = "100%";
             img.style.maxHeight = "100%";
@@ -728,13 +724,12 @@ document.addEventListener("DOMContentLoaded", () => {
           slide.style.display = "none";
         }
       });
-
       wrapper.style.transform = "none";
-    } else {
-      // ===== Mobile / Tablet (portrait/narrow) =====
+
+    } else if (codeParam && !isWide) {
+      // ===== Mobile/tablet w/ code =====
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
-
       wrapper.style.display = "flex";
       wrapper.style.justifyContent = "flex-start";
       slides.forEach(slide => {
@@ -743,10 +738,22 @@ document.addEventListener("DOMContentLoaded", () => {
         slide.style.height = "auto";
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    } else {
+      // ===== No code: show full library slider =====
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+      wrapper.style.display = "flex";
+      slides.forEach(slide => {
+        slide.style.display = "flex";
+        slide.style.width = "";
+        slide.style.height = "";
+      });
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
   }
 
-  // arrow events
+  // Arrows
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -756,7 +763,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // swipe for mobile
+  // Swipe
   let startX = 0;
   wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
   wrapper.addEventListener("touchend", e => {
@@ -768,7 +775,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // funnel link
+  // Funnel redirect
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
@@ -779,7 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // hamburger menu
+  // Hamburger menu
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
