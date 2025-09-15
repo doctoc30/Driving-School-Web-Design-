@@ -1190,6 +1190,26 @@ header {
   }
 }
 
+
+ @media (min-width: 992px) {
+  .pricing-cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .pricing-card {
+    flex: 1 1 300px;
+    max-width: 350px;
+  }
+
+  .arrow {
+    display: none; /* hide horizontal arrows on desktop */
+  }
+}
  </style>
 
 </head>
