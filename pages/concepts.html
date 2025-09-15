@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
-  // If ?code= present, find that slide index
+  // Locate initial slide if ?code= is present
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".buttons span");
@@ -727,7 +727,6 @@ document.addEventListener("DOMContentLoaded", () => {
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
-      wrapper.style.justifyContent = "flex-start";
       slides.forEach(slide => {
         slide.style.display = "flex";
         slide.style.width = "100%";
@@ -757,7 +756,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSlider();
   });
 
-  // Swipe
+  // Swipe support
   let startX = 0;
   wrapper.addEventListener("touchstart", e => (startX = e.touches[0].clientX));
   wrapper.addEventListener("touchend", e => {
@@ -769,20 +768,24 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ✅ Click handler to go back to funnel
+  // ✅ Reliable click-to-funnel redirect
   document.querySelectorAll(".want-concept").forEach(btn => {
+    // force type="button" in case markup lacks it
+    if (!btn.hasAttribute("type")) btn.setAttribute("type", "button");
+
     btn.addEventListener("click", e => {
-      e.preventDefault();            // Important: stop default button behaviour
-      e.stopPropagation();           // Make sure nothing else interferes
+      e.preventDefault();
+      e.stopPropagation();
       const code = btn.dataset.code;
       if (code) {
-        window.location.href =
-          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+        window.location.assign(
+          `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`
+        );
       }
     });
   });
 
-  // Hamburger menu
+  // Hamburger menu toggle
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
