@@ -1008,40 +1008,36 @@ header {
 
 
 
- /* ===== Full-width Pricing Section ===== */
-#pricing-section {
-  width: 100vw !important;
-  min-height: 100vh !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: block !important; /* prevent flex centering */
-  overflow: hidden !important; /* remove scroll */
-}
-
-/* ===== Remove wrapper restrictions ===== */
+/* ===== Make the pricing section and all parents truly full-screen ===== */
+#pricing-section,
 .pricing-container,
 .pricing-cards-wrapper,
 .pricing-cards-container {
-  width: 100% !important;
-  max-width: 100% !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   margin: 0 !important;
   padding: 0 !important;
   display: block !important;
-  flex-direction: column !important;
-  gap: 0 !important;
   overflow: hidden !important;
 }
 
-/* ===== Full-width individual pricing cards ===== */
+/* ===== Full-screen individual pricing cards ===== */
 .pricing-card {
   width: 100vw !important;
+  height: 100vh !important;      /* full viewport height */
   max-width: 100vw !important;
-  min-height: 100vh !important; /* full viewport height */
+  max-height: 100vh !important;
   margin: 0 !important;
   padding: 20px !important;
   border: none !important;
-  border-radius: 0 !important; /* remove rounded corners if needed */
+  border-radius: 0 !important;
   box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s ease, transform 0.8s ease;
@@ -1053,20 +1049,18 @@ header {
   transform: translateY(0) !important;
 }
 
-/* Remove any scroll arrows */
+/* Remove any arrows or scrollable wrapper */
 .arrow {
   display: none !important;
 }
 
-/* Force stacking vertically on smaller screens */
+/* Ensure stacking works for portrait on mobile */
 @media (max-width: 1024px), (orientation: portrait) {
   .pricing-card {
     width: 100vw !important;
-    max-width: 100vw !important;
-    min-height: 100vh !important;
+    height: 100vh !important;
   }
 }
-
 </style>
 
 </head>
