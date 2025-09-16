@@ -1008,29 +1008,38 @@ header {
 
 
 
-/* ===== Make the pricing section and all parents truly full-screen ===== */
-#pricing-section,
+/* ===== Full-screen section ===== */
+#pricing-section {
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important; /* remove horizontal/vertical scroll */
+  display: block !important;
+  background-color: #33a7d4;
+  color: #fff;
+}
+
+/* ===== Remove any wrapper restrictions ===== */
 .pricing-container,
 .pricing-cards-wrapper,
 .pricing-cards-container {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  height: 100vh !important;
-  max-height: 100vh !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   display: block !important;
   overflow: hidden !important;
 }
 
-/* ===== Full-screen individual pricing cards ===== */
+/* ===== Full-screen pricing card ===== */
 .pricing-card {
   width: 100vw !important;
   height: 100vh !important;      /* full viewport height */
-  max-width: 100vw !important;
-  max-height: 100vh !important;
   margin: 0 !important;
-  padding: 20px !important;
+  padding: 40px !important;
   border: none !important;
   border-radius: 0 !important;
   box-sizing: border-box;
@@ -1049,12 +1058,12 @@ header {
   transform: translateY(0) !important;
 }
 
-/* Remove any arrows or scrollable wrapper */
+/* Remove horizontal arrows / slider */
 .arrow {
   display: none !important;
 }
 
-/* Ensure stacking works for portrait on mobile */
+/* For mobile portrait */
 @media (max-width: 1024px), (orientation: portrait) {
   .pricing-card {
     width: 100vw !important;
