@@ -1017,56 +1017,26 @@ header {
 
 
 
-
-/* ---- Hard stop for any slider/carousel around the pricing section ---- */
-/* Replace .slick-slider and .swiper with the actual wrapper class if different */
-.slick-slider,
-.swiper,
-.carousel,
-.slider,
-.slider-container {
-  overflow: visible !important;      /* release children */
-  max-width: 100% !important;
+ /* --- Allow normal page scrolling and full-width content --- */
+html, body {
+  overflow-x: hidden !important;  /* hide horizontal scrollbar */
+  overflow-y: auto !important;    /* allow natural vertical scrolling */
   width: 100% !important;
   height: auto !important;
-  position: static !important;       /* remove slider positioning */
-  display: block !important;         /* kill inline flex/track styling */
 }
 
-.slick-track,
-.swiper-wrapper,
-.carousel-track,
-.slider-track {
-  transform: none !important;        /* stop the translateX that clips cards */
+/* If pricing section is inside a .form-screen wrapper, unfix it */
+#pricing-section,
+#pricing-section .form-screen,
+#recommended-plan-screen {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  max-width: 100% !important;
   width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
-  gap: 20px !important;
+  overflow: visible !important;
 }
-
-/* Hide any navigation arrows created by slider libraries */
-.slick-arrow,
-.swiper-button-next,
-.swiper-button-prev,
-.carousel-arrow,
-.slider-arrow {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Ensure the pricing container itself lays out 3 cards across, centered */
-#pricing-section .pricing-container {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: stretch !important;
-  flex-wrap: nowrap !important;
-  gap: 20px !important;
-  width: 100% !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-}
-
 </style>
 
 
