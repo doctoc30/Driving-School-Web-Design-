@@ -1019,7 +1019,91 @@ header {
   .lock-icon { font-size: 1.1rem; color: #0070ba; }
 </style>
 
+
+
  
+
+
+
+ /* --- Outer wrappers: no overflow --- */
+#formWrapper,
+#recommended-plan-screen {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+/* --- Pricing section: full width, vertical scroll only --- */
+#pricing-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 80px 20px !important;
+  background: #33a7d4;
+  overflow-x: hidden !important;   /* block sideways scroll */
+  overflow-y: visible !important;
+}
+
+/* --- Container: exactly 3 centered columns on desktop --- */
+.pricing-container {
+  display: flex !important;
+  justify-content: center !important;   /* center all cards */
+  align-items: stretch !important;
+  flex-wrap: nowrap !important;         /* keep one row on desktop */
+  gap: 20px !important;
+  width: 100% !important;
+  max-width: 1200px !important;         /* keep nice centered width */
+  margin: 0 auto !important;
+  overflow: hidden !important;          /* kill any horizontal scroll */
+  box-sizing: border-box !important;
+}
+
+/* --- Individual cards --- */
+.pricing-card {
+  flex: 1 1 0 !important;       /* allow even flex sizing */
+  max-width: 350px !important;
+  min-width: 280px !important;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.pricing-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* --- Responsive breakpoints --- */
+@media (max-width: 1024px) {
+  .pricing-container {
+    flex-wrap: wrap !important;      /* allow 2-up layout */
+    justify-content: center !important;
+  }
+  .pricing-card {
+    flex: 1 1 calc(50% - 20px) !important;
+    max-width: calc(50% - 20px) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-card {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+    padding: 60px 20px;
+    min-height: 90vh;
+  }
+}
+
 </style>
 
 </head>
