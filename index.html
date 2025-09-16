@@ -898,8 +898,7 @@ header {
 }
 
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; overflow-x: hidden; }
+
 
   #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
   .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
@@ -1024,99 +1023,7 @@ header {
  
 
 
-/* ========== Minimal, safe overrides for pricing cards ==========
-   Place this at the VERY END of your main CSS so it wins.
-   Only targets the pricing step and common parent wrappers.
-   Prevents horizontal swipe, hides slider arrows, centers 3 cards.
-=================================================================*/
 
-/* Ensure immediate funnel parents don't limit the section */
-#formWrapper,
-#recommended-plan-screen,
-#pricing-section {
-  box-sizing: border-box !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-}
-
-/* Keep the pricing section anchored and prevent horizontal scroll */
-#pricing-section {
-  padding: 80px 20px !important;    /* keep original spacing */
-  overflow-x: hidden !important;    /* NO horizontal scrolling */
-  overflow-y: visible !important;   /* allow vertical scrolling */
-  left: auto !important;
-  right: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* Container: centered row on desktop, allow wrap on smaller screens */
-.pricing-container {
-  display: flex !important;
-  justify-content: center !important;   /* center the whole row */
-  align-items: stretch !important;
-  gap: 20px !important;
-  flex-wrap: nowrap !important;         /* keep one row on desktop */
-  width: 100% !important;
-  max-width: 1200px !important;         /* optional: central content width */
-  margin: 0 auto !important;
-  padding: 0 !important;
-  overflow: visible !important;
-}
-
-/* Hide common slider/carousel arrows that create the frame */
-.arrow,
-.carousel-arrow,
-.slick-arrow,
-.swiper-button-next,
-.swiper-button-prev,
-.slider-arrow {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Pricing card sizing — equal columns on desktop, safe margins */
-.pricing-card {
-  flex: 0 1 320px !important;    /* base width for each card on desktop */
-  max-width: 320px !important;
-  min-width: 260px !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* Reveal animation preserved */
-.pricing-card.in-view {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* ===== Responsive: allow wrapping on narrower screens (no horizontal swipe) ===== */
-@media (max-width: 1024px) {
-  .pricing-container { flex-wrap: wrap !important; }
-  .pricing-card {
-    flex: 1 1 calc(50% - 20px) !important;
-    max-width: calc(50% - 20px) !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .pricing-container { flex-wrap: wrap !important; }
-  .pricing-card {
-    flex: 1 1 100% !important;
-    max-width: 100% !important;
-    padding: 60px 20px !important;
-    min-height: 80vh !important;
-  }
-}
-
-/* Prevent inner nodes from forcing a horizontal scrollbar (only inside pricing section) */
-#pricing-section * {
-  max-width: 100% !important;
-  overflow-x: visible !important;
-}
 </style>
 
 </head>
