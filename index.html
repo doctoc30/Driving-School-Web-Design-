@@ -1008,38 +1008,29 @@ header {
 
 
 
-/* Make pricing section full width relative to viewport */
-#pricing-section {
+/* Force the funnel step containing pricing cards to full width */
+.funnel-wrapper,
+.funnel-step-container,
+#pricing-section,
+.pricing-container {
   width: 100vw !important;
   max-width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow-x: hidden !important; /* prevent horizontal scroll */
-  position: relative;
-  background-color: #33a7d4; /* match pricing.html */
-}
-
-/* Remove container restrictions */
-.funnel-wrapper,
-.funnel-step-container,
-.pricing-container {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  display: block !important;
-}
-
-/* Full width / height pricing card */
-.pricing-card {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 40px !important;
-  border: none !important;
-  border-radius: 0 !important;
+  overflow-x: hidden !important;  /* prevent horizontal scrolling */
   box-sizing: border-box;
+}
+
+/* Make pricing cards full width and preserve rounded corners */
+.pricing-card {
+  width: calc(100vw - 20px) !important; /* small inner padding */
+  max-width: 100vw !important;
+  margin: 10px auto !important; /* spacing between cards */
+  border-radius: 16px !important;
+  overflow: hidden !important; /* ensures rounded corners show */
+  padding: 20px !important;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25) !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1055,17 +1046,24 @@ header {
   transform: translateY(0) !important;
 }
 
-/* Remove slider / arrow effects */
+/* Remove any arrows or horizontal scroll wrappers */
 .arrow,
-.horizontal-scroll-wrapper {
+.horizontal-scroll-wrapper,
+.carousel-wrapper {
   display: none !important;
 }
 
-/* Ensure mobile portrait works */
+/* Body overflow fix */
+body {
+  overflow-x: hidden !important;
+}
+
+/* Mobile Portrait */
 @media (max-width: 1024px), (orientation: portrait) {
   .pricing-card {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: calc(100vw - 20px) !important;
+    max-width: 100vw !important;
+    min-height: auto !important;
   }
 }
 
