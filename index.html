@@ -1008,36 +1008,33 @@ header {
 
 
 
-/* ===== Full-screen section ===== */
+/* Make pricing section full width relative to viewport */
 #pricing-section {
   width: 100vw !important;
-  height: 100vh !important;
+  max-width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important; /* remove horizontal/vertical scroll */
-  display: block !important;
-  background-color: #33a7d4;
-  color: #fff;
+  overflow-x: hidden !important; /* prevent horizontal scroll */
+  position: relative;
+  background-color: #33a7d4; /* match pricing.html */
 }
 
-/* ===== Remove any wrapper restrictions ===== */
-.pricing-container,
-.pricing-cards-wrapper,
-.pricing-cards-container {
+/* Remove container restrictions */
+.funnel-wrapper,
+.funnel-step-container,
+.pricing-container {
   width: 100% !important;
   max-width: 100% !important;
-  height: 100% !important;
-  max-height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: visible !important;
   display: block !important;
-  overflow: hidden !important;
 }
 
-/* ===== Full-screen pricing card ===== */
+/* Full width / height pricing card */
 .pricing-card {
-  width: 100vw !important;
-  height: 100vh !important;      /* full viewport height */
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 0 !important;
   padding: 40px !important;
   border: none !important;
@@ -1058,18 +1055,20 @@ header {
   transform: translateY(0) !important;
 }
 
-/* Remove horizontal arrows / slider */
-.arrow {
+/* Remove slider / arrow effects */
+.arrow,
+.horizontal-scroll-wrapper {
   display: none !important;
 }
 
-/* For mobile portrait */
+/* Ensure mobile portrait works */
 @media (max-width: 1024px), (orientation: portrait) {
   .pricing-card {
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
+
 </style>
 
 </head>
