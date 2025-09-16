@@ -1007,65 +1007,57 @@ header {
 
 
 
+/* ==== FINAL HARD OVERRIDE FOR PRICING SECTION ==== */
 
+/* 1. Let the section truly fill the viewport width */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;   /* stop horizontal scroll */
+}
 
-/* === FULL-WIDTH OVERRIDES FOR PRICING CARDS === */
-
-/* 1️⃣ Force pricing section to escape all container limits */
+/* 2. Remove all possible parent restrictions */
 #pricing-section,
-#pricing-section .pricing-container {
-  position: relative !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
+#pricing-section * {
+  width: 100% !important;
+  max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
-  overflow: visible !important;
 }
 
-/* 2️⃣ Kill any ancestor scroll/overflow that creates arrow frames */
-#pricing-section * {
-  overflow: visible !important;
-}
-
-/* If your funnel uses a generic wrapper/container */
+/* 3. Remove hidden wrappers (common funnel/container classes) */
 .funnel-wrapper,
 .funnel-container,
+.funnel-content,
 .wrapper,
 .container,
 .section,
 .section-inner {
   width: 100% !important;
-  max-width: 100% !important;
-  padding: 0 !important;
+  max-width: none !important;
   margin: 0 !important;
+  padding: 0 !important;
   overflow: visible !important;
+  position: static !important;
 }
 
-/* 3️⃣ Pricing cards layout */
+/* 4. Layout the pricing cards themselves */
+.pricing-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  width: 100% !important;
+}
+
+/* 5. Make each card flexible and prevent extra scrollbars */
 .pricing-card {
-  flex: 1 1 0 !important;
-  min-width: 300px;
-  max-width: 33.33% !important;
-  border-radius: 16px;
-  margin: 10px !important;
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  box-sizing: border-box;
-}
-
-/* 4️⃣ Desktop: side-by-side with no horizontal scroll */
-@media (min-width: 992px) {
-  #pricing-section .pricing-container {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    justify-content: center !important;
-    align-items: stretch !important;
-  }
-}
-
-/* 5️⃣ Global kill horizontal scrolling */
-html, body {
-  overflow-x: hidden !important;
+  flex: 1 1 300px !important;
+  max-width: 350px !important;
+  border-radius: 16px !important;
+  overflow: visible !important;
 }
 </style>
 
