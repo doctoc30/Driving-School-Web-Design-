@@ -1024,71 +1024,78 @@ header {
  
 
 
+/* ========== Minimal, safe overrides for pricing cards ==========
+   Place this at the VERY END of your main CSS so it wins.
+   Only targets the pricing step and common parent wrappers.
+   Prevents horizontal swipe, hides slider arrows, centers 3 cards.
+=================================================================*/
 
- /* --- Outer wrappers: no overflow --- */
+/* Ensure immediate funnel parents don't limit the section */
 #formWrapper,
-#recommended-plan-screen {
+#recommended-plan-screen,
+#pricing-section {
+  box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* Keep the pricing section anchored and prevent horizontal scroll */
+#pricing-section {
+  padding: 80px 20px !important;    /* keep original spacing */
+  overflow-x: hidden !important;    /* NO horizontal scrolling */
+  overflow-y: visible !important;   /* allow vertical scrolling */
+  left: auto !important;
+  right: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Container: centered row on desktop, allow wrap on smaller screens */
+.pricing-container {
+  display: flex !important;
+  justify-content: center !important;   /* center the whole row */
+  align-items: stretch !important;
+  gap: 20px !important;
+  flex-wrap: nowrap !important;         /* keep one row on desktop */
+  width: 100% !important;
+  max-width: 1200px !important;         /* optional: central content width */
+  margin: 0 auto !important;
   padding: 0 !important;
   overflow: visible !important;
 }
 
-/* --- Pricing section: full width, vertical scroll only --- */
-#pricing-section {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 80px 20px !important;
-  background: #33a7d4;
-  overflow-x: hidden !important;   /* block sideways scroll */
-  overflow-y: visible !important;
+/* Hide common slider/carousel arrows that create the frame */
+.arrow,
+.carousel-arrow,
+.slick-arrow,
+.swiper-button-next,
+.swiper-button-prev,
+.slider-arrow {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
-/* --- Container: exactly 3 centered columns on desktop --- */
-.pricing-container {
-  display: flex !important;
-  justify-content: center !important;   /* center all cards */
-  align-items: stretch !important;
-  flex-wrap: nowrap !important;         /* keep one row on desktop */
-  gap: 20px !important;
-  width: 100% !important;
-  max-width: 1200px !important;         /* keep nice centered width */
-  margin: 0 auto !important;
-  overflow: hidden !important;          /* kill any horizontal scroll */
+/* Pricing card sizing — equal columns on desktop, safe margins */
+.pricing-card {
+  flex: 0 1 320px !important;    /* base width for each card on desktop */
+  max-width: 320px !important;
+  min-width: 260px !important;
+  margin: 0 !important;
   box-sizing: border-box !important;
 }
 
-/* --- Individual cards --- */
-.pricing-card {
-  flex: 1 1 0 !important;       /* allow even flex sizing */
-  max-width: 350px !important;
-  min-width: 280px !important;
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Reveal animation preserved */
+.pricing-card.in-view {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
-/* Hover effect */
-.pricing-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-}
-
-/* --- Responsive breakpoints --- */
+/* ===== Responsive: allow wrapping on narrower screens (no horizontal swipe) ===== */
 @media (max-width: 1024px) {
-  .pricing-container {
-    flex-wrap: wrap !important;      /* allow 2-up layout */
-    justify-content: center !important;
-  }
+  .pricing-container { flex-wrap: wrap !important; }
   .pricing-card {
     flex: 1 1 calc(50% - 20px) !important;
     max-width: calc(50% - 20px) !important;
@@ -1096,14 +1103,20 @@ header {
 }
 
 @media (max-width: 768px) {
+  .pricing-container { flex-wrap: wrap !important; }
   .pricing-card {
     flex: 1 1 100% !important;
     max-width: 100% !important;
-    padding: 60px 20px;
-    min-height: 90vh;
+    padding: 60px 20px !important;
+    min-height: 80vh !important;
   }
 }
 
+/* Prevent inner nodes from forcing a horizontal scrollbar (only inside pricing section) */
+#pricing-section * {
+  max-width: 100% !important;
+  overflow-x: visible !important;
+}
 </style>
 
 </head>
