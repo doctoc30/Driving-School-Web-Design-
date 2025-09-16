@@ -1007,33 +1007,52 @@ header {
 
 
 
-/* ==== FINAL HARD OVERRIDE FOR PRICING SECTION ==== */
 
-/* 1. Let the section truly fill the viewport width */
+ /* --- HARD RESET FOR PRICING SECTION AND ALL PARENTS --- */
+
+/* Stop any horizontal scroll site-wide */
 html, body {
   margin: 0 !important;
   padding: 0 !important;
-  overflow-x: hidden !important;   /* stop horizontal scroll */
+  overflow-x: hidden !important;
 }
 
-/* 2. Remove all possible parent restrictions */
-#pricing-section,
-#pricing-section * {
-  width: 100% !important;
-  max-width: none !important;
+/* Break the pricing section out of any slider/frame */
+#pricing-section {
+  width: 100vw !important;
+  max-width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* Force all ancestors of pricing-section to behave */
+#pricing-section,
+#pricing-section * {
   box-sizing: border-box !important;
 }
 
-/* 3. Remove hidden wrappers (common funnel/container classes) */
+#pricing-section {
+  /* walk up every parent and neutralize */
+}
+#pricing-section,
+#pricing-section :where(div, section, article, main) {
+  overflow: visible !important;
+  max-width: none !important;
+}
+
+/* Common funnel/slider containers that create arrows */
 .funnel-wrapper,
 .funnel-container,
 .funnel-content,
-.wrapper,
-.container,
-.section,
-.section-inner {
+.slider,
+.carousel,
+.carousel-inner,
+.slick-slider,
+.slick-track,
+.swiper,
+.swiper-wrapper {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
@@ -1042,22 +1061,32 @@ html, body {
   position: static !important;
 }
 
-/* 4. Layout the pricing cards themselves */
-.pricing-container {
+/* Remove any pseudo-elements that add arrow UI */
+.funnel-wrapper::before,
+.funnel-wrapper::after,
+.slider::before,
+.slider::after,
+.carousel::before,
+.carousel::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Ensure cards themselves flex correctly */
+#pricing-section .pricing-container {
   display: flex !important;
   flex-wrap: wrap !important;
   justify-content: center !important;
-  align-items: flex-start !important;
-  gap: 20px !important;
+  align-items: stretch !important;
   width: 100% !important;
+  max-width: 100% !important;
+  gap: 20px !important;
 }
 
-/* 5. Make each card flexible and prevent extra scrollbars */
-.pricing-card {
+#pricing-section .pricing-card {
   flex: 1 1 300px !important;
   max-width: 350px !important;
   border-radius: 16px !important;
-  overflow: visible !important;
 }
 </style>
 
