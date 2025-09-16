@@ -1004,7 +1004,67 @@ header {
     gap: 6px;
   }
   .lock-icon { font-size: 1.1rem; color: #0070ba; }
- </style>
+
+/* ===== Full-width Pricing Cards ===== */
+.pricing-cards-wrapper,
+.pricing-cards-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important; /* stacked vertically */
+  gap: 20px;
+  overflow: visible !important;       /* remove scroll */
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Individual pricing cards */
+.pricing-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0;          /* remove spacing restrictions */
+  border: none;       /* remove old borders */
+  box-sizing: border-box;
+  opacity: 0;         /* preserve reveal animation */
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Reveal animation */
+.pricing-card.in-view {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Remove scroll arrows */
+.arrow {
+  display: none !important;
+}
+
+/* Remove any card-level borders */
+.pricing-card,
+.pricing-cards-wrapper,
+.pricing-cards-container {
+  border: none !important;
+}
+
+/* Ensure full width on smaller screens */
+@media (max-width: 1024px), (orientation: portrait) {
+  .pricing-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+/* Optional: spacing between cards if needed */
+.pricing-card + .pricing-card {
+  margin-top: 20px;
+}
+
+
+
+</style>
 
 </head>
 <body>
