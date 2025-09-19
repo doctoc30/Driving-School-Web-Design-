@@ -1037,14 +1037,47 @@ html, body {
   width: 100% !important;
   overflow: visible !important;
 }
-</style>
+
+
+
+/* === Mobile / iPhone Portrait Fix for Pricing Cards === */
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  /* Remove fixed centering from the pricing screen and allow full vertical flow */
+  #recommended-plan-screen,
+  #pricing-section,
+  #pricing-section .form-screen {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .pricing-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 20px !important;
+    width: 100% !important;
+  }
+
+  .pricing-card {
+    width: 100% !important;
+    min-height: auto !important;
+  }
+}
 
 
 
  
-
-
-
 </style>
 
 </head>
