@@ -1040,7 +1040,31 @@ html, body {
 
 
 
+/* Allow the Recommended Plan to scroll normally on narrow screens */
+@media (max-width: 768px) {
+  #recommended-plan-screen.form-screen,
+  #pricing-section {
+    display: block !important;      /* break out of flex */
+    min-height: auto !important;    /* grow with content */
+    height: auto !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    padding: 80px 20px 20px !important;  /* 80px top to clear fixed header */
+  }
 
+  .pricing-container {
+    display: block !important;      /* vertical stack */
+    gap: 24px !important;
+  }
+
+  .pricing-card {
+    width: 100% !important;
+    min-height: auto !important;    /* no fixed 90vh */
+    transform: none !important;
+    opacity: 1 !important;
+    margin-bottom: 24px;
+  }
+}
 </style>
 
 </head>
