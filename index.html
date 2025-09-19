@@ -1038,6 +1038,14 @@ html, body {
   overflow: visible !important;
 }
 
+
+
+ .pricing-card.recommended {
+  border: 3px solid #ff9800;       /* bright outline */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
 </style>
 
 </head>
@@ -1539,28 +1547,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const planCards = document.querySelectorAll(".pricing-card");
-    if (!planCards.length) return;
+function showRecommendedPlan() {
+  const planCards = document.querySelectorAll(".pricing-card");
+  if (!planCards || planCards.length === 0) return;
 
-    const counts = { basic: 0, pro: 0, premium: 0 };
-    yesFeatures.forEach(f => {
-      if (["booking","mobile","cta","contact","bio"].includes(f)) counts.basic++;
-      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) counts.pro++;
-      else if (["packages","social","email","content","guide"].includes(f)) counts.premium++;
-    });
+  // Count selected features per tier
+  const planCounts = { basic: 0, pro: 0, premium: 0 };
 
-    let recommended = "basic";
-    if (counts.premium > 0) recommended = "premium";
-    else if (counts.pro > 0) recommended = "pro";
-    else if (counts.basic > 0) recommended = "basic";
+  yesFeatures.forEach(f => {
+    if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
+    // ownership features ignored
+  });
 
-    planCards.forEach(card => card.classList.remove("recommended"));
-    planCards.forEach(card => {
-      const title = card.querySelector("h3")?.textContent?.toLowerCase();
-      if (title === recommended) card.classList.add("recommended");
-    });
-  }
+  // Determine recommended plan: Premium > Pro > Basic
+  let recommendedPlan = "basic"; // default
+  if (planCounts.premium > 0) recommendedPlan = "premium";
+  else if (planCounts.pro > 0) recommendedPlan = "pro";
+  else recommendedPlan = "basic";
+
+  // Remove previous highlights
+  planCards.forEach(card => card.classList.remove("recommended"));
+
+  // Highlight the selected plan card
+  const selectedCard = Array.from(planCards).find(card => 
+    card.querySelector("h3").textContent.toLowerCase() === recommendedPlan
+  );
+  if (selectedCard) selectedCard.classList.add("recommended");
+}
 
   // ------------------ Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
