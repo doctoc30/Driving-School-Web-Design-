@@ -877,6 +877,13 @@ header {
   user-select: none; 
   cursor: default;
 }
+ 
+
+
+
+
+
+
 
  
 /* iPhone landscape fix */
@@ -1030,57 +1037,14 @@ html, body {
   width: 100% !important;
   overflow: visible !important;
 }
+</style>
 
 
 
- /* Center the pricing cards perfectly on desktop */
-#pricing-section,
-.pricing-container {
-  display: flex !important;
-  justify-content: center !important;
-}
-
-.pricing-container {
-  max-width: 1200px;   /* optional: keeps them nicely grouped */
-  margin: 0 auto !important;
-  gap: 20px !important; /* space between cards */
-}
+ 
 
 
 
-/* === Ensure pricing section can grow and scroll vertically on small screens === */
-@media (max-width: 768px) {
-  html, body {
-    overflow-y: auto !important;     /* allow vertical scrolling */
-    height: auto !important;
-  }
-
-  #formWrapper,
-  #recommended-plan-screen,
-  #pricing-section,
-  .pricing-container {
-    position: static !important;
-    overflow: visible !important;    /* no clipping */
-    height: auto !important;
-    max-height: none !important;
-  }
-
-  .pricing-container {
-    display: flex !important;
-    flex-direction: column !important; /* stack cards top-to-bottom */
-    align-items: stretch !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 0 40px 0 !important;   /* space at bottom */
-  }
-
-  .pricing-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 0 20px 0 !important;
-    box-sizing: border-box !important;
-  }
-}
 </style>
 
 </head>
@@ -1416,32 +1380,7 @@ html, body {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
- 
- function showRecommendedPlan() {
-  // Remove any previous "recommended" badges
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.classList.remove('recommended');
-  });
-
-  // Decide which plan has the highest score
-  const { basic, pro, premium } = planScores;
-  let recommended = 'pro'; // default
-  if (basic >= pro && basic >= premium) {
-    recommended = 'basic';
-  } else if (premium >= pro && premium >= basic) {
-    recommended = 'premium';
-  }
-
-  // Add recommended class to the matching card
-  const card = document.querySelector(`.pricing-card[data-plan="${recommended}"]`);
-  if (card) {
-    card.classList.add('recommended');
-    const badge = card.querySelector('.badge');
-    if (badge) badge.style.display = 'block';
-  }
-}
- 
- // ------------------ Basic setup ------------------
+  // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
 
