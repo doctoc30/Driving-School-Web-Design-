@@ -678,7 +678,7 @@ footer {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const wrapper = document.querySelector(".slider-wrapper");
@@ -702,55 +702,30 @@ footer {
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
-    if (codeParam && isDesktop) {
-      // Desktop full-screen view for selected template
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
-      slides.forEach((slide, idx) => {
-        const img = slide.querySelector("img");
-        if (idx === currentIndex) {
-          slide.style.display = "flex";
-          slide.style.width = "100vw";
-          slide.style.height = "100vh";
-          slide.style.justifyContent = "center";
-          slide.style.alignItems = "center";
-          if (img) {
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "100%";
-            img.style.objectFit = "contain";
-          }
-        } else {
-          slide.style.display = "none";
+    slides.forEach((slide, idx) => {
+      const img = slide.querySelector("img");
+      if (idx === currentIndex) {
+        slide.style.display = "flex";
+        slide.style.width = isDesktop ? "100vw" : "100%";
+        slide.style.height = isDesktop ? "100vh" : "auto";
+        slide.style.justifyContent = "center";
+        slide.style.alignItems = "center";
+        if (img) {
+          img.style.maxWidth = "100%";
+          img.style.maxHeight = "100%";
+          img.style.objectFit = "contain";
         }
-      });
-      wrapper.style.transform = "none";
-    } else if (codeParam && !isDesktop) {
-      // Mobile swipeable
-      nextBtn.style.display = "none";
-      prevBtn.style.display = "none";
-      wrapper.style.display = "flex";
-      wrapper.style.justifyContent = "flex-start";
-      slides.forEach(slide => {
-        slide.style.display = "flex";
-        slide.style.width = "100%";
-        slide.style.height = "auto";
-      });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    } else {
-      // Full library view
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
-      wrapper.style.display = "flex";
-      slides.forEach(slide => {
-        slide.style.display = "flex";
-        slide.style.width = "";
-        slide.style.height = "";
-      });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
+      } else {
+        slide.style.display = "none";
+      }
+    });
+
+    wrapper.style.transform = isDesktop ? "none" : `translateX(-${currentIndex * 100}%)`;
+
+    nextBtn.style.display = isDesktop ? "block" : "none";
+    prevBtn.style.display = isDesktop ? "block" : "none";
   }
 
-  // ------------------ Arrow Navigation ------------------
   nextBtn.addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
@@ -760,7 +735,7 @@ footer {
     updateSlider();
   });
 
-  // ------------------ Swipe for Mobile ------------------
+  // Swipe for mobile
   let startX = 0;
   wrapper.addEventListener("touchstart", e => startX = e.touches[0].clientX);
   wrapper.addEventListener("touchend", e => {
@@ -777,11 +752,12 @@ footer {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      // Redirect to funnel step 4 with code param
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      // Redirect to funnel WITHOUT forcing step=4
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
       window.location.assign(funnelURL);
     });
   });
+});
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
