@@ -1525,154 +1525,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 
-// Add this complete function to replace the empty one
-function showRecommendedPlan() {
-  // Calculate the recommended plan based on feature scores
-  const totalScores = {
-    basic: planScores.basic,
-    pro: planScores.pro, 
-    premium: planScores.premium
-  };
-  
-  // Find the highest scoring plan
-  const recommendedPlan = Object.keys(totalScores).reduce((a, b) => 
-    totalScores[a] > totalScores[b] ? a : b
-  );
-  
-  console.log('Feature scores:', totalScores);
-  console.log('Recommended plan:', recommendedPlan);
-  
-  // Remove previous recommendations
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.classList.remove('recommended');
-    const badge = card.querySelector('.badge');
-    if (badge) badge.remove();
-  });
-  
-  // Highlight the recommended plan
-  const recommendedCard = document.querySelector(`.pricing-card:has(h3:contains("${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)}")`);
-  if (recommendedCard) {
-    recommendedCard.classList.add('recommended');
-    
-    // Add the "Recommended" badge
-    const badge = document.createElement('div');
-    badge.className = 'badge';
-    badge.textContent = 'Recommended';
-    recommendedCard.appendChild(badge);
-  }
-  
-  // Update hidden form fields
-  const hiddenPlan = document.getElementById('hiddenPlan');
-  if (hiddenPlan) {
-    hiddenPlan.value = `${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)} Plan`;
-  }
-  
-  // Update payment links based on ownership choice
-  updatePaymentLinks(recommendedPlan, ownershipChoice);
-  
-  // Ensure pricing section is scrollable on mobile
-  setTimeout(() => {
-    document.body.classList.add('show-pricing');
-    // Scroll to top smoothly
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, 300);
-}
-
-// Add payment link update function
-function updatePaymentLinks(plan, ownership) {
-  const baseUrls = {
-    basic: 'https://www.paypal.com/paypal-link-basic',
-    pro: 'https://www.paypal.com/paypal-link-pro', 
-    premium: 'https://www.paypal.com/paypal-link-premium'
-  };
-  
-  const ownershipSuffix = ownership === 'Owned Outright' ? '' : '-monthly';
-  
-  Object.keys(baseUrls).forEach(planKey => {
-    const buttons = document.querySelectorAll(`.pricing-card:has(h3:contains("${planKey.charAt(0).toUpperCase() + planKey.slice(1)}") ) .pay-now`);
-    buttons.forEach(btn => {
-      const newUrl = `${baseUrls[planKey]}${ownershipSuffix}`;
-      btn.onclick = () => window.location.href = newUrl;
-      
-      // Update button text based on ownership
-      const priceText = btn.querySelector('span')?.textContent || btn.textContent;
-      if (ownership === 'Monthly Support') {
-        btn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay monthly via PayPal`;
-      }
-    });
-  });
-}
-
-// Fix the feature recording for "No" answers
-window.recordNoFeature = (feature) => { 
-  featureState[feature] = false; 
-  syncFeatureState(); 
-};
-
-// Update the next() function to handle "No" answers properly
-function next() {
-  if (currentScreen < screens.length - 1) {
-    // Auto-record "No" for features if user just clicks next without selecting
-    const currentScreenId = screens[currentScreen].id;
-    const featureQuestions = [
-      'instructor-q4', 'instructor-q5', 'instructor-q6', 'instructor-q7', 'instructor-q8', // Basic
-      'instructor-q9', 'instructor-q10', 'instructor-q11', 'instructor-q12', 'instructor-q13', // Pro
-      'instructor-q14', 'instructor-q15', 'instructor-q16', 'instructor-q17', 'instructor-q18' // Premium
-    ];
-    
-    const featureMap = {
-      'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
-      'instructor-q7': 'contact', 'instructor-q8': 'bio',
-      'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
-      'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
-      'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
-      'instructor-q17': 'content', 'instructor-q18': 'guide'
-    };
-    
-    if (featureQuestions.includes(currentScreenId) && !featureState[featureMap[currentScreenId]]) {
-      // User clicked next without selecting yes, record as no
-      window.recordNoFeature(featureMap[currentScreenId]);
-    }
-    
-    currentScreen++;
-    showScreen(screens[currentScreen].id);
-  } else {
-    // Reached the end, show pricing
-    showScreen('recommended-plan-screen');
-  }
-}
-
-// Fix button click handlers to properly record "No" answers
-document.addEventListener('DOMContentLoaded', () => {
-  // Add event listeners for "No" buttons
-  document.querySelectorAll('.form-screen button:not([onclick*="recordFeature"])').forEach(btn => {
-    if (btn.textContent.trim() === 'No') {
-      const screenId = btn.closest('.form-screen').id;
-      const featureMap = {
-        'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
-        'instructor-q7': 'contact', 'instructor-q8': 'bio',
-        'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
-        'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
-        'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
-        'instructor-q17': 'content', 'instructor-q18': 'guide'
-      };
-      
-      if (featureMap[screenId]) {
-        btn.onclick = (e) => {
-          e.preventDefault();
-          window.recordNoFeature(featureMap[screenId]);
-          next();
-        };
-      }
-    }
-  });
-  
-  // Initialize with empty feature state
-  Object.keys(featureState).forEach(key => {
-    if (featureState[key] === undefined) featureState[key] = false;
-  });
-});
- 
 document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
@@ -1710,8 +1562,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function next() {
     if (currentScreen < screens.length - 1) {
+      // Auto-record "No" for features if user just clicks next without selecting
+      const currentScreenId = screens[currentScreen].id;
+      const featureQuestions = [
+        'instructor-q4', 'instructor-q5', 'instructor-q6', 'instructor-q7', 'instructor-q8', // Basic
+        'instructor-q9', 'instructor-q10', 'instructor-q11', 'instructor-q12', 'instructor-q13', // Pro
+        'instructor-q14', 'instructor-q15', 'instructor-q16', 'instructor-q17', 'instructor-q18' // Premium
+      ];
+      
+      const featureMap = {
+        'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
+        'instructor-q7': 'contact', 'instructor-q8': 'bio',
+        'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
+        'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
+        'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
+        'instructor-q17': 'content', 'instructor-q18': 'guide'
+      };
+      
+      if (featureQuestions.includes(currentScreenId) && !featureState[featureMap[currentScreenId]]) {
+        // User clicked next without selecting yes, record as no
+        window.recordNoFeature(featureMap[currentScreenId]);
+      }
+      
       currentScreen++;
       showScreen(screens[currentScreen].id);
+    } else {
+      // Reached the end, show pricing
+      showScreen('recommended-plan-screen');
     }
   }
 
@@ -1759,24 +1636,149 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.setPath = (path) => userPath = path;
-  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+  window.recordFeature = (feature) => { 
+    featureState[feature] = true; 
+    syncFeatureState(); 
+    console.log(`Feature YES: ${feature} - Scores:`, planScores);
+  };
+  
+  window.recordNoFeature = (feature) => { 
+    featureState[feature] = false; 
+    syncFeatureState(); 
+    console.log(`Feature NO: ${feature} - Scores:`, planScores);
+  };
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
+    recordFeature(choice === 'Own Outright' ? 'buyOutright' : 'monthlySupport');
     next();
   };
 
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Own Outright'));
   if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
+  // ------------------ CRITICAL: SMART RECOMMENDATION LOGIC ------------------
+  function showRecommendedPlan() {
+    console.log('=== RECOMMENDATION CALCULATION ===');
+    console.log('All features state:', featureState);
+    console.log('Plan scores:', planScores);
+    
+    // PRIORITY-BASED RECOMMENDATION (Your requirement: 1 feature = that plan)
+    let recommendedPlan = 'basic'; // Default fallback
+    
+    // Check for ANY Premium features first (highest priority)
+    if (planScores.premium > 0) {
+      recommendedPlan = 'premium';
+      console.log('✅ PREMIUM RECOMMENDED: User selected at least 1 Premium feature');
+    }
+    // Check for ANY Pro features next
+    else if (planScores.pro > 0) {
+      recommendedPlan = 'pro';
+      console.log('✅ PRO RECOMMENDED: User selected at least 1 Pro feature (no Premium)');
+    }
+    // If no Pro/Premium, check for Basic features
+    else if (planScores.basic > 0) {
+      recommendedPlan = 'basic';
+      console.log('✅ BASIC RECOMMENDED: User selected at least 1 Basic feature (no Pro/Premium)');
+    }
+    // If no features selected at all, default to Basic
+    else {
+      console.log('⚠️ NO FEATURES SELECTED: Defaulting to Basic plan');
+    }
+    
+    console.log('🎯 FINAL RECOMMENDATION:', recommendedPlan);
+    
+    // Remove previous recommendations
+    document.querySelectorAll('.pricing-card').forEach(card => {
+      card.classList.remove('recommended');
+      const badge = card.querySelector('.badge');
+      if (badge) badge.remove();
+    });
+    
+    // Highlight the recommended plan
+    const planNames = {
+      'basic': 'Basic',
+      'pro': 'Pro', 
+      'premium': 'Premium'
+    };
+    
+    const recommendedCard = document.querySelector(`.pricing-card h3:contains("${planNames[recommendedPlan]}")`).closest('.pricing-card');
+    
+    if (recommendedCard) {
+      recommendedCard.classList.add('recommended');
+      
+      // Add the "Recommended" badge
+      const badge = document.createElement('div');
+      badge.className = 'badge';
+      badge.textContent = 'Recommended';
+      recommendedCard.appendChild(badge);
+      
+      console.log(`✨ Applied "Recommended" styling to ${recommendedPlan} card`);
+    } else {
+      console.error(`❌ Could not find pricing card for: ${recommendedPlan}`);
+    }
+    
+    // Update hidden form fields
+    const hiddenPlan = document.getElementById('hiddenPlan');
+    if (hiddenPlan) {
+      hiddenPlan.value = `${planNames[recommendedPlan]} Plan`;
+    }
+    
+    // Update payment links based on ownership choice
+    updatePaymentLinks(recommendedPlan, ownershipChoice);
+    
+    // Ensure pricing section is scrollable on mobile
+    setTimeout(() => {
+      document.body.classList.add('show-pricing');
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Trigger animation for pricing cards
+      setTimeout(() => {
+        const cards = document.querySelectorAll('.pricing-card[data-animate]');
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add('in-view');
+          }, index * 200);
+        });
+      }, 500);
+    }, 300);
+  }
 
-
-
+  // Update payment link function
+  function updatePaymentLinks(plan, ownership) {
+    const baseUrls = {
+      basic: 'https://www.paypal.com/paypal-link-basic',
+      pro: 'https://www.paypal.com/paypal-link-pro', 
+      premium: 'https://www.paypal.com/paypal-link-premium'
+    };
+    
+    const ownershipSuffix = ownership === 'Own Outright' ? '' : '-monthly';
+    
+    // Update ALL plan buttons (in case user changes mind)
+    Object.keys(baseUrls).forEach(planKey => {
+      const buttons = document.querySelectorAll(`.pricing-card:has(h3:contains("${planKey.charAt(0).toUpperCase() + planKey.slice(1)}")) .pay-now`);
+      buttons.forEach(btn => {
+        const newUrl = `${baseUrls[planKey]}${ownershipSuffix}`;
+        btn.onclick = () => window.location.href = newUrl;
+        
+        // Update button text based on ownership and plan
+        const img = btn.querySelector('img');
+        const currentText = btn.textContent.replace(img?.outerHTML || '', '').trim();
+        
+        if (ownership === 'Monthly Support') {
+          const monthlyPrice = planKey === 'basic' ? '£99' : planKey === 'pro' ? '£199' : '£299';
+          btn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay ${monthlyPrice}/month via PayPal`;
+        } else {
+          const fullPrice = planKey === 'basic' ? '£499' : planKey === 'pro' ? '£999' : '£1499';
+          btn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay ${fullPrice} via PayPal`;
+        }
+      });
+    });
+  }
 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
@@ -1957,7 +1959,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
- 
   // ------------------ Progress & Water ------------------
   function updateWaterProgress() {
     const wave = document.getElementById('progress-wave');
@@ -1995,14 +1996,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+
+  // Initialize feature state with defaults
+  const allFeatures = [
+    // Basic
+    'booking', 'mobile', 'cta', 'contact', 'bio',
+    // Pro  
+    'seo', 'reviews', 'branding', 'faq', 'newsletter',
+    // Premium
+    'packages', 'social', 'email', 'content', 'guide'
+  ];
+  
+  allFeatures.forEach(feature => {
+    if (featureState[feature] === undefined) {
+      featureState[feature] = false;
+    }
+  });
+
+  // Add CSS selector polyfill for :contains (for older browsers)
+  if (!Element.prototype.matches) {
+    Element.prototype.matches = 
+      Element.prototype.matchesSelector || 
+      Element.prototype.webkitMatchesSelector || 
+      Element.prototype.mozMatchesSelector || 
+      Element.prototype.msMatchesSelector ||
+      Element.prototype.oMatchesSelector;
+  }
+
+  if (!Element.prototype.closest) {
+    Element.prototype.closest = function(s) {
+      let el = this;
+      do {
+        if (el.matches(s)) return el;
+        el = el.parentElement || el.parentNode;
+      } while (el !== null && el.nodeType === 1);
+      return null;
+    };
+  }
 });
 
+// Add jQuery-like :contains selector functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Add :contains pseudo-selector support
+  const originalQuerySelectorAll = document.querySelectorAll;
+  document.querySelectorAll = function(selectors) {
+    if (typeof selectors === 'string' && selectors.includes(':contains(')) {
+      // Handle :contains selector
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(`<div>${selectors}</div>`, 'text/html');
+      const selectorParts = doc.body.firstChild.textContent.trim().split(':contains(');
+      const baseSelector = selectorParts[0].trim();
+      const textToFind = selectorParts[1]?.replace(')', '').replace(/["']/g, '');
+      
+      if (textToFind) {
+        const elements = originalQuerySelectorAll.call(document, baseSelector);
+        return Array.from(elements).filter(el => 
+          el.textContent.toLowerCase().includes(textToFind.toLowerCase())
+        );
+      }
+    }
+    return originalQuerySelectorAll.call(document, selectors);
+  };
 
-
-
-
- // Intersection Observer for scroll animation
-document.addEventListener("DOMContentLoaded", function() {
+  // Intersection Observer for scroll animation
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -2015,27 +2071,26 @@ document.addEventListener("DOMContentLoaded", function() {
   
   cards.forEach(card => observer.observe(card));
 });
- 
 
-  // Stripe Checkout function
-  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
+// Stripe Checkout function (unchanged)
+const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
 
-  function stripeCheckout(plan) {
-    let priceId = '';
-    switch(plan) {
-      case 'basic': priceId = 'price_id_basic'; break;
-      case 'pro': priceId = 'price_id_pro'; break;
-      case 'premium': priceId = 'price_id_premium'; break;
-    }
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'payment',
-      successUrl: window.location.href + '?success=true',
-      cancelUrl: window.location.href + '?canceled=true',
-    }).then(function (result) {
-      if (result.error) alert(result.error.message);
-    });
+function stripeCheckout(plan) {
+  let priceId = '';
+  switch(plan) {
+    case 'basic': priceId = 'price_id_basic'; break;
+    case 'pro': priceId = 'price_id_pro'; break;
+    case 'premium': priceId = 'price_id_premium'; break;
   }
+  stripe.redirectToCheckout({
+    lineItems: [{ price: priceId, quantity: 1 }],
+    mode: 'payment',
+    successUrl: window.location.href + '?success=true',
+    cancelUrl: window.location.href + '?canceled=true',
+  }).then(function (result) {
+    if (result.error) alert(result.error.message);
+  });
+}
 </script>
 </body>
 </html>
