@@ -1066,7 +1066,207 @@ html, body {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
+<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
+  <!-- Hidden fields -->
+  <input type="hidden" id="hiddenPlan" name="Selected Plan">
+  <input type="hidden" id="hiddenFeatures" name="Selected Features">
+  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
+
+  <!-- ===================== INTRO ===================== -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>Welcome! What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q1 ===================== -->
+  <div class="form-screen" id="instructor-q1" data-plan="basic">
+    <h2>Are you a solo driving instructor or a driving school?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
+      <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q2 ===================== -->
+  <div class="form-screen" id="instructor-q2" data-plan="basic">
+    <h2>Do you have a design concept in mind?</h2>
+    <p>You can enter a design code, choose from templates, or request a custom design.</p>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
+      <button type="button" onclick="next()">Custom design</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q3 ===================== -->
+  <div class="form-screen" id="design-code" data-plan="basic">
+    <h2>Enter your chosen design code</h2>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <div class="button-row">
+      <button type="button" onclick="goToConcept()">Continue</button>
+      <button type="button" onclick="next()">Skip</button>
+    </div>
+  </div>
+
+  <!-- ===================== BASIC (Q4–Q8) ===================== -->
+  <div class="form-screen" id="instructor-q4" data-plan="basic">
+    <h2>Do you want students to book & pay online?</h2>
+    <p><strong>Basic Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q5" data-plan="basic">
+    <h2>Do you want your site optimized for mobile?</h2>
+    <p><strong>Basic Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q6" data-plan="basic">
+    <h2>Do you want strong call-to-action buttons?</h2>
+    <p><strong>Basic Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q7" data-plan="basic">
+    <h2>Do you want a simple contact form?</h2>
+    <p><strong>Basic Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q8" data-plan="basic">
+    <h2>Do you want an About Me / Instructor Bio section?</h2>
+    <p><strong>Basic Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <!-- ===================== PRO (Q9–Q13) ===================== -->
+  <div class="form-screen" id="instructor-q9" data-plan="pro">
+    <h2>Do you want your site to rank on Google locally?</h2>
+    <p><strong>Pro Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q10" data-plan="pro">
+    <h2>Would you like to display student reviews?</h2>
+    <p><strong>Pro Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q11" data-plan="pro">
+    <h2>Do you want branding help (logo, colors)?</h2>
+    <p><strong>Pro Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q12" data-plan="pro">
+    <h2>Do you want a FAQ or student guide section?</h2>
+    <p><strong>Pro Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q13" data-plan="pro">
+    <h2>Do you want newsletter signup or mailing list?</h2>
+    <p><strong>Pro Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <!-- ===================== PREMIUM (Q14–Q18) ===================== -->
+  <div class="form-screen" id="instructor-q14" data-plan="premium">
+    <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+    <p><strong>Premium Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q15" data-plan="premium">
+    <h2>Do you want social media integration?</h2>
+    <p><strong>Premium Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q16" data-plan="premium">
+    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+    <p><strong>Premium Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q17" data-plan="premium">
+    <h2>Do you want help creating content (text/images)?</h2>
+    <p><strong>Premium Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q18" data-plan="premium">
+    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <p><strong>Premium Plan Feature</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <!-- ===================== FINAL CHOICE & Q19 ===================== -->
+  
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
