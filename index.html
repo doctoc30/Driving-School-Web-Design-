@@ -1033,7 +1033,40 @@ html, body {
 
 
 
+/* ----- Mobile portrait: allow full vertical scroll & no clipping ----- */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+  }
 
+ #recommended-plan-screen,
+  #pricing-section {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 0 40px 0 !important; /* add bottom room to scroll */
+  }
+
+  .pricing-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 20px !important;
+  }
+
+  .pricing-card {
+    width: 100% !important;
+    min-height: auto !important;
+  }
+}
 
 </style>
 
