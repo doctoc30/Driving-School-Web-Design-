@@ -1397,14 +1397,11 @@ html, body {
    </form>
 
 <script>
-
-
-  // Watch the whole page for when the recommended screen appears
-  observer.observe(document.body, { childList: true, subtree: true });
-});
+/* ---------- Full cleaned funnel JS (paste over your existing script) ---------- */
+document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
-  let screens = document.querySelectorAll(".form-screen");
+  let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
 
   const params = new URLSearchParams(window.location.search);
@@ -1425,10 +1422,14 @@ html, body {
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
-    currentScreen = Array.from(screens).indexOf(screen);
+    currentScreen = screens.indexOf(screen);
+    // Keep this — we'll center the recommended card separately if required
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+    if (screen.id === "recommended-plan-screen") {
+      // call recommendation which will also scroll the chosen card into view
+      showRecommendedPlan();
+    }
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1456,7 +1457,7 @@ html, body {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {};
+  const featureState = {}; // { featureKey: true|false }
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1478,8 +1479,11 @@ html, body {
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    next();
+    // record ownership feature so it is sent back if needed
+    featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
+    syncFeatureState();
+    // show pricing screen directly after ownership selection
+    showScreen('recommended-plan-screen');
   };
 
   // ------------------ Q19 Buttons ------------------
@@ -1528,7 +1532,8 @@ html, body {
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = document.querySelectorAll('.form-screen');
+      // refresh screens NodeList
+      screens = Array.from(document.querySelectorAll('.form-screen'));
     }
 
     const container = document.createElement('div');
@@ -1558,7 +1563,9 @@ html, body {
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
-      currentScreen = Array.from(screens).indexOf(templateScreen);
+      // refresh screens & update index
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+      currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
       updateProgress(currentScreen + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1569,39 +1576,64 @@ html, body {
   }
 
   // ------------------ Recommended Plan ------------------
-function showRecommendedPlan() {
-  const planCards = document.querySelectorAll(".pricing-card");
-  if (!planCards || planCards.length === 0) return;
+  function showRecommendedPlan() {
+    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+    if (!planCards || planCards.length === 0) return;
 
-  // Count selected features per tier
-  const planCounts = { basic: 0, pro: 0, premium: 0 };
+    // Count selected features per tier
+    const planCounts = { basic: 0, pro: 0, premium: 0 };
 
-  yesFeatures.forEach(f => {
-    if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-    // ownership features ignored
-  });
+    yesFeatures.forEach(f => {
+      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
+      // ownership features ignored
+    });
 
-  // Determine recommended plan: Premium > Pro > Basic
-  let recommendedPlan = "basic"; // default
-  if (planCounts.premium > 0) recommendedPlan = "premium";
-  else if (planCounts.pro > 0) recommendedPlan = "pro";
-  else recommendedPlan = "basic";
+    // Choose recommended plan by counts but prefer higher tier on tie
+    let recommendedPlan = "basic"; // default
+    const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+    if (maxCount === 0) {
+      // fallback (no selections)
+      recommendedPlan = "pro";
+    } else {
+      // if multiple have same max, prefer premium > pro > basic
+      if (planCounts.premium === maxCount) recommendedPlan = "premium";
+      else if (planCounts.pro === maxCount) recommendedPlan = "pro";
+      else recommendedPlan = "basic";
+    }
 
-  // Remove previous highlights
-  planCards.forEach(card => card.classList.remove("recommended"));
+    // Remove previous highlights
+    planCards.forEach(card => card.classList.remove("recommended"));
 
-  // Highlight the selected plan card
-  const selectedCard = Array.from(planCards).find(card => 
-    card.querySelector("h3").textContent.toLowerCase() === recommendedPlan
-  );
-  if (selectedCard) selectedCard.classList.add("recommended");
-}
+    // Find and highlight selected plan card (match h3 text)
+    const selectedCard = planCards.find(card => {
+      const h3 = card.querySelector("h3");
+      const title = h3 ? h3.textContent.trim().toLowerCase() : '';
+      return title === recommendedPlan;
+    });
 
-  // ------------------ Typewriter ------------------
+    if (selectedCard) {
+      selectedCard.classList.add("recommended");
+      // ensure it is visible (force 'in-view' so CSS shows correctly), then center it
+      selectedCard.classList.add('in-view');
+
+      // scroll into center after a tiny delay to allow layout settle
+      setTimeout(() => {
+        try {
+          selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          // fallback to top if center fails
+          try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
+        }
+      }, 220);
+    }
+  }
+
+  // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
+
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
@@ -1649,7 +1681,7 @@ function showRecommendedPlan() {
       }
     }
 
-        setLinesByOrientation();
+    setLinesByOrientation();
     typeChar();
 
     window.addEventListener('resize', debounce(() => {
@@ -1732,48 +1764,51 @@ function showRecommendedPlan() {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
-// ------------------ Robust IntersectionObserver for pricing cards ------------------
-(function initPricingObserver(){
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  if (!cards || cards.length === 0) return; // nothing to do
+  // ------------------ Robust IntersectionObserver for pricing cards ------------------
+  (function initPricingObserver(){
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards || cards.length === 0) return; // nothing to do
 
-  // Fallback for old browsers: just show everything
-  if (!('IntersectionObserver' in window)) {
-    cards.forEach(c => c.classList.add('in-view'));
-    return;
-  }
+    // Fallback for old browsers: just show everything
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in-view'));
+      return;
+    }
 
-  const observerOptions = {
-    root: null,
-    // trigger a bit earlier (bottom of viewport) so mobile portrait picks it up
-    rootMargin: '0px 0px -12% 0px',
-    threshold: [0, 0.05, 0.15]
-  };
+    const observerOptions = {
+      root: null,
+      // trigger a bit earlier (bottom of viewport) so mobile portrait picks it up
+      rootMargin: '0px 0px -12% 0px',
+      threshold: [0, 0.05, 0.15]
+    };
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      try {
-        // safe check — works across browsers
-        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-        if (isVisible) {
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        try {
+          // safe check — works across browsers
+          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+          if (isVisible) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        } catch (err) {
+          // on any unexpected error, reveal the card and unobserve to avoid repeated errors
+          try { entry.target.classList.add('in-view'); } catch(e) {}
+          try { obs.unobserve(entry.target); } catch(e) {}
         }
-      } catch (err) {
-        // on any unexpected error, reveal the card and unobserve to avoid repeated errors
-        try { entry.target.classList.add('in-view'); } catch(e) {}
-        try { obs.unobserve(entry.target); } catch(e) {}
-        // don't rethrow — keep the rest of the site running
-      }
-    });
-  }, observerOptions);
+      });
+    }, observerOptions);
 
-  cards.forEach(card => observer.observe(card));
-})();
+    Array.from(cards).forEach(card => observer.observe(card));
+  })();
 
-  // ------------------ Stripe Checkout ------------------
-  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
+  // ------------------ Stripe Checkout (stub) ------------------
+  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null; // Replace with your Stripe public key if used
   window.stripeCheckout = function(plan) {
+    if (!stripe) {
+      alert('Stripe not configured (public key missing)');
+      return;
+    }
     let priceId = '';
     switch(plan) {
       case 'basic': priceId = 'price_id_basic'; break;
@@ -1789,7 +1824,10 @@ function showRecommendedPlan() {
       if (result.error) alert(result.error.message);
     });
   };
-});
+
+}); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
