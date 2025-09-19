@@ -1040,43 +1040,28 @@ html, body {
 
 
 
-/* --- Pricing Section Mobile Portrait Fix --- */
 @media (max-width: 768px) {
-  #pricing-section,
-  #recommended-plan-screen {
-    position: relative !important;  /* normal flow */
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
+  #recommended-plan-screen,
+  #pricing-section {
+    display: block !important;   /* normal flow */
+    min-height: auto !important; /* don’t fill viewport */
     overflow: visible !important;
-    min-height: auto !important;  /* remove full viewport forcing */
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
     padding: 20px 16px;
-    display: block;               /* allow stacking */
   }
 
   .pricing-container {
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
   }
 
   .pricing-card {
-    min-height: auto !important;  /* let card shrink to content */
-    transform: translateY(0) !important; 
-    opacity: 1 !important;        /* show immediately */
+    min-height: auto !important;
     margin-bottom: 20px;
-  }
-
-  .pricing-card.in-view {
     transform: translateY(0) !important;
     opacity: 1 !important;
-  }
-
-  /* Remove hover transforms for mobile */
-  .pricing-card:hover {
-    transform: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   }
 }
 </style>
@@ -1744,16 +1729,14 @@ function showRecommendedPlan() {
   updateProgress(currentScreen + 1);
 
   // ------------------ Intersection Observer for Pricing Cards ------------------
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  cards.forEach(card => observer.observe(card));
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting || entry.intersectionRatio > 0) {
+      entry.target.classList.add('in-view');
+      obs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 }); // lower threshold for mobile
 
   // ------------------ Stripe Checkout ------------------
   const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
