@@ -1040,7 +1040,40 @@ html, body {
 
 
 
+/* ----- Mobile portrait: allow full vertical scroll & no clipping ----- */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+  }
 
+  #recommended-plan-screen,
+  #pricing-section {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 0 40px 0 !important; /* add bottom room to scroll */
+  }
+
+  .pricing-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 20px !important;
+  }
+
+  .pricing-card {
+    width: 100% !important;
+    min-height: auto !important;
+  }
+}
 
  
 </style>
@@ -1378,6 +1411,34 @@ html, body {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+ // ------------------ Recommended Plan Logic ------------------
+function showRecommendedPlan() {
+  // Ensure scores are up to date
+  syncFeatureState();
+
+  const { basic, pro, premium } = planScores;
+  let recommended = "basic";
+
+  // Highest tier wins if any of its features are selected
+  if (premium > 0) {
+    recommended = "premium";
+  } else if (pro > 0) {
+    recommended = "pro";
+  }
+
+  // Remove old highlights
+  document.querySelectorAll(".pricing-card").forEach(card => {
+    card.classList.remove("recommended");
+  });
+
+  // Highlight and scroll to recommended card
+  const card = document.querySelector(`.pricing-card[data-plan="${recommended}"]`);
+  if (card) {
+    card.classList.add("recommended");
+    card.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
