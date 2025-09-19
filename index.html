@@ -1037,13 +1037,158 @@ html, body {
   width: 100% !important;
   overflow: visible !important;
 }
-</style>
 
 
 
  
 
+// Add this complete function to replace the empty one
+function showRecommendedPlan() {
+  // Calculate the recommended plan based on feature scores
+  const totalScores = {
+    basic: planScores.basic,
+    pro: planScores.pro, 
+    premium: planScores.premium
+  };
+  
+  // Find the highest scoring plan
+  const recommendedPlan = Object.keys(totalScores).reduce((a, b) => 
+    totalScores[a] > totalScores[b] ? a : b
+  );
+  
+  console.log('Feature scores:', totalScores);
+  console.log('Recommended plan:', recommendedPlan);
+  
+  // Remove previous recommendations
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.classList.remove('recommended');
+    const badge = card.querySelector('.badge');
+    if (badge) badge.remove();
+  });
+  
+  // Highlight the recommended plan
+  const recommendedCard = document.querySelector(`.pricing-card:has(h3:contains("${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)}")`);
+  if (recommendedCard) {
+    recommendedCard.classList.add('recommended');
+    
+    // Add the "Recommended" badge
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+    badge.textContent = 'Recommended';
+    recommendedCard.appendChild(badge);
+  }
+  
+  // Update hidden form fields
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  if (hiddenPlan) {
+    hiddenPlan.value = `${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)} Plan`;
+  }
+  
+  // Update payment links based on ownership choice
+  updatePaymentLinks(recommendedPlan, ownershipChoice);
+  
+  // Ensure pricing section is scrollable on mobile
+  setTimeout(() => {
+    document.body.classList.add('show-pricing');
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 300);
+}
 
+// Add payment link update function
+function updatePaymentLinks(plan, ownership) {
+  const baseUrls = {
+    basic: 'https://www.paypal.com/paypal-link-basic',
+    pro: 'https://www.paypal.com/paypal-link-pro', 
+    premium: 'https://www.paypal.com/paypal-link-premium'
+  };
+  
+  const ownershipSuffix = ownership === 'Owned Outright' ? '' : '-monthly';
+  
+  Object.keys(baseUrls).forEach(planKey => {
+    const buttons = document.querySelectorAll(`.pricing-card:has(h3:contains("${planKey.charAt(0).toUpperCase() + planKey.slice(1)}") ) .pay-now`);
+    buttons.forEach(btn => {
+      const newUrl = `${baseUrls[planKey]}${ownershipSuffix}`;
+      btn.onclick = () => window.location.href = newUrl;
+      
+      // Update button text based on ownership
+      const priceText = btn.querySelector('span')?.textContent || btn.textContent;
+      if (ownership === 'Monthly Support') {
+        btn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay monthly via PayPal`;
+      }
+    });
+  });
+}
+
+// Fix the feature recording for "No" answers
+window.recordNoFeature = (feature) => { 
+  featureState[feature] = false; 
+  syncFeatureState(); 
+};
+
+// Update the next() function to handle "No" answers properly
+function next() {
+  if (currentScreen < screens.length - 1) {
+    // Auto-record "No" for features if user just clicks next without selecting
+    const currentScreenId = screens[currentScreen].id;
+    const featureQuestions = [
+      'instructor-q4', 'instructor-q5', 'instructor-q6', 'instructor-q7', 'instructor-q8', // Basic
+      'instructor-q9', 'instructor-q10', 'instructor-q11', 'instructor-q12', 'instructor-q13', // Pro
+      'instructor-q14', 'instructor-q15', 'instructor-q16', 'instructor-q17', 'instructor-q18' // Premium
+    ];
+    
+    const featureMap = {
+      'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
+      'instructor-q7': 'contact', 'instructor-q8': 'bio',
+      'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
+      'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
+      'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
+      'instructor-q17': 'content', 'instructor-q18': 'guide'
+    };
+    
+    if (featureQuestions.includes(currentScreenId) && !featureState[featureMap[currentScreenId]]) {
+      // User clicked next without selecting yes, record as no
+      window.recordNoFeature(featureMap[currentScreenId]);
+    }
+    
+    currentScreen++;
+    showScreen(screens[currentScreen].id);
+  } else {
+    // Reached the end, show pricing
+    showScreen('recommended-plan-screen');
+  }
+}
+
+// Fix button click handlers to properly record "No" answers
+document.addEventListener('DOMContentLoaded', () => {
+  // Add event listeners for "No" buttons
+  document.querySelectorAll('.form-screen button:not([onclick*="recordFeature"])').forEach(btn => {
+    if (btn.textContent.trim() === 'No') {
+      const screenId = btn.closest('.form-screen').id;
+      const featureMap = {
+        'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
+        'instructor-q7': 'contact', 'instructor-q8': 'bio',
+        'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
+        'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
+        'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
+        'instructor-q17': 'content', 'instructor-q18': 'guide'
+      };
+      
+      if (featureMap[screenId]) {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          window.recordNoFeature(featureMap[screenId]);
+          next();
+        };
+      }
+    }
+  });
+  
+  // Initialize with empty feature state
+  Object.keys(featureState).forEach(key => {
+    if (featureState[key] === undefined) featureState[key] = false;
+  });
+});
 
 </style>
 
@@ -1379,6 +1524,155 @@ html, body {
    </form>
 
 <script>
+
+// Add this complete function to replace the empty one
+function showRecommendedPlan() {
+  // Calculate the recommended plan based on feature scores
+  const totalScores = {
+    basic: planScores.basic,
+    pro: planScores.pro, 
+    premium: planScores.premium
+  };
+  
+  // Find the highest scoring plan
+  const recommendedPlan = Object.keys(totalScores).reduce((a, b) => 
+    totalScores[a] > totalScores[b] ? a : b
+  );
+  
+  console.log('Feature scores:', totalScores);
+  console.log('Recommended plan:', recommendedPlan);
+  
+  // Remove previous recommendations
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.classList.remove('recommended');
+    const badge = card.querySelector('.badge');
+    if (badge) badge.remove();
+  });
+  
+  // Highlight the recommended plan
+  const recommendedCard = document.querySelector(`.pricing-card:has(h3:contains("${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)}")`);
+  if (recommendedCard) {
+    recommendedCard.classList.add('recommended');
+    
+    // Add the "Recommended" badge
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+    badge.textContent = 'Recommended';
+    recommendedCard.appendChild(badge);
+  }
+  
+  // Update hidden form fields
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  if (hiddenPlan) {
+    hiddenPlan.value = `${recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1)} Plan`;
+  }
+  
+  // Update payment links based on ownership choice
+  updatePaymentLinks(recommendedPlan, ownershipChoice);
+  
+  // Ensure pricing section is scrollable on mobile
+  setTimeout(() => {
+    document.body.classList.add('show-pricing');
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 300);
+}
+
+// Add payment link update function
+function updatePaymentLinks(plan, ownership) {
+  const baseUrls = {
+    basic: 'https://www.paypal.com/paypal-link-basic',
+    pro: 'https://www.paypal.com/paypal-link-pro', 
+    premium: 'https://www.paypal.com/paypal-link-premium'
+  };
+  
+  const ownershipSuffix = ownership === 'Owned Outright' ? '' : '-monthly';
+  
+  Object.keys(baseUrls).forEach(planKey => {
+    const buttons = document.querySelectorAll(`.pricing-card:has(h3:contains("${planKey.charAt(0).toUpperCase() + planKey.slice(1)}") ) .pay-now`);
+    buttons.forEach(btn => {
+      const newUrl = `${baseUrls[planKey]}${ownershipSuffix}`;
+      btn.onclick = () => window.location.href = newUrl;
+      
+      // Update button text based on ownership
+      const priceText = btn.querySelector('span')?.textContent || btn.textContent;
+      if (ownership === 'Monthly Support') {
+        btn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay monthly via PayPal`;
+      }
+    });
+  });
+}
+
+// Fix the feature recording for "No" answers
+window.recordNoFeature = (feature) => { 
+  featureState[feature] = false; 
+  syncFeatureState(); 
+};
+
+// Update the next() function to handle "No" answers properly
+function next() {
+  if (currentScreen < screens.length - 1) {
+    // Auto-record "No" for features if user just clicks next without selecting
+    const currentScreenId = screens[currentScreen].id;
+    const featureQuestions = [
+      'instructor-q4', 'instructor-q5', 'instructor-q6', 'instructor-q7', 'instructor-q8', // Basic
+      'instructor-q9', 'instructor-q10', 'instructor-q11', 'instructor-q12', 'instructor-q13', // Pro
+      'instructor-q14', 'instructor-q15', 'instructor-q16', 'instructor-q17', 'instructor-q18' // Premium
+    ];
+    
+    const featureMap = {
+      'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
+      'instructor-q7': 'contact', 'instructor-q8': 'bio',
+      'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
+      'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
+      'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
+      'instructor-q17': 'content', 'instructor-q18': 'guide'
+    };
+    
+    if (featureQuestions.includes(currentScreenId) && !featureState[featureMap[currentScreenId]]) {
+      // User clicked next without selecting yes, record as no
+      window.recordNoFeature(featureMap[currentScreenId]);
+    }
+    
+    currentScreen++;
+    showScreen(screens[currentScreen].id);
+  } else {
+    // Reached the end, show pricing
+    showScreen('recommended-plan-screen');
+  }
+}
+
+// Fix button click handlers to properly record "No" answers
+document.addEventListener('DOMContentLoaded', () => {
+  // Add event listeners for "No" buttons
+  document.querySelectorAll('.form-screen button:not([onclick*="recordFeature"])').forEach(btn => {
+    if (btn.textContent.trim() === 'No') {
+      const screenId = btn.closest('.form-screen').id;
+      const featureMap = {
+        'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
+        'instructor-q7': 'contact', 'instructor-q8': 'bio',
+        'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
+        'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
+        'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
+        'instructor-q17': 'content', 'instructor-q18': 'guide'
+      };
+      
+      if (featureMap[screenId]) {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          window.recordNoFeature(featureMap[screenId]);
+          next();
+        };
+      }
+    }
+  });
+  
+  // Initialize with empty feature state
+  Object.keys(featureState).forEach(key => {
+    if (featureState[key] === undefined) featureState[key] = false;
+  });
+});
+ 
 document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
