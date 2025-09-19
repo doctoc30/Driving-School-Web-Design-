@@ -1039,12 +1039,21 @@ html, body {
 }
 
 
-/* Mobile Portrait Fix for Pricing Cards */
+
+/* --- Pricing Section Mobile Portrait Fix --- */
 @media (max-width: 768px) {
-  #pricing-section {
-    min-height: auto;   /* remove full-screen forcing */
-    padding: 40px 20px;
-    display: block;     /* normal flow */
+  #pricing-section,
+  #recommended-plan-screen {
+    position: relative !important;  /* normal flow */
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    min-height: auto !important;  /* remove full viewport forcing */
+    padding: 20px 16px;
+    display: block;               /* allow stacking */
   }
 
   .pricing-container {
@@ -1053,9 +1062,21 @@ html, body {
   }
 
   .pricing-card {
-    min-height: auto;   /* allow card height to adjust to content */
-    transform: translateY(0); /* start from normal flow */
-    opacity: 1;          /* remove animation clipping issue */
+    min-height: auto !important;  /* let card shrink to content */
+    transform: translateY(0) !important; 
+    opacity: 1 !important;        /* show immediately */
+    margin-bottom: 20px;
+  }
+
+  .pricing-card.in-view {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  /* Remove hover transforms for mobile */
+  .pricing-card:hover {
+    transform: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   }
 }
 </style>
