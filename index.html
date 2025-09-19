@@ -1039,32 +1039,30 @@ html, body {
 }
 
 
-
-/* Allow the Recommended Plan to scroll normally on narrow screens */
+ /* === MOBILE PORTRAIT SCROLL FIX – Only when pricing screen is active === */
 @media (max-width: 768px) {
-  #recommended-plan-screen.form-screen,
-  #pricing-section {
-    display: block !important;      /* break out of flex */
-    min-height: auto !important;    /* grow with content */
+  /* Target the active funnel screen that holds the pricing section */
+  #recommended-plan-screen.form-screen.active {
+    display: block !important;      /* use normal block flow */
+    min-height: auto !important;
     height: auto !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
-    padding: 80px 20px 20px !important;  /* 80px top to clear fixed header */
+    padding: 80px 20px 20px !important; /* top padding clears fixed header */
   }
 
-  .pricing-container {
-    display: block !important;      /* vertical stack */
+  /* Inside that screen, let cards stack and scroll */
+  #recommended-plan-screen .pricing-container {
+    display: block !important;
     gap: 24px !important;
   }
 
-  .pricing-card {
-    width: 100% !important;
-    min-height: auto !important;    /* no fixed 90vh */
-    transform: none !important;
-    opacity: 1 !important;
+  #recommended-plan-screen .pricing-card {
+    min-height: auto !important;
     margin-bottom: 24px;
   }
 }
+
 </style>
 
 </head>
