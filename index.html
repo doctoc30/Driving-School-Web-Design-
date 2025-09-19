@@ -463,9 +463,104 @@ input[type="email"] {
   }
 }
 
+ /* --------------------------------------------
+   1. FIRST QUESTION SCREEN (#form-start-choice)
+--------------------------------------------- */
+#form-start-choice {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: #33a7d4;
+  color: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#form-start-choice.show {
+  display: flex;
+  opacity: 1;
+}
+
+
+ 
+/* --------------------------------------------
+   2. MULTI-STEP FORM SCREENS (.form-screen)
+--------------------------------------------- */
+.form-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  min-height: 60vh;
+  background: #33a7d4;
+  color: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  justify-content: center;   /* Center vertically */
+  align-items: center;       /* Center horizontally */
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
+/* Show active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* On small-height screens, remove vertical centering
+   so content scrolls naturally */
+@media (max-height: 600px) {
+  .form-screen {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: flex-start;
+    padding-top: 4rem;
+    min-height: auto;
+  }
+}
+
+.form-screen.active {
+  display: flex;
+}
+
+.form-screen h2 {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  max-width: 500px;
+  line-height: 1.4;
+}
+
+/* Optional: adjust if very small screens */
+@media (max-height: 600px) {
+  .form-screen {
+    justify-content: flex-start;
+    padding-top: 4rem;
+  }
+}
+
+
 
 /* --------------------------------------------
-   3. FORM FIELDS & BUTTONS
+   3. FORM FIELDS (input, select)
 --------------------------------------------- */
 select,
 input[type="text"],
@@ -486,50 +581,9 @@ input[type="tel"] {
   font-family: inherit;
 }
 
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: bold;
-  margin: 0.5rem;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-.back-button {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid white;
-}
-
-.back-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* Button rows */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  width: 100%;
-}
-
-.button-row button {
-  flex: 1;
-  min-width: 120px;
-  max-width: 200px;
-}
-
-/* Consent checkbox */
+/* --------------------------------------------
+   4. CONSENT CHECKBOX SECTION
+--------------------------------------------- */
 .consent-wrapper {
   display: flex;
   flex-direction: column;
@@ -544,320 +598,62 @@ button:hover {
 }
 
 /* --------------------------------------------
-   4. CRITICAL: PRICING SCREEN OVERRIDE (MOBILE FIX)
+   5. BUTTONS
 --------------------------------------------- */
-/* Make pricing screen FULLY SCROLLABLE on mobile */
-#recommended-plan-screen {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-height: auto !important;
-  height: auto !important;
-  padding: 80px 15px 20px 15px !important;
-  justify-content: flex-start !important;
-  align-items: stretch !important;
-  overflow-y: visible !important;
-  z-index: 1 !important;
-  border-radius: 0 !important;
-  background: #33a7d4 !important;
-}
-
-/* Pricing section inside pricing screen */
-#recommended-plan-screen #pricing-section {
-  position: relative !important;
-  width: 100% !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  display: block !important;
-  overflow: visible !important;
-}
-
-#recommended-plan-screen h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  width: 100%;
-}
-
-/* Mobile-specific pricing adjustments */
-@media (max-width: 768px) {
-  #recommended-plan-screen {
-    padding: 80px 10px 20px 10px !important;
-  }
-  
-  #pricing-section {
-    padding: 0 !important;
-  }
-  
-  .pricing-container {
-    flex-direction: column !important;
-    gap: 20px !important;
-    width: 100% !important;
-    padding: 0 5px !important;
-  }
-  
-  .pricing-card {
-    min-height: auto !important;
-    padding: 30px 20px !important;
-    width: 100% !important;
-    margin-bottom: 20px !important;
-  }
-  
-  /* Ensure body can scroll when showing pricing */
-  body.show-pricing {
-    overflow-y: auto !important;
-    height: auto !important;
-  }
-}
-
-/* Landscape mobile fix */
-@media (max-height: 600px) and (orientation: landscape) {
-  #recommended-plan-screen {
-    padding: 60px 15px 15px 15px !important;
-  }
-  
-  .pricing-card {
-    min-height: auto !important;
-    padding: 25px 15px !important;
-  }
-  
-  .pricing-container {
-    gap: 15px !important;
-  }
-}
-
-/* --------------------------------------------
-   5. PRICING CARDS STYLING
---------------------------------------------- */
-#pricing-section { 
-  padding: 0; 
-  min-height: auto; 
-  display: block; 
-  width: 100%; 
-}
-
-.pricing-container { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 40px; 
-  width: 100%; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-}
-
-.pricing-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  min-height: auto; /* Changed from 70vh */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-
-.pricing-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-}
-
-/* Recommended plan highlighting */
-.pricing-card.recommended {
-  border: 3px solid #fff !important;
-  background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08)) !important;
-  position: relative !important;
-}
-
-.pricing-card.recommended .badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #fff !important;
-  color: #33a7d4 !important;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  animation: pulse 2s infinite !important;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.pricing-card h3 { 
-  font-size: 2rem; 
-  margin-bottom: 1rem; 
-  font-weight: 900; 
-}
-
-.pricing-card .price { 
-  font-size: 2.5rem; 
-  margin-bottom: 2rem; 
-  font-weight: bold; 
-}
-
-.pricing-card ul { 
-  list-style: none; 
-  margin-bottom: 2rem; 
-  padding: 0; 
-  flex-grow: 1;
-}
-
-.pricing-card ul li { 
-  margin: 10px 0; 
-  font-size: 1.1rem; 
-}
-
-.pricing-card.in-view { 
-  opacity: 1; 
-  transform: translateY(0); 
-}
-
-.pricing-card.recommended.in-view { 
-  animation: glow 2s ease infinite alternate; 
-}
-
-@keyframes glow {
-  0% { 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35); 
-    transform: translateY(0) scale(1.03);
-  }
-  100% { 
-    box-shadow: 0 25px 50px rgba(255,255,255,0.4); 
-    transform: translateY(-5px) scale(1.05);
-  }
-}
-
-/* Desktop layout */
-@media (min-width: 1024px) {
-  .pricing-container { 
-    flex-direction: row; 
-    gap: 20px; 
-  }
-  .pricing-card { 
-    min-height: 65vh; 
-    flex: 1;
-  }
-}
-
-/* Mobile pricing card adjustments */
-@media (max-width: 768px) {
-  .pricing-card { 
-    min-height: auto !important; 
-    padding: 30px 20px !important; 
-  }
-  
-  .pricing-card h3 { 
-    font-size: 1.5rem; 
-  }
-  
-  .pricing-card .price { 
-    font-size: 2rem; 
-  }
-}
-
-/* PayPal Button */
-.pay-now {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 600;
+button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 8px;
+  background: white;
+  color: #33a7d4;
+  font-weight: bold;
+  margin: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
-  margin: 1rem 0;
 }
 
-.pay-now img { 
-  height: 22px; 
+button:hover {
+  opacity: 0.9;
 }
 
-.pay-now:hover {
-  background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
-}
-
-.pay-now:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-}
-
-/* Trust Badge */
-.paypal-badge {
-  margin-top: 15px;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid #e0e5eb;
+/* Optional: group buttons side-by-side */
+.button-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.paypal-badge img {
-  max-width: 140px;
-  height: auto;
-  margin-bottom: 8px;
-}
-
-.paypal-badge p {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1d1d1d;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.lock-icon { 
-  font-size: 1.1rem; 
-  color: #0070ba; 
+  gap: 1rem;
 }
 
 /* --------------------------------------------
-   6. UTILITY CLASSES & ANIMATIONS
+   6. MOBILE HEIGHT ADJUSTMENTS
 --------------------------------------------- */
-#typewriter { 
-  display: none; 
+
+
+.button-row {
+  display: flex;
+  justify-content: center;  /* Center the buttons */
+  gap: 1rem;                /* Space between buttons */
+  margin-top: 2rem;
 }
 
-#typewriter.active { 
-  display: block; 
+.button-row button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: #33a7d4;
+  font-weight: bold;
+  cursor: pointer;
+  width: auto;              /* Make sure buttons size to content */
+  min-width: 100px;         /* Optional: consistent width */
 }
 
-.color-rise { 
-  display: none; 
-  transition: none; 
+.button-row button:hover {
+  opacity: 0.9;
 }
 
-.color-rise.active { 
-  display: block; 
-  transition: background-color 2s ease; 
-}
+
 
 .skip-link {
   position: fixed;
@@ -865,7 +661,7 @@ button:hover {
   left: 50%;
   transform: translateX(-50%);
   background: none;
-  color: #ffffff;
+  color: #ffffff; /* Or use your brand color */
   border: none;
   padding: 0;
   font-size: 16px;
@@ -876,12 +672,141 @@ button:hover {
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
-
 .skip-link:hover {
   opacity: 0.8;
 }
+ 
+.logo img {
+  height: 40px;   /* fits within your 60px header */
+  width: auto;    /* keeps proportions */
+  display: block;
+}
 
-/* Brand button styles */
+
+#main-intro-options {
+  justify-content: flex-start !important; /* push content to the top */
+}
+
+#main-intro-options h2 {
+  margin-top: 40px; /* push heading down a little if needed */
+}
+
+#main-intro-options .button-row {
+  margin-top: 60px; /* this moves ONLY the 3 buttons further down */
+}
+
+
+
+ #typewriter { display: none; }
+#typewriter.active { display: block; }
+
+.color-rise { display: none; transition: none; }
+.color-rise.active { display: block; transition: background-color 2s ease; }
+
+
+
+
+
+/* ------------------------ */
+/* General funnel screen styling */
+/* ------------------------ */
+.form-screen {
+  display: none;              /* hidden by default */
+  flex-direction: column;     /* stack content vertically */
+  justify-content: center;    /* vertical centering */
+  align-items: center;        /* horizontal centering */
+  min-height: 100vh;          /* full viewport height */
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Active screen */
+.form-screen.active {
+  display: flex;
+}
+
+/* Buttons row styling */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* ------------------------ */
+/* First screen adjustment */
+/* ------------------------ */
+#main-intro-options {
+  padding-top: 120px;   /* ⬅️ adjust this number to move down */
+}
+
+/* ------------------------ */
+/* Tablet / landscape adjustments */
+/* ------------------------ */
+@media (min-width: 768px) {
+  .form-screen {
+    padding: 40px;
+  }
+  #main-intro-options {
+    padding-top: 140px; /* slightly lower on tablet */
+  }
+}
+
+/* ------------------------ */
+/* Desktop adjustments */
+/* ------------------------ */
+@media (min-width: 1024px) {
+  .form-screen {
+    padding: 60px;
+  }
+  #main-intro-options {
+    padding-top: 160px; /* even lower on desktop */
+  }
+}
+
+/* ------------------------ */
+/* Optional: adjust for fixed header */
+/* ------------------------ */
+body header + .form-screen {
+  padding-top: 80px;
+}
+
+
+ /* Funnel screen global */
+.form-screen {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.form-screen.active {
+  display: flex;
+}
+
+
+ #main-intro-options {
+  justify-content: center !important; /* center vertically */
+  min-height: 100vh;                   /* full viewport height */
+  padding-top: 0 !important;           /* remove any extra top spacing */
+}
+
+
+/* ===== FUNNEL SCREEN ===== */
+.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+.form-screen.active { display: flex; }
+
+
+
+ 
 .brand-btn {
   background: #fff;
   color: #33a7d4;
@@ -915,6 +840,52 @@ button:hover {
   margin-top: 1rem;
 }
 
+
+
+
+ /* ===================== MOBILE PORTRAIT & LANDSCAPE VIEW FIX ===================== */
+
+/* Base styles from pricing.html - maintaining consistency */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background-color: #33a7d4; 
+  color: white; 
+  overflow-x: hidden; 
+}
+
+/* Header styling - maintaining original */
+header {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0;
+  height: 60px; 
+  display: flex; 
+  align-items: center;
+  justify-content: space-between; 
+  padding: 0 20px;
+  background-color: #33a7d4; 
+  z-index: 2000;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+}
+
+.logo {
+  font-weight: 900; 
+  font-size: 1.7rem; 
+  letter-spacing: 2px;
+  user-select: none; 
+  cursor: default;
+}
+ 
+
+
+
+
+
+
+
+ 
 /* iPhone landscape fix */
 @media (orientation: landscape) and (max-device-width: 812px) {
   footer {
@@ -922,7 +893,157 @@ button:hover {
     padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
+
+
+
+
+  #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+  .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
+
+  /* Unified Pricing Card */
+  .pricing-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  }
+  .pricing-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  }
+
+  .pricing-card.recommended .badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #227090;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
+  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
+  .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
+  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
+
+  .pricing-card.in-view { opacity: 1; transform: translateY(0); }
+  .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
+
+  @keyframes glow {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
+    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
+  }
+
+  @media (min-width: 1024px) {
+    .pricing-container { flex-direction: row; gap: 20px; }
+    .pricing-card { min-height: 65vh; }
+  }
+  @media (max-width: 768px) {
+    .pricing-card { min-height: 90vh; padding: 60px 20px; }
+  }
+
+  /* PayPal Button - App-like, Brand Consistent */
+  .pay-now {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px; /* pill shape */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
+  }
+
+  .pay-now img { height: 22px; }
+
+  .pay-now:hover {
+    background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
+  }
+  .pay-now:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
+  }
+
+  /* Trust Badge */
+  .paypal-badge {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #e0e5eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .paypal-badge img {
+    max-width: 140px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+  .paypal-badge p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1d1d1d;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lock-icon { font-size: 1.1rem; color: #0070ba; }
+
+
+
+
+ /* --- Allow normal page scrolling and full-width content --- */
+html, body {
+  overflow-x: hidden !important;  /* hide horizontal scrollbar */
+  overflow-y: auto !important;    /* allow natural vertical scrolling */
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* If pricing section is inside a .form-screen wrapper, unfix it */
+#pricing-section,
+#pricing-section .form-screen,
+#recommended-plan-screen {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+</style>
+
+
+
  
+
+
 
 </style>
 
@@ -961,8 +1082,6 @@ button:hover {
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
-  <input type="hidden" id="hiddenTimestamp" name="Timestamp">
-  <input type="hidden" id="hiddenPath" name="User Path">
 
   <!-- ===================== INTRO ===================== -->
   <div class="form-screen active" id="main-intro-options">
@@ -1004,13 +1123,13 @@ button:hover {
     </div>
   </div>
 
-  <!-- ===================== BASIC (Q4–Q8) - FIXED "No" BUTTONS ===================== -->
+  <!-- ===================== BASIC (Q4–Q8) ===================== -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
     <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
     </div>
   </div>
 
@@ -1019,7 +1138,7 @@ button:hover {
     <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1029,7 +1148,7 @@ button:hover {
     <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1039,7 +1158,7 @@ button:hover {
     <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1049,18 +1168,18 @@ button:hover {
     <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <!-- ===================== PRO (Q9–Q13) - FIXED "No" BUTTONS ===================== -->
+  <!-- ===================== PRO (Q9–Q13) ===================== -->
   <div class="form-screen" id="instructor-q9">
     <h2>Do you want your site to rank on Google locally?</h2>
     <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1070,7 +1189,7 @@ button:hover {
     <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1080,7 +1199,7 @@ button:hover {
     <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1090,7 +1209,7 @@ button:hover {
     <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1100,18 +1219,18 @@ button:hover {
     <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <!-- ===================== PREMIUM (Q14–Q18) - FIXED "No" BUTTONS ===================== -->
+  <!-- ===================== PREMIUM (Q14–Q18) ===================== -->
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
     <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1121,7 +1240,7 @@ button:hover {
     <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('social'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1131,7 +1250,7 @@ button:hover {
     <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1141,17 +1260,17 @@ button:hover {
     <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('content'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
   <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a "What to Expect" guide for first lessons?</h2>
+    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
     <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
+      <button type="button" onclick="next()">No</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1167,105 +1286,103 @@ button:hover {
   </div>
 
   <!-- ===================== Q19: Ownership ===================== -->
-  <div class="form-screen" id="instructor-q19">
-    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <div class="button-row">
-      <button type="button" class="own-outright" onclick="recordOwnership('Own Outright')">Own Outright</button>
-      <button type="button" class="monthly-support" onclick="recordOwnership('Monthly Support')">Monthly Support</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+ <div class="form-screen" id="instructor-q19">
+  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+  <div class="button-row">
+    <button type="button" class="own-outright">Own Outright</button>
+    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
   <!-- ===================== RECOMMENDED PLAN ===================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
 
-    <!-- ===================== PRICING CARDS - WITH DATA-PLAN ATTRIBUTES ===================== -->
-    <section id="pricing-section">
-      <div class="pricing-container">
-        <!-- Basic Plan -->
-        <div class="pricing-card" data-plan="basic" data-animate>
-          <h3>Basic</h3>
-          <p class="price">£499</p>
-          <ul>
-            <li>5 Pages Website</li>
-            <li>5 Revisions</li>
-            <li>Mobile Friendly</li>
-          </ul>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
+<!-- ===================== PRICING CARDS ===================== -->
+<section id="pricing-section">
+  <div class="pricing-container">
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£499</p>
+      <ul>
+        <li>5 Pages Website</li>
+        <li>5 Revisions</li>
+        <li>Mobile Friendly</li>
+      </ul>
 
-        <!-- Pro Plan -->
-        <div class="pricing-card" data-plan="pro" data-animate>
-          <h3>Pro</h3>
-          <p class="price">£999</p>
-          <ul>
-            <li>10 Pages Website</li>
-            <li>15 Revisions</li>
-            <li>SEO Optimization</li>
-            <li>Booking System</li>
-          </ul>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £999 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
 
-        <!-- Premium Plan -->
-        <div class="pricing-card" data-plan="premium" data-animate>
-          <h3>Premium</h3>
-          <p class="price">£1499</p>
-          <ul>
-            <li>50+ Pages Website</li>
-            <li>30 Revisions</li>
-            <li>Full Branding</li>
-            <li>Booking & Payment Integration</li>
-            <li>Social Media Integration</li>
-          </ul>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £1499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-          <div class="paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-            <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-          </div>
-        </div>
+      <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
       </div>
-    </section>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card recommended" data-animate>
+      <div class="badge">Recommended</div>
+      <h3>Pro</h3>
+      <p class="price">£999</p>
+      <ul>
+        <li>10 Pages Website</li>
+        <li>15 Revisions</li>
+        <li>SEO Optimization</li>
+        <li>Booking System</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£1499</p>
+      <ul>
+        <li>50+ Pages Website</li>
+        <li>30 Revisions</li>
+        <li>Full Branding</li>
+        <li>Booking & Payment Integration</li>
+        <li>Social Media Integration</li>
+      </ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
+    </div>
   </div>
-
-  <!-- Form submission button (hidden until needed) -->
-  <button type="submit" id="formSubmitBtn" style="display: none;">Get Your Quote</button>
-
-</form>
+ </section>
+   </form>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", () => {
-  console.log('🚀 Driving School Funnel - Initializing...');
-
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
-  let userPath = "";
-  let ownershipChoice = "";
-  let planScores = { basic: 0, pro: 0, premium: 0 };
-  const featureState = {};   // { featureKey : true|false }
 
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -1282,7 +1399,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showScreen(id) {
     const screen = document.getElementById(id);
     if (!screen) {
-      console.error(`❌ Screen with ID ${id} not found`);
+      console.error(`Screen with ID ${id} not found`);
       return;
     }
 
@@ -1290,58 +1407,17 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(screen);
-    
-    console.log(`📱 Showing screen: ${id} (index: ${currentScreen})`);
-    
-    // Special handling for pricing screen
-    if (screen.id === "recommended-plan-screen") {
-      console.log('🎯 Transitioning to pricing screen...');
-      setTimeout(() => {
-        showRecommendedPlan();
-      }, 200); // Small delay to ensure DOM is ready
-    }
-    
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
   function next() {
-    console.log(`➡️ Next button clicked - Current screen: ${currentScreen}`);
-    
     if (currentScreen < screens.length - 1) {
-      // Auto-record "No" for features if user just clicks next without selecting
-      const currentScreenId = screens[currentScreen].id;
-      const featureQuestions = [
-        'instructor-q4', 'instructor-q5', 'instructor-q6', 'instructor-q7', 'instructor-q8', // Basic
-        'instructor-q9', 'instructor-q10', 'instructor-q11', 'instructor-q12', 'instructor-q13', // Pro
-        'instructor-q14', 'instructor-q15', 'instructor-q16', 'instructor-q17', 'instructor-q18' // Premium
-      ];
-      
-      const featureMap = {
-        'instructor-q4': 'booking', 'instructor-q5': 'mobile', 'instructor-q6': 'cta', 
-        'instructor-q7': 'contact', 'instructor-q8': 'bio',
-        'instructor-q9': 'seo', 'instructor-q10': 'reviews', 'instructor-q11': 'branding', 
-        'instructor-q12': 'faq', 'instructor-q13': 'newsletter',
-        'instructor-q14': 'packages', 'instructor-q15': 'social', 'instructor-q16': 'email', 
-        'instructor-q17': 'content', 'instructor-q18': 'guide'
-      };
-      
-      if (featureQuestions.includes(currentScreenId)) {
-        const feature = featureMap[currentScreenId];
-        if (feature && featureState[feature] === undefined) {
-          // User clicked next without selecting Yes, record as No
-          recordNoFeature(feature);
-          console.log(`🔄 Auto-recorded NO for: ${feature}`);
-        }
-      }
-      
       currentScreen++;
       showScreen(screens[currentScreen].id);
-    } else {
-      // Reached the end, show pricing
-      console.log('🏁 End of form reached - showing pricing');
-      showScreen('recommended-plan-screen');
     }
   }
 
@@ -1352,249 +1428,80 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Make functions globally accessible
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ Feature Tracking System ------------------
+  // ------------------ User Path & Features ------------------
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
+  let ownershipChoice = "";
+  let planScores = { basic: 0, pro: 0, premium: 0 };
+  const featureState = {};   // { featureKey : true|false }
+
   function syncFeatureState() {
-    // Reset all scores
+    yesFeatures.length = 0;
+    noFeatures.length = 0;
     planScores = { basic: 0, pro: 0, premium: 0 };
-    
-    // Calculate scores based on selected features (true = yes)
-    Object.keys(featureState).forEach(feature => {
-      if (featureState[feature] === true) {
-        if (["booking", "mobile", "cta", "contact", "bio"].includes(feature)) {
-          planScores.basic++;
-        } else if (["seo", "reviews", "branding", "faq", "newsletter"].includes(feature)) {
-          planScores.pro++;
-        } else if (["packages", "social", "email", "content", "guide"].includes(feature)) {
-          planScores.premium++;
-        }
+
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) {
+        yesFeatures.push(f);
+        if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
+        else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
+        else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
+      } else {
+        noFeatures.push(f);
       }
     });
 
-    // Update hidden form field with selected features
-    const yesFeatures = Object.keys(featureState).filter(f => featureState[f] === true);
     const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) {
-      hiddenFeatures.value = yesFeatures.join(", ") || "None selected";
-    }
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
-    console.log('🔄 Feature State Synced:', {
-      selected: yesFeatures.length,
-      basic: planScores.basic,
-      pro: planScores.pro,
-      premium: planScores.premium
-    });
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan();
+    }
   }
 
-  // Global functions for HTML onclick handlers
-  window.setPath = (path) => {
-    userPath = path;
-    console.log(`📍 User path set to: ${path}`);
-  };
-
-  window.recordFeature = (feature) => {
-    featureState[feature] = true;
-    syncFeatureState();
-    console.log(`✅ Feature SELECTED: ${feature}`);
-  };
-
-  window.recordNoFeature = (feature) => {
-    featureState[feature] = false;
-    syncFeatureState();
-    console.log(`❌ Feature DECLINED: ${feature}`);
-  };
+  window.setPath = (path) => userPath = path;
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    console.log(`🏠 Ownership choice: ${choice}`);
-    
-    // Don't treat ownership as a scored feature
-    // Just record it for payment logic
+    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
     next();
   };
 
-  // ------------------ Q19 Ownership Buttons ------------------
+  // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  
-  if (q19OwnOutrightBtn) {
-    q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Own Outright'));
-  }
-  if (q19MonthlySupportBtn) {
-    q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
-  }
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
-  // ------------------ CRITICAL: INTELLIGENT RECOMMENDATION ENGINE ------------------
-  function showRecommendedPlan() {
-    console.log('=== 🧠 SMART RECOMMENDATION ENGINE ===');
-    console.log('📊 Current feature selections:', featureState);
-    console.log('📈 Score breakdown:', planScores);
-    
-    // PRIORITY-BASED LOGIC: Even 1 feature of a tier = that tier recommended
-    let recommendedPlan = 'basic'; // Safe default
-    
-    // 1️⃣ PREMIUM has highest priority
-    if (planScores.premium > 0) {
-      recommendedPlan = 'premium';
-      console.log(`🏆 PREMIUM RECOMMENDED: ${planScores.premium} premium feature(s) selected`);
-    }
-    // 2️⃣ PRO features next in priority
-    else if (planScores.pro > 0) {
-      recommendedPlan = 'pro';
-      console.log(`⭐ PRO RECOMMENDED: ${planScores.pro} pro feature(s) selected`);
-    }
-    // 3️⃣ BASIC features
-    else if (planScores.basic > 0) {
-      recommendedPlan = 'basic';
-      console.log(`📱 BASIC RECOMMENDED: ${planScores.basic} basic feature(s) selected`);
-    }
-    // 4️⃣ No features selected = Basic default
-    else {
-      console.log('⚠️ NO FEATURES SELECTED: Defaulting to Basic plan');
-    }
-    
-    console.log(`🎯 FINAL RECOMMENDATION: ${recommendedPlan.toUpperCase()}`);
-    
-    // Clear all previous recommendations
-    document.querySelectorAll('.pricing-card').forEach(card => {
-      card.classList.remove('recommended');
-      const existingBadge = card.querySelector('.badge');
-      if (existingBadge) existingBadge.remove();
-    });
-    
-    // FIXED: Use data-plan attributes (reliable) OR fallback to text matching
-    let recommendedCard = document.querySelector(`.pricing-card[data-plan="${recommendedPlan}"]`);
-    
-    // Fallback if data-plan attribute doesn't exist
-    if (!recommendedCard) {
-      console.log('🔍 Data attribute not found, trying text match...');
-      const allH3s = document.querySelectorAll('.pricing-card h3');
-      const targetText = recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1);
-      
-      for (let h3 of allH3s) {
-        if (h3.textContent.trim().toLowerCase().includes(recommendedPlan)) {
-          recommendedCard = h3.closest('.pricing-card');
-          break;
-        }
-      }
-    }
-    
-    if (recommendedCard) {
-      recommendedCard.classList.add('recommended');
-      
-      // Add animated "Recommended" badge
-      const badge = document.createElement('div');
-      badge.className = 'badge';
-      badge.textContent = 'Recommended';
-      recommendedCard.appendChild(badge);
-      
-      console.log(`✨ SUCCESS: Applied "Recommended" styling to ${recommendedPlan} card`);
-      
-      // Smooth scroll to the recommended plan
-      setTimeout(() => {
-        recommendedCard.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
-        });
-      }, 300);
-    } else {
-      console.error(`❌ CRITICAL: Could not find pricing card for "${recommendedPlan}"`);
-      console.log('Available cards:', document.querySelectorAll('.pricing-card'));
-    }
-    
-    // Update hidden form field for submission
-    const hiddenPlan = document.getElementById('hiddenPlan');
-    if (hiddenPlan) {
-      const planName = recommendedPlan.charAt(0).toUpperCase() + recommendedPlan.slice(1);
-      hiddenPlan.value = `${planName} Plan`;
-      console.log(`📝 Hidden field updated: ${hiddenPlan.value}`);
-    }
-    
-    // Update payment button text and links
-    updatePaymentButtons(ownershipChoice);
-    
-    // Enable mobile scrolling and trigger animations
-    setTimeout(() => {
-      document.body.classList.add('show-pricing');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // Staggered animation for pricing cards
-      const cards = document.querySelectorAll('.pricing-card[data-animate]');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('in-view');
-        }, index * 150);
-      });
-    }, 300);
-    
-    console.log('✅ Recommendation engine completed');
-  }
 
-  // Update all payment buttons based on ownership choice
-  function updatePaymentButtons(ownership) {
-    const isMonthly = ownership === 'Monthly Support';
-    const plans = [
-      { key: 'basic', full: '£499', monthly: '£99', url: 'https://www.paypal.com/paypal-link-basic' },
-      { key: 'pro', full: '£999', monthly: '£199', url: 'https://www.paypal.com/paypal-link-pro' },
-      { key: 'premium', full: '£1499', monthly: '£299', url: 'https://www.paypal.com/paypal-link-premium' }
-    ];
-    
-    plans.forEach(plan => {
-      // Find card by data-plan OR by text content
-      let card = document.querySelector(`.pricing-card[data-plan="${plan.key}"]`);
-      if (!card) {
-        // Fallback: find by h3 text
-        const h3 = Array.from(document.querySelectorAll('.pricing-card h3'))
-          .find(h => h.textContent.toLowerCase().includes(plan.key));
-        if (h3) card = h3.closest('.pricing-card');
-      }
-      
-      if (card) {
-        const btn = card.querySelector('.pay-now');
-        if (btn) {
-          const price = isMonthly ? plan.monthly : plan.full;
-          const text = isMonthly ? `${price}/month` : price;
-          const urlSuffix = isMonthly ? '-monthly' : '';
-          
-          // Update button content
-          btn.innerHTML = `
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay ${text} via PayPal
-          `;
-          
-          // Update click handler
-          btn.onclick = () => {
-            const fullUrl = `${plan.url}${urlSuffix}`;
-            console.log(`💳 Redirecting to: ${fullUrl}`);
-            window.location.href = fullUrl;
-          };
-        }
-      }
-    });
-    
-    console.log(`💳 Payment buttons updated for: ${ownership || 'no choice yet'}`);
-  }
 
-  // ------------------ Design Code & Template Handling ------------------
+
+
+  // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.getAttribute("data-code");
       if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
+                        + encodeURIComponent(code) + "&step=4";
       window.location.assign(funnelURL);
     });
   });
 
+  // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
     const code = input.value.trim();
     if (!code) {
-      alert("Please enter a design code (e.g., SDI-5).");
+      alert("Please enter a design code.");
       return;
     }
     showFilteredTemplate(code);
@@ -1604,7 +1511,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const code = String(rawCode || '').trim().toUpperCase();
     if (!code) return;
 
-    console.log(`🎨 Showing template for code: ${code}`);
     hideAllScreens();
 
     if (stepParam === "4") {
@@ -1614,7 +1520,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Create template preview screen if it doesn't exist
     let templateScreen = document.getElementById('template-results');
     if (!templateScreen) {
       templateScreen = document.createElement('div');
@@ -1627,10 +1532,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.createElement('div');
     container.className = 'template-container';
     const heading = document.createElement('h2');
-    heading.textContent = `Template Preview: ${code}`;
+    heading.textContent = `Showing template for code: ${code}`;
     container.appendChild(heading);
 
-    // Try to find the template element
     let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
     if (!foundEl) foundEl = document.getElementById(code);
 
@@ -1638,15 +1542,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const clone = foundEl.cloneNode(true);
       clone.classList.add('template-preview-clone');
       clone.style.width = '100%';
-      clone.style.maxHeight = '60vh';
-      clone.style.overflow = 'auto';
       container.appendChild(clone);
 
       const buttonRow = document.createElement('div');
       buttonRow.className = 'button-row';
       const contBtn = document.createElement('button');
       contBtn.type = 'button';
-      contBtn.textContent = 'Continue to Features';
+      contBtn.textContent = 'Continue';
       contBtn.onclick = () => next();
       buttonRow.appendChild(contBtn);
       container.appendChild(buttonRow);
@@ -1655,15 +1557,14 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
       currentScreen = Array.from(screens).indexOf(templateScreen);
-    } else {
-      // Fallback to concepts page
-      const conceptsUrl = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
-      window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
+      updateWaterProgress();
+      updateProgress(currentScreen + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
 
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const conceptsUrl = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
+    window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
   // ------------------ Typewriter Animation ------------------
@@ -1672,20 +1573,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
-    
-    console.log('⌨️ Starting typewriter animation...');
     typewriterEl.style.opacity = 1;
-    
     let lines = [];
     let currentLine = 0;
     let currentChar = 0;
     let lineEl = null;
     const typingSpeed = 100;
     const lineDelay = 500;
-    
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
-    cursor.textContent = '|';
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
@@ -1696,25 +1592,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function typeChar() {
       if (currentLine >= lines.length) {
-        cursor.style.opacity = '0';
+        cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => {
-            showScreen('main-intro-options');
-          }, 2000);
+          setTimeout(() => showScreen('main-intro-options'), 2000);
         }, 1000);
         return;
       }
-      
       const text = lines[currentLine];
       if (!lineEl) {
         lineEl = document.createElement('div');
         lineEl.classList.add('typed-line');
-        typewriterEl.insertBefore(lineEl, cursor);
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
       }
-      
       if (currentChar < text.length) {
-        lineEl.appendChild(document.createTextNode(text[currentChar]));
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
         currentChar++;
         setTimeout(typeChar, typingSpeed);
       } else {
@@ -1728,13 +1621,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setLinesByOrientation();
     typeChar();
 
-    // Handle orientation change
     window.addEventListener('resize', debounce(() => {
-      if (currentLine === 0 && currentChar === 0) return;
       currentLine = 0;
       currentChar = 0;
       lineEl = null;
-      typewriterEl.innerHTML = '';
+      typewriterEl.textContent = '';
       typewriterEl.appendChild(cursor);
       setLinesByOrientation();
       typeChar();
@@ -1761,7 +1652,6 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.setAttribute('aria-hidden', !isOpen);
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
-    
     document.addEventListener('click', e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove('open');
@@ -1773,11 +1663,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ Progress Indicators ------------------
+ 
+  // ------------------ Progress & Water ------------------
   function updateWaterProgress() {
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
-    const progressPercent = Math.min(((currentScreen + 1) / screens.length) * 100, 100);
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
 
@@ -1789,110 +1680,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (progressLabel) progressLabel.textContent = percent + '%';
   }
 
-  // ------------------ Initialize the Entire System ------------------
-  console.log('🔧 Initializing feature tracking...');
-  
-  // Initialize ALL features as unselected (false)
-  const allFeatures = [
-    // Basic tier features
-    'booking', 'mobile', 'cta', 'contact', 'bio',
-    // Pro tier features  
-    'seo', 'reviews', 'branding', 'faq', 'newsletter',
-    // Premium tier features
-    'packages', 'social', 'email', 'content', 'guide'
-  ];
-  
-  allFeatures.forEach(feature => {
-    if (featureState[feature] === undefined) {
-      featureState[feature] = false;
-    }
-  });
-
-  // Hide all screens initially
+  // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
-  // Handle URL parameters for deep linking
   if (codeParam && stepParam === "4") {
-    console.log(`🔗 Deep link: code=${codeParam}, step=4`);
     const designInput = document.getElementById("designInput");
-    if (designInput) {
-      designInput.value = codeParam.trim().toUpperCase();
-    }
+    if (designInput) designInput.value = codeParam.trim().toUpperCase();
     showScreen("instructor-q4");
   } else if (codeParam) {
-    console.log(`🔗 Deep link: showing template for ${codeParam}`);
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (!stepParam) {
-    // Normal flow - start with typewriter animation
-    console.log('🎬 Starting normal flow with typewriter');
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
-    setTimeout(startTypewriterAnimation, 500);
+    startTypewriterAnimation();
   } else {
-    // Direct step navigation
-    console.log(`🔗 Direct step navigation to q${stepParam}`);
-    showScreen(`instructor-q${stepParam}`);
+    if (stepParam) showScreen(`instructor-q${stepParam}`);
   }
 
-  // Initial progress update
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-  
-  console.log('✅ Funnel System Fully Initialized!');
-  console.log('📋 Feature tracking ready:', Object.keys(featureState).length, 'features');
 });
 
-// ------------------ Enhanced DOM Manipulation ------------------
-// Add polyfills for older browsers
-if (!Element.prototype.matches) {
-  Element.prototype.matches = 
-    Element.prototype.matchesSelector || 
-    Element.prototype.webkitMatchesSelector || 
-    Element.prototype.mozMatchesSelector || 
-    Element.prototype.msMatchesSelector ||
-    Element.prototype.oMatchesSelector;
-}
 
-if (!Element.prototype.closest) {
-  Element.prototype.closest = function(s) {
-    let el = this;
-    do {
-      if (el.matches(s)) return el;
-      el = el.parentElement || el.parentNode;
-    } while (el !== null && el.nodeType === 1);
-    return null;
-  };
-}
 
-// Enhanced :contains selector support
-document.addEventListener('DOMContentLoaded', function() {
-  const originalQuerySelectorAll = document.querySelectorAll;
-  
-  document.querySelectorAll = function(selectors) {
-    if (typeof selectors === 'string' && selectors.includes(':contains(')) {
-      const parts = selectors.split(':contains(');
-      const baseSelector = parts[0].trim();
-      const searchText = parts[1]?.replace(')', '').replace(/["']/g, '').trim();
-      
-      if (searchText) {
-        const elements = originalQuerySelectorAll.call(document, baseSelector);
-        return Array.from(elements).filter(el => 
-          el.textContent.toLowerCase().includes(searchText.toLowerCase())
-        );
-      }
-    }
-    return originalQuerySelectorAll.call(document, selectors);
-  };
 
-  // Intersection Observer for pricing card animations
-  const pricingCards = document.querySelectorAll('.pricing-card[data-animate]');
-  const observerOptions = { 
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
+
+ // Intersection Observer for scroll animation
+document.addEventListener("DOMContentLoaded", function() {
+  const cards = document.querySelectorAll('.pricing-card[data-animate]');
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1900,85 +1717,31 @@ document.addEventListener('DOMContentLoaded', function() {
         obs.unobserve(entry.target);
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.3 });
   
-  pricingCards.forEach(card => observer.observe(card));
-  
-  console.log(`🎬 Animation observer ready for ${pricingCards.length} pricing cards`);
+  cards.forEach(card => observer.observe(card));
 });
+ 
 
-// ------------------ Stripe Integration (Optional) ------------------
-const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY'); // Replace with your actual key
+  // Stripe Checkout function
+  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
 
-function stripeCheckout(plan) {
-  console.log(`💳 Stripe checkout for: ${plan}`);
-  let priceId = '';
-  switch(plan) {
-    case 'basic': priceId = 'price_1ABC123...'; break; // Replace with actual Price IDs
-    case 'pro': priceId = 'price_1DEF456...'; break;
-    case 'premium': priceId = 'price_1GHI789...'; break;
-  }
-  
-  stripe.redirectToCheckout({
-    lineItems: [{ price: priceId, quantity: 1 }],
-    mode: 'payment',
-    successUrl: `${window.location.href}?success=true&plan=${plan}`,
-    cancelUrl: `${window.location.href}?canceled=true`,
-  }).then(function (result) {
-    if (result.error) {
-      console.error('Stripe error:', result.error);
-      alert(`Payment error: ${result.error.message}`);
+  function stripeCheckout(plan) {
+    let priceId = '';
+    switch(plan) {
+      case 'basic': priceId = 'price_id_basic'; break;
+      case 'pro': priceId = 'price_id_pro'; break;
+      case 'premium': priceId = 'price_id_premium'; break;
     }
-  });
-}
-
-// ------------------ Form Submission Handler ------------------
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('formWrapper');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Add timestamp and user path
-      const timestamp = new Date().toISOString();
-      const hiddenPlan = document.getElementById('hiddenPlan');
-      const hiddenFeatures = document.getElementById('hiddenFeatures');
-      
-      // Add metadata fields if they don't exist
-      if (!document.getElementById('hiddenTimestamp')) {
-        const timestampField = document.createElement('input');
-        timestampField.type = 'hidden';
-        timestampField.id = 'hiddenTimestamp';
-        timestampField.name = 'Timestamp';
-        timestampField.value = timestamp;
-        form.appendChild(timestampField);
-      }
-      
-      if (!document.getElementById('hiddenPath')) {
-        const pathField = document.createElement('input');
-        pathField.type = 'hidden';
-        pathField.id = 'hiddenPath';
-        pathField.name = 'User Path';
-        pathField.value = userPath || 'direct';
-        form.appendChild(pathField);
-      }
-      
-      console.log('📤 Form submitting with data:', {
-        plan: hiddenPlan?.value,
-        features: hiddenFeatures?.value,
-        ownership: ownershipChoice,
-        path: userPath,
-        timestamp: timestamp
-      });
-      
-      // Submit the form
-      form.submit();
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      successUrl: window.location.href + '?success=true',
+      cancelUrl: window.location.href + '?canceled=true',
+    }).then(function (result) {
+      if (result.error) alert(result.error.message);
     });
   }
-});
-
-console.log('🎉 Driving School Funnel - All systems operational!');
-
 </script>
 </body>
 </html>
