@@ -1391,10 +1391,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showScreen(id) {
     const screen = document.getElementById(id);
-    if (!screen) {
-      console.error(`Screen with ID ${id} not found`);
-      return;
-    }
+    if (!screen) return;
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
@@ -1429,20 +1426,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {}; // { featureKey: true|false }
+  const featureState = {};
 
   function syncFeatureState() {
     yesFeatures.length = 0;
     noFeatures.length = 0;
-
     Object.entries(featureState).forEach(([f, isYes]) => {
       if (isYes) yesFeatures.push(f);
       else noFeatures.push(f);
     });
-
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
@@ -1467,10 +1461,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
-      const code = btn.getAttribute("data-code");
+      const code = btn.dataset.code;
       if (!code) return;
-      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
-                        + encodeURIComponent(code) + "&step=4";
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       window.location.assign(funnelURL);
     });
   });
@@ -1490,7 +1483,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function showFilteredTemplate(rawCode) {
     const code = String(rawCode || '').trim().toUpperCase();
     if (!code) return;
-
     hideAllScreens();
 
     if (stepParam === "4") {
@@ -1543,49 +1535,36 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const conceptsUrl = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
-    window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Recommended Plan Logic ------------------
+  // ------------------ Recommended Plan ------------------
   function showRecommendedPlan() {
-    const planCard = document.querySelectorAll(".pricing-card");
-    if (!planCard || planCard.length === 0) return;
+    const planCards = document.querySelectorAll(".pricing-card");
+    if (!planCards.length) return;
 
-    const planCounts = { basic: 0, pro: 0, premium: 0 };
-
+    const counts = { basic: 0, pro: 0, premium: 0 };
     yesFeatures.forEach(f => {
-      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
-      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-      else if (["buyOutright","monthlySupport"].includes(f)) {} // skip ownership
+      if (["booking","mobile","cta","contact","bio"].includes(f)) counts.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) counts.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) counts.premium++;
     });
 
-    let recommendedPlan = "basic"; // default
-    const sortedPlans = ["basic","pro","premium"];
-    let maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+    let recommended = "basic";
+    if (counts.premium > 0) recommended = "premium";
+    else if (counts.pro > 0) recommended = "pro";
+    else if (counts.basic > 0) recommended = "basic";
 
-    // pick the **highest tier plan in case of tie**
-    for (let i = sortedPlans.length-1; i >= 0; i--) {
-      if (planCounts[sortedPlans[i]] === maxCount) {
-        recommendedPlan = sortedPlans[i];
-        break;
-      }
-    }
-
-    planCard.forEach(card => card.classList.remove("recommended"));
-    const selectedCard = document.querySelector(`.pricing-card h3:contains(${capitalizeFirstLetter(recommendedPlan)})`);
-    if (selectedCard) selectedCard.closest('.pricing-card').classList.add("recommended");
+    planCards.forEach(card => card.classList.remove("recommended"));
+    planCards.forEach(card => {
+      const title = card.querySelector("h3")?.textContent?.toLowerCase();
+      if (title === recommended) card.classList.add("recommended");
+    });
   }
 
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  // ------------------ Typewriter Animation ------------------
+  // ------------------ Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
-
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
@@ -1611,7 +1590,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
           setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 1000);
+        }, 500);
         return;
       }
       const text = lines[currentLine];
@@ -1633,7 +1612,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    setLinesByOrientation();
+        setLinesByOrientation();
     typeChar();
 
     window.addEventListener('resize', debounce(() => {
@@ -1656,7 +1635,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Hamburger Menu ------------------
-const isOpen = menu.classList.toggle('open');
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
       hamburger.classList.toggle('active');
       hamburger.setAttribute('aria-expanded', isOpen);
       menu.setAttribute('aria-hidden', !isOpen);
@@ -1705,7 +1689,7 @@ const isOpen = menu.classList.toggle('open');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   } else {
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
+    showScreen(`instructor-q${stepParam}`);
   }
 
   updateWaterProgress();
@@ -1742,8 +1726,6 @@ const isOpen = menu.classList.toggle('open');
     });
   };
 });
-</script>
-
 </script>
 </body>
 </html>
