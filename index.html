@@ -1048,31 +1048,39 @@ html, body {
 
 
 
- /* --- Mobile portrait full-width vertical stack --- */
+/* === Ensure pricing section can grow and scroll vertically on small screens === */
 @media (max-width: 768px) {
-  /* allow vertical scrolling */
+  html, body {
+    overflow-y: auto !important;     /* allow vertical scrolling */
+    height: auto !important;
+  }
+
+  #formWrapper,
+  #recommended-plan-screen,
   #pricing-section,
   .pricing-container {
-    overflow-y: auto !important;   /* vertical scroll if needed */
-    overflow-x: hidden !important; /* no horizontal scroll */
+    position: static !important;
+    overflow: visible !important;    /* no clipping */
+    height: auto !important;
+    max-height: none !important;
   }
 
   .pricing-container {
-    display: block !important;     /* stack cards vertically */
+    display: flex !important;
+    flex-direction: column !important; /* stack cards top-to-bottom */
+    align-items: stretch !important;
     width: 100% !important;
-    padding: 0 !important;
     margin: 0 auto !important;
+    padding: 0 0 40px 0 !important;   /* space at bottom */
   }
 
   .pricing-card {
-    width: 100% !important;        /* full width */
+    width: 100% !important;
     max-width: 100% !important;
-    min-width: 100% !important;
-    margin: 0 0 20px 0 !important; /* space between cards */
+    margin: 0 0 20px 0 !important;
     box-sizing: border-box !important;
   }
 }
-
 </style>
 
 </head>
