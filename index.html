@@ -1107,312 +1107,12 @@ html, body {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
 
-  <!-- Hidden fields to capture selected plan and features -->
-  <input type="hidden" id="hiddenPlan" name="Selected Plan">
-  <input type="hidden" id="hiddenFeatures" name="Selected Features">
-  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
-
-  <!-- ===================== INTRO ===================== -->
-  <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
-    </div>
-  </div>
-
-  <!-- ===================== Q1 ===================== -->
-  <div class="form-screen" id="instructor-q1">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
-      <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
-    </div>
-  </div>
-
-  <!-- ===================== Q2 ===================== -->
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
-      <button type="button" onclick="next()">Custom design</button>
-    </div>
-  </div>
-
-  <!-- ===================== Q3 ===================== -->
-  <div class="form-screen" id="design-code">
-    <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-    <div class="button-row">
-      <button type="button" onclick="goToConcept()">Continue</button>
-      <button type="button" onclick="next()">Skip</button>
-    </div>
-  </div>
-
-  <!-- ===================== BASIC (Q4–Q8) ===================== -->
-  <div class="form-screen" id="instructor-q4">
-    <h2>Do you want students to book & pay online?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q5">
-    <h2>Do you want your site optimized for mobile?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q6">
-    <h2>Do you want strong call-to-action buttons?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q7">
-    <h2>Do you want a simple contact form?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q8">
-    <h2>Do you want an About Me / Instructor Bio section?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <!-- ===================== PRO (Q9–Q13) ===================== -->
-  <div class="form-screen" id="instructor-q9">
-    <h2>Do you want your site to rank on Google locally?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q10">
-    <h2>Would you like to display student reviews?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q11">
-    <h2>Do you want branding help (logo, colors)?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q12">
-    <h2>Do you want a FAQ or student guide section?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q13">
-    <h2>Do you want newsletter signup or mailing list?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <!-- ===================== PREMIUM (Q14–Q18) ===================== -->
-  <div class="form-screen" id="instructor-q14">
-    <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q15">
-    <h2>Do you want social media integration?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q16">
-    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q17">
-    <h2>Do you want help creating content (text/images)?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <!-- ===================== FINAL CHOICE ===================== -->
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <!-- ===================== Q19: Ownership ===================== -->
- <div class="form-screen" id="instructor-q19">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-  <!-- ===================== RECOMMENDED PLAN ===================== -->
-  <div class="form-screen" id="recommended-plan-screen">
-    <h2>Your Recommended Plan</h2>
-
-<!-- ===================== PRICING CARDS ===================== -->
-<section id="pricing-section">
-  <div class="pricing-container">
-    <!-- Basic Plan -->
-    <div class="pricing-card" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£499</p>
-      <ul>
-        <li>5 Pages Website</li>
-        <li>5 Revisions</li>
-        <li>Mobile Friendly</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-
-      <small>50% now to secure, 50% on completion</small>
-
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-      </div>
-    </div>
-
-    <!-- Pro Plan -->
-    <div class="pricing-card recommended" data-animate>
-      <div class="badge">Recommended</div>
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-      <ul>
-        <li>10 Pages Website</li>
-        <li>15 Revisions</li>
-        <li>SEO Optimization</li>
-        <li>Booking System</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-
-      <small>50% now to secure, 50% on completion</small>
-
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-      </div>
-    </div>
-
-    <!-- Premium Plan -->
-    <div class="pricing-card" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£1499</p>
-      <ul>
-        <li>50+ Pages Website</li>
-        <li>30 Revisions</li>
-        <li>Full Branding</li>
-        <li>Booking & Payment Integration</li>
-        <li>Social Media Integration</li>
-      </ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-
-      <small>50% now to secure, 50% on completion</small>
-
-      <div class="paypal-badge">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
-        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
-      </div>
-    </div>
-  </div>
- </section>
-   </form>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
- // ------------------ Recommended Plan Logic ------------------
+ document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ Recommended Plan Logic ------------------
 function showRecommendedPlan() {
   // Ensure scores are up to date
   syncFeatureState();
@@ -1432,12 +1132,54 @@ function showRecommendedPlan() {
     card.classList.remove("recommended");
   });
 
-  // Highlight and scroll to recommended card
+  // Highlight the recommended card
   const card = document.querySelector(`.pricing-card[data-plan="${recommended}"]`);
   if (card) {
     card.classList.add("recommended");
-    card.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  // Update hidden field for form submission
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  if (hiddenPlan) hiddenPlan.value = recommended;
+
+  // Show the recommended plan screen
+  showScreen('recommended-plan-screen');
+}
+
+// ------------------ Override next() at last question ------------------
+function next() {
+  if (currentScreen < screens.length - 1) {
+    currentScreen++;
+    const nextScreen = screens[currentScreen];
+    
+    // If next screen is beyond Q18 (Premium questions) or Q19 (ownership), show recommended plan
+    if (nextScreen.id === 'final-choice' || nextScreen.id === 'instructor-q19') {
+      showRecommendedPlan();
+    } else {
+      showScreen(nextScreen.id);
+    }
+  }
+}
+
+// ------------------ Ensure feature sync triggers plan update ------------------
+function syncFeatureState() {
+  yesFeatures.length = 0;
+  noFeatures.length = 0;
+  planScores = { basic: 0, pro: 0, premium: 0 };
+
+  Object.entries(featureState).forEach(([f, isYes]) => {
+    if (isYes) {
+      yesFeatures.push(f);
+      if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
+    } else {
+      noFeatures.push(f);
+    }
+  });
+
+  const hiddenFeatures = document.getElementById('hiddenFeatures');
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 }
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
@@ -1466,7 +1208,7 @@ function showRecommendedPlan() {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (screen.id === "recommended-plan-screen") showRecommendedPlan();
     updateWaterProgress();
@@ -1497,8 +1239,9 @@ function showRecommendedPlan() {
   const noFeatures = [];
   let ownershipChoice = "";
   let planScores = { basic: 0, pro: 0, premium: 0 };
-  const featureState = {};   // { featureKey : true|false }
+  const featureState = {}; // { featureKey : true|false }
 
+  // ---- UPDATED scoring to align funnel questions with plans ----
   function syncFeatureState() {
     yesFeatures.length = 0;
     noFeatures.length = 0;
@@ -1507,17 +1250,24 @@ function showRecommendedPlan() {
     Object.entries(featureState).forEach(([f, isYes]) => {
       if (isYes) {
         yesFeatures.push(f);
-        if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
-        else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
-        else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
+
+        // Map each feature key to its plan tier
+        if (["booking","mobile","cta","contact","bio"].includes(f)) {
+          planScores.basic++;
+        } else if (["seo","reviews","branding","faq","newsletter"].includes(f)) {
+          planScores.pro++;
+        } else if (["packages","social","email","content","guide"].includes(f)) {
+          planScores.premium++;
+        }
       } else {
         noFeatures.push(f);
       }
     });
 
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
+    // Update live if on pricing screen
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
@@ -1529,34 +1279,30 @@ function showRecommendedPlan() {
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
+    recordFeature(choice === "Owned Outright" ? "buyOutright" : "monthlySupport");
     next();
   };
 
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
-
-
-
-
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership("Owned Outright"));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership("Monthly Support"));
 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.getAttribute("data-code");
       if (!code) return;
-      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" 
-                        + encodeURIComponent(code) + "&step=4";
+      const funnelURL = "https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=" +
+                        encodeURIComponent(code) + "&step=4";
       window.location.assign(funnelURL);
     });
   });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
-    const input = document.getElementById('designInput');
+    const input = document.getElementById("designInput");
     if (!input) return;
     const code = input.value.trim();
     if (!code) {
@@ -1567,7 +1313,7 @@ function showRecommendedPlan() {
   };
 
   function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
+    const code = String(rawCode || "").trim().toUpperCase();
     if (!code) return;
 
     hideAllScreens();
@@ -1579,18 +1325,18 @@ function showRecommendedPlan() {
       return;
     }
 
-    let templateScreen = document.getElementById('template-results');
+    let templateScreen = document.getElementById("template-results");
     if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = document.querySelectorAll('.form-screen');
+      templateScreen = document.createElement("div");
+      templateScreen.id = "template-results";
+      templateScreen.classList.add("form-screen");
+      document.getElementById("formWrapper").appendChild(templateScreen);
+      screens = document.querySelectorAll(".form-screen");
     }
 
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
+    const container = document.createElement("div");
+    container.className = "template-container";
+    const heading = document.createElement("h2");
     heading.textContent = `Showing template for code: ${code}`;
     container.appendChild(heading);
 
@@ -1599,36 +1345,36 @@ function showRecommendedPlan() {
 
     if (foundEl) {
       const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
+      clone.classList.add("template-preview-clone");
+      clone.style.width = "100%";
       container.appendChild(clone);
 
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
+      const buttonRow = document.createElement("div");
+      buttonRow.className = "button-row";
+      const contBtn = document.createElement("button");
+      contBtn.type = "button";
+      contBtn.textContent = "Continue";
       contBtn.onclick = () => next();
       buttonRow.appendChild(contBtn);
       container.appendChild(buttonRow);
 
-      templateScreen.innerHTML = '';
+      templateScreen.innerHTML = "";
       templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
+      templateScreen.classList.add("active");
       currentScreen = Array.from(screens).indexOf(templateScreen);
       updateWaterProgress();
       updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    const conceptsUrl = 'https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html';
+    const conceptsUrl = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html";
     window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
   // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
+  const typewriterEl = document.getElementById("typewriter");
+  const colorRiseEl = document.querySelector(".color-rise");
 
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
@@ -1639,8 +1385,8 @@ function showRecommendedPlan() {
     let lineEl = null;
     const typingSpeed = 100;
     const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
+    const cursor = document.createElement("span");
+    cursor.classList.add("cursor");
     typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
@@ -1653,15 +1399,15 @@ function showRecommendedPlan() {
       if (currentLine >= lines.length) {
         cursor.remove();
         setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
+          typewriterEl.style.animation = "rocketRise 2s ease forwards";
+          setTimeout(() => showScreen("main-intro-options"), 2000);
         }, 1000);
         return;
       }
       const text = lines[currentLine];
       if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
+        lineEl = document.createElement("div");
+        lineEl.classList.add("typed-line");
         typewriterEl.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
@@ -1680,11 +1426,11 @@ function showRecommendedPlan() {
     setLinesByOrientation();
     typeChar();
 
-    window.addEventListener('resize', debounce(() => {
+    window.addEventListener("resize", debounce(() => {
       currentLine = 0;
       currentChar = 0;
       lineEl = null;
-      typewriterEl.textContent = '';
+      typewriterEl.textContent = "";
       typewriterEl.appendChild(cursor);
       setLinesByOrientation();
       typeChar();
@@ -1700,43 +1446,42 @@ function showRecommendedPlan() {
   }
 
   // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
+  const hamburger = document.querySelector(".hamburger");
+  const menu = document.querySelector("nav.menu");
   if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
+    hamburger.addEventListener("click", e => {
       e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+      const isOpen = menu.classList.toggle("open");
+      hamburger.classList.toggle("active");
+      hamburger.setAttribute("aria-expanded", isOpen);
+      menu.setAttribute("aria-hidden", !isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
     });
-    document.addEventListener('click', e => {
+    document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+        menu.classList.remove("open");
+        hamburger.classList.remove("active");
+        hamburger.setAttribute("aria-expanded", false);
+        menu.setAttribute("aria-hidden", true);
+        document.body.style.overflow = "";
       }
     });
   }
 
- 
   // ------------------ Progress & Water ------------------
   function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
+    const wave = document.getElementById("progress-wave");
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
+    wave.style.height = progressPercent + "%";
   }
 
   function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
+    const progressBar = document.querySelector(".progress-bar");
+    const progressLabel = document.querySelector(".progress-label");
     const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
+    if (progressBar) progressBar.style.width = percent + "%";
+    if (progressLabel) progressLabel.textContent = percent + "%";
   }
 
   // ------------------ Initialize Funnel ------------------
@@ -1751,8 +1496,8 @@ function showRecommendedPlan() {
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (!stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
+    if (typewriterEl) typewriterEl.classList.add("active");
+    if (colorRiseEl) colorRiseEl.classList.add("active");
     startTypewriterAnimation();
   } else {
     if (stepParam) showScreen(`instructor-q${stepParam}`);
@@ -1761,11 +1506,6 @@ function showRecommendedPlan() {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 });
-
-
-
-
-
  // Intersection Observer for scroll animation
 document.addEventListener("DOMContentLoaded", function() {
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
