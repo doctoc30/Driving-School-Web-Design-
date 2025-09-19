@@ -1433,40 +1433,55 @@ document.addEventListener("DOMContentLoaded", () => {
   let planScores = { basic: 0, pro: 0, premium: 0 };
   const featureState = {};   // { featureKey : true|false }
 
-  function syncFeatureState() {
-    yesFeatures.length = 0;
-    noFeatures.length = 0;
-    planScores = { basic: 0, pro: 0, premium: 0 };
 
-    Object.entries(featureState).forEach(([f, isYes]) => {
-      if (isYes) {
-        yesFeatures.push(f);
-        if (["booking","mobile","cta","contact","bio"].includes(f)) planScores.basic++;
-        else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planScores.pro++;
-        else if (["packages","social","email","content","guide"].includes(f)) planScores.premium++;
-      } else {
-        noFeatures.push(f);
-      }
-    });
+ function syncFeatureState() {
+  yesFeatures.length = 0;
+  noFeatures.length = 0;
 
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+  Object.entries(featureState).forEach(([f, isYes]) => {
+    if (isYes) yesFeatures.push(f);
+    else noFeatures.push(f);
+  });
 
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan();
-    }
+  const hiddenFeatures = document.getElementById('hiddenFeatures');
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+
+  if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+    showRecommendedPlan();
+  }
+}
+
+function showRecommendedPlan() {
+  const recommendedScreen = document.getElementById('recommended-plan-screen');
+  if (!recommendedScreen) return;
+
+  let plan = 'basic'; // default if any basic feature selected
+
+  // Tier precedence: Premium > Pro > Basic
+  if (yesFeatures.some(f => ["packages","social","email","content","guide"].includes(f))) {
+    plan = 'premium';
+  } else if (yesFeatures.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f))) {
+    plan = 'pro';
+  } else if (yesFeatures.some(f => ["booking","mobile","cta","contact","bio"].includes(f))) {
+    plan = 'basic';
+  } else {
+    plan = 'pro'; // fallback if no features selected
   }
 
-  window.setPath = (path) => userPath = path;
-  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+  // Remove "recommended" from all cards
+  recommendedScreen.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('recommended'));
 
-  window.recordOwnership = (choice) => {
-    ownershipChoice = choice;
-    recordFeature(choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport');
-    next();
-  };
+  // Add "recommended" to the chosen plan card
+  recommendedScreen.querySelectorAll('.pricing-card').forEach(card => {
+    if (card.querySelector('h3')?.textContent.toLowerCase() === plan) {
+      card.classList.add('recommended');
+    }
+  });
 
+  // Scroll the first pricing card into view on mobile/portrait
+  const firstCard = recommendedScreen.querySelector('.pricing-card');
+  if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
