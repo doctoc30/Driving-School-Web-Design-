@@ -1381,7 +1381,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // ------------------ Screen Navigation ------------------
+  // ------------------ Hide/Show Screens ------------------
   function hideAllScreens() {
     screens.forEach(screen => {
       screen.classList.remove("active");
@@ -1391,108 +1391,92 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showScreen(id) {
     const screen = document.getElementById(id);
-    if (!screen) {
-      console.error(`Screen with ID ${id} not found`);
-      return;
-    }
+    if (!screen) return;
 
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = Array.from(screens).indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+    // Scroll first pricing card into view if recommended plan
+    if(screen.id === "recommended-plan-screen") {
+      showRecommendedPlan();
+      const firstCard = screen.querySelector('.pricing-card');
+      if(firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
   window.showScreen = showScreen;
-  window.next = next;
-  window.prev = prev;
+  window.next = () => { if(currentScreen < screens.length-1) showScreen(screens[currentScreen+1].id); };
+  window.prev = () => { if(currentScreen > 0) showScreen(screens[currentScreen-1].id); };
 
-  // ------------------ User Path & Features ------------------
+  // ------------------ User Features ------------------
   let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
-  let ownershipChoice = "";
-  let planScores = { basic: 0, pro: 0, premium: 0 };
-  const featureState = {};   // { featureKey : true|false }
+  const featureState = {};
 
+  window.setPath = (path) => userPath = path;
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
- function syncFeatureState() {
-  yesFeatures.length = 0;
-  noFeatures.length = 0;
+  function syncFeatureState() {
+    yesFeatures.length = 0;
+    noFeatures.length = 0;
 
-  Object.entries(featureState).forEach(([f, isYes]) => {
-    if (isYes) yesFeatures.push(f);
-    else noFeatures.push(f);
-  });
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if(isYes) yesFeatures.push(f);
+      else noFeatures.push(f);
+    });
 
-  const hiddenFeatures = document.getElementById('hiddenFeatures');
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    if(hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
-  if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-    showRecommendedPlan();
-  }
-}
-
-function showRecommendedPlan() {
-  const recommendedScreen = document.getElementById('recommended-plan-screen');
-  if (!recommendedScreen) return;
-
-  let plan = 'basic'; // default if any basic feature selected
-
-  // Tier precedence: Premium > Pro > Basic
-  if (yesFeatures.some(f => ["packages","social","email","content","guide"].includes(f))) {
-    plan = 'premium';
-  } else if (yesFeatures.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f))) {
-    plan = 'pro';
-  } else if (yesFeatures.some(f => ["booking","mobile","cta","contact","bio"].includes(f))) {
-    plan = 'basic';
-  } else {
-    plan = 'pro'; // fallback if no features selected
-  }
-
-  // Remove "recommended" from all cards
-  recommendedScreen.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('recommended'));
-
-  // Add "recommended" to the chosen plan card
-  recommendedScreen.querySelectorAll('.pricing-card').forEach(card => {
-    if (card.querySelector('h3')?.textContent.toLowerCase() === plan) {
-      card.classList.add('recommended');
+    if(document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan();
     }
+  }
+
+  function showRecommendedPlan() {
+    const recommendedScreen = document.getElementById('recommended-plan-screen');
+    if(!recommendedScreen) return;
+
+    let plan = 'basic'; // default
+
+    // Tier precedence: Premium > Pro > Basic
+    if (yesFeatures.some(f => ["packages","social","email","content","guide"].includes(f))) plan = 'premium';
+    else if (yesFeatures.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f))) plan = 'pro';
+    else if (yesFeatures.some(f => ["booking","mobile","cta","contact","bio"].includes(f))) plan = 'basic';
+    else plan = 'pro'; // fallback if nothing selected
+
+    // Update recommended class
+    recommendedScreen.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('recommended'));
+    recommendedScreen.querySelectorAll('.pricing-card').forEach(card => {
+      if(card.querySelector('h3')?.textContent.toLowerCase() === plan) card.classList.add('recommended');
+    });
+
+    // Scroll first card into view
+    const firstCard = recommendedScreen.querySelector('.pricing-card');
+    if(firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ------------------ Q19 Ownership ------------------
+  document.querySelectorAll("#instructor-q19 .own-outright, #instructor-q19 .monthly-support").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const choice = btn.classList.contains('own-outright') ? 'Owned Outright' : 'Monthly Support';
+      featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
+      syncFeatureState();
+      next();
+    });
   });
 
-  // Scroll the first pricing card into view on mobile/portrait
-  const firstCard = recommendedScreen.querySelector('.pricing-card');
-  if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-  // ------------------ Q19 Buttons ------------------
-  const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
-  const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
 
-
-
-
-  // ------------------ "I Want This Concept" Button ------------------
+   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.getAttribute("data-code");
@@ -1575,7 +1559,24 @@ function showRecommendedPlan() {
     window.location.href = `${conceptsUrl}?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Typewriter Animation ------------------
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+
+  // Priority: Design code / step param → typewriter → default first screen
+  if (codeParam && stepParam === "4") showScreen("instructor-q4");
+  else if (codeParam) showFilteredTemplate(codeParam);
+  else showScreen('main-intro-options'); // always show first screen immediately
+
+  // Optional: typewriter animation (decorative, non-blocking)
+  if(document.getElementById('typewriter')) startTypewriterAnimation();
+
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
+});
+
+
+
+   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
@@ -1671,85 +1672,6 @@ function showRecommendedPlan() {
     });
   }
 
- 
-  // ------------------ Progress & Water ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
-
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-
-  if (codeParam && stepParam === "4") {
-    const designInput = document.getElementById("designInput");
-    if (designInput) designInput.value = codeParam.trim().toUpperCase();
-    showScreen("instructor-q4");
-  } else if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (!stepParam) {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  } else {
-    if (stepParam) showScreen(`instructor-q${stepParam}`);
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-});
-
-
-
-
-
- // Intersection Observer for scroll animation
-document.addEventListener("DOMContentLoaded", function() {
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  
-  cards.forEach(card => observer.observe(card));
-});
- 
-
-  // Stripe Checkout function
-  const stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY'); // Replace with your Stripe public key
-
-  function stripeCheckout(plan) {
-    let priceId = '';
-    switch(plan) {
-      case 'basic': priceId = 'price_id_basic'; break;
-      case 'pro': priceId = 'price_id_pro'; break;
-      case 'premium': priceId = 'price_id_premium'; break;
-    }
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'payment',
-      successUrl: window.location.href + '?success=true',
-      cancelUrl: window.location.href + '?canceled=true',
-    }).then(function (result) {
-      if (result.error) alert(result.error.message);
-    });
-  }
 </script>
 </body>
 </html>
