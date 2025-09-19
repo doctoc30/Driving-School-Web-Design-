@@ -1397,7 +1397,21 @@ html, body {
    </form>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new MutationObserver(() => {
+    const activeScreen = document.querySelector('#recommended-plan-screen.form-screen.active');
+    const recCard = document.querySelector('.pricing-card.recommended');
+    if (activeScreen && recCard) {
+      // Scroll the recommended card into the center of the viewport
+      recCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      observer.disconnect();
+    }
+  });
+
+  // Watch the whole page for when the recommended screen appears
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+
   // ------------------ Basic setup ------------------
   let screens = document.querySelectorAll(".form-screen");
   let currentScreen = 0;
