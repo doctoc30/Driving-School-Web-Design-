@@ -1039,12 +1039,24 @@ html, body {
 }
 
 
+/* Mobile Portrait Fix for Pricing Cards */
+@media (max-width: 768px) {
+  #pricing-section {
+    min-height: auto;   /* remove full-screen forcing */
+    padding: 40px 20px;
+    display: block;     /* normal flow */
+  }
 
- .pricing-card.recommended {
-  border: 3px solid #ff9800;       /* bright outline */
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  transform: scale(1.05);
-  transition: all 0.3s ease;
+  .pricing-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .pricing-card {
+    min-height: auto;   /* allow card height to adjust to content */
+    transform: translateY(0); /* start from normal flow */
+    opacity: 1;          /* remove animation clipping issue */
+  }
 }
 </style>
 
