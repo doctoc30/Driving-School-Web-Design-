@@ -1078,6 +1078,29 @@ html, body {
     font-size: 0.75rem;
   }
 }
+
+
+
+
+ /* Styling for the "includes everything in ..." message */
+.pricing-card .includes-message {
+  margin: 1rem 0 0.5rem 0;
+  padding: 0 10px;
+  text-align: left;
+}
+
+.pricing-card .includes-message ul {
+  list-style: disc inside;
+  margin: 0;
+  padding-left: 1rem;
+  color: #ffffffcc; /* slightly translucent white to match theme */
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.pricing-card .includes-message li {
+  margin: 4px 0;
+}
 </style>
 
 </head>
@@ -1592,60 +1615,76 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-    if (!planCards || planCards.length === 0) return;
+function showRecommendedPlan() {
+  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  if (!planCards || planCards.length === 0) return;
 
-    // Count selected features per tier
-    const planCounts = { basic: 0, pro: 0, premium: 0 };
+  // Count selected features per tier
+  const planCounts = { basic: 0, pro: 0, premium: 0 };
+  yesFeatures.forEach(f => {
+    if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
+  });
 
-    yesFeatures.forEach(f => {
-      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
-      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-      // ownership features ignored
-    });
-
-    // Choose recommended plan by counts but prefer higher tier on tie
-    let recommendedPlan = "basic"; // default
-    const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
-    if (maxCount === 0) {
-      // fallback (no selections)
-      recommendedPlan = "pro";
-    } else {
-      // if multiple have same max, prefer premium > pro > basic
-      if (planCounts.premium === maxCount) recommendedPlan = "premium";
-      else if (planCounts.pro === maxCount) recommendedPlan = "pro";
-      else recommendedPlan = "basic";
-    }
-
-    // Remove previous highlights
-    planCards.forEach(card => card.classList.remove("recommended"));
-
-    // Find and highlight selected plan card (match h3 text)
-    const selectedCard = planCards.find(card => {
-      const h3 = card.querySelector("h3");
-      const title = h3 ? h3.textContent.trim().toLowerCase() : '';
-      return title === recommendedPlan;
-    });
-
-    if (selectedCard) {
-      selectedCard.classList.add("recommended");
-      // ensure it is visible (force 'in-view' so CSS shows correctly), then center it
-      selectedCard.classList.add('in-view');
-
-      // scroll into center after a tiny delay to allow layout settle
-      setTimeout(() => {
-        try {
-          selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } catch (err) {
-          // fallback to top if center fails
-          try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
-        }
-      }, 220);
-    }
+  // Determine recommended plan: Premium > Pro > Basic
+  let recommendedPlan = "basic";
+  const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+  if (maxCount === 0) recommendedPlan = "pro";
+  else {
+    if (planCounts.premium === maxCount) recommendedPlan = "premium";
+    else if (planCounts.pro === maxCount) recommendedPlan = "pro";
+    else recommendedPlan = "basic";
   }
 
+  // Remove previous highlights and includes messages
+  planCards.forEach(card => {
+    card.classList.remove("recommended");
+    const msg = card.querySelector(".includes-message");
+    if (msg) msg.remove();
+  });
+
+  // Highlight selected plan
+  const selectedCard = planCards.find(card => {
+    const h3 = card.querySelector("h3");
+    const title = h3 ? h3.textContent.trim().toLowerCase() : '';
+    return title === recommendedPlan;
+  });
+
+  if (selectedCard) {
+    selectedCard.classList.add("recommended");
+    selectedCard.classList.add("in-view");
+
+    // Add bullet-style "includes everything in ..." message
+    let includesList = [];
+    if (recommendedPlan === 'pro') includesList = ['Basic plan'];
+    else if (recommendedPlan === 'premium') includesList = ['Basic plan', 'Pro plan'];
+
+    if (includesList.length > 0) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'includes-message';
+      const ul = document.createElement('ul');
+      includesList.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `Includes everything in ${item}`;
+        ul.appendChild(li);
+      });
+      msgDiv.appendChild(ul);
+
+      const title = selectedCard.querySelector('h3');
+      selectedCard.insertBefore(msgDiv, title.nextSibling); // insert below title
+    }
+
+    // Scroll into center
+    setTimeout(() => {
+      try {
+        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
+      }
+    }, 220);
+  }
+}
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
