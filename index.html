@@ -877,13 +877,6 @@ header {
   user-select: none; 
   cursor: default;
 }
- 
-
-
-
-
-
-
 
  
 /* iPhone landscape fix */
@@ -893,9 +886,7 @@ header {
     padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
-
-
-
+ 
 
   #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
   .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
@@ -1090,9 +1081,6 @@ html, body {
   color: #fff;
   list-style: none;  /* no bullets */
 }
-
-
-
 
 </style>
 
@@ -1334,13 +1322,108 @@ html, body {
     </div>
   </div>
 
-  <!-- ===================== Q19: Ownership ===================== -->
- <div class="form-screen" id="instructor-q19">
+<!-- ===================== Q19: Ownership ===================== -->
+<div class="form-screen" id="instructor-q19">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+
   <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="own-outright" onclick="showScreen('recommended-plan-screen')">
+      Own Outright
+    </button>
+
+    <!-- ✅ Only one Monthly Support button, with onclick -->
+    <button type="button" class="monthly-support"
+            onclick="showScreen('monthly-support-screen')">
+      Monthly Support
+    </button>
+
     <button type="button" class="back-button" onclick="prev()">Back</button>
+  </div>
+</div>
+
+<!-- ===================== MONTHLY SUPPORT PACKAGES ===================== -->
+<div class="form-screen" id="monthly-support-screen">
+  <h2>Monthly Support & Hosting Plans</h2>
+  <p class="subtext">
+    Ongoing hosting, maintenance, updates, and priority support — all done for you.
+  </p>
+
+  <section id="monthly-support-pricing">
+    <div class="pricing-container">
+      <!-- your monthly pricing cards go here -->
+    </div>
+  </section>
+</div>
+
+      <!-- Starter Plan -->
+      <div class="pricing-card" data-animate>
+        <h3>Starter</h3>
+        <p class="price">£49/mo</p>
+        <ul>
+          <li>Fast, secure hosting</li>
+          <li>Basic maintenance & updates</li>
+          <li>Email support</li>
+        </ul>
+        <button class="pay-now"
+          onclick="window.location.href='https://www.paypal.com/paypal-link-starter'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Subscribe £49/mo
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
+      </div>
+
+      <!-- Growth Plan -->
+      <div class="pricing-card recommended" data-animate>
+        <h3>Growth</h3>
+        <p class="price">£99/mo</p>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>Monthly content updates</li>
+          <li>Performance monitoring & backups</li>
+          <li>Priority email & phone support</li>
+        </ul>
+        <button class="pay-now"
+          onclick="window.location.href='https://www.paypal.com/paypal-link-growth'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Subscribe £99/mo
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
+      </div>
+
+      <!-- Elite Plan -->
+      <div class="pricing-card" data-animate>
+        <h3>Elite</h3>
+        <p class="price">£149/mo</p>
+        <ul>
+          <li>Everything in Growth</li>
+          <li>Unlimited content edits</li>
+          <li>Advanced SEO monitoring</li>
+          <li>Quarterly strategy call</li>
+        </ul>
+        <button class="pay-now"
+          onclick="window.location.href='https://www.paypal.com/paypal-link-elite'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Subscribe £149/mo
+        </button>
+        <div class="paypal-badge">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+          <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="button-row">
+    <button type="button" class="back-button" onclick="prev()">Back</button>
+  </div>
+</div>
   </div>
 </div>
 
@@ -1875,7 +1958,5 @@ function showRecommendedPlan() {
 
 }); /* end DOMContentLoaded */
 </script>
-
-
 </body>
 </html>
