@@ -1113,7 +1113,221 @@ html, body {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+ <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+
+  <!-- Hidden fields to capture selected plan and features -->
+  <input type="hidden" id="hiddenPlan" name="Selected Plan">
+  <input type="hidden" id="hiddenFeatures" name="Selected Features">
+  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
+
+  <!-- ===================== INTRO ===================== -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>Welcome! What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q1 ===================== -->
+  <div class="form-screen" id="instructor-q1">
+    <h2>Are you a solo driving instructor or a driving school?</h2>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Solo Instructor','basic'); next()">Solo Instructor</button>
+      <button type="button" onclick="recordFeature('Driving School','basic'); next()">Driving School</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q2 ===================== -->
+  <div class="form-screen" id="instructor-q2">
+    <h2>Do you have a design concept in mind?</h2>
+    <p>You can enter a design code, choose from templates, or request a custom design.</p>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
+      <button type="button" onclick="next()">Custom design</button>
+    </div>
+  </div>
+
+  <!-- ===================== Q3 ===================== -->
+  <div class="form-screen" id="design-code">
+    <h2>Enter your chosen design code</h2>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
+    <div class="button-row">
+      <button type="button" onclick="goToConcept()">Continue</button>
+      <button type="button" onclick="next()">Skip</button>
+    </div>
+  </div>
+
+  <!-- ========== BASIC QUESTIONS ========== -->
+  <div class="form-screen" id="instructor-q4">
+    <h2>Do you want students to book & pay online?</h2>
+    <p><strong>(Basic)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Booking & Payment','basic'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q5">
+    <h2>Do you want your site optimized for mobile?</h2>
+    <p><strong>(Basic)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Mobile Optimization','basic'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q6">
+    <h2>Do you want strong call-to-action buttons?</h2>
+    <p><strong>(Basic)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('CTA Buttons','basic'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q7">
+    <h2>Do you want a simple contact form?</h2>
+    <p><strong>(Basic)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Contact Form','basic'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q8">
+    <h2>Do you want an About Me / Instructor Bio section?</h2>
+    <p><strong>(Basic)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Instructor Bio','basic'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <!-- ========== PRO QUESTIONS ========== -->
+  <div class="form-screen" id="instructor-q9">
+    <h2>Do you want your site to rank on Google locally?</h2>
+    <p><strong>(Pro)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Local SEO','pro'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q10">
+    <h2>Would you like to display student reviews?</h2>
+    <p><strong>(Pro)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Student Reviews','pro'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q11">
+    <h2>Do you want branding help (logo, colors)?</h2>
+    <p><strong>(Pro)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Branding Assistance','pro'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q12">
+    <h2>Do you want a FAQ or student guide section?</h2>
+    <p><strong>(Pro)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('FAQ / Student Guide','pro'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q13">
+    <h2>Do you want newsletter signup or mailing list?</h2>
+    <p><strong>(Pro)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Newsletter Signup','pro'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <!-- ========== PREMIUM QUESTIONS ========== -->
+  <div class="form-screen" id="instructor-q14">
+    <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Lesson Packages','premium'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q15">
+    <h2>Do you want social media integration?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Social Media Integration','premium'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q16">
+    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Professional Email','premium'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q17">
+    <h2>Do you want help creating content (text/images)?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Content Creation','premium'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q18">
+    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('First Lesson Guide','premium'); next()">Yes</button>
+      <button type="button" onclick="next()">No</button>
+    </div>
+  </div>
+
+  <!-- ===================== FINAL CHOICE ===================== -->
+  <div class="form-screen" id="final-choice">
+    <h2>What would you like to do next?</h2>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
+      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q19">
+    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+    <div class="button-row">
+      <button type="button" class="own-outright">Own Outright</button>
+      <button type="button" class="monthly-support">Monthly Support</button>
+    </div>
+  </div>
+
+  <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <div class="form-screen" id="recommended-plan-screen">
+    <h2>Your Recommended Plan</h2>
+    <div id="userSummary"></div>
+    <section id="pricing-section">
+      <div class="pricing-container">
+        <!-- pricing cards identical to your existing HTML -->
+        <!-- … keep your Basic, Pro, Premium cards as before … -->
+      </div>
+    </section>
+  </div>
+
+</form>
 
   <!-- Hidden fields to capture selected plan and features -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
@@ -1472,6 +1686,19 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
+
+
+ const chosen = {
+  basic: [],
+  pro: [],
+  premium: []
+};
+
+function recordFeature(feature, tier) {
+  chosen[tier].push(feature);
+}
+
+ 
   // ------------------ User Path & Features ------------------
   let userPath = "";
   const yesFeatures = [];
@@ -1862,6 +2089,32 @@ function showRecommendedPlan() {
   };
 
 }); /* end DOMContentLoaded */
+
+
+const chosen = { basic: [], pro: [], premium: [] };
+
+function recordFeature(feature, tier) {
+  chosen[tier].push(feature);
+}
+
+// call when final screen loads
+function showSummary() {
+  const s = `
+    <p><strong>Basic:</strong> ${chosen.basic.join(', ') || 'None'}</p>
+    <p><strong>Pro:</strong> ${chosen.pro.join(', ') || 'None'}</p>
+    <p><strong>Premium:</strong> ${chosen.premium.join(', ') || 'None'}</p>
+  `;
+  document.getElementById('userSummary').innerHTML = s;
+
+  // for email submission
+  document.getElementById('hiddenFeatures').value =
+    `Basic: ${chosen.basic.join(', ')} | Pro: ${chosen.pro.join(', ')} | Premium: ${chosen.premium.join(', ')}`;
+}
+
+// wherever you show recommended-plan-screen, also call:
+ // showSummary();
+
+
 </script>
 </body>
 </html>
