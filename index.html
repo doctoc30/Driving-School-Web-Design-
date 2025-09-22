@@ -1822,12 +1822,13 @@ function recordFeature(feature, tier) {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Recommended Plan ------------------
+  
+// ------------------ Recommended Plan ------------------
 function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
   if (!planCards || planCards.length === 0) return;
 
-  // Count selected features per tier
+  // Count selected features per tier (based on yesFeatures array)
   const planCounts = { basic: 0, pro: 0, premium: 0 };
   yesFeatures.forEach(f => {
     if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
@@ -1835,63 +1836,67 @@ function showRecommendedPlan() {
     else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
   });
 
-  // Determine recommended plan: Premium > Pro > Basic
+  // Decide which plan to recommend
   let recommendedPlan = "basic";
   const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
-  if (maxCount === 0) recommendedPlan = "pro";
+  if (maxCount === 0) recommendedPlan = "pro"; // fallback if no features chosen
   else {
     if (planCounts.premium === maxCount) recommendedPlan = "premium";
     else if (planCounts.pro === maxCount) recommendedPlan = "pro";
     else recommendedPlan = "basic";
   }
 
-  // Remove previous highlights and includes messages
+  // Clear previous highlights and messages
   planCards.forEach(card => {
     card.classList.remove("recommended");
     const msg = card.querySelector(".includes-message");
     if (msg) msg.remove();
   });
 
-  // Highlight selected plan
+  // Highlight the recommended plan card
   const selectedCard = planCards.find(card => {
     const h3 = card.querySelector("h3");
-    const title = h3 ? h3.textContent.trim().toLowerCase() : '';
-    return title === recommendedPlan;
+    return h3 && h3.textContent.trim().toLowerCase() === recommendedPlan;
   });
 
-  if (selectedCard) {
-    selectedCard.classList.add("recommended");
-    selectedCard.classList.add("in-view");
+  if (!selectedCard) return;
+  selectedCard.classList.add("recommended", "in-view");
 
-    // Add bullet-style "includes everything in ..." message
-    let includesList = [];
-    if (recommendedPlan === 'pro') includesList = ['Basic plan'];
-    else if (recommendedPlan === 'premium') includesList = ['Basic plan', 'Pro plan'];
+  // ✅ Build custom message showing only chosen features per tier
+  const makeList = (label, items) =>
+    items.length ? `<li>${label}: ${items.join(", ")}</li>` : "";
 
-    if (includesList.length > 0) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'includes-message';
-      const ul = document.createElement('ul');
-      includesList.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `Includes everything in ${item}`;
-        ul.appendChild(li);
-      });
-      msgDiv.appendChild(ul);
+  // Get actual selections from featureState
+  const basicChosen = yesFeatures.filter(f =>
+    ["booking","mobile","cta","contact","bio"].includes(f)
+  );
+  const proChosen = yesFeatures.filter(f =>
+    ["seo","reviews","branding","faq","newsletter"].includes(f)
+  );
 
-      const title = selectedCard.querySelector('h3');
-      selectedCard.insertBefore(msgDiv, title.nextSibling); // insert below title
-    }
-
-    // Scroll into center
-    setTimeout(() => {
-      try {
-        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } catch (err) {
-        try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
-      }
-    }, 220);
+  let html = "<ul>";
+  if (recommendedPlan === "pro" || recommendedPlan === "premium") {
+    html += makeList("Basic features you selected", basicChosen);
   }
+  if (recommendedPlan === "premium") {
+    html += makeList("Pro features you selected", proChosen);
+  }
+  html += "</ul>";
+
+  if (html !== "<ul></ul>") {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "includes-message";
+    msgDiv.innerHTML = html;
+    const title = selectedCard.querySelector("h3");
+    selectedCard.insertBefore(msgDiv, title.nextSibling);
+  }
+
+  // Scroll the chosen card into view
+  setTimeout(() => {
+    try {
+      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch {}
+  }, 200);
 }
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
