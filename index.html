@@ -1595,99 +1595,76 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-
-
-
- // -------------------- Feature Maps --------------------
-const basicFeaturesMap = {
-  booking: 'Booking & Payment Integration',
-  mobile: 'Mobile Friendly',
-  cta: 'Call-to-Action Buttons',
-  contact: 'Contact Form',
-  bio: 'About Me / Instructor Bio'
-};
-
-const proFeaturesMap = {
-  seo: 'SEO Optimization',
-  reviews: 'Student Reviews',
-  branding: 'Branding Help',
-  faq: 'FAQ / Student Guide',
-  newsletter: 'Newsletter Signup'
-};
-
-const premiumFeaturesList = [
-  '50+ Pages Website',
-  '30 Revisions',
-  'Full Branding'
-];
-
-// -------------------- User-selected features --------------------
-let selectedFeatures = [];
-
-// Record features when user clicks "Yes"
-function recordFeature(feature) {
-  if (!selectedFeatures.includes(feature)) {
-    selectedFeatures.push(feature);
-  }
-}
-
   // ------------------ Recommended Plan ------------------
-function generatePlanFeatures() {
-  // Get the UL for each plan
-  const basicUL = document.querySelector('#recommended-plan-screen .pricing-card:nth-child(1) ul');
-  const proUL = document.querySelector('#recommended-plan-screen .pricing-card:nth-child(2) ul');
-  const premiumUL = document.querySelector('#recommended-plan-screen .pricing-card:nth-child(3) ul');
+function showRecommendedPlan() {
+  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  if (!planCards || planCards.length === 0) return;
 
-  // Clear previous lists
-  basicUL.innerHTML = '';
-  proUL.innerHTML = '';
-  premiumUL.innerHTML = '';
-
-  // Basic Plan - only selected basic features
-  Object.keys(basicFeaturesMap).forEach(f => {
-    if (selectedFeatures.includes(f)) {
-      const li = document.createElement('li');
-      li.textContent = basicFeaturesMap[f];
-      basicUL.appendChild(li);
-    }
+  // Count selected features per tier
+  const planCounts = { basic: 0, pro: 0, premium: 0 };
+  yesFeatures.forEach(f => {
+    if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
   });
 
-  // Pro Plan - include selected basic + selected pro features
-  Object.keys(basicFeaturesMap).forEach(f => {
-    if (selectedFeatures.includes(f)) {
-      const li = document.createElement('li');
-      li.textContent = basicFeaturesMap[f];
-      proUL.appendChild(li);
-    }
-  });
-  Object.keys(proFeaturesMap).forEach(f => {
-    if (selectedFeatures.includes(f)) {
-      const li = document.createElement('li');
-      li.textContent = proFeaturesMap[f];
-      proUL.appendChild(li);
-    }
+  // Determine recommended plan: Premium > Pro > Basic
+  let recommendedPlan = "basic";
+  const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+  if (maxCount === 0) recommendedPlan = "pro";
+  else {
+    if (planCounts.premium === maxCount) recommendedPlan = "premium";
+    else if (planCounts.pro === maxCount) recommendedPlan = "pro";
+    else recommendedPlan = "basic";
+  }
+
+  // Remove previous highlights and includes messages
+  planCards.forEach(card => {
+    card.classList.remove("recommended");
+    const msg = card.querySelector(".includes-message");
+    if (msg) msg.remove();
   });
 
-  // Premium Plan - include selected basic + pro + premium features
-  premiumFeaturesList.forEach(f => {
-    const li = document.createElement('li');
-    li.textContent = f;
-    premiumUL.appendChild(li);
+  // Highlight selected plan
+  const selectedCard = planCards.find(card => {
+    const h3 = card.querySelector("h3");
+    const title = h3 ? h3.textContent.trim().toLowerCase() : '';
+    return title === recommendedPlan;
   });
-  Object.keys(basicFeaturesMap).forEach(f => {
-    if (selectedFeatures.includes(f)) {
-      const li = document.createElement('li');
-      li.textContent = basicFeaturesMap[f];
-      premiumUL.appendChild(li);
+
+  if (selectedCard) {
+    selectedCard.classList.add("recommended");
+    selectedCard.classList.add("in-view");
+
+    // Add bullet-style "includes everything in ..." message
+    let includesList = [];
+    if (recommendedPlan === 'pro') includesList = ['Basic plan'];
+    else if (recommendedPlan === 'premium') includesList = ['Basic plan', 'Pro plan'];
+
+    if (includesList.length > 0) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'includes-message';
+      const ul = document.createElement('ul');
+      includesList.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `Includes everything in ${item}`;
+        ul.appendChild(li);
+      });
+      msgDiv.appendChild(ul);
+
+      const title = selectedCard.querySelector('h3');
+      selectedCard.insertBefore(msgDiv, title.nextSibling); // insert below title
     }
-  });
-  Object.keys(proFeaturesMap).forEach(f => {
-    if (selectedFeatures.includes(f)) {
-      const li = document.createElement('li');
-      li.textContent = proFeaturesMap[f];
-      premiumUL.appendChild(li);
-    }
-  });
+
+    // Scroll into center
+    setTimeout(() => {
+      try {
+        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
+      }
+    }, 220);
+  }
 }
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
