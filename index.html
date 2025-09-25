@@ -1593,77 +1593,80 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-    if (!planCards.length) return;
+function showRecommendedPlan() {
+  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  if (!planCards.length) return;
 
-    // Count user-selected features by tier
-    const planCounts = { basic: 0, pro: 0, premium: 0 };
-    yesFeatures.forEach(f => {
-      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
-      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-    });
+  // Build a list of current Yes features
+  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
 
-    // Decide recommended plan (Premium > Pro > Basic)
-    let recommendedPlan = "basic";
-    const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
-    // Use > 0 check to ensure we only recommend Pro/Premium if features are actually selected in those tiers
-    if (maxCount === 0) recommendedPlan = "pro"; // Default to Pro if no features selected
-    else if (planCounts.premium === maxCount && planCounts.premium > 0) recommendedPlan = "premium";
-    else if (planCounts.pro === maxCount && planCounts.pro > 0) recommendedPlan = "pro";
+  // Tier checks
+  const hasPremium = yes.some(f =>
+    ["packages","social","email","content","guide"].includes(f)
+  );
+  const hasPro = yes.some(f =>
+    ["seo","reviews","branding","faq","newsletter"].includes(f)
+  );
+  const hasBasic = yes.some(f =>
+    ["booking","mobile","cta","contact","bio"].includes(f)
+  );
 
-    // Reset highlights and previous messages
-    planCards.forEach(card => {
-      card.classList.remove("recommended");
-      const msg = card.querySelector(".includes-message");
-      if (msg) msg.remove();
-    });
+  // Decide recommended plan by highest tier present
+  let recommendedPlan;
+  if (hasPremium) recommendedPlan = "premium";
+  else if (hasPro) recommendedPlan = "pro";
+  else if (hasBasic) recommendedPlan = "basic";
+  else recommendedPlan = "pro"; // fallback if nothing selected
 
-    // Highlight and add dynamic “includes” message
-    const selectedCard = planCards.find(card =>
-      card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  // Clear highlights & messages
+  planCards.forEach(card => {
+    card.classList.remove("recommended", "in-view");
+    card.querySelector(".includes-message")?.remove();
+  });
+
+  // Highlight chosen card
+  const selectedCard = planCards.find(card =>
+    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  );
+  if (!selectedCard) return;
+  selectedCard.classList.add("recommended","in-view");
+
+  // Dynamic includes text
+  let msgText = "";
+  if (recommendedPlan === "pro") {
+    const basicYes = yes.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
     );
-    if (!selectedCard) return;
-
-    selectedCard.classList.add("recommended", "in-view");
-
-    // Build a list of *actually chosen* lower-tier features for Pro/Premium
-    let msgText = "";
-    if (recommendedPlan === "pro") {
-      const basicYes = yesFeatures.filter(f =>
-        ["booking","mobile","cta","contact","bio"].includes(f)
-      );
-      if (basicYes.length) {
-        msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-      }
-    } else if (recommendedPlan === "premium") {
-      const basicYes = yesFeatures.filter(f =>
-        ["booking","mobile","cta","contact","bio"].includes(f)
-      );
-      const proYes = yesFeatures.filter(f =>
-        ["seo","reviews","branding","faq","newsletter"].includes(f)
-      );
-      const parts = [];
-      if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-      if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-      if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
-    }
-
-    if (msgText) {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = "includes-message";
-      msgDiv.textContent = msgText;
-      const title = selectedCard.querySelector("h3");
-      selectedCard.insertBefore(msgDiv, title.nextSibling);
-    }
-
-    // Smooth scroll to the recommended card
-    setTimeout(() => {
-      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 200);
+    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+  } else if (recommendedPlan === "premium") {
+    const basicYes = yes.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
+    );
+    const proYes = yes.filter(f =>
+      ["seo","reviews","branding","faq","newsletter"].includes(f)
+    );
+    const parts = [];
+    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
+    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
   }
 
+  if (msgText) {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "includes-message";
+    msgDiv.textContent = msgText;
+    const title = selectedCard.querySelector("h3");
+    selectedCard.insertBefore(msgDiv, title.nextSibling);
+  }
+
+  // Smooth scroll
+  setTimeout(() =>
+    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+  );
+}
+
+
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
