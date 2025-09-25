@@ -1598,9 +1598,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Recommended Plan ------------------
 function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-  if (!planCards || planCards.length === 0) return;
+  if (!planCards.length) return;
 
-  // Count selected features per tier
+  // Count user-selected features by tier
   const planCounts = { basic: 0, pro: 0, premium: 0 };
   yesFeatures.forEach(f => {
     if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
@@ -1608,64 +1608,68 @@ function showRecommendedPlan() {
     else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
   });
 
-  // Determine recommended plan: Premium > Pro > Basic
+  // Decide recommended plan (Premium > Pro > Basic)
   let recommendedPlan = "basic";
   const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
   if (maxCount === 0) recommendedPlan = "pro";
-  else {
-    if (planCounts.premium === maxCount) recommendedPlan = "premium";
-    else if (planCounts.pro === maxCount) recommendedPlan = "pro";
-    else recommendedPlan = "basic";
-  }
+  else if (planCounts.premium === maxCount) recommendedPlan = "premium";
+  else if (planCounts.pro === maxCount) recommendedPlan = "pro";
 
-  // Remove previous highlights and includes messages
+  // Reset highlights and previous messages
   planCards.forEach(card => {
     card.classList.remove("recommended");
     const msg = card.querySelector(".includes-message");
     if (msg) msg.remove();
   });
 
-  // Highlight selected plan
-  const selectedCard = planCards.find(card => {
-    const h3 = card.querySelector("h3");
-    const title = h3 ? h3.textContent.trim().toLowerCase() : '';
-    return title === recommendedPlan;
-  });
+  // Highlight and add dynamic “includes” message
+  const selectedCard = planCards.find(card =>
+    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  );
+  if (!selectedCard) return;
 
-  if (selectedCard) {
-    selectedCard.classList.add("recommended");
-    selectedCard.classList.add("in-view");
+  selectedCard.classList.add("recommended", "in-view");
 
-    // Add bullet-style "includes everything in ..." message
-    let includesList = [];
-    if (recommendedPlan === 'pro') includesList = ['Basic plan'];
-    else if (recommendedPlan === 'premium') includesList = ['Basic plan', 'Pro plan'];
-
-    if (includesList.length > 0) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'includes-message';
-      const ul = document.createElement('ul');
-      includesList.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `Includes everything in ${item}`;
-        ul.appendChild(li);
-      });
-      msgDiv.appendChild(ul);
-
-      const title = selectedCard.querySelector('h3');
-      selectedCard.insertBefore(msgDiv, title.nextSibling); // insert below title
+  // Build a list of *actually chosen* lower-tier features
+  let msgText = "";
+  if (recommendedPlan === "pro") {
+    const basicYes = yesFeatures.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
+    );
+    if (basicYes.length) {
+      msgText = `Includes from Basic: ${basicYes.join(", ")}`;
     }
-
-    // Scroll into center
-    setTimeout(() => {
-      try {
-        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } catch (err) {
-        try { selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e) {}
-      }
-    }, 220);
+  } else if (recommendedPlan === "premium") {
+    const basicYes = yesFeatures.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
+    );
+    const proYes = yesFeatures.filter(f =>
+      ["seo","reviews","branding","faq","newsletter"].includes(f)
+    );
+    const parts = [];
+    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
+    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
   }
+
+  if (msgText) {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "includes-message";
+    msgDiv.textContent = msgText;
+    const title = selectedCard.querySelector("h3");
+    selectedCard.insertBefore(msgDiv, title.nextSibling);
+  }
+
+  // Smooth scroll to the recommended card
+  setTimeout(() => {
+    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 200);
 }
+
+
+
+
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
