@@ -1418,6 +1418,7 @@ html, body {
 
 
  <script>
+
 /* ---------- Full cleaned funnel JS (paste over your existing script) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1492,6 +1493,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
+    // Added for debugging: Check which features are currently set to 'Yes'
+    console.log("Current YES Features:", yesFeatures);
   }
 
   window.setPath = (path) => userPath = path;
@@ -1613,8 +1616,9 @@ function showRecommendedPlan() {
   let recommendedPlan = "basic";
   const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
   if (maxCount === 0) recommendedPlan = "pro";
-  else if (planCounts.premium === maxCount) recommendedPlan = "premium";
-  else if (planCounts.pro === maxCount) recommendedPlan = "pro";
+  else if (planCounts.premium === maxCount && planCounts.premium > 0) recommendedPlan = "premium";
+  else if (planCounts.pro === maxCount && planCounts.pro > 0) recommendedPlan = "pro";
+  // Fallback to Pro if maxCount is 0, as per original logic if (maxCount === 0) recommendedPlan = "pro";
 
   // Reset highlights and previous messages
   planCards.forEach(card => {
@@ -1666,7 +1670,32 @@ function showRecommendedPlan() {
     selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
   }, 200);
 }
- 
+
+  // ------------------ Initialization ------------------
+  // Initialize to the first screen or to a screen specified by a URL parameter
+  let startScreen = screens[0].id;
+
+  if (codeParam) {
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepIndex = parseInt(stepParam) - 1;
+    if (stepIndex >= 0 && stepIndex < screens.length) {
+      startScreen = screens[stepIndex].id;
+    }
+  }
+
+  showScreen(startScreen);
+  
+  // Progress Bar Functions (Stubs - assuming these are defined elsewhere or not critical for the bug)
+  function updateWaterProgress() { /* Placeholder */ }
+  function updateProgress(step) { /* Placeholder */ }
+
+});
+
+
+
+
+  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
