@@ -1418,8 +1418,7 @@ html, body {
 
 
  <script>
-
-/* ---------- Full cleaned funnel JS (paste over your existing script) ---------- */
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1429,6 +1428,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  
+  // Progress Bar Functions (Stubs - defined later, hoisted)
+  function updateWaterProgress() { /* Defined later */ }
+  function updateProgress(step) { /* Defined later */ }
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1493,7 +1496,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
-    // Added for debugging: Check which features are currently set to 'Yes'
+    // 🔍 DEBUG: Check which features are currently set to 'Yes'
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1600,102 +1603,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
-function showRecommendedPlan() {
-  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-  if (!planCards.length) return;
+  function showRecommendedPlan() {
+    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+    if (!planCards.length) return;
 
-  // Count user-selected features by tier
-  const planCounts = { basic: 0, pro: 0, premium: 0 };
-  yesFeatures.forEach(f => {
-    if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-  });
+    // Count user-selected features by tier
+    const planCounts = { basic: 0, pro: 0, premium: 0 };
+    yesFeatures.forEach(f => {
+      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
+    });
 
-  // Decide recommended plan (Premium > Pro > Basic)
-  let recommendedPlan = "basic";
-  const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
-  if (maxCount === 0) recommendedPlan = "pro";
-  else if (planCounts.premium === maxCount && planCounts.premium > 0) recommendedPlan = "premium";
-  else if (planCounts.pro === maxCount && planCounts.pro > 0) recommendedPlan = "pro";
-  // Fallback to Pro if maxCount is 0, as per original logic if (maxCount === 0) recommendedPlan = "pro";
+    // Decide recommended plan (Premium > Pro > Basic)
+    let recommendedPlan = "basic";
+    const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+    // Use > 0 check to ensure we only recommend Pro/Premium if features are actually selected in those tiers
+    if (maxCount === 0) recommendedPlan = "pro"; // Default to Pro if no features selected
+    else if (planCounts.premium === maxCount && planCounts.premium > 0) recommendedPlan = "premium";
+    else if (planCounts.pro === maxCount && planCounts.pro > 0) recommendedPlan = "pro";
 
-  // Reset highlights and previous messages
-  planCards.forEach(card => {
-    card.classList.remove("recommended");
-    const msg = card.querySelector(".includes-message");
-    if (msg) msg.remove();
-  });
+    // Reset highlights and previous messages
+    planCards.forEach(card => {
+      card.classList.remove("recommended");
+      const msg = card.querySelector(".includes-message");
+      if (msg) msg.remove();
+    });
 
-  // Highlight and add dynamic “includes” message
-  const selectedCard = planCards.find(card =>
-    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
-  );
-  if (!selectedCard) return;
-
-  selectedCard.classList.add("recommended", "in-view");
-
-  // Build a list of *actually chosen* lower-tier features
-  let msgText = "";
-  if (recommendedPlan === "pro") {
-    const basicYes = yesFeatures.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
+    // Highlight and add dynamic “includes” message
+    const selectedCard = planCards.find(card =>
+      card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
     );
-    if (basicYes.length) {
-      msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+    if (!selectedCard) return;
+
+    selectedCard.classList.add("recommended", "in-view");
+
+    // Build a list of *actually chosen* lower-tier features for Pro/Premium
+    let msgText = "";
+    if (recommendedPlan === "pro") {
+      const basicYes = yesFeatures.filter(f =>
+        ["booking","mobile","cta","contact","bio"].includes(f)
+      );
+      if (basicYes.length) {
+        msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+      }
+    } else if (recommendedPlan === "premium") {
+      const basicYes = yesFeatures.filter(f =>
+        ["booking","mobile","cta","contact","bio"].includes(f)
+      );
+      const proYes = yesFeatures.filter(f =>
+        ["seo","reviews","branding","faq","newsletter"].includes(f)
+      );
+      const parts = [];
+      if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+      if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
+      if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
     }
-  } else if (recommendedPlan === "premium") {
-    const basicYes = yesFeatures.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    const proYes = yesFeatures.filter(f =>
-      ["seo","reviews","branding","faq","newsletter"].includes(f)
-    );
-    const parts = [];
-    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
-  }
 
-  if (msgText) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "includes-message";
-    msgDiv.textContent = msgText;
-    const title = selectedCard.querySelector("h3");
-    selectedCard.insertBefore(msgDiv, title.nextSibling);
-  }
-
-  // Smooth scroll to the recommended card
-  setTimeout(() => {
-    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 200);
-}
-
-  // ------------------ Initialization ------------------
-  // Initialize to the first screen or to a screen specified by a URL parameter
-  let startScreen = screens[0].id;
-
-  if (codeParam) {
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepIndex = parseInt(stepParam) - 1;
-    if (stepIndex >= 0 && stepIndex < screens.length) {
-      startScreen = screens[stepIndex].id;
+    if (msgText) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "includes-message";
+      msgDiv.textContent = msgText;
+      const title = selectedCard.querySelector("h3");
+      selectedCard.insertBefore(msgDiv, title.nextSibling);
     }
+
+    // Smooth scroll to the recommended card
+    setTimeout(() => {
+      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 200);
   }
 
-  showScreen(startScreen);
-  
-  // Progress Bar Functions (Stubs - assuming these are defined elsewhere or not critical for the bug)
-  function updateWaterProgress() { /* Placeholder */ }
-  function updateProgress(step) { /* Placeholder */ }
-
-});
-
-
-
-
-  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1768,7 +1746,7 @@ function showRecommendedPlan() {
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-
+  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
@@ -1809,22 +1787,31 @@ function showRecommendedPlan() {
   }
 
   // ------------------ Initialize Funnel ------------------
+  // All screens are hidden by default, so we only need to show the intended starting point.
   hideAllScreens();
 
-  if (codeParam && stepParam === "4") {
-    const designInput = document.getElementById("designInput");
-    if (designInput) designInput.value = codeParam.trim().toUpperCase();
-    showScreen("instructor-q4");
-  } else if (codeParam) {
+  if (codeParam) {
+    // If a design code is present, bypass typewriter and show the template or step 4.
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
-  } else if (!stepParam) {
+  } else if (stepParam) {
+    // If a step is specified, show that screen directly.
+    const stepName = `instructor-q${stepParam}`;
+    // Find the screen index to set currentScreen correctly
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      // Fallback to first screen if stepParam is invalid
+      showScreen(screens[0].id);
+    }
+  } else {
+    // No parameters: Start the typewriter animation.
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
-  } else {
-    showScreen(`instructor-q${stepParam}`);
   }
 
   updateWaterProgress();
@@ -1833,9 +1820,8 @@ function showRecommendedPlan() {
   // ------------------ Robust IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; // nothing to do
+    if (!cards || cards.length === 0) return; 
 
-    // Fallback for old browsers: just show everything
     if (!('IntersectionObserver' in window)) {
       cards.forEach(c => c.classList.add('in-view'));
       return;
@@ -1843,7 +1829,6 @@ function showRecommendedPlan() {
 
     const observerOptions = {
       root: null,
-      // trigger a bit earlier (bottom of viewport) so mobile portrait picks it up
       rootMargin: '0px 0px -12% 0px',
       threshold: [0, 0.05, 0.15]
     };
@@ -1851,14 +1836,12 @@ function showRecommendedPlan() {
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         try {
-          // safe check — works across browsers
           const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
           if (isVisible) {
             entry.target.classList.add('in-view');
             obs.unobserve(entry.target);
           }
         } catch (err) {
-          // on any unexpected error, reveal the card and unobserve to avoid repeated errors
           try { entry.target.classList.add('in-view'); } catch(e) {}
           try { obs.unobserve(entry.target); } catch(e) {}
         }
@@ -1893,5 +1876,7 @@ function showRecommendedPlan() {
 
 }); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
