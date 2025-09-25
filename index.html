@@ -1417,11 +1417,9 @@ html, body {
    </form>
 
 <script>
-/* ---------- Full cleaned funnel JS (paste over your existing script) ---------- */
+/* ---------- Full Patched Funnel JS ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-
- 
   // ------------------ Basic setup ------------------
   let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
@@ -1445,13 +1443,13 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
-    // Keep this — we'll center the recommended card separately if required
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") {
-      // call recommendation which will also scroll the chosen card into view
+    // Always recalc recommended plan when entering relevant screens
+    if (screen.id === "recommended-plan-screen" || screen.id.startsWith("instructor-q")) {
       showRecommendedPlan();
     }
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1466,7 +1464,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function prev() {
     if (currentScreen > 0) {
       currentScreen--;
-      showScreen(screens[currentScreen].id);
+      const screen = screens[currentScreen];
+      showScreen(screen.id);
+
+      // Recalculate recommended plan when navigating back
+      if (screen.id.startsWith("instructor-q") || screen.id === "recommended-plan-screen") {
+        showRecommendedPlan();
+      }
     }
   }
 
@@ -1501,10 +1505,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    // record ownership feature so it is sent back if needed
+    if (choice === 'Owned Outright') userAnswers.packages = true;
+    else userAnswers.social = true;
+
     featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
     syncFeatureState();
-    // show pricing screen directly after ownership selection
+
     showScreen('recommended-plan-screen');
   };
 
@@ -1554,7 +1560,6 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
-      // refresh screens NodeList
       screens = Array.from(document.querySelectorAll('.form-screen'));
     }
 
@@ -1585,7 +1590,6 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
-      // refresh screens & update index
       screens = Array.from(document.querySelectorAll('.form-screen'));
       currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
@@ -1597,90 +1601,83 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
+  const userAnswers = {
+    booking:null, mobile:null, cta:null, contact:null, bio:null,
+    seo:null, reviews:null, branding:null, faq:null, newsletter:null,
+    packages:null, social:null, email:null, content:null, guide:null
+  };
 
-const userAnswers = {
-  booking:null, mobile:null, cta:null, contact:null, bio:null,
-  seo:null, reviews:null, branding:null, faq:null, newsletter:null,
-  packages:null, social:null, email:null, content:null, guide:null
-};
-function recordAnswer(feature, isYes) {
-  userAnswers[feature] = isYes; // call this on every Yes/No click
-}
- 
+  function recordAnswer(feature, isYes) {
+    userAnswers[feature] = isYes;
+    // Recalc recommended plan immediately if pricing screen is active
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan();
+    }
+  }
+
   // ------------------ Recommended Plan ------------------
-function showRecommendedPlan() {
-  const planCards = [...document.querySelectorAll(".pricing-card")];
-  if (!planCards.length) return;
+  function showRecommendedPlan() {
+    const planCards = [...document.querySelectorAll(".pricing-card")];
+    if (!planCards.length) return;
 
-  // Build list of current Yes features
-  const yesFeatures = Object.keys(userAnswers).filter(f => userAnswers[f]);
+    const yesFeatures = Object.keys(userAnswers).filter(f => userAnswers[f]);
 
-  // Count Yes answers by tier
-  const planCounts = { basic:0, pro:0, premium:0 };
-  yesFeatures.forEach(f => {
-    if (["booking","mobile","cta","contact","bio"].includes(f))       planCounts.basic++;
-    else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
-    else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
-  });
+    const planCounts = { basic: 0, pro: 0, premium: 0 };
+    yesFeatures.forEach(f => {
+      if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
+      else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
+      else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
+    });
 
-  // Decide recommended plan – default to BASIC when no answers
-  let recommendedPlan = "basic";
-  const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
-  if (planCounts.premium === maxCount && maxCount > 0) {
-    recommendedPlan = "premium";
-  } else if (planCounts.pro === maxCount && maxCount > 0) {
-    recommendedPlan = "pro";
-  } else if (planCounts.basic === maxCount && maxCount > 0) {
-    recommendedPlan = "basic";
+    const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
+    let recommendedPlan = null;
+
+    if (maxCount === 0) {
+      recommendedPlan = "basic";
+    } else {
+      if (planCounts.premium === maxCount) recommendedPlan = "premium";
+      else if (planCounts.pro === maxCount) recommendedPlan = "pro";
+      else recommendedPlan = "basic";
+    }
+
+    planCards.forEach(card => {
+      card.classList.remove("recommended","in-view");
+      card.querySelector(".includes-message")?.remove();
+    });
+
+    const selectedCard = planCards.find(card =>
+      card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+    );
+    if (!selectedCard) return;
+    selectedCard.classList.add("recommended","in-view");
+
+    let msgText = "";
+    if (recommendedPlan === "pro") {
+      const basicYes = yesFeatures.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
+      if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+    } else if (recommendedPlan === "premium") {
+      const basicYes = yesFeatures.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
+      const proYes = yesFeatures.filter(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
+      const parts = [];
+      if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+      if (proYes.length) parts.push(`from Pro: ${proYes.join(", ")}`);
+      if (parts.length) msgText = `Includes ${parts.join(" | ")}`;
+    }
+
+    if (msgText) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "includes-message";
+      msgDiv.textContent = msgText;
+      const title = selectedCard.querySelector("h3");
+      selectedCard.insertBefore(msgDiv, title.nextSibling);
+    }
+
+    setTimeout(() =>
+      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+    );
   }
 
-  // Clear previous highlights/messages
-  planCards.forEach(card => {
-    card.classList.remove("recommended","in-view");
-    card.querySelector(".includes-message")?.remove();
-  });
-
-  // Highlight chosen card
-  const selectedCard = planCards.find(card =>
-    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
-  );
-  if (!selectedCard) return;
-  selectedCard.classList.add("recommended","in-view");
-
-  // Dynamic includes text
-  let msgText = "";
-  if (recommendedPlan === "pro") {
-    const basicYes = yesFeatures.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-  } else if (recommendedPlan === "premium") {
-    const basicYes = yesFeatures.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    const proYes = yesFeatures.filter(f =>
-      ["seo","reviews","branding","faq","newsletter"].includes(f)
-    );
-    const parts = [];
-    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
-  }
-
-  if (msgText) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "includes-message";
-    msgDiv.textContent = msgText;
-    const title = selectedCard.querySelector("h3");
-    selectedCard.insertBefore(msgDiv, title.nextSibling);
-  }
-
-  // Smooth scroll to center view
-  setTimeout(() =>
-    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
-  );
-}
-
+});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
