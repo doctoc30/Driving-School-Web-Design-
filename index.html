@@ -1420,6 +1420,20 @@ html, body {
 /* ---------- Full cleaned funnel JS (paste over your existing script) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
+
+// Tracks every feature answer (true = yes, false = no)
+const userAnswers = {
+  booking:null, mobile:null, cta:null, contact:null, bio:null,
+  seo:null, reviews:null, branding:null, faq:null, newsletter:null,
+  packages:null, social:null, email:null, content:null, guide:null
+};
+
+// Call this when a user clicks Yes/No
+function recordAnswer(feature, isYes) {
+  userAnswers[feature] = isYes; // true or false
+}
+
+ 
   // ------------------ Basic setup ------------------
   let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
@@ -1600,45 +1614,44 @@ function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
   if (!planCards.length) return;
 
-  // Count user-selected features by tier
-  const planCounts = { basic: 0, pro: 0, premium: 0 };
+  // ✅ Build yesFeatures fresh every time (reflects any back-button changes)
+  const yesFeatures = Object.keys(userAnswers).filter(f => userAnswers[f]);
+
+  // Count selected features by tier
+  const planCounts = { basic:0, pro:0, premium:0 };
   yesFeatures.forEach(f => {
     if (["booking","mobile","cta","contact","bio"].includes(f)) planCounts.basic++;
     else if (["seo","reviews","branding","faq","newsletter"].includes(f)) planCounts.pro++;
     else if (["packages","social","email","content","guide"].includes(f)) planCounts.premium++;
   });
 
-  // Decide recommended plan (Premium > Pro > Basic)
+  // Determine recommended plan (Premium > Pro > Basic)
   let recommendedPlan = "basic";
   const maxCount = Math.max(planCounts.basic, planCounts.pro, planCounts.premium);
   if (maxCount === 0) recommendedPlan = "pro";
   else if (planCounts.premium === maxCount) recommendedPlan = "premium";
   else if (planCounts.pro === maxCount) recommendedPlan = "pro";
 
-  // Reset highlights and previous messages
+  // Reset highlights and old messages
   planCards.forEach(card => {
     card.classList.remove("recommended");
-    const msg = card.querySelector(".includes-message");
-    if (msg) msg.remove();
+    card.querySelector(".includes-message")?.remove();
   });
 
-  // Highlight and add dynamic “includes” message
+  // Highlight chosen card
   const selectedCard = planCards.find(card =>
     card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
   if (!selectedCard) return;
+  selectedCard.classList.add("recommended","in-view");
 
-  selectedCard.classList.add("recommended", "in-view");
-
-  // Build a list of *actually chosen* lower-tier features
+  // 🔹 Dynamic “includes” message with only actual yes-features
   let msgText = "";
   if (recommendedPlan === "pro") {
     const basicYes = yesFeatures.filter(f =>
       ["booking","mobile","cta","contact","bio"].includes(f)
     );
-    if (basicYes.length) {
-      msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-    }
+    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
   } else if (recommendedPlan === "premium") {
     const basicYes = yesFeatures.filter(f =>
       ["booking","mobile","cta","contact","bio"].includes(f)
@@ -1661,13 +1674,10 @@ function showRecommendedPlan() {
   }
 
   // Smooth scroll to the recommended card
-  setTimeout(() => {
-    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 200);
+  setTimeout(() =>
+    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+  );
 }
-
-
-
 
  
   // ------------------ Typewriter Animation ------------------
