@@ -1594,61 +1594,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Recommended Plan ------------------
 function showRecommendedPlan() {
-  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  const planCards = [...document.querySelectorAll(".pricing-card")];
   if (!planCards.length) return;
 
-  // Build a list of current Yes features
-  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
+  // Collect all features the user said “Yes” to
+  const yes = Object.keys(userAnswers).filter(f => userAnswers[f]);
 
-  // Tier checks
-  const hasPremium = yes.some(f =>
-    ["packages","social","email","content","guide"].includes(f)
-  );
-  const hasPro = yes.some(f =>
-    ["seo","reviews","branding","faq","newsletter"].includes(f)
-  );
-  const hasBasic = yes.some(f =>
-    ["booking","mobile","cta","contact","bio"].includes(f)
-  );
+  // Tier groups
+  const basicSet   = ["booking","mobile","cta","contact","bio"];
+  const proSet     = ["seo","reviews","branding","faq","newsletter"];
+  const premiumSet = ["packages","social","email","content","guide"];
 
-  // Decide recommended plan by highest tier present
-  let recommendedPlan;
-  if (hasPremium) recommendedPlan = "premium";
-  else if (hasPro) recommendedPlan = "pro";
-  else if (hasBasic) recommendedPlan = "basic";
-  else recommendedPlan = "pro"; // fallback if nothing selected
+  // Decide plan by highest tier present
+  let recommendedPlan = "basic";
+  if (yes.some(f => premiumSet.includes(f)))      recommendedPlan = "premium";
+  else if (yes.some(f => proSet.includes(f)))     recommendedPlan = "pro";
+  else if (yes.some(f => basicSet.includes(f)))   recommendedPlan = "basic";
 
-  // Clear highlights & messages
+  // Clear any old highlights/messages
   planCards.forEach(card => {
-    card.classList.remove("recommended", "in-view");
+    card.classList.remove("recommended","in-view");
     card.querySelector(".includes-message")?.remove();
   });
 
-  // Highlight chosen card
+  // Find & highlight the chosen plan card
   const selectedCard = planCards.find(card =>
     card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
   if (!selectedCard) return;
   selectedCard.classList.add("recommended","in-view");
 
-  // Dynamic includes text
+  // ---------- Dynamic “Includes” message ----------
   let msgText = "";
-  if (recommendedPlan === "pro") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-  } else if (recommendedPlan === "premium") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    const proYes = yes.filter(f =>
-      ["seo","reviews","branding","faq","newsletter"].includes(f)
-    );
+
+  if (recommendedPlan === "premium") {
+    // ✅ Only the Premium-tier YES answers
+    const premYes = yes.filter(f => premiumSet.includes(f));
+    if (premYes.length) msgText = `Includes: ${premYes.join(", ")}`;
+  } else if (recommendedPlan === "pro") {
+    const bYes = yes.filter(f => basicSet.includes(f));
+    const pYes = yes.filter(f => proSet.includes(f));
     const parts = [];
-    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
+    if (bYes.length) parts.push(`from Basic: ${bYes.join(", ")}`);
+    if (pYes.length) parts.push(`from Pro: ${pYes.join(", ")}`);
+    if (parts.length) msgText = `Includes ${parts.join(" | ")}`;
+  } else if (recommendedPlan === "basic") {
+    const bYes = yes.filter(f => basicSet.includes(f));
+    if (bYes.length) msgText = `Includes: ${bYes.join(", ")}`;
   }
 
   if (msgText) {
@@ -1659,13 +1651,17 @@ function showRecommendedPlan() {
     selectedCard.insertBefore(msgDiv, title.nextSibling);
   }
 
-  // Smooth scroll
+  // Scroll into view nicely
   setTimeout(() =>
     selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
   );
+
+  // ✅ Update hidden fields for the email submission
+  const hiddenPlan     = document.getElementById("hiddenPlan");
+  const hiddenFeatures = document.getElementById("hiddenFeatures");
+  if (hiddenPlan)     hiddenPlan.value = recommendedPlan;
+  if (hiddenFeatures) hiddenFeatures.value = yes.join(", ");
 }
-
-
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
