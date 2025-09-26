@@ -1598,9 +1598,9 @@ function showRecommendedPlan() {
   if (!planCards.length) return;
 
   // Build a list of current Yes features
-  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
+  const yes = yesFeatures || [];
 
-  // Tier checks
+  // ---------------- Tier checks ----------------
   const hasPremium = yes.some(f =>
     ["packages","social","email","content","guide"].includes(f)
   );
@@ -1616,22 +1616,36 @@ function showRecommendedPlan() {
   if (hasPremium) recommendedPlan = "premium";
   else if (hasPro) recommendedPlan = "pro";
   else if (hasBasic) recommendedPlan = "basic";
-  else recommendedPlan = "pro"; // fallback if nothing selected
+  else recommendedPlan = "pro"; // fallback
 
-  // Clear highlights & messages
+  // ---------------- Update hidden inputs ----------------
+  // (so the form captures selected plan & all yes-features,
+  //  including premium answers)
+  const planNameMap = { basic: "Basic", pro: "Pro", premium: "Premium" };
+  const planLinks = {
+    basic:   "https://www.paypal.com/paypal-link-basic",
+    pro:     "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
+  const hiddenPlan    = document.getElementById("hiddenPlan");
+  const hiddenFeat    = document.getElementById("hiddenFeatures");
+  const hiddenPayment = document.getElementById("hiddenPaymentLink");
+  if (hiddenPlan)    hiddenPlan.value    = planNameMap[recommendedPlan] || "";
+  if (hiddenFeat)    hiddenFeat.value    = yes.join(", ");
+  if (hiddenPayment) hiddenPayment.value = planLinks[recommendedPlan] || "";
+
+  // ---------------- Highlight card ----------------
   planCards.forEach(card => {
     card.classList.remove("recommended", "in-view");
     card.querySelector(".includes-message")?.remove();
   });
-
-  // Highlight chosen card
   const selectedCard = planCards.find(card =>
     card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
   if (!selectedCard) return;
-  selectedCard.classList.add("recommended","in-view");
+  selectedCard.classList.add("recommended", "in-view");
 
-  // Dynamic includes text
+  // ---------------- Dynamic includes text ----------------
   let msgText = "";
   if (recommendedPlan === "pro") {
     const basicYes = yes.filter(f =>
@@ -1659,12 +1673,11 @@ function showRecommendedPlan() {
     selectedCard.insertBefore(msgDiv, title.nextSibling);
   }
 
-  // Smooth scroll
+  // Smooth scroll to the chosen card
   setTimeout(() =>
     selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
   );
 }
-
 
  
   // ------------------ Typewriter Animation ------------------
