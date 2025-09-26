@@ -1330,25 +1330,18 @@ html, body {
 </form>
 
 <script>
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (Fixed Overlay / Click Issues) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------ Basic Setup ------------------
-  const screens = Array.from(document.querySelectorAll(".form-screen"));
+  // ------------------ Basic setup ------------------
+  let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
 
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  const yesFeatures = [];
-  const noFeatures = [];
-  const featureState = {};
-  let ownershipChoice = "";
-
-  // ------------------ Navigation ------------------
+  // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
     screens.forEach(screen => {
       screen.classList.remove("active");
@@ -1364,144 +1357,338 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
+
+    if (screen.id === "recommended-plan-screen") {
+      showRecommendedPlan();
+    }
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
-  function next() { if (currentScreen < screens.length - 1) { currentScreen++; showScreen(screens[currentScreen].id); } }
-  function prev() { if (currentScreen > 0) { currentScreen--; showScreen(screens[currentScreen].id); } }
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  }
 
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ Feature Recording ------------------
+  // ------------------ User Features ------------------
+  const yesFeatures = [];
+  const noFeatures = [];
+  const featureState = {};
+  let ownershipChoice = "";
+
   function syncFeatureState() {
     yesFeatures.length = 0;
     noFeatures.length = 0;
-    Object.entries(featureState).forEach(([f, val]) => val ? yesFeatures.push(f) : noFeatures.push(f));
-    const hidden = document.getElementById('hiddenFeatures');
-    if (hidden) hidden.value = yesFeatures.join(", ");
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) showRecommendedPlan();
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) yesFeatures.push(f);
+      else noFeatures.push(f);
+    });
+    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan();
+    }
   }
 
-  window.recordFeature = f => { featureState[f] = true; syncFeatureState(); };
-  window.recordNoFeature = f => { featureState[f] = false; syncFeatureState(); };
-  window.recordOwnership = choice => {
+  window.recordFeature = (f) => { featureState[f] = true; syncFeatureState(); };
+  window.recordNoFeature = (f) => { featureState[f] = false; syncFeatureState(); };
+  window.recordOwnership = (choice) => {
     ownershipChoice = choice;
     featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
     syncFeatureState();
     showScreen('recommended-plan-screen');
   };
 
-  document.querySelectorAll("#instructor-q19 .own-outright").forEach(btn => btn.addEventListener("click", () => window.recordOwnership('Owned Outright')));
-  document.querySelectorAll("#instructor-q19 .monthly-support").forEach(btn => btn.addEventListener("click", () => window.recordOwnership('Monthly Support')));
+  // Q19 buttons
+  const q19OwnBtn = document.querySelector("#instructor-q19 .own-outright");
+  const q19MonthlyBtn = document.querySelector("#instructor-q19 .monthly-support");
+  if (q19OwnBtn) q19OwnBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19MonthlyBtn) q19MonthlyBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
-  // ------------------ “I Want This Concept” ------------------
+  // "I Want This Concept" button
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      window.location.href = `index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(`https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`);
     });
   });
+
+  // ------------------ Template / Design Code ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) { alert("Please enter a design code."); return; }
+    showFilteredTemplate(code);
+  };
+
+  function showFilteredTemplate(rawCode) {
+    const code = String(rawCode || '').trim().toUpperCase();
+    if (!code) return;
+    hideAllScreens();
+
+    if (stepParam === "4") {
+      const designInput = document.getElementById("designInput");
+      if (designInput) designInput.value = code;
+      showScreen("instructor-q4");
+      return;
+    }
+
+    let templateScreen = document.getElementById('template-results');
+    if (!templateScreen) {
+      templateScreen = document.createElement('div');
+      templateScreen.id = 'template-results';
+      templateScreen.classList.add('form-screen');
+      document.getElementById('formWrapper').appendChild(templateScreen);
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+    }
+
+    const container = document.createElement('div');
+    container.className = 'template-container';
+    const heading = document.createElement('h2');
+    heading.textContent = `Showing template for code: ${code}`;
+    container.appendChild(heading);
+
+    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+    if (!foundEl) foundEl = document.getElementById(code);
+
+    if (foundEl) {
+      const clone = foundEl.cloneNode(true);
+      clone.classList.add('template-preview-clone');
+      clone.style.width = '100%';
+      container.appendChild(clone);
+
+      const btnRow = document.createElement('div');
+      btnRow.className = 'button-row';
+      const contBtn = document.createElement('button');
+      contBtn.type = 'button';
+      contBtn.textContent = 'Continue';
+      contBtn.onclick = () => next();
+      btnRow.appendChild(contBtn);
+      container.appendChild(btnRow);
+
+      templateScreen.innerHTML = '';
+      templateScreen.appendChild(container);
+      templateScreen.classList.add('active');
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+      currentScreen = screens.indexOf(templateScreen);
+      updateWaterProgress();
+      updateProgress(currentScreen + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  }
 
   // ------------------ Recommended Plan ------------------
   function showRecommendedPlan() {
     const planCards = Array.from(document.querySelectorAll(".pricing-card"));
     if (!planCards.length) return;
+    const yes = yesFeatures || [];
 
-    const hasPremium = yesFeatures.some(f => ["packages","social","email","content","guide"].includes(f));
-    const hasPro = yesFeatures.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
-    const hasBasic = yesFeatures.some(f => ["booking","mobile","cta","contact","bio"].includes(f));
+    const hasPremium = yes.some(f => ["packages","social","email","content","guide"].includes(f));
+    const hasPro = yes.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
+    const hasBasic = yes.some(f => ["booking","mobile","cta","contact","bio"].includes(f));
 
-    let recommended = hasPremium ? "premium" : hasPro ? "pro" : hasBasic ? "basic" : "pro";
+    let recommendedPlan;
+    if (hasPremium) recommendedPlan = "premium";
+    else if (hasPro) recommendedPlan = "pro";
+    else if (hasBasic) recommendedPlan = "basic";
+    else recommendedPlan = "pro";
 
-    planCards.forEach(card => { card.classList.remove("recommended","in-view"); card.querySelector(".includes-message")?.remove(); });
+    planCards.forEach(c => { c.classList.remove("recommended","in-view"); c.querySelector(".includes-message")?.remove(); });
 
-    const selectedCard = planCards.find(c => c.querySelector("h3")?.textContent.trim().toLowerCase() === recommended);
-    if (!selectedCard) return;
-    selectedCard.classList.add("recommended","in-view");
+    const selected = planCards.find(c => c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan);
+    if (!selected) return;
+    selected.classList.add("recommended","in-view");
 
-    let msg = "";
-    if (recommended === "pro") {
-      const b = yesFeatures.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
-      if (b.length) msg = `Includes from Basic: ${b.join(", ")}`;
-    } else if (recommended === "premium") {
-      const b = yesFeatures.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
-      const p = yesFeatures.filter(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
+    let msgText = "";
+    if (recommendedPlan === "pro") {
+      const basicYes = yes.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
+      if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+    } else if (recommendedPlan === "premium") {
+      const basicYes = yes.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
+      const proYes = yes.filter(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
       const parts = [];
-      if (b.length) parts.push(`from Basic: ${b.join(", ")}`);
-      if (p.length) parts.push(`from Pro: ${p.join(", ")}`);
-      if (parts.length) msg = `Includes ${parts.join(" | ")}`;
+      if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+      if (proYes.length) parts.push(`from Pro: ${proYes.join(", ")}`);
+      if (parts.length) msgText = `Includes ${parts.join(" | ")}`;
     }
 
-    if (msg) {
-      const div = document.createElement("div");
-      div.className = "includes-message";
-      div.textContent = msg;
-      selectedCard.querySelector("h3").after(div);
+    if (msgText) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "includes-message";
+      msgDiv.textContent = msgText;
+      const title = selected.querySelector("h3");
+      selected.insertBefore(msgDiv, title.nextSibling);
     }
 
-    setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
+    setTimeout(() => selected.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 
-  window.showRecommendedPlan = showRecommendedPlan;
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
 
-  // ------------------ Pricing Cards Update ------------------
-  function updatePricingCards() {
-    const planMap = {
-      basic: [{key:"booking",label:"Students can book & pay online"},{key:"mobile",label:"Mobile-optimized design"},{key:"cta",label:"Strong call-to-action buttons"},{key:"contact",label:"Simple contact form"},{key:"bio",label:"Instructor bio / About me"}],
-      pro: [{key:"seo",label:"Local SEO optimization"},{key:"reviews",label:"Display student reviews"},{key:"branding",label:"Branding help (logo/colors)"},{key:"faq",label:"FAQ / student guide section"},{key:"newsletter",label:"Newsletter signup"}],
-      premium: [{key:"packages",label:"Lesson packages & gift vouchers"},{key:"social",label:"Social media integration"},{key:"email",label:"Professional email address"},{key:"content",label:"Content creation help"},{key:"guide",label:"‘What to Expect’ guide"}]
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        // HIDE overlay and enable funnel
+        setTimeout(() => {
+          if (typewriterEl) typewriterEl.style.display = 'none';
+          if (colorRiseEl) colorRiseEl.style.display = 'none';
+          showScreen('main-intro-options');
+        }, 2000);
+        return;
+      }
+
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
     };
+  }
 
-    Object.keys(planMap).forEach(plan => {
-      const ul = document.getElementById(`${plan}-features`);
-      if (!ul) return;
-      ul.innerHTML = "";
-      const yesList = planMap[plan].filter(f => featureState[f.key]);
-      if (!yesList.length) { const li = document.createElement("li"); li.textContent="No services selected"; ul.appendChild(li); }
-      else yesList.forEach(f => { const li=document.createElement("li"); li.textContent=f.label; ul.appendChild(li); });
+  // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
     });
   }
 
-  window.updatePricingCards = updatePricingCards;
-
-  // ------------------ Typewriter Intro ------------------
-  function startTypewriter() {
-    if (!typewriterEl) { showScreen('main-intro-options'); return; }
-    typewriterEl.style.opacity = 1;
-    let lines = window.matchMedia("(orientation: landscape)").matches ? ["We build","your website.","You approve,","then pay."] : ["We build","your","website.","You approve,","then pay."];
-    let lineIndex=0, charIndex=0, lineEl=null;
-    const cursor = document.createElement('span'); cursor.classList.add('cursor'); typewriterEl.appendChild(cursor);
-    function type() {
-      if(lineIndex>=lines.length){ cursor.remove(); typewriterEl.style.animation='rocketRise 2s ease forwards'; setTimeout(()=>showScreen('main-intro-options'),2000); return; }
-      const text = lines[lineIndex];
-      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
-      if(charIndex<text.length){ lineEl.insertBefore(document.createTextNode(text[charIndex]),cursor); charIndex++; setTimeout(type,100); } 
-      else { lineIndex++; charIndex=0; lineEl=null; setTimeout(type,500); }
-    }
-    type();
+  // ------------------ Progress & Water ------------------
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    wave.style.height = ((currentScreen + 1) / screens.length * 100) + '%';
+  }
+  function updateProgress(currentStep) {
+    const bar = document.querySelector('.progress-bar');
+    const label = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (bar) bar.style.width = percent + '%';
+    if (label) label.textContent = percent + '%';
   }
 
-  // ------------------ Funnel Startup ------------------
+  // ------------------ Initialize Funnel ------------------
   hideAllScreens();
-  if(codeParam){ document.getElementById("designInput")?.setAttribute("value",codeParam); showFilteredTemplate(codeParam); }
-  else if(stepParam){ const stepName=`instructor-q${stepParam}`; const idx=screens.findIndex(s=>s.id===stepName); currentScreen=(idx!==-1)?idx:0; showScreen(screens[currentScreen].id); }
-  else { typewriterEl?.classList.add('active'); colorRiseEl?.classList.add('active'); startTypewriter(); }
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const index = screens.findIndex(s => s.id === stepName);
+    if (index !== -1) { currentScreen = index; showScreen(stepName); }
+    else showScreen(screens[0].id);
+  } else {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
 
-  // ------------------ Progress ------------------
-  function updateWaterProgress(){ const wave=document.getElementById('progress-wave'); if(!wave)return; wave.style.height=((currentScreen+1)/screens.length*100)+'%'; }
-  function updateProgress(step){ const bar=document.querySelector('.progress-bar'); const lbl=document.querySelector('.progress-label'); const pct=Math.round((step/screens.length)*100); if(bar)bar.style.width=pct+'%'; if(lbl)lbl.textContent=pct+'%'; }
-  window.updateWaterProgress=updateWaterProgress; window.updateProgress=updateProgress;
+  // ------------------ IntersectionObserver for Pricing Cards ------------------
+  (function initPricingObserver(){
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards.length) return;
+    if (!('IntersectionObserver' in window)) { cards.forEach(c => c.classList.add('in-view')); return; }
 
-  // ------------------ IntersectionObserver ------------------
-  (function(){ const cards=document.querySelectorAll('.pricing-card[data-animate]'); if(!cards.length) return; if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in-view')); return; } 
-    const obs=new IntersectionObserver((entries,o)=>{ entries.forEach(e=>{ if(e.isIntersecting||e.intersectionRatio>0){ e.target.classList.add('in-view'); o.unobserve(e.target); } }); }, {root:null,rootMargin:'0px 0px -12% 0px',threshold:[0,0.05,0.15]}); Array.from(cards).forEach(c=>obs.observe(c)); })();
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('in-view'); obs.unobserve(entry.target); }
+      });
+    }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: [0,0.05,0.15] });
 
-});
+    cards.forEach(c => observer.observe(c));
+  })();
+
+}); /* end DOMContentLoaded */
 </script>
 </body>
 </html>
