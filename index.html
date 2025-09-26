@@ -1593,76 +1593,104 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
+/* ===== Track answers by plan ===== */
+let yesFeatures = [];   // features answered “Yes”
+let noFeatures  = [];   // features answered “No”
+
+// Record YES and remove from noFeatures if needed
+function recordFeature(feature) {
+  if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+  noFeatures = noFeatures.filter(f => f !== feature);
+}
+
+// Record NO and remove from yesFeatures if needed
+function recordNoFeature(feature) {
+  if (!noFeatures.includes(feature)) noFeatures.push(feature);
+  yesFeatures = yesFeatures.filter(f => f !== feature);
+}
+
+/* ===== Navigation helpers ===== */
+function showScreen(id) {
+  document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+function next() {
+  const cur = document.querySelector(".form-screen.active");
+  const nxt = cur.nextElementSibling;
+  if (nxt) { cur.classList.remove("active"); nxt.classList.add("active"); }
+}
+function prev() {
+  const cur = document.querySelector(".form-screen.active");
+  const prev = cur.previousElementSibling;
+  if (prev) { cur.classList.remove("active"); prev.classList.add("active"); }
+}
+
+/* ===== Recommended plan logic ===== */
 function showRecommendedPlan() {
-  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  const planCards = Array.from(document.querySelectorAll("#pricing-section .pricing-card"));
   if (!planCards.length) return;
 
-  // Build a list of current Yes features
-  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
+  // Determine highest tier answered Yes
+  const hasPremium = yesFeatures.some(f =>
+    ["packages","social","email","content","guide"].includes(f));
+  const hasPro = yesFeatures.some(f =>
+    ["seo","reviews","branding","faq","newsletter"].includes(f));
+  const hasBasic = yesFeatures.some(f =>
+    ["booking","mobile","cta","contact","bio"].includes(f));
 
-  // Tier checks
-  const hasPremium = yes.some(f =>
-    ["packages","social","email","content","guide"].includes(f)
-  );
-  const hasPro = yes.some(f =>
-    ["seo","reviews","branding","faq","newsletter"].includes(f)
-  );
-  const hasBasic = yes.some(f =>
-    ["booking","mobile","cta","contact","bio"].includes(f)
-  );
+  let recommended = "pro";
+  if (hasPremium) recommended = "premium";
+  else if (hasPro) recommended = "pro";
+  else if (hasBasic) recommended = "basic";
 
-  // Decide recommended plan by highest tier present
-  let recommendedPlan;
-  if (hasPremium) recommendedPlan = "premium";
-  else if (hasPro) recommendedPlan = "pro";
-  else if (hasBasic) recommendedPlan = "basic";
-  else recommendedPlan = "pro"; // fallback if nothing selected
-
-  // Clear highlights & messages
-  planCards.forEach(card => {
-    card.classList.remove("recommended", "in-view");
-    card.querySelector(".includes-message")?.remove();
+  // Clear old highlights/messages
+  planCards.forEach(c => {
+    c.classList.remove("recommended","in-view");
+    c.querySelector(".includes-message")?.remove();
   });
 
-  // Highlight chosen card
-  const selectedCard = planCards.find(card =>
-    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
-  );
-  if (!selectedCard) return;
-  selectedCard.classList.add("recommended","in-view");
+  // Highlight selected plan
+  const card = planCards.find(c =>
+    c.querySelector("h3").textContent.trim().toLowerCase() === recommended);
+  if (!card) return;
+  card.classList.add("recommended","in-view");
 
-  // Dynamic includes text
-  let msgText = "";
-  if (recommendedPlan === "pro") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-  } else if (recommendedPlan === "premium") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    const proYes = yes.filter(f =>
-      ["seo","reviews","branding","faq","newsletter"].includes(f)
-    );
+  // Build dynamic “Includes …” text
+  let msg = "";
+  if (recommended === "pro") {
+    const basicYes = yesFeatures.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f));
+    if (basicYes.length) msg = "Includes from Basic: " + basicYes.join(", ");
+  } else if (recommended === "premium") {
+    const basicYes = yesFeatures.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f));
+    const proYes = yesFeatures.filter(f =>
+      ["seo","reviews","branding","faq","newsletter"].includes(f));
     const parts = [];
-    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
+    if (basicYes.length) parts.push("from Basic: " + basicYes.join(", "));
+    if (proYes.length)   parts.push("from Pro: " + proYes.join(", "));
+    if (parts.length)    msg = "Includes " + parts.join(" | ");
   }
 
-  if (msgText) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "includes-message";
-    msgDiv.textContent = msgText;
-    const title = selectedCard.querySelector("h3");
-    selectedCard.insertBefore(msgDiv, title.nextSibling);
+  if (msg) {
+    const div = document.createElement("div");
+    div.className = "includes-message";
+    div.textContent = msg;
+    card.insertBefore(div, card.querySelector("h3").nextSibling);
   }
 
-  // Smooth scroll
-  setTimeout(() =>
-    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
-  );
+  // Pass values to hidden inputs for FormSubmit
+  document.getElementById("hiddenPlan").value = recommended;
+  document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
+  const payLinks = {
+    basic:   "https://www.paypal.com/paypal-link-basic",
+    pro:     "https://www.paypal.com/paypal-link-pro",
+    premium: "https://www.paypal.com/paypal-link-premium"
+  };
+  document.getElementById("hiddenPaymentLink").value = payLinks[recommended];
+
+  // Scroll into view
+  setTimeout(() => card.scrollIntoView({behavior:"smooth", block:"center"}), 200);
 }
 
 
