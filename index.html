@@ -1114,12 +1114,10 @@ html, body {
 <div id="typewriter"></div>
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
-  <!-- Hidden Inputs -->
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== FORM FUNNEL ===================== -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -1156,163 +1154,204 @@ html, body {
     </div>
   </div>
 
-  <!-- ===================== QUESTIONS ===================== -->
-  <!-- Basic Features -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
+    <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q5">
     <h2>Do you want your site optimized for mobile?</h2>
+    <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q6">
     <h2>Do you want strong call-to-action buttons?</h2>
+    <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q7">
     <h2>Do you want a simple contact form?</h2>
+    <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q8">
     <h2>Do you want an About Me / Instructor Bio section?</h2>
+    <p><strong>(Basic)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <!-- Pro Features -->
   <div class="form-screen" id="instructor-q9">
     <h2>Do you want your site to rank on Google locally?</h2>
+    <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q10">
     <h2>Would you like to display student reviews?</h2>
+    <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q11">
     <h2>Do you want branding help (logo, colors)?</h2>
+    <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q12">
     <h2>Do you want a FAQ or student guide section?</h2>
+    <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
+
   <div class="form-screen" id="instructor-q13">
     <h2>Do you want newsletter signup or mailing list?</h2>
+    <p><strong>(Pro)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <!-- Premium Features -->
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
+    <p><strong>(Premium)</strong></p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
-    </div>
-  </div>
-  <div class="form-screen" id="instructor-q15">
-    <h2>Do you want social media integration?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('social'); next()">No</button>
-    </div>
-  </div>
-  <div class="form-screen" id="instructor-q16">
-    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
-    </div>
-  </div>
-  <div class="form-screen" id="instructor-q17">
-    <h2>Do you want help creating content (text/images)?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('content'); next()">No</button>
-    </div>
-  </div>
-  <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <!-- Final Choice -->
+  <div class="form-screen" id="instructor-q15">
+    <h2>Do you want social media integration?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('social'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q16">
+    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q17">
+    <h2>Do you want help creating content (text/images)?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('content'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <div class="form-screen" id="instructor-q18">
+    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
+    <p><strong>(Premium)</strong></p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
       <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
       <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
   <div class="form-screen" id="instructor-q19">
-    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <div class="button-row">
-      <button type="button" class="own-outright">Own Outright</button>
-      <button type="button" class="monthly-support">Monthly Support</button>
-    </div>
+  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+  <div class="button-row">
+    <button type="button" class="own-outright">Own Outright</button>
+    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
-  <!-- ===================== PRICING CARDS ===================== -->
+
+ 
+ <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <div class="form-screen" id="recommended-plan-screen">
+    <h2>Your Recommended Plan</h2>
+
+  
+<!-- ===================== PRICING CARDS ===================== -->
 <section id="pricing-section">
   <div class="pricing-container">
-
     <!-- Basic Plan -->
     <div class="pricing-card" data-animate>
       <h3>Basic</h3>
       <p class="price">£499</p>
       <ul>
-        <li>Booking & Payments</li>
-        <li>Mobile Friendly</li>
-        <li>CTA Buttons</li>
-        <li>Contact Form</li>
-        <li>About/Bio Section</li>
-
-        <li class="separator">&nbsp;</li>
-
-        <li class="exclusive">Basic Core Services</li>
-        <li>5 Page Website</li>
+        <li>5 Pages Website</li>
         <li>5 Revisions</li>
+        <li>Mobile Friendly</li>
       </ul>
 
-      <button class="pay-now" onclick="selectPlan('Basic', 'basic', 'https://www.paypal.com/paypal-link-basic')">
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £499 via PayPal
       </button>
 
       <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
     </div>
 
     <!-- Pro Plan -->
@@ -1320,63 +1359,56 @@ html, body {
       <h3>Pro</h3>
       <p class="price">£999</p>
       <ul>
+        <li>10 Pages Website</li>
+        <li>15 Revisions</li>
         <li>SEO Optimization</li>
         <li>Booking System</li>
-        <li>Student Reviews</li>
-        <li>Branding Help</li>
-        <li>FAQ / Student Guide</li>
-        <li>Newsletter Signup</li>
-
-        <li class="separator">&nbsp;</li>
-
-        <li class="exclusive">Pro Core Services</li>
-        <li>10 Page Website</li>
-        <li>15 Revisions</li>
       </ul>
 
-      <button class="pay-now" onclick="selectPlan('Pro', 'pro', 'https://www.paypal.com/paypal-link-pro')">
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £999 via PayPal
       </button>
 
       <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
     </div>
 
     <!-- Premium Plan -->
-    <div class="pricing-card" data-animate style="padding: 24px; border: 2px solid #f0c040; border-radius: 12px; background: #fff;">
-      <h3 style="text-align: center; color: #f0c040; margin-bottom: 16px;">Premium</h3>
-      <p class="price" style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 16px;">£1499</p>
-      <ul style="list-style: none; padding: 0; margin: 0;">
-        <!-- Funnel-related services -->
-        <li>Online lessons & vouchers</li>
-        <li>Social media integration</li>
-        <li>Professional email</li>
-        <li>Content support</li>
-        <li>First lesson guide</li>
-
-        <li class="separator">&nbsp;</li>
-
-        <li class="exclusive">Premium Core Services</li>
-        <li>50+ Page Website</li>
-        <li>Booking & Payments</li>
-        <li>Full Branding</li>
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£1499</p>
+      <ul>
+        <li>50+ Pages Website</li>
         <li>30 Revisions</li>
+        <li>Full Branding</li>
+        <li>Booking & Payment Integration</li>
+        <li>Social Media Integration</li>
       </ul>
 
-      <button class="pay-now" onclick="selectPlan('Premium', 'premium', 'https://www.paypal.com/paypal-link-premium')">
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £1499 via PayPal
       </button>
 
       <small>50% now to secure, 50% on completion</small>
+
+      <div class="paypal-badge">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="Secured by PayPal">
+        <p><span class="lock-icon">🔒</span> Safe & Secure Checkout</p>
+      </div>
     </div>
-
   </div>
-</section>
-</form>
+ </section>
+   </form>
 
-<script>
-/* ---------- FINAL CONSOLIDATED FUNNEL JS (with overlay fix) ---------- */
+
+ <script>
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1386,6 +1418,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  
+  // Progress Bar Functions (Stubs - defined later, hoisted)
+  function updateWaterProgress() { /* Defined later */ }
+  function updateProgress(step) { /* Defined later */ }
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1402,9 +1438,11 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
+    // Keep this — we'll center the recommended card separately if required
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (screen.id === "recommended-plan-screen") {
+      // call recommendation which will also scroll the chosen card into view
       showRecommendedPlan();
     }
     updateWaterProgress();
@@ -1434,7 +1472,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {};
+  const featureState = {}; // { featureKey: true|false }
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1448,16 +1486,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
+    // 🔍 DEBUG: Check which features are currently set to 'Yes'
     console.log("Current YES Features:", yesFeatures);
   }
 
   window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
+    // record ownership feature so it is sent back if needed
     featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
     syncFeatureState();
+    // show pricing screen directly after ownership selection
     showScreen('recommended-plan-screen');
   };
 
@@ -1507,6 +1549,7 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
+      // refresh screens NodeList
       screens = Array.from(document.querySelectorAll('.form-screen'));
     }
 
@@ -1537,6 +1580,7 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
+      // refresh screens & update index
       screens = Array.from(document.querySelectorAll('.form-screen'));
       currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
@@ -1549,59 +1593,80 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-    if (!planCards.length) return;
+function showRecommendedPlan() {
+  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  if (!planCards.length) return;
 
-    const yes = yesFeatures || [];
+  // Build a list of current Yes features
+  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
 
-    const hasPremium = yes.some(f => ["packages","social","email","content","guide"].includes(f));
-    const hasPro = yes.some(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
-    const hasBasic = yes.some(f => ["booking","mobile","cta","contact","bio"].includes(f));
+  // Tier checks
+  const hasPremium = yes.some(f =>
+    ["packages","social","email","content","guide"].includes(f)
+  );
+  const hasPro = yes.some(f =>
+    ["seo","reviews","branding","faq","newsletter"].includes(f)
+  );
+  const hasBasic = yes.some(f =>
+    ["booking","mobile","cta","contact","bio"].includes(f)
+  );
 
-    let recommendedPlan;
-    if (hasPremium) recommendedPlan = "premium";
-    else if (hasPro) recommendedPlan = "pro";
-    else if (hasBasic) recommendedPlan = "basic";
-    else recommendedPlan = "pro";
+  // Decide recommended plan by highest tier present
+  let recommendedPlan;
+  if (hasPremium) recommendedPlan = "premium";
+  else if (hasPro) recommendedPlan = "pro";
+  else if (hasBasic) recommendedPlan = "basic";
+  else recommendedPlan = "pro"; // fallback if nothing selected
 
-    planCards.forEach(card => {
-      card.classList.remove("recommended", "in-view");
-      card.querySelector(".includes-message")?.remove();
-    });
+  // Clear highlights & messages
+  planCards.forEach(card => {
+    card.classList.remove("recommended", "in-view");
+    card.querySelector(".includes-message")?.remove();
+  });
 
-    const selectedCard = planCards.find(card =>
-      card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  // Highlight chosen card
+  const selectedCard = planCards.find(card =>
+    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  );
+  if (!selectedCard) return;
+  selectedCard.classList.add("recommended","in-view");
+
+  // Dynamic includes text
+  let msgText = "";
+  if (recommendedPlan === "pro") {
+    const basicYes = yes.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
     );
-    if (!selectedCard) return;
-    selectedCard.classList.add("recommended","in-view");
-
-    let msgText = "";
-    if (recommendedPlan === "pro") {
-      const basicYes = yes.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
-      if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-    } else if (recommendedPlan === "premium") {
-      const basicYes = yes.filter(f => ["booking","mobile","cta","contact","bio"].includes(f));
-      const proYes = yes.filter(f => ["seo","reviews","branding","faq","newsletter"].includes(f));
-      const parts = [];
-      if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-      if (proYes.length) parts.push(`from Pro: ${proYes.join(", ")}`);
-      if (parts.length) msgText = `Includes ${parts.join(" | ")}`;
-    }
-
-    if (msgText) {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = "includes-message";
-      msgDiv.textContent = msgText;
-      const title = selectedCard.querySelector("h3");
-      selectedCard.insertBefore(msgDiv, title.nextSibling);
-    }
-
-    setTimeout(() =>
-      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
+  } else if (recommendedPlan === "premium") {
+    const basicYes = yes.filter(f =>
+      ["booking","mobile","cta","contact","bio"].includes(f)
     );
+    const proYes = yes.filter(f =>
+      ["seo","reviews","branding","faq","newsletter"].includes(f)
+    );
+    const parts = [];
+    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
+    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
+    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
   }
 
+  if (msgText) {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "includes-message";
+    msgDiv.textContent = msgText;
+    const title = selectedCard.querySelector("h3");
+    selectedCard.insertBefore(msgDiv, title.nextSibling);
+  }
+
+  // Smooth scroll
+  setTimeout(() =>
+    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+  );
+}
+
+
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1630,12 +1695,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          // FIX: hide overlay after animation
-          setTimeout(() => {
-            typewriterEl.style.display = 'none';
-            if (colorRiseEl) colorRiseEl.style.display = 'none';
-            showScreen('main-intro-options');
-          }, 2000);
+          setTimeout(() => showScreen('main-intro-options'), 2000);
         }, 500);
         return;
       }
@@ -1679,7 +1739,7 @@ document.addEventListener("DOMContentLoaded", () => {
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-
+  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
@@ -1720,19 +1780,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------ Initialize Funnel ------------------
+  // All screens are hidden by default, so we only need to show the intended starting point.
   hideAllScreens();
+
   if (codeParam) {
+    // If a design code is present, bypass typewriter and show the template or step 4.
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (stepParam) {
+    // If a step is specified, show that screen directly.
     const stepName = `instructor-q${stepParam}`;
+    // Find the screen index to set currentScreen correctly
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
       currentScreen = screenIndex;
       showScreen(stepName);
-    } else showScreen(screens[0].id);
+    } else {
+      // Fallback to first screen if stepParam is invalid
+      showScreen(screens[0].id);
+    }
   } else {
+    // No parameters: Start the typewriter animation.
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
@@ -1741,20 +1810,66 @@ document.addEventListener("DOMContentLoaded", () => {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
-  // ------------------ IntersectionObserver for Pricing Cards ------------------
+  // ------------------ Robust IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
     if (!cards || cards.length === 0) return; 
-    if (!('IntersectionObserver' in window)) { cards.forEach(c => c.classList.add('in-view')); return; }
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in-view'));
+      return;
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -12% 0px',
+      threshold: [0, 0.05, 0.15]
+    };
+
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('in-view'); obs.unobserve(entry.target); }
+        try {
+          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+          if (isVisible) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        } catch (err) {
+          try { entry.target.classList.add('in-view'); } catch(e) {}
+          try { obs.unobserve(entry.target); } catch(e) {}
+        }
       });
-    }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: [0,0.05,0.15] });
-    cards.forEach(card => observer.observe(card));
+    }, observerOptions);
+
+    Array.from(cards).forEach(card => observer.observe(card));
   })();
 
-});
+  // ------------------ Stripe Checkout (stub) ------------------
+  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null; // Replace with your Stripe public key if used
+  window.stripeCheckout = function(plan) {
+    if (!stripe) {
+      alert('Stripe not configured (public key missing)');
+      return;
+    }
+    let priceId = '';
+    switch(plan) {
+      case 'basic': priceId = 'price_id_basic'; break;
+      case 'pro': priceId = 'price_id_pro'; break;
+      case 'premium': priceId = 'price_id_premium'; break;
+    }
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      successUrl: window.location.href + '?success=true',
+      cancelUrl: window.location.href + '?canceled=true',
+    }).then(result => {
+      if (result.error) alert(result.error.message);
+    });
+  };
+
+}); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
