@@ -1286,51 +1286,97 @@ html, body {
   </div>
 
   <!-- ===================== PRICING CARDS ===================== -->
-  <section id="pricing-section">
-    <div class="pricing-container">
+<section id="pricing-section">
+  <div class="pricing-container">
 
-      <!-- Basic Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Basic</h3>
-        <p class="price">£499</p>
-        <ul id="basic-features"></ul>
-        <button class="pay-now" onclick="selectPlan('Basic', 'basic', 'https://www.paypal.com/paypal-link-basic')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £499 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£499</p>
+      <ul>
+        <li>Booking & Payments</li>
+        <li>Mobile Friendly</li>
+        <li>CTA Buttons</li>
+        <li>Contact Form</li>
+        <li>About/Bio Section</li>
 
-      <!-- Pro Plan -->
-      <div class="pricing-card recommended" data-animate>
-        <h3>Pro</h3>
-        <p class="price">£999</p>
-        <ul id="pro-features"></ul>
-        <button class="pay-now" onclick="selectPlan('Pro', 'pro', 'https://www.paypal.com/paypal-link-pro')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £999 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
+        <li class="separator">&nbsp;</li>
 
-      <!-- Premium Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Premium</h3>
-        <p class="price">£1499</p>
-        <ul id="premium-features"></ul>
-        <button class="pay-now" onclick="selectPlan('Premium', 'premium', 'https://www.paypal.com/paypal-link-premium')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £1499 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
+        <li class="exclusive">Basic Core Services</li>
+        <li>5 Page Website</li>
+        <li>5 Revisions</li>
+      </ul>
 
+      <button class="pay-now" onclick="selectPlan('Basic', 'basic', 'https://www.paypal.com/paypal-link-basic')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
     </div>
-  </section>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card recommended" data-animate>
+      <h3>Pro</h3>
+      <p class="price">£999</p>
+      <ul>
+        <li>SEO Optimization</li>
+        <li>Booking System</li>
+        <li>Student Reviews</li>
+        <li>Branding Help</li>
+        <li>FAQ / Student Guide</li>
+        <li>Newsletter Signup</li>
+
+        <li class="separator">&nbsp;</li>
+
+        <li class="exclusive">Pro Core Services</li>
+        <li>10 Page Website</li>
+        <li>15 Revisions</li>
+      </ul>
+
+      <button class="pay-now" onclick="selectPlan('Pro', 'pro', 'https://www.paypal.com/paypal-link-pro')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-animate style="padding: 24px; border: 2px solid #f0c040; border-radius: 12px; background: #fff;">
+      <h3 style="text-align: center; color: #f0c040; margin-bottom: 16px;">Premium</h3>
+      <p class="price" style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 16px;">£1499</p>
+      <ul style="list-style: none; padding: 0; margin: 0;">
+        <!-- Funnel-related services -->
+        <li>Online lessons & vouchers</li>
+        <li>Social media integration</li>
+        <li>Professional email</li>
+        <li>Content support</li>
+        <li>First lesson guide</li>
+
+        <li class="separator">&nbsp;</li>
+
+        <li class="exclusive">Premium Core Services</li>
+        <li>50+ Page Website</li>
+        <li>Booking & Payments</li>
+        <li>Full Branding</li>
+        <li>30 Revisions</li>
+      </ul>
+
+      <button class="pay-now" onclick="selectPlan('Premium', 'premium', 'https://www.paypal.com/paypal-link-premium')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+  </div>
+</section>
 </form>
 
 <script>
-/* ---------- FINAL CONSOLIDATED FUNNEL JS (Fixed Overlay / Click Issues) ---------- */
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (with overlay fix) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1383,11 +1429,12 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User Features ------------------
+  // ------------------ User Path & Features ------------------
+  let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
-  const featureState = {};
   let ownershipChoice = "";
+  const featureState = {};
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1401,10 +1448,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
+    console.log("Current YES Features:", yesFeatures);
   }
 
-  window.recordFeature = (f) => { featureState[f] = true; syncFeatureState(); };
-  window.recordNoFeature = (f) => { featureState[f] = false; syncFeatureState(); };
+  window.setPath = (path) => userPath = path;
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
     featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
@@ -1412,27 +1461,31 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen('recommended-plan-screen');
   };
 
-  // Q19 buttons
-  const q19OwnBtn = document.querySelector("#instructor-q19 .own-outright");
-  const q19MonthlyBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnBtn) q19OwnBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlyBtn) q19MonthlyBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
+  // ------------------ Q19 Buttons ------------------
+  const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
+  const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
-  // "I Want This Concept" button
+  // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      window.location.assign(`https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`);
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
     });
   });
 
-  // ------------------ Template / Design Code ------------------
+  // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
     const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
     showFilteredTemplate(code);
   };
 
@@ -1472,14 +1525,14 @@ document.addEventListener("DOMContentLoaded", () => {
       clone.style.width = '100%';
       container.appendChild(clone);
 
-      const btnRow = document.createElement('div');
-      btnRow.className = 'button-row';
+      const buttonRow = document.createElement('div');
+      buttonRow.className = 'button-row';
       const contBtn = document.createElement('button');
       contBtn.type = 'button';
       contBtn.textContent = 'Continue';
       contBtn.onclick = () => next();
-      btnRow.appendChild(contBtn);
-      container.appendChild(btnRow);
+      buttonRow.appendChild(contBtn);
+      container.appendChild(buttonRow);
 
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
@@ -1499,6 +1552,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showRecommendedPlan() {
     const planCards = Array.from(document.querySelectorAll(".pricing-card"));
     if (!planCards.length) return;
+
     const yes = yesFeatures || [];
 
     const hasPremium = yes.some(f => ["packages","social","email","content","guide"].includes(f));
@@ -1511,11 +1565,16 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (hasBasic) recommendedPlan = "basic";
     else recommendedPlan = "pro";
 
-    planCards.forEach(c => { c.classList.remove("recommended","in-view"); c.querySelector(".includes-message")?.remove(); });
+    planCards.forEach(card => {
+      card.classList.remove("recommended", "in-view");
+      card.querySelector(".includes-message")?.remove();
+    });
 
-    const selected = planCards.find(c => c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan);
-    if (!selected) return;
-    selected.classList.add("recommended","in-view");
+    const selectedCard = planCards.find(card =>
+      card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+    );
+    if (!selectedCard) return;
+    selectedCard.classList.add("recommended","in-view");
 
     let msgText = "";
     if (recommendedPlan === "pro") {
@@ -1534,11 +1593,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const msgDiv = document.createElement("div");
       msgDiv.className = "includes-message";
       msgDiv.textContent = msgText;
-      const title = selected.querySelector("h3");
-      selected.insertBefore(msgDiv, title.nextSibling);
+      const title = selectedCard.querySelector("h3");
+      selectedCard.insertBefore(msgDiv, title.nextSibling);
     }
 
-    setTimeout(() => selected.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+    setTimeout(() =>
+      selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
+    );
   }
 
   // ------------------ Typewriter Animation ------------------
@@ -1567,15 +1628,17 @@ document.addEventListener("DOMContentLoaded", () => {
     function typeChar() {
       if (currentLine >= lines.length) {
         cursor.remove();
-        // HIDE overlay and enable funnel
         setTimeout(() => {
-          if (typewriterEl) typewriterEl.style.display = 'none';
-          if (colorRiseEl) colorRiseEl.style.display = 'none';
-          showScreen('main-intro-options');
-        }, 2000);
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          // FIX: hide overlay after animation
+          setTimeout(() => {
+            typewriterEl.style.display = 'none';
+            if (colorRiseEl) colorRiseEl.style.display = 'none';
+            showScreen('main-intro-options');
+          }, 2000);
+        }, 500);
         return;
       }
-
       const text = lines[currentLine];
       if (!lineEl) {
         lineEl = document.createElement('div');
@@ -1644,14 +1707,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateWaterProgress() {
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
-    wave.style.height = ((currentScreen + 1) / screens.length * 100) + '%';
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
   }
+
   function updateProgress(currentStep) {
-    const bar = document.querySelector('.progress-bar');
-    const label = document.querySelector('.progress-label');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
     const percent = Math.round((currentStep / screens.length) * 100);
-    if (bar) bar.style.width = percent + '%';
-    if (label) label.textContent = percent + '%';
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
   }
 
   // ------------------ Initialize Funnel ------------------
@@ -1662,33 +1727,34 @@ document.addEventListener("DOMContentLoaded", () => {
     showFilteredTemplate(codeParam);
   } else if (stepParam) {
     const stepName = `instructor-q${stepParam}`;
-    const index = screens.findIndex(s => s.id === stepName);
-    if (index !== -1) { currentScreen = index; showScreen(stepName); }
-    else showScreen(screens[0].id);
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else showScreen(screens[0].id);
   } else {
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   }
+
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
   // ------------------ IntersectionObserver for Pricing Cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards.length) return;
+    if (!cards || cards.length === 0) return; 
     if (!('IntersectionObserver' in window)) { cards.forEach(c => c.classList.add('in-view')); return; }
-
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.add('in-view'); obs.unobserve(entry.target); }
       });
     }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: [0,0.05,0.15] });
-
-    cards.forEach(c => observer.observe(c));
+    cards.forEach(card => observer.observe(card));
   })();
 
-}); /* end DOMContentLoaded */
+});
 </script>
 </body>
 </html>
