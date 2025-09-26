@@ -1665,6 +1665,53 @@ function showRecommendedPlan() {
   );
 }
 
+
+ function updatePricingCards() {
+  // Map each plan to its features & display name
+  const planMap = {
+    basic: [
+      { key:"booking", label:"Students can book & pay online" },
+      { key:"mobile",  label:"Mobile-optimized design" },
+      { key:"cta",     label:"Strong call-to-action buttons" },
+      { key:"contact", label:"Simple contact form" },
+      { key:"bio",     label:"Instructor bio / About me" }
+    ],
+    pro: [
+      { key:"seo",       label:"Local SEO optimization" },
+      { key:"reviews",   label:"Display student reviews" },
+      { key:"branding",  label:"Branding help (logo/colors)" },
+      { key:"faq",       label:"FAQ / student guide section" },
+      { key:"newsletter",label:"Newsletter signup" }
+    ],
+    premium: [
+      { key:"packages", label:"Lesson packages & gift vouchers" },
+      { key:"social",   label:"Social media integration" },
+      { key:"email",    label:"Professional email address" },
+      { key:"content",  label:"Content creation help" },
+      { key:"guide",    label:"‘What to Expect’ guide" }
+    ]
+  };
+
+  // For each plan, clear and refill the UL with only chosen features
+  Object.keys(planMap).forEach(plan => {
+    const ul = document.getElementById(`${plan}-features`);
+    if (!ul) return;
+    ul.innerHTML = "";
+
+    const yesList = planMap[plan].filter(f => userAnswers[f.key]);
+    if (yesList.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "No services selected";
+      ul.appendChild(li);
+    } else {
+      yesList.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f.label;
+        ul.appendChild(li);
+      });
+    }
+  });
+}
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
