@@ -1312,13 +1312,95 @@ html, body {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q19">
+ <!-- ===================== Q19 OWNERSHIP CHOICE ===================== -->
+<div class="form-screen" id="instructor-q19">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
     <button type="button" class="monthly-support">Monthly Support</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
+
+<!-- ===================== MONTHLY PLAN SCREEN ===================== -->
+<div class="form-screen" id="monthly-plan-screen">
+  <h2>Monthly Support Plans</h2>
+  <div class="pricing-container">
+
+    <!-- Monthly Basic -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£100 / month</p>
+      <ul class="static-features">
+        <li>5 pages</li>
+        <li>10 revisions</li>
+        <li>Hosting & maintenance included</li>
+      </ul>
+      <ul class="features-list">
+        <li>Online booking & payment</li>
+        <li>Mobile-friendly design</li>
+        <li>Strong call-to-action buttons</li>
+        <li>Simple contact form</li>
+        <li>About / Instructor bio</li>
+      </ul>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Choose Basic
+      </button>
+    </div>
+
+    <!-- Monthly Pro -->
+    <div class="pricing-card recommended" data-animate>
+      <h3>Pro</h3>
+      <p class="price">£200 / month</p>
+      <ul class="static-features">
+        <li>10 pages</li>
+        <li>20 revisions</li>
+        <li>Hosting & maintenance included</li>
+      </ul>
+      <ul class="features-list">
+        <li>Local Google SEO</li>
+        <li>Student reviews</li>
+        <li>Branding help (logo & colors)</li>
+        <li>FAQ / Student guide</li>
+        <li>Newsletter signup</li>
+      </ul>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Choose Pro
+      </button>
+    </div>
+
+    <!-- Monthly Premium -->
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£300 / month</p>
+      <ul class="static-features">
+        <li>30 pages</li>
+        <li>39 revisions</li>
+        <li>Dedicated account manager</li>
+        <li>Hosting & maintenance included</li>
+      </ul>
+      <ul class="features-list">
+        <li>Lesson packages & gift vouchers</li>
+        <li>Social media integration</li>
+        <li>Professional email address</li>
+        <li>Content creation help</li>
+        <li>“What to Expect” guide</li>
+      </ul>
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Choose Premium
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== RECOMMENDED PLAN (Buy Outright) ===================== -->
+<div class="form-screen" id="recommended-plan-screen">
+  <h2>Your Recommended Plan</h2>
+  <!-- Your existing buy outright pricing cards go here -->
 </div>
 
 
