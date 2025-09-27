@@ -1328,6 +1328,7 @@ html, body {
     <h2>Your Recommended Plan</h2>
 
   
+
 <!-- ===================== PRICING CARDS ===================== -->
 <section id="pricing-section">
   <div class="pricing-container">
@@ -1336,13 +1337,7 @@ html, body {
     <div class="pricing-card" data-animate>
       <h3>Basic</h3>
       <p class="price">£499</p>
-      <ul>
-        <li>Online booking & payment</li>
-        <li>Mobile-friendly design</li>
-        <li>Strong call-to-action buttons</li>
-        <li>Simple contact form</li>
-        <li>About / Instructor bio</li>
-      </ul>
+      <ul class="features-list"></ul>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1360,14 +1355,7 @@ html, body {
     <div class="pricing-card recommended" data-animate>
       <h3>Pro</h3>
       <p class="price">£999</p>
-      <ul>
-       
-        <li>Local Google SEO</li>
-        <li>Student reviews display</li>
-        <li>Branding (logo & colors)</li>
-        <li>FAQ / Student guide</li>
-        <li>Newsletter signup</li>
-      </ul>
+      <ul class="features-list"></ul>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1385,14 +1373,7 @@ html, body {
     <div class="pricing-card" data-animate>
       <h3>Premium</h3>
       <p class="price">£1499</p>
-      <ul>
-     
-        <li>Lesson packages & gift vouchers</li>
-        <li>Social media integration</li>
-        <li>Professional email setup</li>
-        <li>Content creation help</li>
-        <li>“What to Expect” guide</li>
-      </ul>
+      <ul class="features-list"></ul>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1596,80 +1577,94 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Recommended Plan ------------------
+
+ // ------------------ Recommended Plan ------------------
 function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
   if (!planCards.length) return;
 
-  // Build a list of current Yes features
-  const yes = yesFeatures || []; // adjust if your yesFeatures variable is elsewhere
+  // All "yes" feature keys recorded during the funnel
+  const yes = yesFeatures || [];
 
-  // Tier checks
-  const hasPremium = yes.some(f =>
-    ["packages","social","email","content","guide"].includes(f)
-  );
-  const hasPro = yes.some(f =>
-    ["seo","reviews","branding","faq","newsletter"].includes(f)
-  );
-  const hasBasic = yes.some(f =>
-    ["booking","mobile","cta","contact","bio"].includes(f)
-  );
+  // Tier definitions
+  const tiers = {
+    basic:   ["booking","mobile","cta","contact","bio"],
+    pro:     ["seo","reviews","branding","faq","newsletter"],
+    premium: ["packages","social","email","content","guide"]
+  };
 
-  // Decide recommended plan by highest tier present
-  let recommendedPlan;
-  if (hasPremium) recommendedPlan = "premium";
-  else if (hasPro) recommendedPlan = "pro";
-  else if (hasBasic) recommendedPlan = "basic";
-  else recommendedPlan = "pro"; // fallback if nothing selected
+  // User-friendly labels for each key
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "“What to Expect” guide"
+  };
 
-  // Clear highlights & messages
+  // Detect highest tier selected
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
+
+  let recommendedPlan =
+      hasPremium ? "premium" :
+      hasPro     ? "pro" :
+      hasBasic   ? "basic" :
+                   "pro"; // fallback
+
+  // Update each pricing card
   planCards.forEach(card => {
-    card.classList.remove("recommended", "in-view");
+    card.classList.remove("recommended","in-view");
     card.querySelector(".includes-message")?.remove();
+
+    const level = card.querySelector("h3")?.textContent.trim().toLowerCase();
+    const list  = card.querySelector(".features-list");
+    if (!list) return;
+
+    // Build the feature keys this card should display
+    let allowedKeys = [];
+    if (level === "basic")
+      allowedKeys = yes.filter(k => tiers.basic.includes(k));
+    else if (level === "pro")
+      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
+    else if (level === "premium")
+      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
+
+    // Rebuild <ul>
+    list.innerHTML = "";
+    if (allowedKeys.length) {
+      allowedKeys.forEach(k => {
+        const li = document.createElement("li");
+        li.textContent = labels[k] || k;
+        list.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No features selected";
+      list.appendChild(li);
+    }
   });
 
-  // Highlight chosen card
-  const selectedCard = planCards.find(card =>
-    card.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  // Highlight the recommended plan
+  const selectedCard = planCards.find(c =>
+    c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
-  if (!selectedCard) return;
-  selectedCard.classList.add("recommended","in-view");
-
-  // Dynamic includes text
-  let msgText = "";
-  if (recommendedPlan === "pro") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    if (basicYes.length) msgText = `Includes from Basic: ${basicYes.join(", ")}`;
-  } else if (recommendedPlan === "premium") {
-    const basicYes = yes.filter(f =>
-      ["booking","mobile","cta","contact","bio"].includes(f)
-    );
-    const proYes = yes.filter(f =>
-      ["seo","reviews","branding","faq","newsletter"].includes(f)
-    );
-    const parts = [];
-    if (basicYes.length) parts.push(`from Basic: ${basicYes.join(", ")}`);
-    if (proYes.length)   parts.push(`from Pro: ${proYes.join(", ")}`);
-    if (parts.length)    msgText = `Includes ${parts.join(" | ")}`;
+  if (selectedCard) {
+    selectedCard.classList.add("recommended","in-view");
+    setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
-
-  if (msgText) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "includes-message";
-    msgDiv.textContent = msgText;
-    const title = selectedCard.querySelector("h3");
-    selectedCard.insertBefore(msgDiv, title.nextSibling);
-  }
-
-  // Smooth scroll
-  setTimeout(() =>
-    selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200
-  );
 }
-
-
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
