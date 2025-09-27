@@ -1312,7 +1312,6 @@ html, body {
     </div>
   </div>
 
-
 <!-- ===================== OWN vs MONTHLY SUPPORT ===================== -->
 <div class="form-screen" id="instructor-q19">
   <h2>
@@ -1320,66 +1319,61 @@ html, body {
     hosting and maintenance?
   </h2>
 
+  <!-- Initial choice buttons -->
   <div class="button-row main-choice">
     <button type="button" class="own-outright">Own Outright</button>
     <button type="button" class="show-monthly">Monthly Support</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
-</div>
 
-<!-- ===== Monthly-Support Pricing (NEW separate screen) ===== -->
-<div class="form-screen" id="monthly-support-pricing">
-  <h2>Monthly Support Plans</h2>
+  <!-- Monthly Support Pricing Cards (hidden until “Monthly Support” is clicked) -->
+  <div class="monthly-options" style="display:none; margin-top:2rem;">
+    <h3>Select a Monthly Support Plan</h3>
 
-  <div class="pricing-container">
-    <div class="pricing-card" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£150 / month</p>
-      <ul class="static-features">
-        <li>5 pages</li>
-        <li>10 revisions</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <button class="pay-now choose-monthly" data-plan="Monthly Basic £150">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Choose Basic
-      </button>
+    <div class="pricing-container">
+      <div class="pricing-card" data-animate>
+        <h3>Basic</h3>
+        <p class="price">£150 / month</p>
+        <ul class="static-features">
+          <li>5 pages</li>
+          <li>10 revisions</li>
+          <li>Hosting & maintenance included</li>
+        </ul>
+        <button class="pay-now choose-monthly" data-plan="Monthly Basic £150">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Choose Basic
+        </button>
+      </div>
+
+      <div class="pricing-card recommended" data-animate>
+        <h3>Pro</h3>
+        <p class="price">£250 / month</p>
+        <ul class="static-features">
+          <li>10 pages</li>
+          <li>20 revisions</li>
+          <li>Hosting & maintenance included</li>
+        </ul>
+        <button class="pay-now choose-monthly" data-plan="Monthly Pro £250">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Choose Pro
+        </button>
+      </div>
+
+      <div class="pricing-card" data-animate>
+        <h3>Premium</h3>
+        <p class="price">£350 / month</p>
+        <ul class="static-features">
+          <li>30 pages</li>
+          <li>39 revisions</li>
+          <li>Dedicated account manager</li>
+          <li>Hosting & maintenance included</li>
+        </ul>
+        <button class="pay-now choose-monthly" data-plan="Monthly Premium £350">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Choose Premium
+        </button>
+      </div>
     </div>
-
-    <div class="pricing-card recommended" data-animate>
-      <h3>Pro</h3>
-      <p class="price">£250 / month</p>
-      <ul class="static-features">
-        <li>10 pages</li>
-        <li>20 revisions</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <button class="pay-now choose-monthly" data-plan="Monthly Pro £250">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Choose Pro
-      </button>
-    </div>
-
-    <div class="pricing-card" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£350 / month</p>
-      <ul class="static-features">
-        <li>30 pages</li>
-        <li>39 revisions</li>
-        <li>Dedicated account manager</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <button class="pay-now choose-monthly" data-plan="Monthly Premium £350">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Choose Premium
-      </button>
-    </div>
-  </div>
-
-  <div class="button-row">
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
   </div>
 </div>
 
@@ -1758,10 +1752,6 @@ function showRecommendedPlan() {
     next();  // move to the next funnel screen
   }
 });
-
-
-
-
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
@@ -1835,20 +1825,7 @@ function showRecommendedPlan() {
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-
-
-
- const monthlyBtn = document.querySelector("#instructor-q19 .show-monthly");
-if (monthlyBtn) {
-  monthlyBtn.addEventListener("click", () => {
-    // keep your feature flag if needed
-    featureState["monthlySupport"] = true;
-    syncFeatureState();
-
-    // go to the new monthly pricing screen
-    showScreen("monthly-support-pricing");
-  });
-}
+  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
