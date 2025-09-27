@@ -1314,10 +1314,24 @@ html, body {
 
 <!-- ===================== OWN vs MONTHLY SUPPORT ===================== -->
 <div class="form-screen" id="instructor-q19">
-  <h2>
-    Do you want to own the website outright or prefer monthly support including
-    hosting and maintenance?
-  </h2>
+  <div class="initial-question">
+    <h2>
+      Do you want to own the website outright or prefer monthly support including
+      hosting and maintenance?
+    </h2>
+    <div class="button-row main-choice">
+      <button type="button" class="own-outright">Own Outright</button>
+      <button type="button" class="show-monthly">Monthly Support</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <!-- Monthly Support Pricing Cards -->
+  <div class="monthly-options" style="display:none; margin-top:2rem;">
+    <h3>Select a Monthly Support Plan</h3>
+    <!-- … monthly pricing cards as you already have … -->
+  </div>
+</div>
 
   <!-- Initial choice buttons -->
   <div class="button-row main-choice">
@@ -1752,6 +1766,18 @@ function showRecommendedPlan() {
     next();  // move to the next funnel screen
   }
 });
+
+
+ 
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("show-monthly")) {
+    // hide the question + buttons
+    document.querySelector("#instructor-q19 .initial-question").style.display = "none";
+    // show the monthly cards
+    document.querySelector("#instructor-q19 .monthly-options").style.display = "block";
+  }
+});
+
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
