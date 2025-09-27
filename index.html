@@ -1312,8 +1312,7 @@ html, body {
     </div>
   </div>
 
- <!-- ===================== Q19 OWNERSHIP CHOICE ===================== -->
-<div class="form-screen" id="instructor-q19">
+  <div class="form-screen" id="instructor-q19">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
@@ -1322,132 +1321,106 @@ html, body {
   </div>
 </div>
 
-<!-- ===================== MONTHLY PLAN SCREEN ===================== -->
-<div class="form-screen" id="monthly-plan-screen">
-  <h2>Monthly Support Plans</h2>
+
+ 
+ <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <div class="form-screen" id="recommended-plan-screen">
+    <h2>Your Recommended Plan</h2>
+
+  
+
+<!-- ===================== PRICING CARDS ===================== -->
+ <section id="pricing-section">
   <div class="pricing-container">
-    <!-- Monthly Basic -->
-    <div class="pricing-card" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£100 / month</p>
-      <ul class="static-features">
-        <li>5 pages</li>
-        <li>10 revisions</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <ul class="features-list">
-        <li>Online booking & payment</li>
-        <li>Mobile-friendly design</li>
-        <li>Strong call-to-action buttons</li>
-        <li>Simple contact form</li>
-        <li>About / Instructor bio</li>
-      </ul>
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-basic'">
-        Choose Basic
-      </button>
-    </div>
 
-    <!-- Monthly Pro -->
-    <div class="pricing-card recommended" data-animate>
-      <h3>Pro</h3>
-      <p class="price">£200 / month</p>
-      <ul class="static-features">
-        <li>10 pages</li>
-        <li>20 revisions</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <ul class="features-list">
-        <li>Local Google SEO</li>
-        <li>Student reviews</li>
-        <li>Branding help (logo & colors)</li>
-        <li>FAQ / Student guide</li>
-        <li>Newsletter signup</li>
-      </ul>
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-pro'">
-        Choose Pro
-      </button>
-    </div>
-
-    <!-- Monthly Premium -->
-    <div class="pricing-card" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£300 / month</p>
-      <ul class="static-features">
-        <li>30 pages</li>
-        <li>39 revisions</li>
-        <li>Dedicated account manager</li>
-        <li>Hosting & maintenance included</li>
-      </ul>
-      <ul class="features-list">
-        <li>Lesson packages & gift vouchers</li>
-        <li>Social media integration</li>
-        <li>Professional email address</li>
-        <li>Content creation help</li>
-        <li>“What to Expect” guide</li>
-      </ul>
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-premium'">
-        Choose Premium
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== RECOMMENDED PLAN SCREEN (Buy Outright) ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-  <div class="pricing-container">
     <!-- Basic Plan -->
     <div class="pricing-card" data-animate>
       <h3>Basic</h3>
       <p class="price">£499</p>
+
+      <!-- Static core features -->
       <ul class="static-features">
         <li>5 pages</li>
         <li>10 revisions</li>
       </ul>
+
+      <!-- white-space separator -->
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Basic features -->
       <ul class="features-list"></ul>
+
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £499 via PayPal
       </button>
+      <small>50% now to secure, 50% on completion</small>
     </div>
 
     <!-- Pro Plan -->
     <div class="pricing-card recommended" data-animate>
       <h3>Pro</h3>
       <p class="price">£999</p>
+
+      <!-- Static core features -->
       <ul class="static-features">
         <li>10 pages</li>
         <li>20 revisions</li>
       </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Pro features -->
       <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Pro -->
       <div class="includes-message"></div>
+
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £999 via PayPal
       </button>
+      <small>50% now to secure, 50% on completion</small>
     </div>
 
     <!-- Premium Plan -->
     <div class="pricing-card" data-animate>
       <h3>Premium</h3>
       <p class="price">£1499</p>
+
+      <!-- Static core features -->
       <ul class="static-features">
         <li>30 pages</li>
         <li>39 revisions</li>
         <li>Dedicated account manager</li>
       </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Premium features -->
       <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Premium -->
       <div class="includes-message"></div>
+
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
         Pay £1499 via PayPal
       </button>
+      <small>50% now to secure, 50% on completion</small>
     </div>
-  </div>
-</div>
 
+  </div>
+</section>
 </form>
 
- 
-<script>
-/* ---------- FINAL CONSOLIDATED FUNNEL JS (with Monthly Support) ---------- */
+
+ <script>
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1457,9 +1430,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-
-  function updateWaterProgress() { /* progress bar stub */ }
-  function updateProgress(step) { /* progress bar stub */ }
+  
+  // Progress Bar Functions (Stubs - defined later, hoisted)
+  function updateWaterProgress() { /* Defined later */ }
+  function updateProgress(step) { /* Defined later */ }
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1469,29 +1443,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function showScreen(id, scrollToIt = false) {
+  function showScreen(id) {
     const screen = document.getElementById(id);
     if (!screen) return;
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
+    // Keep this — we'll center the recommended card separately if required
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // always scroll top
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    // auto-glow for outright recommended plan only
     if (screen.id === "recommended-plan-screen") {
+      // call recommendation which will also scroll the chosen card into view
       showRecommendedPlan();
     }
-
-    // optional smooth scroll for monthly plan section
-    if (scrollToIt) {
-      setTimeout(() => {
-        screen.scrollIntoView({ behavior: "smooth" });
-      }, 250);
-    }
-
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1519,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {};
+  const featureState = {}; // { featureKey: true|false }
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1528,11 +1493,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isYes) yesFeatures.push(f);
       else noFeatures.push(f);
     });
-    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
+    // 🔍 DEBUG: Check which features are currently set to 'Yes'
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1540,34 +1506,21 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Plan Selection ------------------
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    featureState[choice === "Owned Outright" ? "buyOutright" : "monthlySupport"] = true;
+    // record ownership feature so it is sent back if needed
+    featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
     syncFeatureState();
-    if (choice === "Owned Outright") {
-      showScreen("recommended-plan-screen");
-    } else {
-      showScreen("monthly-plan-screen", true);
-    }
-  };
-
-  window.selectMonthlyPlan = (plan) => {
-    document.getElementById("hiddenPlan").value = plan;
-    document.getElementById("hiddenFeatures").value = "Monthly Support Package";
-    document.getElementById("hiddenPaymentLink").value = "https://www.paypal.com";
-    alert("You selected " + plan + ". Submit the form to proceed.");
+    // show pricing screen directly after ownership selection
+    showScreen('recommended-plan-screen');
   };
 
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership("Owned Outright"));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership("Monthly Support"));
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
 
- 
-
-   
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
