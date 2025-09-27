@@ -1647,42 +1647,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
 
-  // ================= Show Monthly Support Pricing =================
+  // ---------- Helper: Show a specific screen ----------
+  function showScreen(id) {
+    document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  // ---------- Track selected features ----------
+  window.yesFeatures = []; // store all “yes” answers
+
+  window.recordFeature = (feature) => {
+    if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+  };
+
+  window.recordNoFeature = (feature) => {
+    const index = yesFeatures.indexOf(feature);
+    if (index > -1) yesFeatures.splice(index, 1);
+  };
+
+  // ---------- Next / Prev Screen Functions ----------
+  window.next = () => {
+    const screens = Array.from(document.querySelectorAll(".form-screen"));
+    const current = screens.findIndex(s => s.classList.contains("active"));
+    if (current < screens.length - 1) {
+      showScreen(screens[current + 1].id);
+    }
+  };
+
+  window.prev = () => {
+    const screens = Array.from(document.querySelectorAll(".form-screen"));
+    const current = screens.findIndex(s => s.classList.contains("active"));
+    if (current > 0) {
+      showScreen(screens[current - 1].id);
+    }
+  };
+
+  // ---------- Monthly Support ----------
   document.querySelector(".show-monthly")?.addEventListener("click", () => {
+    showScreen("instructor-q19"); // ensure parent screen is active
     document.querySelector("#instructor-q19 .initial-question").style.display = "none";
     document.querySelector("#instructor-q19 .monthly-options").style.display = "block";
   });
 
-  // ================= Show Recommended One-Time Plan =================
+  // ---------- Own Outright ----------
   document.querySelector(".own-outright")?.addEventListener("click", () => {
-    // hide current question
-    document.querySelector("#instructor-q19").classList.remove("active"); 
-    // show recommended plan screen
-    const recommendedScreen = document.getElementById("recommended-plan-screen");
-    recommendedScreen.classList.add("active");
-
-    // fill in dynamic features & highlight recommended plan
-    showRecommendedPlan();
+    showScreen("recommended-plan-screen"); // activate recommended plan screen
+    showRecommendedPlan(); // dynamically fill features & highlight recommended
   });
 
-  // ================= Monthly Plan Selection =================
+  // ---------- Monthly Plan Selection ----------
   document.querySelectorAll(".choose-monthly").forEach(btn => {
     btn.addEventListener("click", () => {
-      document.getElementById("hiddenPlan").value = btn.dataset.plan; // store in hidden input
-      next(); // move to next funnel screen
+      document.getElementById("hiddenPlan").value = btn.dataset.plan;
+      document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
+      next();
+    });
+  });
+
+  // ---------- Recommended Plan Selection ----------
+  document.querySelectorAll("#recommended-plan-screen .pay-now").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const planName = btn.closest(".pricing-card").querySelector("h3").textContent;
+      document.getElementById("hiddenPlan").value = planName;
+      document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
+      // Form will submit if it’s a submit button or redirect via PayPal link
     });
   });
 
 });
 
-// =================== Recommended Plan Logic ===================
+// ---------- Recommended Plan Logic ----------
 function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll("#recommended-plan-screen .pricing-card"));
   if (!planCards.length) return;
 
-  const yes = yesFeatures || []; // yesFeatures = previously selected features
+  const yes = window.yesFeatures || [];
 
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
@@ -1708,12 +1749,11 @@ function showRecommendedPlan() {
     guide: "“What to Expect” guide"
   };
 
-  // Determine recommended plan
   const hasPremium = yes.some(f => tiers.premium.includes(f));
   const hasPro     = yes.some(f => tiers.pro.includes(f));
   const hasBasic   = yes.some(f => tiers.basic.includes(f));
 
-  let recommendedPlan =
+  const recommendedPlan =
       hasPremium ? "premium" :
       hasPro     ? "pro" :
       hasBasic   ? "basic" :
@@ -1727,55 +1767,42 @@ function showRecommendedPlan() {
     const includesDiv = card.querySelector(".includes-message");
     if (!list) return;
 
-    // --- Dynamic funnel features ---
+    // Dynamic features
     let allowedKeys = [];
-    if (level === "basic") {
-      allowedKeys = yes.filter(k => tiers.basic.includes(k));
-    } else if (level === "pro") {
-      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
-    } else if (level === "premium") {
-      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
-    }
+    if (level === "basic") allowedKeys = yes.filter(k => tiers.basic.includes(k));
+    if (level === "pro") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
+    if (level === "premium") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
 
-    list.innerHTML = "";
-    if (allowedKeys.length) {
-      allowedKeys.forEach(k => {
-        const li = document.createElement("li");
-        li.textContent = labels[k] || k;
-        list.appendChild(li);
-      });
-    } else {
-      const li = document.createElement("li");
-      li.textContent = "No features selected";
-      list.appendChild(li);
-    }
+    list.innerHTML = allowedKeys.length
+      ? allowedKeys.map(k => `<li>${labels[k]}</li>`).join("")
+      : "<li>No features selected</li>";
 
-    // --- Lower-tier includes ---
+    // Lower-tier includes
     if (includesDiv) {
       includesDiv.innerHTML = "";
-      let includeParts = [];
+      const includeParts = [];
       if (level === "pro") {
         const basicYes = yes.filter(k => tiers.basic.includes(k));
         if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-      } else if (level === "premium") {
+      }
+      if (level === "premium") {
         const basicYes = yes.filter(k => tiers.basic.includes(k));
-        const proYes    = yes.filter(k => tiers.pro.includes(k));
+        const proYes = yes.filter(k => tiers.pro.includes(k));
         if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+        if (proYes.length) includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
       }
       if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
     }
   });
 
-  // Highlight & scroll to recommended plan
-  const selectedCard = planCards.find(c =>
-    c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
-  );
+  // Highlight recommended
+  const selectedCard = planCards.find(c => c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan);
   if (selectedCard) {
     selectedCard.classList.add("recommended","in-view");
     setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
  
  
   // ------------------ Typewriter Animation ------------------
