@@ -1118,7 +1118,6 @@ html, body {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===================== INTRO ===================== -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -1128,7 +1127,7 @@ html, body {
     </div>
   </div>
 
-
+🔥
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -1304,8 +1303,7 @@ html, body {
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
-
-
+🔥
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
@@ -1315,145 +1313,111 @@ html, body {
     </div>
   </div>
 
-  <!-- ===================== OWN OR MONTHLY ===================== -->
   <div class="form-screen" id="instructor-q19">
-    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <div class="button-row">
-      <button type="button" class="own-outright"
-              onclick="showScreen('recommended-plan-screen')">Own Outright</button>
-      <button type="button" class="monthly-support"
-              onclick="showScreen('monthly-plan-screen')">Monthly Support</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+  <div class="button-row">
+    <button type="button" class="own-outright">Own Outright</button>
+    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
-  <!-- ===================== MONTHLY SUPPORT PLANS ===================== -->
-  <div class="form-screen" id="monthly-plan-screen">
-    <h2>Monthly Support Plans</h2>
-    <p>Includes hosting, maintenance, security updates and your selected features.</p>
 
-    <section id="monthly-pricing-section">
-      <div class="pricing-container">
-
-        <!-- Monthly Basic -->
-        <div class="pricing-card" data-animate>
-          <h3>Basic</h3>
-          <p class="price">£100 / month</p>
-          <ul class="static-features">
-            <li>All selected Basic features</li>
-            <li>Hosting & maintenance</li>
-            <li>Security updates</li>
-            <li>Email support</li>
-          </ul>
-          <button class="pay-now"
-            onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-basic'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Subscribe £100 / month
-          </button>
-        </div>
-
-        <!-- Monthly Pro -->
-        <div class="pricing-card recommended" data-animate>
-          <h3>Pro</h3>
-          <p class="price">£200 / month</p>
-          <ul class="static-features">
-            <li>Everything in Basic</li>
-            <li>Priority updates</li>
-            <li>Content edits (up to 3 / mo)</li>
-          </ul>
-          <button class="pay-now"
-            onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-pro'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Subscribe £200 / month
-          </button>
-        </div>
-
-        <!-- Monthly Premium -->
-        <div class="pricing-card" data-animate>
-          <h3>Premium</h3>
-          <p class="price">£300 / month</p>
-          <ul class="static-features">
-            <li>Everything in Pro</li>
-            <li>Unlimited edits</li>
-            <li>Dedicated account manager</li>
-          </ul>
-          <button class="pay-now"
-            onclick="window.location.href='https://www.paypal.com/paypal-link-monthly-premium'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Subscribe £300 / month
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="button-row">
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <!-- ===================== ONE-TIME PRICING ===================== -->
+ 
+ <!-- ===================== RECOMMENDED PLAN ===================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
-    <section id="pricing-section">
-      <div class="pricing-container">
 
-        <!-- Basic Plan -->
-        <div class="pricing-card" data-animate>
-          <h3>Basic</h3>
-          <p class="price">£499</p>
-          <ul class="static-features">
-            <li>5 pages</li>
-            <li>10 revisions</li>
-          </ul>
-          <ul class="features-list"></ul>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-        </div>
+  
 
-        <!-- Pro Plan -->
-        <div class="pricing-card recommended" data-animate>
-          <h3>Pro</h3>
-          <p class="price">£999</p>
-          <ul class="static-features">
-            <li>10 pages</li>
-            <li>20 revisions</li>
-          </ul>
-          <ul class="features-list"></ul>
-          <div class="includes-message"></div>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £999 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-        </div>
+<!-- ===================== PRICING CARDS ===================== -->
+ <section id="pricing-section">
+  <div class="pricing-container">
 
-        <!-- Premium Plan -->
-        <div class="pricing-card" data-animate>
-          <h3>Premium</h3>
-          <p class="price">£1499</p>
-          <ul class="static-features">
-            <li>30 pages</li>
-            <li>39 revisions</li>
-            <li>Dedicated account manager</li>
-          </ul>
-          <ul class="features-list"></ul>
-          <div class="includes-message"></div>
-          <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £1499 via PayPal
-          </button>
-          <small>50% now to secure, 50% on completion</small>
-        </div>
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£499</p>
 
-      </div>
-    </section>
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>5 pages</li>
+        <li>10 revisions</li>
+      </ul>
+
+      <!-- white-space separator -->
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Basic features -->
+      <ul class="features-list"></ul>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card recommended" data-animate>
+      <h3>Pro</h3>
+      <p class="price">£999</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>10 pages</li>
+        <li>20 revisions</li>
+      </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Pro features -->
+      <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Pro -->
+      <div class="includes-message"></div>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£1499</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>30 pages</li>
+        <li>39 revisions</li>
+        <li>Dedicated account manager</li>
+      </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Premium features -->
+      <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Premium -->
+      <div class="includes-message"></div>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
   </div>
+</section>
 </form>
-
 
  <script>
 /* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
