@@ -1127,7 +1127,6 @@ html, body {
     </div>
   </div>
 
-🔥
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -1303,7 +1302,7 @@ html, body {
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
-🔥
+
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
@@ -1420,7 +1419,8 @@ html, body {
 </form>
 
  <script>
-/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
+<script>
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (with Monthly Support) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1430,10 +1430,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  
-  // Progress Bar Functions (Stubs - defined later, hoisted)
-  function updateWaterProgress() { /* Defined later */ }
-  function updateProgress(step) { /* Defined later */ }
+
+  function updateWaterProgress() { /* progress bar stub */ }
+  function updateProgress(step) { /* progress bar stub */ }
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1443,20 +1442,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function showScreen(id) {
+  function showScreen(id, scrollToIt = false) {
     const screen = document.getElementById(id);
     if (!screen) return;
     hideAllScreens();
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
-    // Keep this — we'll center the recommended card separately if required
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
+    // always scroll top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // auto-glow for outright recommended plan only
     if (screen.id === "recommended-plan-screen") {
-      // call recommendation which will also scroll the chosen card into view
       showRecommendedPlan();
     }
+
+    // optional smooth scroll for monthly plan section
+    if (scrollToIt) {
+      setTimeout(() => {
+        screen.scrollIntoView({ behavior: "smooth" });
+      }, 250);
+    }
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1484,7 +1492,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {}; // { featureKey: true|false }
+  const featureState = {};
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1493,12 +1501,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isYes) yesFeatures.push(f);
       else noFeatures.push(f);
     });
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan();
     }
-    // 🔍 DEBUG: Check which features are currently set to 'Yes'
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1506,21 +1513,34 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
+  // ------------------ Plan Selection ------------------
   window.recordOwnership = (choice) => {
     ownershipChoice = choice;
-    // record ownership feature so it is sent back if needed
-    featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
+    featureState[choice === "Owned Outright" ? "buyOutright" : "monthlySupport"] = true;
     syncFeatureState();
-    // show pricing screen directly after ownership selection
-    showScreen('recommended-plan-screen');
+    if (choice === "Owned Outright") {
+      showScreen("recommended-plan-screen");
+    } else {
+      showScreen("monthly-plan-screen", true);
+    }
+  };
+
+  window.selectMonthlyPlan = (plan) => {
+    document.getElementById("hiddenPlan").value = plan;
+    document.getElementById("hiddenFeatures").value = "Monthly Support Package";
+    document.getElementById("hiddenPaymentLink").value = "https://www.paypal.com";
+    alert("You selected " + plan + ". Submit the form to proceed.");
   };
 
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership("Owned Outright"));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership("Monthly Support"));
 
+ 
+
+   
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
