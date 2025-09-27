@@ -1337,7 +1337,22 @@ html, body {
     <div class="pricing-card" data-animate>
       <h3>Basic</h3>
       <p class="price">£499</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>5 pages</li>
+        <li>10 revisions</li>
+      </ul>
+
+      <hr class="separator">
+
+      <!-- Funnel-selected Basic features -->
       <ul class="features-list"></ul>
+
+      <hr class="separator">
+
+      <!-- Lower-tier includes (not applicable for Basic) -->
+      <div class="includes-message"></div>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1355,7 +1370,22 @@ html, body {
     <div class="pricing-card recommended" data-animate>
       <h3>Pro</h3>
       <p class="price">£999</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>10 pages</li>
+        <li>20 revisions</li>
+      </ul>
+
+      <hr class="separator">
+
+      <!-- Funnel-selected Pro features -->
       <ul class="features-list"></ul>
+
+      <hr class="separator">
+
+      <!-- Lower-tier includes (Basic features selected) -->
+      <div class="includes-message"></div>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1373,7 +1403,23 @@ html, body {
     <div class="pricing-card" data-animate>
       <h3>Premium</h3>
       <p class="price">£1499</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>30 pages</li>
+        <li>39 revisions</li>
+        <li>Dedicated account manager</li>
+      </ul>
+
+      <hr class="separator">
+
+      <!-- Funnel-selected Premium features -->
       <ul class="features-list"></ul>
+
+      <hr class="separator">
+
+      <!-- Lower-tier includes (selected Basic + Pro features) -->
+      <div class="includes-message"></div>
 
       <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
@@ -1583,17 +1629,14 @@ function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
   if (!planCards.length) return;
 
-  // All "yes" feature keys recorded during the funnel
   const yes = yesFeatures || [];
 
-  // Tier definitions
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
     pro:     ["seo","reviews","branding","faq","newsletter"],
     premium: ["packages","social","email","content","guide"]
   };
 
-  // User-friendly labels for each key
   const labels = {
     booking: "Online booking & payment",
     mobile: "Mobile-friendly design",
@@ -1612,7 +1655,6 @@ function showRecommendedPlan() {
     guide: "“What to Expect” guide"
   };
 
-  // Detect highest tier selected
   const hasPremium = yes.some(f => tiers.premium.includes(f));
   const hasPro     = yes.some(f => tiers.pro.includes(f));
   const hasBasic   = yes.some(f => tiers.basic.includes(f));
@@ -1623,25 +1665,24 @@ function showRecommendedPlan() {
       hasBasic   ? "basic" :
                    "pro"; // fallback
 
-  // Update each pricing card
   planCards.forEach(card => {
     card.classList.remove("recommended","in-view");
-    card.querySelector(".includes-message")?.remove();
 
     const level = card.querySelector("h3")?.textContent.trim().toLowerCase();
     const list  = card.querySelector(".features-list");
+    const includesDiv = card.querySelector(".includes-message");
     if (!list) return;
 
-    // Build the feature keys this card should display
+    // --- Dynamic funnel features ---
     let allowedKeys = [];
-    if (level === "basic")
+    if (level === "basic") {
       allowedKeys = yes.filter(k => tiers.basic.includes(k));
-    else if (level === "pro")
+    } else if (level === "pro") {
       allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
-    else if (level === "premium")
+    } else if (level === "premium") {
       allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
+    }
 
-    // Rebuild <ul>
     list.innerHTML = "";
     if (allowedKeys.length) {
       allowedKeys.forEach(k => {
@@ -1654,9 +1695,24 @@ function showRecommendedPlan() {
       li.textContent = "No features selected";
       list.appendChild(li);
     }
+
+    // --- Lower-tier includes ---
+    if (includesDiv) {
+      includesDiv.innerHTML = "";
+      let includeParts = [];
+      if (level === "pro") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+      } else if (level === "premium") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        const proYes    = yes.filter(k => tiers.pro.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      }
+      if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+    }
   });
 
-  // Highlight the recommended plan
   const selectedCard = planCards.find(c =>
     c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
@@ -1665,6 +1721,7 @@ function showRecommendedPlan() {
     setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
