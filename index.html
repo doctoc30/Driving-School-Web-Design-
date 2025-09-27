@@ -1761,17 +1761,7 @@ function showRecommendedPlan() {
 
 
 
- const monthlyBtn = document.querySelector("#instructor-q19 .show-monthly");
-if (monthlyBtn) {
-  monthlyBtn.addEventListener("click", () => {
-    // keep your feature flag if needed
-    featureState["monthlySupport"] = true;
-    syncFeatureState();
 
-    // go to the new monthly pricing screen
-    showScreen("monthly-support-pricing");
-  });
-}
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
