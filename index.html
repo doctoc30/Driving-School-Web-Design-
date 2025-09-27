@@ -1312,152 +1312,115 @@ html, body {
     </div>
   </div>
 
-<!-- ===================== OWN vs MONTHLY SUPPORT ===================== -->
-<div class="form-screen" id="instructor-q19">
-  <div class="initial-question">
-    <h2>
-      Do you want to own the website outright or prefer monthly support including
-      hosting and maintenance?
-    </h2>
-  
-
-  <!-- Initial choice buttons -->
-  <div class="button-row main-choice">
+  <div class="form-screen" id="instructor-q19">
+  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+  <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="show-monthly">Monthly Support</button>
+    <button type="button" class="monthly-support">Monthly Support</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-
-  <!-- Monthly Support Pricing Cards (hidden until “Monthly Support” is clicked) -->
-  <div class="monthly-options" style="display:none; margin-top:2rem;">
-    <h3>Select a Monthly Support Plan</h3>
-
-    <div class="pricing-container">
-      <div class="pricing-card" data-animate>
-        <h3>Basic</h3>
-        <p class="price">£150 / month</p>
-        <ul class="static-features">
-          <li>5 pages</li>
-          <li>10 revisions</li>
-          <li>Hosting & maintenance included</li>
-        </ul>
-        <button class="pay-now choose-monthly" data-plan="Monthly Basic £150">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Choose Basic
-        </button>
-      </div>
-
-      <div class="pricing-card recommended" data-animate>
-        <h3>Pro</h3>
-        <p class="price">£250 / month</p>
-        <ul class="static-features">
-          <li>10 pages</li>
-          <li>20 revisions</li>
-          <li>Hosting & maintenance included</li>
-        </ul>
-        <button class="pay-now choose-monthly" data-plan="Monthly Pro £250">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Choose Pro
-        </button>
-      </div>
-
-      <div class="pricing-card" data-animate>
-        <h3>Premium</h3>
-        <p class="price">£350 / month</p>
-        <ul class="static-features">
-          <li>30 pages</li>
-          <li>39 revisions</li>
-          <li>Dedicated account manager</li>
-          <li>Hosting & maintenance included</li>
-        </ul>
-        <button class="pay-now choose-monthly" data-plan="Monthly Premium £350">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Choose Premium
-        </button>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- ===================== RECOMMENDED ONE-TIME PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
 
-  <section id="pricing-section">
-    <div class="pricing-container">
+ 
+ <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <div class="form-screen" id="recommended-plan-screen">
+    <h2>Your Recommended Plan</h2>
 
-      <!-- Basic Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Basic</h3>
-        <p class="price">£499</p>
+  
 
-        <ul class="static-features">
-          <li>5 pages</li>
-          <li>10 revisions</li>
-        </ul>
+<!-- ===================== PRICING CARDS ===================== -->
+ <section id="pricing-section">
+  <div class="pricing-container">
 
-        <div style="height:16px;"></div>
-        <ul class="features-list"></ul>
+    <!-- Basic Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Basic</h3>
+      <p class="price">£499</p>
 
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £499 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>5 pages</li>
+        <li>10 revisions</li>
+      </ul>
 
-      <!-- Pro Plan -->
-      <div class="pricing-card recommended" data-animate>
-        <h3>Pro</h3>
-        <p class="price">£999</p>
+      <!-- white-space separator -->
+      <div style="height:16px;"></div>
 
-        <ul class="static-features">
-          <li>10 pages</li>
-          <li>20 revisions</li>
-        </ul>
+      <!-- Funnel-selected Basic features -->
+      <ul class="features-list"></ul>
 
-        <div style="height:16px;"></div>
-        <ul class="features-list"></ul>
-
-        <div style="height:16px;"></div>
-        <div class="includes-message"></div>
-
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £999 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
-
-      <!-- Premium Plan -->
-      <div class="pricing-card" data-animate>
-        <h3>Premium</h3>
-        <p class="price">£1499</p>
-
-        <ul class="static-features">
-          <li>30 pages</li>
-          <li>39 revisions</li>
-          <li>Dedicated account manager</li>
-        </ul>
-
-        <div style="height:16px;"></div>
-        <ul class="features-list"></ul>
-
-        <div style="height:16px;"></div>
-        <div class="includes-message"></div>
-
-        <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-          Pay £1499 via PayPal
-        </button>
-        <small>50% now to secure, 50% on completion</small>
-      </div>
-
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £499 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
     </div>
-  </section>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card recommended" data-animate>
+      <h3>Pro</h3>
+      <p class="price">£999</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>10 pages</li>
+        <li>20 revisions</li>
+      </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Pro features -->
+      <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Pro -->
+      <div class="includes-message"></div>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £999 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="pricing-card" data-animate>
+      <h3>Premium</h3>
+      <p class="price">£1499</p>
+
+      <!-- Static core features -->
+      <ul class="static-features">
+        <li>30 pages</li>
+        <li>39 revisions</li>
+        <li>Dedicated account manager</li>
+      </ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Funnel-selected Premium features -->
+      <ul class="features-list"></ul>
+
+      <div style="height:16px;"></div>
+
+      <!-- Lower-tier features included in Premium -->
+      <div class="includes-message"></div>
+
+      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+        Pay £1499 via PayPal
+      </button>
+      <small>50% now to secure, 50% on completion</small>
+    </div>
+
+  </div>
+</section>
 </form>
 
-<script>
+
+ <script>
+/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1467,7 +1430,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+  
+  // Progress Bar Functions (Stubs - defined later, hoisted)
+  function updateWaterProgress() { /* Defined later */ }
+  function updateProgress(step) { /* Defined later */ }
 
+  // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
     screens.forEach(screen => {
       screen.classList.remove("active");
@@ -1482,48 +1450,84 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
+    // Keep this — we'll center the recommended card separately if required
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan();
-
+    if (screen.id === "recommended-plan-screen") {
+      // call recommendation which will also scroll the chosen card into view
+      showRecommendedPlan();
+    }
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
 
-  window.showScreen = showScreen;
-  window.next = () => { if(currentScreen < screens.length-1) showScreen(screens[currentScreen+1].id); };
-  window.prev = () => { if(currentScreen > 0) showScreen(screens[currentScreen-1].id); };
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  }
 
-  // ------------------ Features ------------------
+  function prev() {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  window.showScreen = showScreen;
+  window.next = next;
+  window.prev = prev;
+
+  // ------------------ User Path & Features ------------------
+  let userPath = "";
   const yesFeatures = [];
-  const featureState = {};
+  const noFeatures = [];
+  let ownershipChoice = "";
+  const featureState = {}; // { featureKey: true|false }
+
   function syncFeatureState() {
     yesFeatures.length = 0;
-    Object.entries(featureState).forEach(([f, v]) => { if(v) yesFeatures.push(f); });
+    noFeatures.length = 0;
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) yesFeatures.push(f);
+      else noFeatures.push(f);
+    });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if(hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    if(document.getElementById("recommended-plan-screen")?.classList.contains("active")) showRecommendedPlan();
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan();
+    }
+    // 🔍 DEBUG: Check which features are currently set to 'Yes'
+    console.log("Current YES Features:", yesFeatures);
   }
-  window.recordFeature = f=>{ featureState[f]=true; syncFeatureState(); };
-  window.recordNoFeature = f=>{ featureState[f]=false; syncFeatureState(); };
 
-  // ------------------ Ownership ------------------
-  window.recordOwnership = choice=>{
-    featureState[choice==='Owned Outright'?'buyOutright':'monthlySupport']=true;
+  window.setPath = (path) => userPath = path;
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+
+  window.recordOwnership = (choice) => {
+    ownershipChoice = choice;
+    // record ownership feature so it is sent back if needed
+    featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
     syncFeatureState();
+    // show pricing screen directly after ownership selection
     showScreen('recommended-plan-screen');
   };
-  const q19OwnOutrightBtn=document.querySelector("#instructor-q19 .own-outright");
-  const q19MonthlySupportBtn=document.querySelector("#instructor-q19 .monthly-support");
-  if(q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click",()=>window.recordOwnership('Owned Outright'));
-  if(q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click",()=>window.recordOwnership('Monthly Support'));
 
-  // ------------------ "I Want This Concept" ------------------
-  document.querySelectorAll(".want-concept").forEach(btn=>{
-    btn.addEventListener("click",()=>{
+  // ------------------ Q19 Buttons ------------------
+  const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
+  const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
+  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
+  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
+
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
       const code = btn.dataset.code;
-      if(!code) return;
-      window.location.assign(`https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`);
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
     });
   });
 
@@ -1557,6 +1561,7 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
+      // refresh screens NodeList
       screens = Array.from(document.querySelectorAll('.form-screen'));
     }
 
@@ -1587,6 +1592,7 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
+      // refresh screens & update index
       screens = Array.from(document.querySelectorAll('.form-screen'));
       currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
@@ -1598,133 +1604,309 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Recommended Plan ------------------
-  function showRecommendedPlan() {
-    const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-    if (!planCards.length) return;
-    const yes = yesFeatures || [];
-    const tiers = {
-      basic: ["booking","mobile","cta","contact","bio"],
-      pro: ["seo","reviews","branding","faq","newsletter"],
-      premium: ["packages","social","email","content","guide"]
-    };
-    const labels = {
-      booking:"Online booking & payment", mobile:"Mobile-friendly design", cta:"Strong call-to-action buttons",
-      contact:"Simple contact form", bio:"About / Instructor bio", seo:"Local Google SEO", reviews:"Student reviews",
-      branding:"Branding help (logo & colors)", faq:"FAQ / Student guide", newsletter:"Newsletter signup",
-      packages:"Lesson packages & gift vouchers", social:"Social media integration", email:"Professional email address",
-      content:"Content creation help", guide:"“What to Expect” guide"
-    };
-    const hasPremium=yes.some(f=>tiers.premium.includes(f));
-    const hasPro=yes.some(f=>tiers.pro.includes(f));
-    const hasBasic=yes.some(f=>tiers.basic.includes(f));
-    let recommendedPlan=hasPremium?"premium":hasPro?"pro":hasBasic?"basic":"pro";
 
-    planCards.forEach(card=>{
-      card.classList.remove("recommended","in-view");
-      const level=card.querySelector("h3")?.textContent.trim().toLowerCase();
-      const list=card.querySelector(".features-list");
-      const includesDiv=card.querySelector(".includes-message");
-      if(!list) return;
-      let allowedKeys=[];
-      if(level==="basic") allowedKeys=yes.filter(k=>tiers.basic.includes(k));
-      else if(level==="pro") allowedKeys=yes.filter(k=>[...tiers.basic,...tiers.pro].includes(k));
-      else if(level==="premium") allowedKeys=yes.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k));
+ // ------------------ Recommended Plan ------------------
+function showRecommendedPlan() {
+  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  if (!planCards.length) return;
 
-      list.innerHTML="";
-      if(allowedKeys.length) allowedKeys.forEach(k=>{ const li=document.createElement("li"); li.textContent=labels[k]||k; list.appendChild(li); });
-      else { const li=document.createElement("li"); li.textContent="No features selected"; list.appendChild(li); }
+  const yes = yesFeatures || [];
 
-      if(includesDiv){
-        includesDiv.innerHTML="";
-        let includeParts=[];
-        if(level==="pro"){ const basicYes=yes.filter(k=>tiers.basic.includes(k)); if(basicYes.length) includeParts.push(`Basic: ${basicYes.map(k=>labels[k]).join(", ")}`); }
-        else if(level==="premium"){ const basicYes=yes.filter(k=>tiers.basic.includes(k)); const proYes=yes.filter(k=>tiers.pro.includes(k)); if(basicYes.length) includeParts.push(`Basic: ${basicYes.map(k=>labels[k]).join(", ")}`); if(proYes.length) includeParts.push(`Pro: ${proYes.map(k=>labels[k]).join(", ")}`); }
-        if(includeParts.length) includesDiv.textContent=`Includes ${includeParts.join(" | ")}`;
-      }
-    });
+  const tiers = {
+    basic:   ["booking","mobile","cta","contact","bio"],
+    pro:     ["seo","reviews","branding","faq","newsletter"],
+    premium: ["packages","social","email","content","guide"]
+  };
 
-    const selectedCard=planCards.find(c=>c.querySelector("h3")?.textContent.trim().toLowerCase()===recommendedPlan);
-    if(selectedCard){ selectedCard.classList.add("recommended","in-view"); setTimeout(()=>selectedCard.scrollIntoView({behavior:"smooth", block:"center"}),200); }
-  }
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "“What to Expect” guide"
+  };
 
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl=document.getElementById('typewriter');
-  const colorRiseEl=document.querySelector('.color-rise');
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
 
-  if(typewriterEl){
-    typewriterEl.style.opacity=1;
-    let lines=[], currentLine=0, currentChar=0, lineEl=null;
-    const cursor=document.createElement('span'); cursor.classList.add('cursor'); typewriterEl.appendChild(cursor);
-    function setLinesByOrientation(){ lines=window.matchMedia("(orientation: landscape)").matches?["We build","your website.","You approve,","then pay."]:["We build","your","website.","You approve,","then pay."]; }
-    function typeChar(){
-      if(currentLine>=lines.length){ cursor.remove(); return; }
-      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
-      const text=lines[currentLine];
-      if(currentChar<text.length){ lineEl.insertBefore(document.createTextNode(text[currentChar]),cursor); currentChar++; setTimeout(typeChar,100); }
-      else{ currentLine++; currentChar=0; lineEl=null; setTimeout(typeChar,500); }
+  let recommendedPlan =
+      hasPremium ? "premium" :
+      hasPro     ? "pro" :
+      hasBasic   ? "basic" :
+                   "pro"; // fallback
+
+  planCards.forEach(card => {
+    card.classList.remove("recommended","in-view");
+
+    const level = card.querySelector("h3")?.textContent.trim().toLowerCase();
+    const list  = card.querySelector(".features-list");
+    const includesDiv = card.querySelector(".includes-message");
+    if (!list) return;
+
+    // --- Dynamic funnel features ---
+    let allowedKeys = [];
+    if (level === "basic") {
+      allowedKeys = yes.filter(k => tiers.basic.includes(k));
+    } else if (level === "pro") {
+      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
+    } else if (level === "premium") {
+      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
     }
-    setLinesByOrientation(); typeChar();
-    window.addEventListener('resize', debounce(()=>{ currentLine=0; currentChar=0; lineEl=null; typewriterEl.textContent=''; typewriterEl.appendChild(cursor); setLinesByOrientation(); typeChar(); },300));
+
+    list.innerHTML = "";
+    if (allowedKeys.length) {
+      allowedKeys.forEach(k => {
+        const li = document.createElement("li");
+        li.textContent = labels[k] || k;
+        list.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No features selected";
+      list.appendChild(li);
+    }
+
+    // --- Lower-tier includes ---
+    if (includesDiv) {
+      includesDiv.innerHTML = "";
+      let includeParts = [];
+      if (level === "pro") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+      } else if (level === "premium") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        const proYes    = yes.filter(k => tiers.pro.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      }
+      if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+    }
+  });
+
+  const selectedCard = planCards.find(c =>
+    c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
+  );
+  if (selectedCard) {
+    selectedCard.classList.add("recommended","in-view");
+    setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
+  }
+}
+
+ 
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
-  function debounce(func, wait){ let timeout; return (...args)=>{ clearTimeout(timeout); timeout=setTimeout(()=>func.apply(this,args), wait); }; }
-
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+  
   // ------------------ Hamburger Menu ------------------
-  const hamburger=document.querySelector('.hamburger');
-  const menu=document.querySelector('nav.menu');
-  if(hamburger && menu){
-    hamburger.addEventListener('click', e=>{
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
       e.stopPropagation();
-      const isOpen=menu.classList.toggle('open');
+      const isOpen = menu.classList.toggle('open');
       hamburger.classList.toggle('active');
       hamburger.setAttribute('aria-expanded', isOpen);
       menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow=isOpen?'hidden':'';
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
-    document.addEventListener('click', e=>{
-      if(!menu.contains(e.target) && !hamburger.contains(e.target)){ menu.classList.remove('open'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', false); menu.setAttribute('aria-hidden', true); document.body.style.overflow=''; }
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
     });
   }
 
   // ------------------ Progress & Water ------------------
-  function updateWaterProgress(){ const wave=document.getElementById('progress-wave'); if(!wave) return; wave.style.height=((currentScreen+1)/screens.length*100)+'%'; }
-  function updateProgress(step){ const progressBar=document.querySelector('.progress-bar'); const progressLabel=document.querySelector('.progress-label'); const percent=Math.round((step/screens.length)*100); if(progressBar) progressBar.style.width=percent+'%'; if(progressLabel) progressLabel.textContent=percent+'%'; }
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
+  }
+
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
+  }
 
   // ------------------ Initialize Funnel ------------------
+  // All screens are hidden by default, so we only need to show the intended starting point.
   hideAllScreens();
-  if(codeParam){ const inputEl=document.getElementById("designInput"); if(inputEl) inputEl.value=codeParam; showFilteredTemplate(codeParam); }
-  else if(stepParam){ const stepName=`instructor-q${stepParam}`; const screenIndex=screens.findIndex(s=>s.id===stepName); if(screenIndex!==-1){ currentScreen=screenIndex; showScreen(stepName); } else showScreen(screens[0].id); }
-  else showScreen(screens[0].id); // first question shows immediately
-  updateWaterProgress(); updateProgress(currentScreen+1);
 
-  // ------------------ Pricing cards IntersectionObserver ------------------
+  if (codeParam) {
+    // If a design code is present, bypass typewriter and show the template or step 4.
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    // If a step is specified, show that screen directly.
+    const stepName = `instructor-q${stepParam}`;
+    // Find the screen index to set currentScreen correctly
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      // Fallback to first screen if stepParam is invalid
+      showScreen(screens[0].id);
+    }
+  } else {
+    // No parameters: Start the typewriter animation.
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
+
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
+
+  // ------------------ Robust IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
-    const cards=document.querySelectorAll('.pricing-card[data-animate]');
-    if(!cards || cards.length===0) return;
-    if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in-view')); return; }
-    const observerOptions={root:null, rootMargin:'0px 0px -12% 0px', threshold:[0,0.05,0.15]};
-    const observer=new IntersectionObserver((entries,obs)=>{
-      entries.forEach(entry=>{
-        try{
-          const isVisible=entry.isIntersecting || (typeof entry.intersectionRatio==='number' && entry.intersectionRatio>0);
-          if(isVisible){ entry.target.classList.add('in-view'); obs.unobserve(entry.target); }
-        }catch(e){ try{entry.target.classList.add('in-view');}catch{} try{obs.unobserve(entry.target);}catch{} }
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards || cards.length === 0) return; 
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in-view'));
+      return;
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -12% 0px',
+      threshold: [0, 0.05, 0.15]
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        try {
+          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+          if (isVisible) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        } catch (err) {
+          try { entry.target.classList.add('in-view'); } catch(e) {}
+          try { obs.unobserve(entry.target); } catch(e) {}
+        }
       });
     }, observerOptions);
-    Array.from(cards).forEach(card=>observer.observe(card));
+
+    Array.from(cards).forEach(card => observer.observe(card));
   })();
 
-  // ------------------ Stripe Checkout Stub ------------------
-  const stripe=(window.Stripe)?Stripe('YOUR_STRIPE_PUBLIC_KEY'):null;
-  window.stripeCheckout=function(plan){
-    if(!stripe){ alert('Stripe not configured (public key missing)'); return; }
-    let priceId='';
-    switch(plan){ case 'basic': priceId='price_id_basic'; break; case 'pro': priceId='price_id_pro'; break; case 'premium': priceId='price_id_premium'; break; }
-    stripe.redirectToCheckout({ lineItems:[{price:priceId,quantity:1}], mode:'payment', successUrl:window.location.href+'?success=true', cancelUrl:window.location.href+'?canceled=true' }).then(r=>{ if(r.error) alert(r.error.message); });
+  // ------------------ Stripe Checkout (stub) ------------------
+  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null; // Replace with your Stripe public key if used
+  window.stripeCheckout = function(plan) {
+    if (!stripe) {
+      alert('Stripe not configured (public key missing)');
+      return;
+    }
+    let priceId = '';
+    switch(plan) {
+      case 'basic': priceId = 'price_id_basic'; break;
+      case 'pro': priceId = 'price_id_pro'; break;
+      case 'premium': priceId = 'price_id_premium'; break;
+    }
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      successUrl: window.location.href + '?success=true',
+      cancelUrl: window.location.href + '?canceled=true',
+    }).then(result => {
+      if (result.error) alert(result.error.message);
+    });
   };
 
-});
+}); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
