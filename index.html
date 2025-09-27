@@ -1644,12 +1644,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
- // ------------------ Recommended Plan ------------------
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ================= Show Monthly Support Pricing =================
+  document.querySelector(".show-monthly")?.addEventListener("click", () => {
+    document.querySelector("#instructor-q19 .initial-question").style.display = "none";
+    document.querySelector("#instructor-q19 .monthly-options").style.display = "block";
+  });
+
+  // ================= Show Recommended One-Time Plan =================
+  document.querySelector(".own-outright")?.addEventListener("click", () => {
+    // hide current question
+    document.querySelector("#instructor-q19").classList.remove("active"); 
+    // show recommended plan screen
+    const recommendedScreen = document.getElementById("recommended-plan-screen");
+    recommendedScreen.classList.add("active");
+
+    // fill in dynamic features & highlight recommended plan
+    showRecommendedPlan();
+  });
+
+  // ================= Monthly Plan Selection =================
+  document.querySelectorAll(".choose-monthly").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("hiddenPlan").value = btn.dataset.plan; // store in hidden input
+      next(); // move to next funnel screen
+    });
+  });
+
+});
+
+// =================== Recommended Plan Logic ===================
 function showRecommendedPlan() {
-  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
+  const planCards = Array.from(document.querySelectorAll("#recommended-plan-screen .pricing-card"));
   if (!planCards.length) return;
 
-  const yes = yesFeatures || [];
+  const yes = yesFeatures || []; // yesFeatures = previously selected features
 
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
@@ -1675,6 +1708,7 @@ function showRecommendedPlan() {
     guide: "“What to Expect” guide"
   };
 
+  // Determine recommended plan
   const hasPremium = yes.some(f => tiers.premium.includes(f));
   const hasPro     = yes.some(f => tiers.pro.includes(f));
   const hasBasic   = yes.some(f => tiers.basic.includes(f));
@@ -1733,6 +1767,7 @@ function showRecommendedPlan() {
     }
   });
 
+  // Highlight & scroll to recommended plan
   const selectedCard = planCards.find(c =>
     c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
   );
@@ -1741,31 +1776,7 @@ function showRecommendedPlan() {
     setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
-
-
-
- document.addEventListener("click", e => {
-  if (e.target.classList.contains("show-monthly")) {
-    document.querySelector("#instructor-q19 .monthly-options").style.display = "block";
-  }
-  if (e.target.classList.contains("choose-monthly")) {
-    const plan = e.target.dataset.plan;
-    document.getElementById("hiddenPlan").value = plan;   // store in hidden input
-    next();  // move to the next funnel screen
-  }
-});
-
-
  
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("show-monthly")) {
-    // hide the question + buttons
-    document.querySelector("#instructor-q19 .initial-question").style.display = "none";
-    // show the monthly cards
-    document.querySelector("#instructor-q19 .monthly-options").style.display = "block";
-  }
-});
-
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
