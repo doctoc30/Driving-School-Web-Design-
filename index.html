@@ -1333,86 +1333,61 @@ html, body {
  <section id="pricing-section">
   <div class="pricing-container">
 
-    <!-- Basic Plan -->
-    <div class="pricing-card" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£499</p>
+<!-- Basic Plan -->
+<div class="pricing-card" data-plan="basic" data-animate>
+  <h3>Basic</h3>
+  <p class="price">£499</p>
+  <ul class="static-features">
+    <li>5 pages</li>
+    <li>10 revisions</li>
+  </ul>
+  <div style="height:16px;"></div>
+  <ul class="features-list"></ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
-      <!-- Static core features -->
-      <ul class="static-features">
-        <li>5 pages</li>
-        <li>10 revisions</li>
-      </ul>
+<!-- Pro Plan -->
+<div class="pricing-card recommended" data-plan="pro" data-animate>
+  <h3>Pro</h3>
+  <p class="price">£999</p>
+  <ul class="static-features">
+    <li>10 pages</li>
+    <li>20 revisions</li>
+  </ul>
+  <div style="height:16px;"></div>
+  <ul class="features-list"></ul>
+  <div style="height:16px;"></div>
+  <div class="includes-message"></div>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £999 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
-      <!-- white-space separator -->
-      <div style="height:16px;"></div>
-
-      <!-- Funnel-selected Basic features -->
-      <ul class="features-list"></ul>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-basic'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-    <!-- Pro Plan -->
-    <div class="pricing-card recommended" data-animate>
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-
-      <!-- Static core features -->
-      <ul class="static-features">
-        <li>10 pages</li>
-        <li>20 revisions</li>
-      </ul>
-
-      <div style="height:16px;"></div>
-
-      <!-- Funnel-selected Pro features -->
-      <ul class="features-list"></ul>
-
-      <div style="height:16px;"></div>
-
-      <!-- Lower-tier features included in Pro -->
-      <div class="includes-message"></div>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-pro'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-    <!-- Premium Plan -->
-    <div class="pricing-card" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£1499</p>
-
-      <!-- Static core features -->
-      <ul class="static-features">
-        <li>30 pages</li>
-        <li>39 revisions</li>
-        <li>Dedicated account manager</li>
-      </ul>
-
-      <div style="height:16px;"></div>
-
-      <!-- Funnel-selected Premium features -->
-      <ul class="features-list"></ul>
-
-      <div style="height:16px;"></div>
-
-      <!-- Lower-tier features included in Premium -->
-      <div class="includes-message"></div>
-
-      <button class="pay-now" onclick="window.location.href='https://www.paypal.com/paypal-link-premium'">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
+<!-- Premium Plan -->
+<div class="pricing-card" data-plan="premium" data-animate>
+  <h3>Premium</h3>
+  <p class="price">£1499</p>
+  <ul class="static-features">
+    <li>30 pages</li>
+    <li>39 revisions</li>
+    <li>Dedicated account manager</li>
+  </ul>
+  <div style="height:16px;"></div>
+  <ul class="features-list"></ul>
+  <div style="height:16px;"></div>
+  <div class="includes-message"></div>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £1499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
   </div>
 </section>
@@ -1639,176 +1614,176 @@ function setupQ19Buttons() {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ REVISED Recommended Plan Function ------------------
-  function showRecommendedPlan(planType = 'outright') {
-    const isMonthly = planType === 'monthly';
-    const screenId = isMonthly ? 'monthly-plan-screen' : 'recommended-plan-screen';
-    const planCards = Array.from(document.querySelectorAll(`#${screenId} .pricing-card`));
-    
-    if (!planCards.length) {
-      console.log('No pricing cards found for screen:', screenId);
-      return;
-    }
 
-    const yes = yesFeatures || [];
+// ------------------ REVISED Recommended Plan Function ------------------
+function showRecommendedPlan(planType = 'outright') {
+  const isMonthly = planType === 'monthly';
+  const screenId = 'recommended-plan-screen'; // single screen for both modes
+  const planCards = Array.from(document.querySelectorAll(`#${screenId} .pricing-card`));
 
-    const tiers = {
-      basic:   ["booking","mobile","cta","contact","bio"],
-      pro:     ["seo","reviews","branding","faq","newsletter"],
-      premium: ["packages","social","email","content","guide"]
-    };
-
-    const labels = {
-      booking: "Online booking & payment",
-      mobile: "Mobile-friendly design",
-      cta: "Strong call-to-action buttons",
-      contact: "Simple contact form",
-      bio: "About / Instructor bio",
-      seo: "Local Google SEO",
-      reviews: "Student reviews",
-      branding: "Branding help (logo & colors)",
-      faq: "FAQ / Student guide",
-      newsletter: "Newsletter signup",
-      packages: "Lesson packages & gift vouchers",
-      social: "Social media integration",
-      email: "Professional email address",
-      content: "Content creation help",
-      guide: "What to Expect guide"
-    };
-
-    const hasPremium = yes.some(f => tiers.premium.includes(f));
-    const hasPro     = yes.some(f => tiers.pro.includes(f));
-    const hasBasic   = yes.some(f => tiers.basic.includes(f));
-
-    let recommendedPlan =
-        hasPremium ? "premium" :
-        hasPro     ? "pro" :
-        hasBasic   ? "basic" :
-                     "pro"; // fallback
-
-    // Monthly pricing configuration
-    const monthlyPrices = {
-      basic: 49,
-      pro: 79,
-      premium: 129
-    };
-
-    const outrightPrices = {
-      basic: 499,
-      pro: 999,
-      premium: 1499
-    };
-
-    planCards.forEach(card => {
-      card.classList.remove("recommended","in-view");
-
-      const level = card.querySelector("h3")?.textContent.trim().toLowerCase().replace(' monthly', '');
-      const list  = card.querySelector(".features-list");
-      const includesDiv = card.querySelector(".includes-message");
-      const priceEl = card.querySelector(".price");
-      const payButton = card.querySelector(".pay-now");
-      const paymentNote = card.querySelector("small");
-      
-      if (!list || !priceEl || !payButton) return;
-
-      // Set pricing based on plan type
-      if (isMonthly) {
-        priceEl.textContent = `£${monthlyPrices[level]}`;
-        if (priceEl.querySelector('span')) {
-          priceEl.querySelector('span').textContent = '/month';
-        } else {
-          const span = document.createElement('span');
-          span.textContent = '/month';
-          priceEl.appendChild(span);
-        }
-        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
-        if (paymentNote) {
-          const setupFees = { basic: 199, pro: 299, premium: 499 };
-          paymentNote.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
-        }
-      } else {
-        priceEl.textContent = `£${outrightPrices[level]}`;
-        if (priceEl.querySelector('span')) priceEl.querySelector('span').remove();
-        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${outrightPrices[level]} via PayPal`;
-        if (paymentNote) paymentNote.textContent = "50% now to secure, 50% on completion";
-      }
-
-      // Update PayPal links based on payment model
-      const paypalLinks = {
-        monthly: {
-          basic: 'https://www.paypal.com/paypal-link-basic-monthly',
-          pro: 'https://www.paypal.com/paypal-link-pro-monthly',
-          premium: 'https://www.paypal.com/paypal-link-premium-monthly'
-        },
-        outright: {
-          basic: 'https://www.paypal.com/paypal-link-basic',
-          pro: 'https://www.paypal.com/paypal-link-pro',
-          premium: 'https://www.paypal.com/paypal-link-premium'
-        }
-      };
-
-      payButton.onclick = () => {
-        const linkType = isMonthly ? 'monthly' : 'outright';
-        const link = paypalLinks[linkType][level];
-        if (link) {
-          window.location.href = link;
-        } else {
-          console.error('No PayPal link found for:', linkType, level);
-        }
-      };
-
-      // Features logic (same for both plan types)
-      list.innerHTML = "";
-      let allowedKeys = [];
-      if (level === "basic") {
-        allowedKeys = yes.filter(k => tiers.basic.includes(k));
-      } else if (level === "pro") {
-        allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
-      } else if (level === "premium") {
-        allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
-      }
-
-      if (allowedKeys.length) {
-        allowedKeys.forEach(k => {
-          const li = document.createElement("li");
-          li.textContent = labels[k] || k;
-          list.appendChild(li);
-        });
-      } else {
-        const li = document.createElement("li");
-        li.textContent = "Standard features included";
-        list.appendChild(li);
-      }
-
-      // Lower-tier includes (for both models)
-      if (includesDiv) {
-        includesDiv.innerHTML = "";
-        let includeParts = [];
-        if (level === "pro") {
-          const basicYes = yes.filter(k => tiers.basic.includes(k));
-          if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-        } else if (level === "premium") {
-          const basicYes = yes.filter(k => tiers.basic.includes(k));
-          const proYes    = yes.filter(k => tiers.pro.includes(k));
-          if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-          if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
-        }
-        if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
-      }
-    });
-
-    const selectedCard = planCards.find(c => {
-      const cardTitle = c.querySelector("h3")?.textContent.trim().toLowerCase().replace(' monthly', '');
-      return cardTitle === recommendedPlan;
-    });
-    
-    if (selectedCard) {
-      selectedCard.classList.add("recommended","in-view");
-      setTimeout(() => {
-        selectedCard.scrollIntoView({behavior:"smooth", block:"center"});
-      }, 200);
-    }
+  if (!planCards.length) {
+    console.log('No pricing cards found for screen:', screenId);
+    return;
   }
+
+  const yes = yesFeatures || [];
+
+  const tiers = {
+    basic:   ["booking","mobile","cta","contact","bio"],
+    pro:     ["seo","reviews","branding","faq","newsletter"],
+    premium: ["packages","social","email","content","guide"]
+  };
+
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "What to Expect guide"
+  };
+
+  // Extra Monthly Support services
+  const extraByPlan = {
+    basic: [
+      "Monthly maintenance & security updates",
+      "Email support (24–48 hr response)"
+    ],
+    pro: [
+      "Monthly maintenance & security updates",
+      "Priority email support & minor content edits"
+    ],
+    premium: [] // can add later if needed
+  };
+
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
+
+  let recommendedPlan =
+      hasPremium ? "premium" :
+      hasPro     ? "pro" :
+      hasBasic   ? "basic" :
+                   "pro"; // fallback
+
+  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
+  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
+
+  planCards.forEach(card => {
+    card.classList.remove("recommended","in-view");
+
+    const level = card.dataset.plan;
+    const list  = card.querySelector(".features-list");
+    const includesDiv = card.querySelector(".includes-message");
+    const priceEl = card.querySelector(".price");
+    const payButton = card.querySelector(".pay-now");
+    const paymentNote = card.querySelector("small");
+    
+    if (!list || !priceEl || !payButton) return;
+
+    // Set pricing
+    if (isMonthly) {
+      priceEl.textContent = `£${monthlyPrices[level]}`;
+      const span = document.createElement('span');
+      span.textContent = '/month';
+      priceEl.appendChild(span);
+
+      payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
+      if (paymentNote) {
+        const setupFees = { basic: 199, pro: 299, premium: 499 };
+        paymentNote.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+      }
+    } else {
+      priceEl.textContent = `£${outrightPrices[level]}`;
+      if (priceEl.querySelector('span')) priceEl.querySelector('span').remove();
+      payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${outrightPrices[level]} via PayPal`;
+      if (paymentNote) paymentNote.textContent = "50% now to secure, 50% on completion";
+    }
+
+    // PayPal links
+    const paypalLinks = {
+      monthly: {
+        basic: 'https://www.paypal.com/paypal-link-basic-monthly',
+        pro: 'https://www.paypal.com/paypal-link-pro-monthly',
+        premium: 'https://www.paypal.com/paypal-link-premium-monthly'
+      },
+      outright: {
+        basic: 'https://www.paypal.com/paypal-link-basic',
+        pro: 'https://www.paypal.com/paypal-link-pro',
+        premium: 'https://www.paypal.com/paypal-link-premium'
+      }
+    };
+
+    payButton.onclick = () => {
+      const linkType = isMonthly ? 'monthly' : 'outright';
+      const link = paypalLinks[linkType][level];
+      if (link) window.location.href = link;
+      else console.error('No PayPal link found for:', linkType, level);
+    };
+
+    // Features list
+    list.innerHTML = "";
+    let allowedKeys = [];
+    if (level === "basic") allowedKeys = yes.filter(k => tiers.basic.includes(k));
+    else if (level === "pro") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
+    else if (level === "premium") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
+
+    allowedKeys.forEach(k => {
+      const li = document.createElement("li");
+      li.textContent = labels[k] || k;
+      list.appendChild(li);
+    });
+
+    // Add extra Monthly Support services
+    if (isMonthly && extraByPlan[level]?.length) {
+      extraByPlan[level].forEach(extra => {
+        const li = document.createElement("li");
+        li.textContent = extra;
+        li.style.fontStyle = "italic"; // optional style
+        list.appendChild(li);
+      });
+    }
+
+    if (allowedKeys.length === 0 && (!isMonthly || extraByPlan[level]?.length === 0)) {
+      const li = document.createElement("li");
+      li.textContent = "Standard features included";
+      list.appendChild(li);
+    }
+
+    // Lower-tier includes
+    if (includesDiv) {
+      includesDiv.innerHTML = "";
+      let includeParts = [];
+      if (level === "pro") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+      } else if (level === "premium") {
+        const basicYes = yes.filter(k => tiers.basic.includes(k));
+        const proYes    = yes.filter(k => tiers.pro.includes(k));
+        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      }
+      if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+    }
+  });
+
+  const selectedCard = planCards.find(c => c.dataset.plan === recommendedPlan);
+  if (selectedCard) {
+    selectedCard.classList.add("recommended","in-view");
+    setTimeout(() => {
+      selectedCard.scrollIntoView({behavior:"smooth", block:"center"});
+    }, 200);
+  }
+}
 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
