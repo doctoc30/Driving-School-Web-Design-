@@ -1229,7 +1229,7 @@ html, body {
  <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ------------------ Funnel Navigation ------------------ */
+  /* ---------- Funnel Navigation ---------- */
   const screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
   let yesFeatures = [];
@@ -1239,29 +1239,38 @@ document.addEventListener("DOMContentLoaded", () => {
     screens.forEach(s => { s.classList.remove("active"); s.style.display="none"; });
   }
   function showScreen(id){
-    const el=document.getElementById(id);
-    if(!el) return;
+    const el = document.getElementById(id);
+    if (!el) return;
     hideAllScreens();
     el.classList.add("active");
-    el.style.display="flex";
-    if(id==="recommended-plan-screen") showRecommendedPlan();
-    window.scrollTo({top:0,behavior:"smooth"});
+    el.style.display = "flex";
+    if (id === "recommended-plan-screen") showRecommendedPlan();
+    window.scrollTo({ top:0, behavior:"smooth" });
   }
   window.showScreen = showScreen;
-  window.next = () => { if (currentScreen < screens.length-1) { currentScreen++; showScreen(screens[currentScreen].id);} };
-  window.prev = () => { if (currentScreen > 0) { currentScreen--; showScreen(screens[currentScreen].id);} };
+  window.next = () => {
+    if (currentScreen < screens.length-1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  };
+  window.prev = () => {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  };
 
-  window.recordFeature = f => { featureState[f]=true; sync(); };
-  window.recordNoFeature = f => { featureState[f]=false; sync(); };
-  function sync(){
+  window.recordFeature = f => { featureState[f] = true;  syncFeatures(); };
+  window.recordNoFeature = f => { featureState[f] = false; syncFeatures(); };
+  function syncFeatures() {
     yesFeatures = Object.entries(featureState).filter(([_,v])=>v).map(([k])=>k);
     const hf = document.getElementById("hiddenFeatures");
     if (hf) hf.value = yesFeatures.join(", ");
   }
 
-  /* ------------------ Recommended Plan Logic ------------------ */
+  /* ---------- Recommended Plan Logic ---------- */
   function showRecommendedPlan(){
-    const yes = yesFeatures;
     const tiers = {
       basic:["booking","mobile","cta","contact","bio"],
       pro:["seo","reviews","branding","faq","newsletter"],
@@ -1277,117 +1286,30 @@ document.addEventListener("DOMContentLoaded", () => {
       email:"Professional email address", content:"Content creation help",
       guide:"“What to Expect” guide"
     };
-    const hasPremium = yes.some(f=>tiers.premium.includes(f));
-    const hasPro = yes.some(f=>tiers.pro.includes(f));
-    const hasBasic = yes.some(f=>tiers.basic.includes(f));
+    const hasPremium = yesFeatures.some(f=>tiers.premium.includes(f));
+    const hasPro     = yesFeatures.some(f=>tiers.pro.includes(f));
+    const hasBasic   = yesFeatures.some(f=>tiers.basic.includes(f));
     const recommended = hasPremium ? "premium" : hasPro ? "pro" : hasBasic ? "basic" : "pro";
 
     document.querySelectorAll(".pricing-card").forEach(card=>{
       card.classList.remove("recommended");
       const level = card.querySelector("h3").textContent.trim().toLowerCase();
-      const list = card.querySelector(".features-list");
+      const list  = card.querySelector(".features-list");
       if (list) {
         const allowed =
-          level==="basic"   ? yes.filter(k=>tiers.basic.includes(k)) :
-          level==="pro"     ? yes.filter(k=>[...tiers.basic,...tiers.pro].includes(k)) :
-          level==="premium" ? yes.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k)) :
+          level==="basic"   ? yesFeatures.filter(k=>tiers.basic.includes(k)) :
+          level==="pro"     ? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro].includes(k)) :
+          level==="premium" ? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k)) :
           [];
         list.innerHTML = allowed.length
           ? allowed.map(k=>`<li>${labels[k]||k}</li>`).join("")
           : "<li>No features selected</li>";
       }
-      if(level===recommended) card.classList.add("recommended");
+      if (level === recommended) card.classList.add("recommended");
     });
   }
 
-  /* ------------------ Typewriter Animation ------------------ */
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build","your website.","You approve,","then pay."]
-        : ["We build","your","website.","You approve,","then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0; currentChar = 0; lineEl = null;
-      typewriterEl.textContent = ''; typewriterEl.appendChild(cursor);
-      setLinesByOrientation(); typeChar();
-    }, 300));
-  }
-  function debounce(func, wait) {
-    let timeout; return (...args) => {
-      clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  /* ------------------ Hamburger Menu ------------------ */
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  /* ------------------ Pricing Toggle (One-time vs Monthly) ------------------ */
+  /* ---------- Pricing Toggle (One-time vs Monthly) ---------- */
   const oneTime  = document.getElementById("pricing-section");
   const monthly  = document.getElementById("pricing-section-monthly");
   const ownBtn   = document.querySelector("#instructor-q19 .own-outright");
@@ -1405,27 +1327,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ------------------ Progress/Water ------------------ */
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-  function updateProgress(step) {
-    const bar = document.querySelector('.progress-bar');
+  /* ---------- Progress ---------- */
+  function updateProgress() {
+    const bar   = document.querySelector('.progress-bar');
     const label = document.querySelector('.progress-label');
-    const percent = Math.round((step / screens.length) * 100);
-    if (bar) bar.style.width = percent + '%';
-    if (label) label.textContent = percent + '%';
+    const pct   = Math.round(((currentScreen + 1) / screens.length) * 100);
+    if (bar)   bar.style.width  = pct + '%';
+    if (label) label.textContent = pct + '%';
   }
 
-  /* ------------------ Init ------------------ */
+  /* ---------- Init: start on first screen ---------- */
   hideAllScreens();
-  if (typewriterEl) { typewriterEl.classList.add('active'); startTypewriterAnimation(); }
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
+  showScreen("main-intro-options");   // <— start directly here
+  updateProgress();
 
   /* Animate pricing cards when visible */
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
@@ -1434,12 +1348,11 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('in-view'); o.unobserve(e.target); }
       });
-    }, {threshold:[0,0.1]});
+    }, {threshold:[0.1]});
     cards.forEach(c => obs.observe(c));
   } else {
     cards.forEach(c => c.classList.add('in-view'));
   }
-
 });
 </script>
 
