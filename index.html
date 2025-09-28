@@ -1759,20 +1759,28 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
-    // Lower-tier includes
+    // ---------------- Lower-tier includes (clear formatting) ----------------
     if (includesDiv) {
-      includesDiv.innerHTML = "";
-      let includeParts = [];
-      if (level === "pro") {
-        const basicYes = yes.filter(k => tiers.basic.includes(k));
-        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-      } else if (level === "premium") {
-        const basicYes = yes.filter(k => tiers.basic.includes(k));
-        const proYes    = yes.filter(k => tiers.pro.includes(k));
-        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      includesDiv.innerHTML = ""; // reset
+      const excludeFromIncludes = ["booking", "cta", "bio"]; // exclude some basics
+
+      const basicYes = yes.filter(k => tiers.basic.includes(k)).filter(f => !excludeFromIncludes.includes(f));
+      const proYes   = yes.filter(k => tiers.pro.includes(k)).filter(f => !excludeFromIncludes.includes(f));
+
+      const includeLines = [];
+      if ((level === "pro" || level === "premium") && basicYes.length) {
+        includeLines.push(`Includes from Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
       }
-      if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+      if (level === "premium" && proYes.length) {
+        includeLines.push(`Includes from Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      }
+
+      includeLines.forEach(line => {
+        const p = document.createElement("p");
+        p.textContent = line;
+        p.style.margin = "4px 0"; // small gap
+        includesDiv.appendChild(p);
+      });
     }
   });
 
@@ -1785,6 +1793,9 @@ function showRecommendedPlan(planType = 'outright') {
   }
 }
 
+
+
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
