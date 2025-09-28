@@ -1688,6 +1688,29 @@ function showRecommendedPlan() {
   }
 }
 
+
+
+ 
+document.addEventListener("DOMContentLoaded", function() {
+  const oneTime  = document.getElementById("pricing-section");
+  const monthly  = document.getElementById("pricing-section-monthly");
+  const ownBtn   = document.querySelector("#instructor-q19 .own-outright");
+  const monthBtn = document.querySelector("#instructor-q19 .monthly-support");
+
+  if (ownBtn && monthBtn) {
+    ownBtn.addEventListener("click", () => {
+      oneTime.style.display = "block";
+      monthly.style.display = "none";
+      showScreen("recommended-plan-screen");
+    });
+
+    monthBtn.addEventListener("click", () => {
+      oneTime.style.display = "none";
+      monthly.style.display = "block";
+      showScreen("recommended-plan-screen");
+    });
+  }
+});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
