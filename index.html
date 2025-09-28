@@ -1226,55 +1226,60 @@ html, body {
   </div>
 </form>
 
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ---------- Funnel Navigation ---------- */
+  // -------------------- Funnel State --------------------
   const screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
   let yesFeatures = [];
   const featureState = {};
+  let currentPath = '';
 
+  // -------------------- Helpers --------------------
   function hideAllScreens() {
     screens.forEach(s => { s.classList.remove("active"); s.style.display="none"; });
   }
+
   function showScreen(id){
     const el = document.getElementById(id);
-    if (!el) return;
+    if(!el) return;
     hideAllScreens();
     el.classList.add("active");
     el.style.display = "flex";
-    if (id === "recommended-plan-screen") showRecommendedPlan();
+
+    const idx = screens.findIndex(s => s.id === id);
+    if(idx !== -1) currentScreen = idx;
+
+    if(id === "recommended-plan-screen") showRecommendedPlan();
+    updateProgress();
     window.scrollTo({ top:0, behavior:"smooth" });
   }
-  window.showScreen = showScreen;
-  window.next = () => {
-    if (currentScreen < screens.length-1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  };
-  window.prev = () => {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  };
 
-  window.recordFeature = f => { featureState[f] = true;  syncFeatures(); };
+  function next() { if(currentScreen < screens.length-1) showScreen(screens[currentScreen+1].id); }
+  function prev() { if(currentScreen > 0) showScreen(screens[currentScreen-1].id); }
+  function setPath(path) { currentPath = path; }
+
+  window.showScreen = showScreen;
+  window.next = next;
+  window.prev = prev;
+  window.setPath = setPath;
+
+  // -------------------- Features Tracking --------------------
+  window.recordFeature = f => { featureState[f] = true; syncFeatures(); };
   window.recordNoFeature = f => { featureState[f] = false; syncFeatures(); };
   function syncFeatures() {
     yesFeatures = Object.entries(featureState).filter(([_,v])=>v).map(([k])=>k);
     const hf = document.getElementById("hiddenFeatures");
-    if (hf) hf.value = yesFeatures.join(", ");
+    if(hf) hf.value = yesFeatures.join(", ");
   }
 
-  /* ---------- Recommended Plan Logic ---------- */
-  function showRecommendedPlan(){
+  // -------------------- Recommended Plan Logic --------------------
+  function showRecommendedPlan() {
     const tiers = {
-      basic:["booking","mobile","cta","contact","bio"],
-      pro:["seo","reviews","branding","faq","newsletter"],
-      premium:["packages","social","email","content","guide"]
+      basic: ["booking","mobile","cta","contact","bio"],
+      pro: ["seo","reviews","branding","faq","newsletter"],
+      premium: ["packages","social","email","content","guide"]
     };
     const labels = {
       booking:"Online booking & payment", mobile:"Mobile-friendly design",
@@ -1295,26 +1300,25 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.remove("recommended");
       const level = card.querySelector("h3").textContent.trim().toLowerCase();
       const list  = card.querySelector(".features-list");
-      if (list) {
+      if(list){
         const allowed =
-          level==="basic"   ? yesFeatures.filter(k=>tiers.basic.includes(k)) :
-          level==="pro"     ? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro].includes(k)) :
-          level==="premium" ? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k)) :
+          level==="basic" ? yesFeatures.filter(k=>tiers.basic.includes(k)) :
+          level==="pro"   ? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro].includes(k)) :
+          level==="premium"? yesFeatures.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k)) :
           [];
-        list.innerHTML = allowed.length
-          ? allowed.map(k=>`<li>${labels[k]||k}</li>`).join("")
-          : "<li>No features selected</li>";
+        list.innerHTML = allowed.length ? allowed.map(k=>`<li>${labels[k]||k}</li>`).join("") : "<li>No features selected</li>";
       }
-      if (level === recommended) card.classList.add("recommended");
+      if(level === recommended) card.classList.add("recommended");
     });
   }
 
-  /* ---------- Pricing Toggle (One-time vs Monthly) ---------- */
+  // -------------------- Pricing Toggle (One-time vs Monthly) --------------------
   const oneTime  = document.getElementById("pricing-section");
   const monthly  = document.getElementById("pricing-section-monthly");
   const ownBtn   = document.querySelector("#instructor-q19 .own-outright");
   const monthBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (ownBtn && monthBtn && oneTime && monthly) {
+
+  if(ownBtn && monthBtn && oneTime && monthly){
     ownBtn.addEventListener("click", () => {
       oneTime.style.display = "block";
       monthly.style.display = "none";
@@ -1327,32 +1331,136 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ---------- Progress ---------- */
+  // -------------------- Progress --------------------
   function updateProgress() {
     const bar   = document.querySelector('.progress-bar');
     const label = document.querySelector('.progress-label');
-    const pct   = Math.round(((currentScreen + 1) / screens.length) * 100);
-    if (bar)   bar.style.width  = pct + '%';
-    if (label) label.textContent = pct + '%';
+    const pct   = Math.round(((currentScreen+1)/screens.length)*100);
+    if(bar) bar.style.width = pct+'%';
+    if(label) label.textContent = pct+'%';
   }
 
-  /* ---------- Init: start on first screen ---------- */
-  hideAllScreens();
-  showScreen("main-intro-options");   // <— start directly here
-  updateProgress();
+  // -------------------- Intro Buttons --------------------
+  document.querySelectorAll("#main-intro-options button").forEach(btn => {
+    btn.addEventListener("click", e => {
+      setPath('instructor');
+      showScreen('instructor-q1');
+    });
+  });
 
-  /* Animate pricing cards when visible */
+  // -------------------- Animate pricing cards --------------------
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  if (cards.length && 'IntersectionObserver' in window) {
-    const obs = new IntersectionObserver((entries, o) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('in-view'); o.unobserve(e.target); }
+  if(cards.length && 'IntersectionObserver' in window){
+    const obs = new IntersectionObserver((entries, o)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in-view'); o.unobserve(e.target); }
       });
     }, {threshold:[0.1]});
     cards.forEach(c => obs.observe(c));
   } else {
     cards.forEach(c => c.classList.add('in-view'));
   }
+
+  // -------------------- Typewriter Animation --------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if(currentLine >= lines.length){
+        cursor.remove();
+        setTimeout(()=> {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(()=> showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if(!lineEl){
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if(currentChar < text.length){
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(()=>{
+      currentLine = 0; currentChar = 0; lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(()=> func.apply(this, args), wait);
+    };
+  }
+
+  // -------------------- Hamburger Menu --------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if(hamburger && menu){
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if(!menu.contains(e.target) && !hamburger.contains(e.target)){
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // -------------------- Init --------------------
+  hideAllScreens();
+  if(typewriterEl) typewriterEl.classList.add('active');
+  if(colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
+
 });
 </script>
 
