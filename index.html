@@ -1226,8 +1226,10 @@ html, body {
   </div>
 </form>
 
-<script>
+ <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* ------------------ Funnel Navigation ------------------ */
   const screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
   let yesFeatures = [];
@@ -1253,9 +1255,11 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordNoFeature = f => { featureState[f]=false; sync(); };
   function sync(){
     yesFeatures = Object.entries(featureState).filter(([_,v])=>v).map(([k])=>k);
-    document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
+    const hf = document.getElementById("hiddenFeatures");
+    if (hf) hf.value = yesFeatures.join(", ");
   }
 
+  /* ------------------ Recommended Plan Logic ------------------ */
   function showRecommendedPlan(){
     const yes = yesFeatures;
     const tiers = {
@@ -1282,24 +1286,23 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.remove("recommended");
       const level = card.querySelector("h3").textContent.trim().toLowerCase();
       const list = card.querySelector(".features-list");
-      list.innerHTML = "";
-      let allowed = [];
-      if(level==="basic") allowed = yes.filter(k=>tiers.basic.includes(k));
-      if(level==="pro") allowed = yes.filter(k=>[...tiers.basic,...tiers.pro].includes(k));
-      if(level==="premium") allowed = yes.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k));
-      list.innerHTML = allowed.length ? allowed.map(k=>`<li>${labels[k]||k}</li>`).join("") : "<li>No features selected</li>";
+      if (list) {
+        const allowed =
+          level==="basic"   ? yes.filter(k=>tiers.basic.includes(k)) :
+          level==="pro"     ? yes.filter(k=>[...tiers.basic,...tiers.pro].includes(k)) :
+          level==="premium" ? yes.filter(k=>[...tiers.basic,...tiers.pro,...tiers.premium].includes(k)) :
+          [];
+        list.innerHTML = allowed.length
+          ? allowed.map(k=>`<li>${labels[k]||k}</li>`).join("")
+          : "<li>No features selected</li>";
+      }
       if(level===recommended) card.classList.add("recommended");
     });
   }
 
-
-
-
-
-  // ------------------ Typewriter Animation ------------------
+  /* ------------------ Typewriter Animation ------------------ */
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
-
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
@@ -1315,8 +1318,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setLinesByOrientation() {
       lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
+        ? ["We build","your website.","You approve,","then pay."]
+        : ["We build","your","website.","You approve,","then pay."];
     }
 
     function typeChar() {
@@ -1349,27 +1352,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setLinesByOrientation();
     typeChar();
-
     window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
+      currentLine = 0; currentChar = 0; lineEl = null;
+      typewriterEl.textContent = ''; typewriterEl.appendChild(cursor);
+      setLinesByOrientation(); typeChar();
     }, 300));
   }
-
   function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
+    let timeout; return (...args) => {
+      clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait);
     };
   }
-  
-  // ------------------ Hamburger Menu ------------------
+
+  /* ------------------ Hamburger Menu ------------------ */
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
@@ -1392,155 +1387,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
-
-
- 
-document.addEventListener("DOMContentLoaded", () => {
-  const ownSection     = document.getElementById("pricing-section");
-  const monthlySection = document.getElementById("pricing-section-monthly");
-
-  const ownBtn    = document.querySelector("#instructor-q19 .own-outright");
-  const monthlyBtn= document.querySelector("#instructor-q19 .monthly-support");
-
-  if (ownBtn && monthlyBtn) {
+  /* ------------------ Pricing Toggle (One-time vs Monthly) ------------------ */
+  const oneTime  = document.getElementById("pricing-section");
+  const monthly  = document.getElementById("pricing-section-monthly");
+  const ownBtn   = document.querySelector("#instructor-q19 .own-outright");
+  const monthBtn = document.querySelector("#instructor-q19 .monthly-support");
+  if (ownBtn && monthBtn && oneTime && monthly) {
     ownBtn.addEventListener("click", () => {
-      // record ownership (already handled) then show correct cards
-      ownSection.style.display = "block";
-      monthlySection.style.display = "none";
+      oneTime.style.display = "block";
+      monthly.style.display = "none";
+      showScreen("recommended-plan-screen");
     });
-
-    monthlyBtn.addEventListener("click", () => {
-      // record ownership (already handled) then show monthly cards
-      ownSection.style.display = "none";
-      monthlySection.style.display = "block";
+    monthBtn.addEventListener("click", () => {
+      oneTime.style.display = "none";
+      monthly.style.display = "block";
+      showScreen("recommended-plan-screen");
     });
   }
-});
 
-  // ------------------ Progress & Water ------------------
+  /* ------------------ Progress/Water ------------------ */
   function updateWaterProgress() {
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
+  function updateProgress(step) {
+    const bar = document.querySelector('.progress-bar');
+    const label = document.querySelector('.progress-label');
+    const percent = Math.round((step / screens.length) * 100);
+    if (bar) bar.style.width = percent + '%';
+    if (label) label.textContent = percent + '%';
   }
 
-  // ------------------ Initialize Funnel ------------------
-  // All screens are hidden by default, so we only need to show the intended starting point.
+  /* ------------------ Init ------------------ */
   hideAllScreens();
-
-  if (codeParam) {
-    // If a design code is present, bypass typewriter and show the template or step 4.
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    // If a step is specified, show that screen directly.
-    const stepName = `instructor-q${stepParam}`;
-    // Find the screen index to set currentScreen correctly
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      // Fallback to first screen if stepParam is invalid
-      showScreen(screens[0].id);
-    }
-  } else {
-    // No parameters: Start the typewriter animation.
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  }
-
+  if (typewriterEl) { typewriterEl.classList.add('active'); startTypewriterAnimation(); }
+  if (colorRiseEl) colorRiseEl.classList.add('active');
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
-  // ------------------ Robust IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
-        }
+  /* Animate pricing cards when visible */
+  const cards = document.querySelectorAll('.pricing-card[data-animate]');
+  if (cards.length && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); o.unobserve(e.target); }
       });
-    }, observerOptions);
+    }, {threshold:[0,0.1]});
+    cards.forEach(c => obs.observe(c));
+  } else {
+    cards.forEach(c => c.classList.add('in-view'));
+  }
 
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
-
-  // ------------------ Stripe Checkout (stub) ------------------
-  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null; // Replace with your Stripe public key if used
-  window.stripeCheckout = function(plan) {
-    if (!stripe) {
-      alert('Stripe not configured (public key missing)');
-      return;
-    }
-    let priceId = '';
-    switch(plan) {
-      case 'basic': priceId = 'price_id_basic'; break;
-      case 'pro': priceId = 'price_id_pro'; break;
-      case 'premium': priceId = 'price_id_premium'; break;
-    }
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'payment',
-      successUrl: window.location.href + '?success=true',
-      cancelUrl: window.location.href + '?canceled=true',
-    }).then(result => {
-      if (result.error) alert(result.error.message);
-    });
-  };
-
-
-   // Toggle between one-time and monthly cards
-  const oneTime = document.getElementById("pricing-section");
-  const monthly = document.getElementById("pricing-section-monthly");
-  document.querySelector("#instructor-q19 .own-outright").addEventListener("click", () => {
-    oneTime.style.display = "block";
-    monthly.style.display = "none";
-    showScreen("recommended-plan-screen");
-  });
-  document.querySelector("#instructor-q19 .monthly-support").addEventListener("click", () => {
-    oneTime.style.display = "none";
-    monthly.style.display = "block";
-    showScreen("recommended-plan-screen");
-  });
 });
-
-}); /* end DOMContentLoaded */
- </script>
-
+</script>
 
 </body>
 </html>
