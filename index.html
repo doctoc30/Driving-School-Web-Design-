@@ -1423,61 +1423,9 @@ html, body {
 /* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------ Basic setup ------------------
-  let screens = Array.from(document.querySelectorAll(".form-screen"));
-  let currentScreen = 0;
 
-  const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get("code");
-  const stepParam = params.get("step");
-  
-  // Progress Bar Functions (Stubs - defined later, hoisted)
-  function updateWaterProgress() { /* Defined later */ }
-  function updateProgress(step) { /* Defined later */ }
 
-  // ------------------ Screen Navigation ------------------
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
-  }
 
-  function showScreen(id) {
-    const screen = document.getElementById(id);
-    if (!screen) return;
-    hideAllScreens();
-    screen.classList.add("active");
-    screen.style.display = "flex";
-    currentScreen = screens.indexOf(screen);
-    // Keep this — we'll center the recommended card separately if required
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (screen.id === "recommended-plan-screen") {
-      // call recommendation which will also scroll the chosen card into view
-      showRecommendedPlan();
-    }
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-  }
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  window.showScreen = showScreen;
-  window.next = next;
-  window.prev = prev;
 
   // ------------------ User Path & Features ------------------
   let userPath = "";
@@ -1704,117 +1652,8 @@ function showRecommendedPlan() {
 }
 
  
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
+ 
   
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  // ------------------ Progress & Water ------------------
-  function updateWaterProgress() {
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
 
   // ------------------ Initialize Funnel ------------------
   // All screens are hidden by default, so we only need to show the intended starting point.
@@ -1904,8 +1743,129 @@ function showRecommendedPlan() {
     });
   };
 
+
+
+   // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+ // ------------------ Progress & Water ------------------
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
+  }
+
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
+  }
+
+
+
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+  
+
+
 }); /* end DOMContentLoaded */
-</script>
+
+ 
+ 
+ </script>
 
 
 </body>
