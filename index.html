@@ -1418,9 +1418,8 @@ html, body {
 </section>
 </form>
 
-
- <script>
-/* ---------- FINAL CONSOLIDATED FUNNEL JS (Copy/Paste this entire block) ---------- */
+<script>
+/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1431,7 +1430,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeParam = params.get("code");
   const stepParam = params.get("step");
   
-  // Progress Bar Functions (Stubs - defined later, hoisted)
+  // Progress Bar Functions
   function updateWaterProgress() { /* Defined later */ }
   function updateProgress(step) { /* Defined later */ }
 
@@ -1450,12 +1449,12 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.classList.add("active");
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
-    // Keep this — we'll center the recommended card separately if required
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (screen.id === "recommended-plan-screen") {
-      // call recommendation which will also scroll the chosen card into view
-      showRecommendedPlan();
+      showRecommendedPlan('outright');
+    } else if (screen.id === "monthly-plan-screen") {
+      showRecommendedPlan('monthly');
     }
     updateWaterProgress();
     updateProgress(currentScreen + 1);
@@ -1484,7 +1483,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const yesFeatures = [];
   const noFeatures = [];
   let ownershipChoice = "";
-  const featureState = {}; // { featureKey: true|false }
+  const featureState = {};
 
   function syncFeatureState() {
     yesFeatures.length = 0;
@@ -1495,10 +1494,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+    
+    // Update both plan screens if active
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan();
+      showRecommendedPlan('outright');
     }
-    // 🔍 DEBUG: Check which features are currently set to 'Yes'
+    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan('monthly');
+    }
+    
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1506,20 +1510,25 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  window.recordOwnership = (choice) => {
-    ownershipChoice = choice;
-    // record ownership feature so it is sent back if needed
-    featureState[choice === 'Owned Outright' ? 'buyOutright' : 'monthlySupport'] = true;
-    syncFeatureState();
-    // show pricing screen directly after ownership selection
-    showScreen('recommended-plan-screen');
-  };
-
   // ------------------ Q19 Buttons ------------------
   const q19OwnOutrightBtn = document.querySelector("#instructor-q19 .own-outright");
   const q19MonthlySupportBtn = document.querySelector("#instructor-q19 .monthly-support");
-  if (q19OwnOutrightBtn) q19OwnOutrightBtn.addEventListener("click", () => window.recordOwnership('Owned Outright'));
-  if (q19MonthlySupportBtn) q19MonthlySupportBtn.addEventListener("click", () => window.recordOwnership('Monthly Support'));
+  
+  if (q19OwnOutrightBtn) {
+    q19OwnOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      featureState['buyOutright'] = true;
+      showScreen('recommended-plan-screen');
+    };
+  }
+  
+  if (q19MonthlySupportBtn) {
+    q19MonthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      featureState['monthlySupport'] = true;
+      showScreen('monthly-plan-screen');
+    };
+  }
 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
@@ -1561,7 +1570,6 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.id = 'template-results';
       templateScreen.classList.add('form-screen');
       document.getElementById('formWrapper').appendChild(templateScreen);
-      // refresh screens NodeList
       screens = Array.from(document.querySelectorAll('.form-screen'));
     }
 
@@ -1592,7 +1600,6 @@ document.addEventListener("DOMContentLoaded", () => {
       templateScreen.innerHTML = '';
       templateScreen.appendChild(container);
       templateScreen.classList.add('active');
-      // refresh screens & update index
       screens = Array.from(document.querySelectorAll('.form-screen'));
       currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
@@ -1604,106 +1611,159 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
+  // ------------------ REVISED Recommended Plan Function ------------------
+  function showRecommendedPlan(planType = 'outright') {
+    const isMonthly = planType === 'monthly';
+    const planCards = Array.from(document.querySelectorAll(isMonthly ? "#monthly-plan-screen .pricing-card" : "#recommended-plan-screen .pricing-card"));
+    if (!planCards.length) return;
 
- // ------------------ Recommended Plan ------------------
-function showRecommendedPlan() {
-  const planCards = Array.from(document.querySelectorAll(".pricing-card"));
-  if (!planCards.length) return;
+    const yes = yesFeatures || [];
 
-  const yes = yesFeatures || [];
+    const tiers = {
+      basic:   ["booking","mobile","cta","contact","bio"],
+      pro:     ["seo","reviews","branding","faq","newsletter"],
+      premium: ["packages","social","email","content","guide"]
+    };
 
-  const tiers = {
-    basic:   ["booking","mobile","cta","contact","bio"],
-    pro:     ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","social","email","content","guide"]
-  };
+    const labels = {
+      booking: "Online booking & payment",
+      mobile: "Mobile-friendly design",
+      cta: "Strong call-to-action buttons",
+      contact: "Simple contact form",
+      bio: "About / Instructor bio",
+      seo: "Local Google SEO",
+      reviews: "Student reviews",
+      branding: "Branding help (logo & colors)",
+      faq: "FAQ / Student guide",
+      newsletter: "Newsletter signup",
+      packages: "Lesson packages & gift vouchers",
+      social: "Social media integration",
+      email: "Professional email address",
+      content: "Content creation help",
+      guide: "What to Expect guide"
+    };
 
-  const labels = {
-    booking: "Online booking & payment",
-    mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    social: "Social media integration",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "“What to Expect” guide"
-  };
+    const hasPremium = yes.some(f => tiers.premium.includes(f));
+    const hasPro     = yes.some(f => tiers.pro.includes(f));
+    const hasBasic   = yes.some(f => tiers.basic.includes(f));
 
-  const hasPremium = yes.some(f => tiers.premium.includes(f));
-  const hasPro     = yes.some(f => tiers.pro.includes(f));
-  const hasBasic   = yes.some(f => tiers.basic.includes(f));
+    let recommendedPlan =
+        hasPremium ? "premium" :
+        hasPro     ? "pro" :
+        hasBasic   ? "basic" :
+                     "pro"; // fallback
 
-  let recommendedPlan =
-      hasPremium ? "premium" :
-      hasPro     ? "pro" :
-      hasBasic   ? "basic" :
-                   "pro"; // fallback
+    // Monthly pricing configuration
+    const monthlyPrices = {
+      basic: 49,
+      pro: 79,
+      premium: 129
+    };
 
-  planCards.forEach(card => {
-    card.classList.remove("recommended","in-view");
+    const outrightPrices = {
+      basic: 499,
+      pro: 999,
+      premium: 1499
+    };
 
-    const level = card.querySelector("h3")?.textContent.trim().toLowerCase();
-    const list  = card.querySelector(".features-list");
-    const includesDiv = card.querySelector(".includes-message");
-    if (!list) return;
+    planCards.forEach(card => {
+      card.classList.remove("recommended","in-view");
 
-    // --- Dynamic funnel features ---
-    let allowedKeys = [];
-    if (level === "basic") {
-      allowedKeys = yes.filter(k => tiers.basic.includes(k));
-    } else if (level === "pro") {
-      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
-    } else if (level === "premium") {
-      allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
-    }
+      const level = card.querySelector("h3")?.textContent.trim().toLowerCase().replace(' monthly', '');
+      const list  = card.querySelector(".features-list");
+      const includesDiv = card.querySelector(".includes-message");
+      const priceEl = card.querySelector(".price");
+      const payButton = card.querySelector(".pay-now");
+      const paymentNote = card.querySelector("small");
+      
+      if (!list || !priceEl || !payButton) return;
 
-    list.innerHTML = "";
-    if (allowedKeys.length) {
-      allowedKeys.forEach(k => {
-        const li = document.createElement("li");
-        li.textContent = labels[k] || k;
-        list.appendChild(li);
-      });
-    } else {
-      const li = document.createElement("li");
-      li.textContent = "No features selected";
-      list.appendChild(li);
-    }
-
-    // --- Lower-tier includes ---
-    if (includesDiv) {
-      includesDiv.innerHTML = "";
-      let includeParts = [];
-      if (level === "pro") {
-        const basicYes = yes.filter(k => tiers.basic.includes(k));
-        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-      } else if (level === "premium") {
-        const basicYes = yes.filter(k => tiers.basic.includes(k));
-        const proYes    = yes.filter(k => tiers.pro.includes(k));
-        if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-        if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+      // Set pricing based on plan type
+      if (isMonthly) {
+        priceEl.textContent = `£${monthlyPrices[level]}`;
+        if (priceEl.querySelector('span')) {
+          priceEl.querySelector('span').textContent = '/month';
+        } else {
+          const span = document.createElement('span');
+          span.textContent = '/month';
+          priceEl.appendChild(span);
+        }
+        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
+        if (paymentNote) {
+          const setupFees = { basic: 199, pro: 299, premium: 499 };
+          paymentNote.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+        }
+      } else {
+        priceEl.textContent = `£${outrightPrices[level]}`;
+        if (priceEl.querySelector('span')) priceEl.querySelector('span').remove();
+        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${outrightPrices[level]} via PayPal`;
+        if (paymentNote) paymentNote.textContent = "50% now to secure, 50% on completion";
       }
-      if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+
+      // Update PayPal links based on payment model
+      const paypalLinks = {
+        monthly: {
+          basic: 'https://www.paypal.com/paypal-link-basic-monthly',
+          pro: 'https://www.paypal.com/paypal-link-pro-monthly',
+          premium: 'https://www.paypal.com/paypal-link-premium-monthly'
+        },
+        outright: {
+          basic: 'https://www.paypal.com/paypal-link-basic',
+          pro: 'https://www.paypal.com/paypal-link-pro',
+          premium: 'https://www.paypal.com/paypal-link-premium'
+        }
+      };
+
+      payButton.onclick = () => {
+        const linkType = isMonthly ? 'monthly' : 'outright';
+        window.location.href = paypalLinks[linkType][level];
+      };
+
+      // Features logic (same for both plan types)
+      list.innerHTML = "";
+      let allowedKeys = [];
+      if (level === "basic") {
+        allowedKeys = yes.filter(k => tiers.basic.includes(k));
+      } else if (level === "pro") {
+        allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
+      } else if (level === "premium") {
+        allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
+      }
+
+      if (allowedKeys.length) {
+        allowedKeys.forEach(k => {
+          const li = document.createElement("li");
+          li.textContent = labels[k] || k;
+          list.appendChild(li);
+        });
+      }
+
+      // Lower-tier includes (for both models)
+      if (includesDiv) {
+        includesDiv.innerHTML = "";
+        let includeParts = [];
+        if (level === "pro") {
+          const basicYes = yes.filter(k => tiers.basic.includes(k));
+          if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+        } else if (level === "premium") {
+          const basicYes = yes.filter(k => tiers.basic.includes(k));
+          const proYes    = yes.filter(k => tiers.pro.includes(k));
+          if (basicYes.length) includeParts.push(`Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
+          if (proYes.length)   includeParts.push(`Pro: ${proYes.map(k => labels[k]).join(", ")}`);
+        }
+        if (includeParts.length) includesDiv.textContent = `Includes ${includeParts.join(" | ")}`;
+      }
+    });
+
+    const selectedCard = planCards.find(c =>
+      c.querySelector("h3")?.textContent.trim().toLowerCase().replace(' monthly', '') === recommendedPlan
+    );
+    if (selectedCard) {
+      selectedCard.classList.add("recommended","in-view");
+      setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
     }
-  });
-
-  const selectedCard = planCards.find(c =>
-    c.querySelector("h3")?.textContent.trim().toLowerCase() === recommendedPlan
-  );
-  if (selectedCard) {
-    selectedCard.classList.add("recommended","in-view");
-    setTimeout(() => selectedCard.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
-}
 
- 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1817,28 +1877,22 @@ function showRecommendedPlan() {
   }
 
   // ------------------ Initialize Funnel ------------------
-  // All screens are hidden by default, so we only need to show the intended starting point.
   hideAllScreens();
 
   if (codeParam) {
-    // If a design code is present, bypass typewriter and show the template or step 4.
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (stepParam) {
-    // If a step is specified, show that screen directly.
     const stepName = `instructor-q${stepParam}`;
-    // Find the screen index to set currentScreen correctly
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
       currentScreen = screenIndex;
       showScreen(stepName);
     } else {
-      // Fallback to first screen if stepParam is invalid
       showScreen(screens[0].id);
     }
   } else {
-    // No parameters: Start the typewriter animation.
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
@@ -1847,7 +1901,7 @@ function showRecommendedPlan() {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
-  // ------------------ Robust IntersectionObserver for pricing cards ------------------
+  // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
     if (!cards || cards.length === 0) return; 
@@ -1882,7 +1936,7 @@ function showRecommendedPlan() {
   })();
 
   // ------------------ Stripe Checkout (stub) ------------------
-  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null; // Replace with your Stripe public key if used
+  const stripe = (window.Stripe) ? Stripe('YOUR_STRIPE_PUBLIC_KEY') : null;
   window.stripeCheckout = function(plan) {
     if (!stripe) {
       alert('Stripe not configured (public key missing)');
