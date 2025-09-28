@@ -1522,39 +1522,42 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Q19 Buttons - FIXED ------------------
-  function setupQ19Buttons() {
-    const q19Screen = document.getElementById('instructor-q19');
-    if (!q19Screen) return;
-    
-    // Remove any existing event listeners and add new ones
-    const ownOutrightBtn = q19Screen.querySelector('button:nth-child(1)');
-    const monthlySupportBtn = q19Screen.querySelector('button:nth-child(2)');
-    const backBtn = q19Screen.querySelector('.back-button');
-    
-    if (ownOutrightBtn) {
-      ownOutrightBtn.onclick = () => {
-        ownershipChoice = 'Owned Outright';
-        featureState['buyOutright'] = true;
-        syncFeatureState();
-        showScreen('recommended-plan-screen');
-      };
-    }
-    
-    if (monthlySupportBtn) {
-      monthlySupportBtn.onclick = () => {
-        ownershipChoice = 'Monthly Support';
-        featureState['monthlySupport'] = true;
-        syncFeatureState();
-        showScreen('monthly-plan-screen');
-      };
-    }
-    
-    if (backBtn) {
-      backBtn.onclick = () => prev();
-    }
+
+
+
+ // ------------------ Q19 Buttons - FIXED ------------------
+function setupQ19Buttons() {
+  const q19Screen = document.getElementById('instructor-q19');
+  if (!q19Screen) return;
+
+  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+  const backBtn          = q19Screen.querySelector('.back-button');
+
+  if (ownOutrightBtn) {
+    ownOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      featureState['buyOutright'] = true;
+      syncFeatureState();
+      showScreen('recommended-plan-screen');
+    };
   }
 
+  if (monthlySupportBtn) {
+    monthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      featureState['monthlySupport'] = true;
+      syncFeatureState();
+      // ✅ use the existing pricing screen in monthly mode
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly');
+    };
+  }
+
+  if (backBtn) {
+    backBtn.onclick = () => prev();
+  }
+}
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
