@@ -1553,6 +1553,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+
+
+
+   // ------------------ Screen Navigation ------------------
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
+  }
+
+  function showScreen(id) {
+    const screen = document.getElementById(id);
+    if (!screen) return;
+    hideAllScreens();
+    screen.classList.add("active");
+    screen.style.display = "flex";
+    currentScreen = screens.indexOf(screen);
+    // Keep this — we'll center the recommended card separately if required
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (screen.id === "recommended-plan-screen") {
+      // call recommendation which will also scroll the chosen card into view
+      showRecommendedPlan();
+    }
+    updateWaterProgress();
+    updateProgress(currentScreen + 1);
+  }
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  }
+
+  window.showScreen = showScreen;
+  window.next = next;
+  window.prev = prev;
+
+ 
  // ------------------ Recommended Plan ------------------
 function showRecommendedPlan() {
   const planCards = Array.from(document.querySelectorAll(".pricing-card"));
