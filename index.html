@@ -1292,20 +1292,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Toggle between one-time and monthly cards
-  const oneTime = document.getElementById("pricing-section");
-  const monthly = document.getElementById("pricing-section-monthly");
-  document.querySelector("#instructor-q19 .own-outright").addEventListener("click", () => {
-    oneTime.style.display = "block";
-    monthly.style.display = "none";
-    showScreen("recommended-plan-screen");
-  });
-  document.querySelector("#instructor-q19 .monthly-support").addEventListener("click", () => {
-    oneTime.style.display = "none";
-    monthly.style.display = "block";
-    showScreen("recommended-plan-screen");
-  });
-});
+
 
 
 
@@ -1534,6 +1521,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (result.error) alert(result.error.message);
     });
   };
+
+
+   // Toggle between one-time and monthly cards
+  const oneTime = document.getElementById("pricing-section");
+  const monthly = document.getElementById("pricing-section-monthly");
+  document.querySelector("#instructor-q19 .own-outright").addEventListener("click", () => {
+    oneTime.style.display = "block";
+    monthly.style.display = "none";
+    showScreen("recommended-plan-screen");
+  });
+  document.querySelector("#instructor-q19 .monthly-support").addEventListener("click", () => {
+    oneTime.style.display = "none";
+    monthly.style.display = "block";
+    showScreen("recommended-plan-screen");
+  });
+});
 
 }); /* end DOMContentLoaded */
  </script>
