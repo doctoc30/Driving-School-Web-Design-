@@ -1479,6 +1479,11 @@ html, body {
 
   </div>
 </section>
+
+   <section id="pricing-section-monthly" style="display:none;">
+  <!-- …the 3 monthly pricing cards from the earlier snippet… -->
+</section>
+   
 </form>
 
 
@@ -1862,6 +1867,32 @@ function showRecommendedPlan() {
       }
     });
   }
+
+
+
+
+ 
+document.addEventListener("DOMContentLoaded", () => {
+  const ownSection     = document.getElementById("pricing-section");
+  const monthlySection = document.getElementById("pricing-section-monthly");
+
+  const ownBtn    = document.querySelector("#instructor-q19 .own-outright");
+  const monthlyBtn= document.querySelector("#instructor-q19 .monthly-support");
+
+  if (ownBtn && monthlyBtn) {
+    ownBtn.addEventListener("click", () => {
+      // record ownership (already handled) then show correct cards
+      ownSection.style.display = "block";
+      monthlySection.style.display = "none";
+    });
+
+    monthlyBtn.addEventListener("click", () => {
+      // record ownership (already handled) then show monthly cards
+      ownSection.style.display = "none";
+      monthlySection.style.display = "block";
+    });
+  }
+});
 
   // ------------------ Progress & Water ------------------
   function updateWaterProgress() {
