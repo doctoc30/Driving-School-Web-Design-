@@ -1627,7 +1627,7 @@ if (initialActive) {
 
 
 
- // ---------- showRecommendedPlan (clear lower-tier includes) ----------
+ // ------------------ REVISED Recommended Plan Function ------------------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1722,35 +1722,36 @@ function showRecommendedPlan(planType = 'outright') {
       level === "pro"     ? [...tiers.basic, ...tiers.pro] :
                             [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
-    const lowerTierFeatures = [];
+    const basicFeatures = [];
+    const proFeatures = [];
     const currentTierFeatures = [];
 
     yes.filter(k => allowed.includes(k)).forEach(k => {
-      if ((level === 'pro' || level === 'premium') && tiers.basic.includes(k)) {
-        lowerTierFeatures.push(k);
-      } else if (level === 'premium' && tiers.pro.includes(k)) {
-        lowerTierFeatures.push(k);
+      if (level === 'pro' && tiers.basic.includes(k)) {
+        basicFeatures.push(k);
+      } else if (level === 'premium') {
+        if (tiers.basic.includes(k)) basicFeatures.push(k);
+        else if (tiers.pro.includes(k)) proFeatures.push(k);
+        else currentTierFeatures.push(k);
       } else {
         currentTierFeatures.push(k);
       }
     });
 
-    // Add lower-tier features with heading and gap
-    if (lowerTierFeatures.length) {
+    // Helper to create a section with heading and gap
+    const addSection = (headingText, features) => {
+      if (!features.length) return;
       const block = document.createElement("div");
       block.style.margin = "18px 0"; // big gap
       const heading = document.createElement("p");
-      // Determine correct heading
-      const basicIncluded = lowerTierFeatures.some(k => tiers.basic.includes(k));
-      const proIncluded   = lowerTierFeatures.some(k => tiers.pro.includes(k));
-      heading.textContent = proIncluded ? "Includes from Pro" : "Includes from Basic";
+      heading.textContent = headingText;
       heading.style.fontWeight = "700";
       heading.style.margin = "0 0 8px 0";
       block.appendChild(heading);
 
       const ul = document.createElement("ul");
       ul.style.margin = "0 0 0 20px";
-      lowerTierFeatures.forEach(k => {
+      features.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
         li.style.margin = "6px 0";
@@ -1758,15 +1759,19 @@ function showRecommendedPlan(planType = 'outright') {
       });
       block.appendChild(ul);
       list.appendChild(block);
-    }
+    };
 
-    // Add current-tier features
-    currentTierFeatures.forEach(k => {
-      const li = document.createElement("li");
-      li.textContent = labels[k];
-      li.style.margin = "8px 0";
-      list.appendChild(li);
-    });
+    // Add sections in order
+    if (basicFeatures.length) addSection("Includes from Basic", basicFeatures);
+    if (proFeatures.length) addSection("Includes from Pro", proFeatures);
+    if (currentTierFeatures.length) {
+      currentTierFeatures.forEach(k => {
+        const li = document.createElement("li");
+        li.textContent = labels[k];
+        li.style.margin = "8px 0";
+        list.appendChild(li);
+      });
+    }
 
     // monthly extras
     if (isMonthly && extraByPlan[level]) {
@@ -1793,7 +1798,6 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
-
  
  
   // ------------------ Typewriter Animation ------------------
