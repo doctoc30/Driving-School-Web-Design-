@@ -1626,6 +1626,9 @@ if (initialActive) {
   }
 
 
+
+
+ // ---------- showRecommendedPlan (Corrected to properly separate feature sections AND ensure only one card glows) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1718,7 +1721,7 @@ function showRecommendedPlan(planType = 'outright') {
     const addSection = (title, keys) => {
       if (!keys.length) return;
       const block = document.createElement("div");
-      // FIX: Increased vertical margin for better section separation
+      // Section-to-section margin (already set to 28px)
       block.style.margin = "28px 0"; 
 
       const heading = document.createElement("p");
@@ -1732,7 +1735,8 @@ function showRecommendedPlan(planType = 'outright') {
       keys.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
-        li.style.margin = "6px 0";
+        // FIX: Increased line-to-line margin from 6px to 12px
+        li.style.margin = "12px 0"; 
         ul.appendChild(li);
       });
       block.appendChild(ul);
@@ -1790,7 +1794,7 @@ function showRecommendedPlan(planType = 'outright') {
             const li = document.createElement("li");
             li.textContent = e;
             li.style.fontStyle = "italic";
-            // FIX: Increased vertical margin for better spacing of monthly extras
+            // Monthly extras item margin
             li.style.margin = "12px 0"; 
             extrasBlock.appendChild(li); 
         });
@@ -1809,7 +1813,7 @@ function showRecommendedPlan(planType = 'outright') {
   });
 
   // highlight recommended card
-  // FIX: Ensure only one card glows by clearing classes from ALL cards first.
+  // Ensure only one card glows by clearing classes from ALL cards first.
   planCards.forEach(card => {
     card.classList.remove("recommended", "in-view");
   });
