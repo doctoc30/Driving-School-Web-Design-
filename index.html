@@ -1713,92 +1713,106 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ----- Features list -----
-    list.innerHTML = "";
+  // ----- Features list -----
+list.innerHTML = "";
 
-    // Determine which features this plan can show
-    const allowed =
-      level === "basic"   ? tiers.basic :
-      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
-                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
+// Determine which features this plan can show
+const allowed =
+  level === "basic"   ? tiers.basic :
+  level === "pro"     ? [...tiers.basic, ...tiers.pro] :
+                        [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
-    // Split into only-basic vs. plan-specific
-    const basicFeatures = [];
-    const currentTierFeatures = [];
+// Split into basic vs. plan-specific features
+const basicFeatures = [];
+const currentTierFeatures = [];
 
-    yes.forEach(k => {
-      if (!allowed.includes(k)) return; // ignore disallowed
+yes.forEach(k => {
+  if (!allowed.includes(k)) return; // ignore disallowed
 
-      // ONLY true basic-tier keys go to "Includes from Basic"
-      if (level !== "basic" && tiers.basic.includes(k)) {
-        basicFeatures.push(k);
-      } else {
-        currentTierFeatures.push(k); // all pro/premium keys stay in main list
-      }
-    });
-
-    // helper to render a section
-    const addSection = (title, keys) => {
-      if (!keys.length) return;
-      const block = document.createElement("div");
-      block.style.margin = "18px 0";
-
-      const heading = document.createElement("p");
-      heading.textContent = title;
-      heading.style.fontWeight = "700";
-      heading.style.margin = "0 0 8px 0";
-      block.appendChild(heading);
-
-      const ul = document.createElement("ul");
-      ul.style.margin = "0 0 0 20px";
-      keys.forEach(k => {
-        const li = document.createElement("li");
-        li.textContent = labels[k];
-        li.style.margin = "6px 0";
-        ul.appendChild(li);
-      });
-      block.appendChild(ul);
-      list.appendChild(block);
-    };
-
-    // Add includes-from-basic only when needed
-    if (basicFeatures.length && level !== "basic") {
-      addSection("Includes from Basic", basicFeatures);
-    }
-
-    // Always add current plan's own features as main list
-    currentTierFeatures.forEach(k => {
-      const li = document.createElement("li");
-      li.textContent = labels[k];
-      li.style.margin = "8px 0";
-      list.appendChild(li);
-    });
-
-    // monthly extras
-    if (isMonthly && extraByPlan[level]) {
-      extraByPlan[level].forEach(e => {
-        const li = document.createElement("li");
-        li.textContent = e;
-        li.style.fontStyle = "italic";
-        li.style.margin = "10px 0";
-        list.appendChild(li);
-      });
-    }
-
-    // Fallback if no features
-    if (!list.children.length) {
-      const li = document.createElement("li");
-      li.textContent = "Standard features included";
-      list.appendChild(li);
-    }
-  });
-
-  // highlight recommended card
-  const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
-  if (rec) {
-    rec.classList.add("recommended","in-view");
-    setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
+  if (level !== "basic" && tiers.basic.includes(k)) {
+    basicFeatures.push(k);
+  } else {
+    currentTierFeatures.push(k);
   }
+});
+
+// Helper to render a section
+const addSection = (title, keys, isMainSection = false) => {
+  if (!keys.length) return;
+  const block = document.createElement("div");
+  block.style.margin = isMainSection ? "0 0 18px 0" : "18px 0";
+
+  if (title) {
+    const heading = document.createElement("p");
+    heading.textContent = title;
+    heading.style.fontWeight = "700";
+    heading.style.margin = "0 0 8px 0";
+    block.appendChild(heading);
+  }
+
+  const ul = document.createElement("ul");
+  ul.style.margin = title ? "0 0 0 20px" : "0";
+  ul.style.padding = "0";
+  keys.forEach(k => {
+    const li = document.createElement("li");
+    li.textContent = labels[k];
+    li.style.margin = "8px 0";
+    li.style.padding = "0";
+    ul.appendChild(li);
+  });
+  block.appendChild(ul);
+  list.appendChild(block);
+};
+
+// For Basic plan: just show all features in one section
+if (level === "basic") {
+  addSection("", [...basicFeatures, ...currentTierFeatures], true);
+} 
+// For Pro and Premium: show "Includes from Basic" section + main features section
+else {
+  // Add "Includes from Basic" section if there are basic features
+  if (basicFeatures.length) {
+    addSection("Includes from Basic", basicFeatures);
+  }
+  
+  // Add current plan's features as main section with appropriate title
+  if (currentTierFeatures.length) {
+    const planTitle = level === "pro" ? "Pro Features" : "Premium Features";
+    addSection(planTitle, currentTierFeatures, true);
+  }
+}
+
+// Add monthly extras as a separate section
+if (isMonthly && extraByPlan[level]) {
+  const extrasBlock = document.createElement("div");
+  extrasBlock.style.margin = "18px 0";
+  extrasBlock.style.paddingTop = "12px";
+  extrasBlock.style.borderTop = "1px solid #eee";
+  
+  const heading = document.createElement("p");
+  heading.textContent = "Monthly Plan Includes";
+  heading.style.fontWeight = "700";
+  heading.style.margin = "0 0 8px 0";
+  extrasBlock.appendChild(heading);
+  
+  const ul = document.createElement("ul");
+  ul.style.margin = "0 0 0 20px";
+  extraByPlan[level].forEach(e => {
+    const li = document.createElement("li");
+    li.textContent = e;
+    li.style.fontStyle = "italic";
+    li.style.margin = "6px 0";
+    ul.appendChild(li);
+  });
+  extrasBlock.appendChild(ul);
+  list.appendChild(extrasBlock);
+}
+
+// Fallback if no features
+if (!list.children.length) {
+  const li = document.createElement("li");
+  li.textContent = "Standard features included";
+  list.appendChild(li);
 }
  
   // ------------------ Typewriter Animation ------------------
