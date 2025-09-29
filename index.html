@@ -1626,8 +1626,6 @@ if (initialActive) {
   }
 
 
-
- // ---------- showRecommendedPlan (clear lower-tier includes) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1716,11 +1714,11 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Base list -----
     list.innerHTML = "";
 
-    // ----- Determine top features (exclude inherited from lower tiers) -----
     const basicYes = yes.filter(k => tiers.basic.includes(k));
     const proYes   = yes.filter(k => tiers.pro.includes(k));
     const premiumYes = yes.filter(k => tiers.premium.includes(k));
 
+    // Top features (unique to plan)
     let topFeatures;
     if (level === "basic") {
       topFeatures = basicYes;
@@ -1730,14 +1728,13 @@ function showRecommendedPlan(planType = 'outright') {
       topFeatures = yes.filter(k => !tiers.basic.includes(k) && !tiers.pro.includes(k)); // exclude basic + pro
     }
 
-    // ----- Add top section features -----
     const addItem = txt => {
       const li = document.createElement("li");
       li.textContent = txt;
-      li.style.margin = "10px 0";          // spacing for readability
-      li.style.fontSize = "1rem";          // slightly larger than included features
-      li.style.fontWeight = "600";         // semi-bold
-      li.style.color = "#333";             // darker
+      li.style.margin = "10px 0";    // spacing
+      li.style.fontSize = "1rem";    // top features slightly bigger
+      li.style.fontWeight = "600";
+      li.style.color = "white";      // white text
       list.appendChild(li);
     };
 
@@ -1750,48 +1747,30 @@ function showRecommendedPlan(planType = 'outright') {
         li.textContent = e;
         li.style.fontStyle = "italic";
         li.style.margin = "10px 0";
+        li.style.color = "white";
         list.appendChild(li);
       });
     }
 
-    // ----- Add divider if there will be lower-tier sections -----
-    if ((level === "pro" || level === "premium") && basicYes.length ||
-        (level === "premium") && proYes.length) {
-
-      const divider = document.createElement("hr");
-      divider.style.border = "none";
-      divider.style.height = "1px";
-      divider.style.backgroundColor = "#ddd";  // light gray
-      divider.style.margin = "12px 0";         // spacing above and below
-      list.appendChild(divider);
-    }
-
-    // ----- Lower-tier sections with big spacing -----
+    // ----- Lower-tier sections -----
     const addSection = (title, keys) => {
-      const block = document.createElement("div");
-      block.style.margin = "18px 0";          // large block gap
-
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
-      heading.style.fontSize = "1.15rem";     // bigger font
-      heading.style.color = "#222";           // darker
-      heading.style.margin = "0 0 8px 0";
-      heading.style.textTransform = "uppercase";
-      block.appendChild(heading);
+      heading.style.fontSize = "1.05rem";
+      heading.style.margin = "14px 0 6px 0";   // extra top margin
+      heading.style.color = "white";           // white heading
+      list.appendChild(heading);
 
-      const ul = document.createElement("ul");
-      ul.style.margin = "0 0 0 20px";
       keys.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
-        li.style.margin = "10px 0";           // bigger spacing
-        li.style.fontSize = "0.95rem";        // slightly smaller than top features
-        li.style.color = "#555";              // lighter than heading
-        ul.appendChild(li);
+        li.style.margin = "10px 0";           // larger vertical spacing
+        li.style.fontSize = "0.95rem";        // slightly smaller
+        li.style.color = "white";             // white text
+        li.style.paddingLeft = "12px";        // indent for clarity
+        list.appendChild(li);
       });
-      block.appendChild(ul);
-      list.appendChild(block);
     };
 
     if ((level === "pro" || level === "premium") && basicYes.length) {
@@ -1811,7 +1790,6 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
-
 
  
   // ------------------ Typewriter Animation ------------------
