@@ -1715,19 +1715,33 @@ function showRecommendedPlan(planType = 'outright') {
 
     // ----- Base list -----
     list.innerHTML = "";
+
+    // ----- Determine top features (exclude inherited from lower tiers) -----
+    const basicYes = yes.filter(k => tiers.basic.includes(k));
+    const proYes   = yes.filter(k => tiers.pro.includes(k));
+    const premiumYes = yes.filter(k => tiers.premium.includes(k));
+
+    let topFeatures;
+    if (level === "basic") {
+      topFeatures = basicYes;
+    } else if (level === "pro") {
+      topFeatures = yes.filter(k => !tiers.basic.includes(k)); // exclude basic
+    } else { // premium
+      topFeatures = yes.filter(k => !tiers.basic.includes(k) && !tiers.pro.includes(k)); // exclude basic + pro
+    }
+
+    // ----- Add top section features -----
     const addItem = txt => {
       const li = document.createElement("li");
       li.textContent = txt;
-      li.style.margin = "8px 0";              // bigger vertical gap
+      li.style.margin = "10px 0";          // spacing for readability
+      li.style.fontSize = "1rem";          // slightly larger than included features
+      li.style.fontWeight = "600";         // semi-bold
+      li.style.color = "#333";             // darker
       list.appendChild(li);
     };
 
-    const allowed =
-      level === "basic"   ? tiers.basic :
-      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
-                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
-
-    yes.filter(k => allowed.includes(k)).forEach(k => addItem(labels[k]));
+    topFeatures.forEach(k => addItem(labels[k]));
 
     // monthly extras
     if (isMonthly && extraByPlan[level]) {
@@ -1740,6 +1754,18 @@ function showRecommendedPlan(planType = 'outright') {
       });
     }
 
+    // ----- Add divider if there will be lower-tier sections -----
+    if ((level === "pro" || level === "premium") && basicYes.length ||
+        (level === "premium") && proYes.length) {
+
+      const divider = document.createElement("hr");
+      divider.style.border = "none";
+      divider.style.height = "1px";
+      divider.style.backgroundColor = "#ddd";  // light gray
+      divider.style.margin = "12px 0";         // spacing above and below
+      list.appendChild(divider);
+    }
+
     // ----- Lower-tier sections with big spacing -----
     const addSection = (title, keys) => {
       const block = document.createElement("div");
@@ -1748,7 +1774,10 @@ function showRecommendedPlan(planType = 'outright') {
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
+      heading.style.fontSize = "1.15rem";     // bigger font
+      heading.style.color = "#222";           // darker
       heading.style.margin = "0 0 8px 0";
+      heading.style.textTransform = "uppercase";
       block.appendChild(heading);
 
       const ul = document.createElement("ul");
@@ -1756,15 +1785,14 @@ function showRecommendedPlan(planType = 'outright') {
       keys.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
-        li.style.margin = "6px 0";
+        li.style.margin = "10px 0";           // bigger spacing
+        li.style.fontSize = "0.95rem";        // slightly smaller than top features
+        li.style.color = "#555";              // lighter than heading
         ul.appendChild(li);
       });
       block.appendChild(ul);
       list.appendChild(block);
     };
-
-    const basicYes = yes.filter(k => tiers.basic.includes(k));
-    const proYes   = yes.filter(k => tiers.pro.includes(k));
 
     if ((level === "pro" || level === "premium") && basicYes.length) {
       addSection("Includes from Basic", basicYes);
@@ -1783,6 +1811,8 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
+
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
