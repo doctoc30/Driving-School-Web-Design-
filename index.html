@@ -1626,7 +1626,7 @@ if (initialActive) {
   }
 
 
- // ---------- showRecommendedPlan (fixed so only true Basic features show under "Includes") ----------
+  // ---------- showRecommendedPlan (fixed so only true Basic features show under "Includes") ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1634,14 +1634,17 @@ function showRecommendedPlan(planType = 'outright') {
   );
   if (!planCards.length) return;
 
-  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
+  // Features the user said "Yes" to
+  const yes = Array.isArray(window.yesFeatures) ? window.yesFeatures.slice() : [];
 
+  // ----- Tier definitions -----
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
     pro:     ["seo","reviews","branding","faq","newsletter"],
     premium: ["packages","social","email","content","guide"]
   };
 
+  // ----- Labels for display -----
   const labels = {
     booking: "Online booking & payment",
     mobile: "Mobile-friendly design",
@@ -1657,9 +1660,10 @@ function showRecommendedPlan(planType = 'outright') {
     social: "Social media integration",
     email: "Professional email address",
     content: "Content creation help",
-    guide: "What to Expect guide"
+    guide: "‘What to Expect’ guide"
   };
 
+  // ----- Monthly extras -----
   const extraByPlan = {
     basic: [
       "Monthly maintenance & security updates",
@@ -1676,28 +1680,30 @@ function showRecommendedPlan(planType = 'outright') {
     ]
   };
 
+  // ----- Determine recommended tier -----
   const hasPremium = yes.some(f => tiers.premium.includes(f));
   const hasPro     = yes.some(f => tiers.pro.includes(f));
   const hasBasic   = yes.some(f => tiers.basic.includes(f));
-
   const recommended =
         hasPremium ? "premium" :
         hasPro     ? "pro" :
         hasBasic   ? "basic" : "pro";
 
+  // ----- Pricing tables -----
   const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees      = { basic: 199, pro: 299, premium: 499 };
 
+  // ============================================================
   planCards.forEach(card => {
-    const level = (card.dataset.plan || "").toLowerCase();
-    const list  = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const payBtn  = card.querySelector(".pay-now");
-    const note    = card.querySelector("small");
+    const level  = (card.dataset.plan || "").toLowerCase();
+    const list   = card.querySelector(".features-list");
+    const priceEl= card.querySelector(".price");
+    const payBtn = card.querySelector(".pay-now");
+    const note   = card.querySelector("small");
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ----- Pricing -----
+    // ---------- Pricing ----------
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}`;
       let span = priceEl.querySelector("span");
@@ -1712,68 +1718,59 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ----- Features list -----
+    // ---------- Features ----------
     list.innerHTML = "";
 
-    // Determine which features this plan can show
+    // Which features are even allowed on this plan
     const allowed =
       level === "basic"   ? tiers.basic :
       level === "pro"     ? [...tiers.basic, ...tiers.pro] :
                             [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
-    // Split into only-basic vs. plan-specific
-    const basicFeatures = [];
-    const currentTierFeatures = [];
+    const basicChosen   = yes.filter(k => tiers.basic.includes(k));
+    const proChosen     = yes.filter(k => tiers.pro.includes(k));
+    const premiumChosen = yes.filter(k => tiers.premium.includes(k));
 
-    yes.forEach(k => {
-      if (!allowed.includes(k)) return; // ignore disallowed
-
-      // ONLY true basic-tier keys go to "Includes from Basic"
-      if (level !== "basic" && tiers.basic.includes(k)) {
-        basicFeatures.push(k);
-      } else {
-        currentTierFeatures.push(k); // all pro/premium keys stay in main list
-      }
-    });
-
-    // helper to render a section
-    const addSection = (title, keys) => {
-      if (!keys.length) return;
+    const addSection = (title, arr, target = list) => {
+      if (!arr.length) return;
       const block = document.createElement("div");
-      block.style.margin = "18px 0";
-
+      block.style.margin = "24px 0";
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
       heading.style.margin = "0 0 8px 0";
       block.appendChild(heading);
-
       const ul = document.createElement("ul");
       ul.style.margin = "0 0 0 20px";
-      keys.forEach(k => {
+      arr.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
         li.style.margin = "6px 0";
         ul.appendChild(li);
       });
       block.appendChild(ul);
-      list.appendChild(block);
+      target.appendChild(block);
     };
 
-    // Add includes-from-basic only when needed
-    if (basicFeatures.length && level !== "basic") {
-      addSection("Includes from Basic", basicFeatures);
+    // ---- Decide what to display per plan ----
+    if (level === "basic") {
+      addSection("Features", basicChosen);
+
+    } else if (level === "pro") {
+      // Pro main list = Pro yes features
+      addSection("Features", proChosen);
+      // Add Basic yes as clearly separated includes
+      addSection("Includes from Basic", basicChosen);
+
+    } else if (level === "premium") {
+      // Premium main list = Premium yes + Pro yes
+      addSection("Features", [...premiumChosen, ...proChosen]);
+      // Lower tiers clearly separated
+      addSection("Includes from Pro", proChosen);
+      addSection("Includes from Basic", basicChosen);
     }
 
-    // Always add current plan's own features as main list
-    currentTierFeatures.forEach(k => {
-      const li = document.createElement("li");
-      li.textContent = labels[k];
-      li.style.margin = "8px 0";
-      list.appendChild(li);
-    });
-
-    // monthly extras
+    // Monthly extras if applicable
     if (isMonthly && extraByPlan[level]) {
       extraByPlan[level].forEach(e => {
         const li = document.createElement("li");
@@ -1784,7 +1781,7 @@ function showRecommendedPlan(planType = 'outright') {
       });
     }
 
-    // Fallback if no features
+    // Fallback
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
@@ -1792,13 +1789,14 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // highlight recommended card
+  // ---------- Highlight recommended ----------
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
     rec.classList.add("recommended","in-view");
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
