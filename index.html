@@ -1626,7 +1626,7 @@ if (initialActive) {
   }
 
 
-// ---------- showRecommendedPlan (fixed so only true Basic features show under "Includes") ----------
+// ---------- showRecommendedPlan (Corrected to properly separate feature sections) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1715,30 +1715,7 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Features list -----
     list.innerHTML = "";
 
-    // Determine which features this plan can show
-    const allowed =
-      level === "basic"   ? tiers.basic :
-      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
-                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
-
-    // Split into only-basic vs. plan-specific vs. other tier features
-    const basicFeatures = [];
-    const proFeatures = [];
-    const premiumFeatures = [];
-
-    yes.forEach(k => {
-      if (!allowed.includes(k)) return; // ignore disallowed
-
-      if (tiers.basic.includes(k)) {
-        basicFeatures.push(k);
-      } else if (tiers.pro.includes(k)) {
-        proFeatures.push(k);
-      } else if (tiers.premium.includes(k)) {
-        premiumFeatures.push(k);
-      }
-    });
-
-    // helper to render a section (Kept as is)
+    // helper to render a section
     const addSection = (title, keys) => {
       if (!keys.length) return;
       const block = document.createElement("div");
@@ -1762,67 +1739,51 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(block);
     };
 
+    // --- Feature Grouping Logic ---
+
+    // 1. Filter the 'yes' features based on what this plan is *allowed* to show.
+    const allowedFeatures =
+      level === "basic"   ? tiers.basic :
+      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
+                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
+
+    const relevantFeatures = yes.filter(k => allowedFeatures.includes(k));
+
+    // 2. Separate the relevant features into their respective tier groups.
+    const basicFeatures = relevantFeatures.filter(k => tiers.basic.includes(k));
+    const proFeatures = relevantFeatures.filter(k => tiers.pro.includes(k));
+    const premiumFeatures = relevantFeatures.filter(k => tiers.premium.includes(k));
+
+
     // --- RENDER SECTIONS ---
 
-    // 1. Basic Plan: Just the basic features
     if (level === "basic") {
+        // Basic card only shows Basic features
         addSection("Features Included", basicFeatures);
-    }
 
-    // 2. Pro Plan: Pro features first, then Basic features
-    if (level === "pro") {
+    } else if (level === "pro") {
+        // Pro card shows Pro features first, then Basic features
         addSection("Pro Features", proFeatures);
-        // Only show basic features if they exist and are not already in the main list
+        
         if (basicFeatures.length) {
              addSection("Includes from Basic", basicFeatures);
         }
-    }
 
-    // 3. Premium Plan: Premium features first, then Pro features (if needed), then Basic features
-    if (level === "premium") {
+    } else if (level === "premium") {
+        // Premium card shows Premium features first, then Pro, then Basic
         addSection("Premium Features", premiumFeatures);
-        // Add Pro features as a separate section if they exist
+
         if (proFeatures.length) {
              addSection("Includes from Pro", proFeatures);
         }
-        // Add Basic features as a separate section if they exist
+
         if (basicFeatures.length) {
              addSection("Includes from Basic", basicFeatures);
         }
     }
 
-    // --- OLD LOGIC REMOVED/REPLACED ---
-    /*
-    // Old feature splitting logic (now done at the top)
-    const basicFeatures = [];
-    const currentTierFeatures = [];
-    yes.forEach(k => {
-      if (!allowed.includes(k)) return; // ignore disallowed
-      // ONLY true basic-tier keys go to "Includes from Basic"
-      if (level !== "basic" && tiers.basic.includes(k)) {
-        basicFeatures.push(k);
-      } else {
-        currentTierFeatures.push(k); // all pro/premium keys stay in main list
-      }
-    });
 
-    // Add includes-from-basic only when needed (REPLACED BY NEW RENDER LOGIC)
-    if (basicFeatures.length && level !== "basic") {
-      addSection("Includes from Basic", basicFeatures);
-    }
-
-    // Always add current plan's own features as main list (REPLACED BY NEW RENDER LOGIC)
-    currentTierFeatures.forEach(k => {
-      const li = document.createElement("li");
-      li.textContent = labels[k];
-      li.style.margin = "8px 0";
-      list.appendChild(li);
-    });
-    */
-    // --- END OLD LOGIC ---
-
-
-    // monthly extras (Kept as is, but moved to the end)
+    // monthly extras
     if (isMonthly && extraByPlan[level]) {
       extraByPlan[level].forEach(e => {
         const li = document.createElement("li");
