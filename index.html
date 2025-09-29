@@ -1628,7 +1628,6 @@ if (initialActive) {
 
 
 
- // ---------- showRecommendedPlan (Corrected to properly separate feature sections AND ensure only one card glows) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1721,13 +1720,13 @@ function showRecommendedPlan(planType = 'outright') {
     const addSection = (title, keys) => {
       if (!keys.length) return;
       const block = document.createElement("div");
-      // Section-to-section margin (already set to 28px)
-      block.style.margin = "28px 0"; 
+      // Set a large vertical margin for clear section separation
+      block.style.margin = "40px 0"; 
 
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
-      heading.style.margin = "0 0 8px 0";
+      heading.style.margin = "0 0 10px 0";
       block.appendChild(heading);
 
       const ul = document.createElement("ul");
@@ -1735,8 +1734,9 @@ function showRecommendedPlan(planType = 'outright') {
       keys.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
-        // FIX: Increased line-to-line margin from 6px to 12px
+        // Set margin and line height for clear line-to-line spacing
         li.style.margin = "12px 0"; 
+        li.style.lineHeight = "1.8"; 
         ul.appendChild(li);
       });
       block.appendChild(ul);
@@ -1788,14 +1788,16 @@ function showRecommendedPlan(planType = 'outright') {
     if (isMonthly && extraByPlan[level]) {
         // Wrap monthly extras in a div for section separation
         const extrasBlock = document.createElement("div");
-        extrasBlock.style.margin = "28px 0 0 0"; 
+        // Set a large top margin to separate from features above
+        extrasBlock.style.margin = "40px 0 0 0"; 
         
         extraByPlan[level].forEach(e => {
             const li = document.createElement("li");
             li.textContent = e;
             li.style.fontStyle = "italic";
-            // Monthly extras item margin
+            // Set margin and line height for clarity
             li.style.margin = "12px 0"; 
+            li.style.lineHeight = "1.8"; 
             extrasBlock.appendChild(li); 
         });
 
@@ -1824,7 +1826,6 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
-
 
 
   // ------------------ Typewriter Animation ------------------
