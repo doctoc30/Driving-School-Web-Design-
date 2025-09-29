@@ -1627,16 +1627,13 @@ if (initialActive) {
 
 
 
-
  // ---------- showRecommendedPlan (clear lower-tier includes) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
-  const screenId = 'recommended-plan-screen';
-  const planCards = Array.from(document.querySelectorAll(`#${screenId} .pricing-card`));
-  if (!planCards.length) {
-    console.log('No pricing cards found for screen:', screenId);
-    return;
-  }
+  const planCards = Array.from(
+    document.querySelectorAll('#recommended-plan-screen .pricing-card')
+  );
+  if (!planCards.length) return;
 
   const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
@@ -1684,139 +1681,106 @@ function showRecommendedPlan(planType = 'outright') {
   const hasPro     = yes.some(f => tiers.pro.includes(f));
   const hasBasic   = yes.some(f => tiers.basic.includes(f));
 
-  const recommendedPlan =
+  const recommended =
         hasPremium ? "premium" :
         hasPro     ? "pro" :
-        hasBasic   ? "basic" :
-                     "pro";
+        hasBasic   ? "basic" : "pro";
 
-  const monthlyPrices  = { basic: 49,  pro: 79,  premium: 129 };
+  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees      = { basic: 199, pro: 299, premium: 499 };
 
   planCards.forEach(card => {
-    try {
-      card.classList.remove("recommended","in-view");
+    const level = (card.dataset.plan || "").toLowerCase();
+    const list  = card.querySelector(".features-list");
+    const priceEl = card.querySelector(".price");
+    const payBtn  = card.querySelector(".pay-now");
+    const note    = card.querySelector("small");
+    if (!level || !list || !priceEl || !payBtn) return;
 
-      const level = (card.dataset.plan || card.querySelector("h3")?.textContent || "")
-                      .toString().trim().toLowerCase();
-      const list  = card.querySelector(".features-list");
-      const priceEl = card.querySelector(".price");
-      const payButton = card.querySelector(".pay-now");
-      const paymentNote = card.querySelector("small");
-      const includesDiv = card.querySelector(".includes-message");
+    // ----- Pricing -----
+    if (isMonthly) {
+      priceEl.textContent = `£${monthlyPrices[level]}`;
+      let span = priceEl.querySelector("span");
+      if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
+      span.textContent = "/month";
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
+      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+    } else {
+      priceEl.textContent = `£${outrightPrices[level]}`;
+      const s = priceEl.querySelector("span"); if (s) s.remove();
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
+      if (note) note.textContent = "50% now to secure, 50% on completion";
+    }
 
-      if (!level || !list || !priceEl || !payButton) return;
+    // ----- Base list -----
+    list.innerHTML = "";
+    const addItem = txt => {
+      const li = document.createElement("li");
+      li.textContent = txt;
+      li.style.margin = "8px 0";              // bigger vertical gap
+      list.appendChild(li);
+    };
 
-      // ----- Pricing & PayPal -----
-      if (isMonthly) {
-        priceEl.textContent = `£${monthlyPrices[level] ?? ''}`;
-        let span = priceEl.querySelector('span');
-        if (!span) { span = document.createElement('span'); priceEl.appendChild(span); }
-        span.textContent = '/month';
-        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
-        if (paymentNote) paymentNote.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
-      } else {
-        priceEl.textContent = `£${outrightPrices[level] ?? ''}`;
-        const s = priceEl.querySelector('span'); if (s) s.remove();
-        payButton.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${outrightPrices[level]} via PayPal`;
-        if (paymentNote) paymentNote.textContent = "50% now to secure, 50% on completion";
-      }
+    const allowed =
+      level === "basic"   ? tiers.basic :
+      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
+                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
-      const paypalLinks = {
-        monthly: {
-          basic: 'https://www.paypal.com/paypal-link-basic-monthly',
-          pro:   'https://www.paypal.com/paypal-link-pro-monthly',
-          premium: 'https://www.paypal.com/paypal-link-premium-monthly'
-        },
-        outright: {
-          basic: 'https://www.paypal.com/paypal-link-basic',
-          pro:   'https://www.paypal.com/paypal-link-pro',
-          premium: 'https://www.paypal.com/paypal-link-premium'
-        }
-      };
-      payButton.onclick = () => {
-        const linkType = isMonthly ? 'monthly' : 'outright';
-        const link = (paypalLinks[linkType] || {})[level];
-        if (link) window.location.href = link;
-        else console.error('No PayPal link for', linkType, level);
-      };
+    yes.filter(k => allowed.includes(k)).forEach(k => addItem(labels[k]));
 
-      // ----- Build feature list -----
-      list.innerHTML = "";
-      let allowedKeys = [];
-      if (level === "basic") allowedKeys = yes.filter(k => tiers.basic.includes(k));
-      else if (level === "pro") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro].includes(k));
-      else if (level === "premium") allowedKeys = yes.filter(k => [...tiers.basic, ...tiers.pro, ...tiers.premium].includes(k));
-
-      allowedKeys.forEach(k => {
+    // monthly extras
+    if (isMonthly && extraByPlan[level]) {
+      extraByPlan[level].forEach(e => {
         const li = document.createElement("li");
-        li.textContent = labels[k] || k;
+        li.textContent = e;
+        li.style.fontStyle = "italic";
+        li.style.margin = "10px 0";
         list.appendChild(li);
       });
-
-      // Monthly extras
-      if (isMonthly && extraByPlan[level]?.length) {
-        extraByPlan[level].forEach(extra => {
-          const li = document.createElement("li");
-          li.textContent = extra;
-          li.style.fontStyle = "italic";
-          list.appendChild(li);
-        });
-      }
-
-      // ----- Clear lower-tier includes with headings & spacing -----
-      const excludeFromIncludes = ["booking","cta","bio"];
-      const basicYes = yes.filter(k => tiers.basic.includes(k) && !excludeFromIncludes.includes(k));
-      const proYes   = yes.filter(k => tiers.pro.includes(k) && !excludeFromIncludes.includes(k));
-
-      const addSection = (title, items) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.marginTop = "14px";
-
-        const heading = document.createElement("p");
-        heading.textContent = title;
-        heading.style.fontWeight = "700";
-        heading.style.margin = "6px 0";
-        wrapper.appendChild(heading);
-
-        const ul = document.createElement("ul");
-        ul.style.margin = "0 0 0 18px";
-        ul.style.padding = "0";
-        items.forEach(k => {
-          const li = document.createElement("li");
-          li.textContent = labels[k];
-          li.style.margin = "4px 0";
-          ul.appendChild(li);
-        });
-        wrapper.appendChild(ul);
-        list.appendChild(wrapper);
-      };
-
-      if ((level === "pro" || level === "premium") && basicYes.length) {
-        addSection("Includes from Basic", basicYes);
-      }
-      if (level === "premium" && proYes.length) {
-        addSection("Includes from Pro", proYes);
-      }
-
-      if (list.children.length === 0) {
-        const li = document.createElement("li");
-        li.textContent = "Standard features included";
-        list.appendChild(li);
-      }
-
-      if (includesDiv) includesDiv.innerHTML = "";
-    } catch (err) {
-      console.error("Error building pricing card:", err);
     }
+
+    // ----- Lower-tier sections with big spacing -----
+    const addSection = (title, keys) => {
+      const block = document.createElement("div");
+      block.style.margin = "18px 0";          // large block gap
+
+      const heading = document.createElement("p");
+      heading.textContent = title;
+      heading.style.fontWeight = "700";
+      heading.style.margin = "0 0 8px 0";
+      block.appendChild(heading);
+
+      const ul = document.createElement("ul");
+      ul.style.margin = "0 0 0 20px";
+      keys.forEach(k => {
+        const li = document.createElement("li");
+        li.textContent = labels[k];
+        li.style.margin = "6px 0";
+        ul.appendChild(li);
+      });
+      block.appendChild(ul);
+      list.appendChild(block);
+    };
+
+    const basicYes = yes.filter(k => tiers.basic.includes(k));
+    const proYes   = yes.filter(k => tiers.pro.includes(k));
+
+    if ((level === "pro" || level === "premium") && basicYes.length) {
+      addSection("Includes from Basic", basicYes);
+    }
+    if (level === "premium" && proYes.length) {
+      addSection("Includes from Pro", proYes);
+    }
+
+    if (!list.children.length) addItem("Standard features included");
   });
 
-  // Highlight and scroll recommended
-  const selectedCard = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommendedPlan);
-  if (selectedCard) {
-    selectedCard.classList.add("recommended","in-view");
-    setTimeout(() => selectedCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+  // highlight recommended card
+  const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
+  if (rec) {
+    rec.classList.add("recommended","in-view");
+    setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
  
