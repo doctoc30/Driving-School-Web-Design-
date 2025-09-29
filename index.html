@@ -1626,7 +1626,7 @@ if (initialActive) {
   }
 
 
-// ---------- showRecommendedPlan (clear lower-tier includes correctly) ----------
+ // ---------- showRecommendedPlan (fixed so only true Basic features show under "Includes") ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1715,24 +1715,28 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Features list -----
     list.innerHTML = "";
 
+    // Determine which features this plan can show
     const allowed =
       level === "basic"   ? tiers.basic :
       level === "pro"     ? [...tiers.basic, ...tiers.pro] :
                             [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
+    // Split into only-basic vs. plan-specific
     const basicFeatures = [];
     const currentTierFeatures = [];
 
-    // Separate basic features for “Includes” section only
-    yes.filter(k => allowed.includes(k)).forEach(k => {
+    yes.forEach(k => {
+      if (!allowed.includes(k)) return; // ignore disallowed
+
+      // ONLY true basic-tier keys go to "Includes from Basic"
       if (level !== "basic" && tiers.basic.includes(k)) {
         basicFeatures.push(k);
       } else {
-        currentTierFeatures.push(k); // everything else stays in main plan list
+        currentTierFeatures.push(k); // all pro/premium keys stay in main list
       }
     });
 
-    // Helper to create a section with heading + gap
+    // helper to render a section
     const addSection = (title, keys) => {
       if (!keys.length) return;
       const block = document.createElement("div");
@@ -1756,12 +1760,12 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(block);
     };
 
-    // Show Basic features as separate section only for Pro/Premium
+    // Add includes-from-basic only when needed
     if (basicFeatures.length && level !== "basic") {
       addSection("Includes from Basic", basicFeatures);
     }
 
-    // Always show plan-specific (Pro or Premium) features as main list
+    // Always add current plan's own features as main list
     currentTierFeatures.forEach(k => {
       const li = document.createElement("li");
       li.textContent = labels[k];
@@ -1780,6 +1784,7 @@ function showRecommendedPlan(planType = 'outright') {
       });
     }
 
+    // Fallback if no features
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
@@ -1787,11 +1792,11 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // Highlight recommended card
+  // highlight recommended card
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
-    rec.classList.add("recommended", "in-view");
-    setTimeout(() => rec.scrollIntoView({behavior: "smooth", block: "center"}), 200);
+    rec.classList.add("recommended","in-view");
+    setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
  
