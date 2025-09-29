@@ -1760,36 +1760,50 @@ function showRecommendedPlan(planType = 'outright') {
     }
 
 
-   // --- Consolidate lower-tier features directly into the main list ---
+// --- Consolidate lower-tier features into the main list (FIXED) ---
 if (includesDiv) {
-  includesDiv.innerHTML = ""; // remove separate includes text
+  // clear any separate message so we don't duplicate
+  includesDiv.innerHTML = "";
 
+  // features to exclude from the "includes" lists
+  const excludeFromIncludes = ["booking", "cta", "bio"];
+
+  // compute which basic/pro features were selected
+  const basicYes = yes.filter(k => tiers.basic.includes(k)).filter(f => !excludeFromIncludes.includes(f));
+  const proYes   = yes.filter(k => tiers.pro.includes(k)).filter(f => !excludeFromIncludes.includes(f));
+
+  // If we're showing Pro or Premium, add Basic-tier items under a small heading
   if ((level === "pro" || level === "premium") && basicYes.length) {
-    const gap = document.createElement("li");
-    gap.style.marginTop = "8px";
-    gap.textContent = "— Basic tier features —";
-    gap.style.fontWeight = "600";
-    list.appendChild(gap);
+    // heading (as an li without bullet)
+    const heading = document.createElement("li");
+    heading.textContent = "Basic tier includes:";
+    heading.style.listStyle = "none";
+    heading.style.fontWeight = "700";
+    heading.style.marginTop = "10px";
+    list.appendChild(heading);
 
+    // actual basic items (indented)
     basicYes.forEach(k => {
       const li = document.createElement("li");
       li.textContent = labels[k];
-      li.style.marginLeft = "10px";
+      li.style.marginLeft = "12px";
       list.appendChild(li);
     });
   }
 
+  // If we're showing Premium, add Pro-tier items the same way
   if (level === "premium" && proYes.length) {
-    const gap = document.createElement("li");
-    gap.style.marginTop = "8px";
-    gap.textContent = "— Pro tier features —";
-    gap.style.fontWeight = "600";
-    list.appendChild(gap);
+    const heading = document.createElement("li");
+    heading.textContent = "Pro tier includes:";
+    heading.style.listStyle = "none";
+    heading.style.fontWeight = "700";
+    heading.style.marginTop = "8px";
+    list.appendChild(heading);
 
     proYes.forEach(k => {
       const li = document.createElement("li");
       li.textContent = labels[k];
-      li.style.marginLeft = "10px";
+      li.style.marginLeft = "12px";
       list.appendChild(li);
     });
   }
