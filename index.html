@@ -1626,8 +1626,7 @@ if (initialActive) {
   }
 
 
-
- // ------------------ REVISED Recommended Plan Function ------------------
+// ---------- showRecommendedPlan (clear lower-tier includes correctly) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1716,42 +1715,38 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Features list -----
     list.innerHTML = "";
 
-    // Determine allowed features for this tier
     const allowed =
       level === "basic"   ? tiers.basic :
       level === "pro"     ? [...tiers.basic, ...tiers.pro] :
                             [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
     const basicFeatures = [];
-    const proFeatures = [];
     const currentTierFeatures = [];
 
+    // Separate basic features for “Includes” section only
     yes.filter(k => allowed.includes(k)).forEach(k => {
-      if (level === 'pro' && tiers.basic.includes(k)) {
+      if (level !== "basic" && tiers.basic.includes(k)) {
         basicFeatures.push(k);
-      } else if (level === 'premium') {
-        if (tiers.basic.includes(k)) basicFeatures.push(k);
-        else if (tiers.pro.includes(k)) proFeatures.push(k);
-        else currentTierFeatures.push(k);
       } else {
-        currentTierFeatures.push(k);
+        currentTierFeatures.push(k); // everything else stays in main plan list
       }
     });
 
-    // Helper to create a section with heading and gap
-    const addSection = (headingText, features) => {
-      if (!features.length) return;
+    // Helper to create a section with heading + gap
+    const addSection = (title, keys) => {
+      if (!keys.length) return;
       const block = document.createElement("div");
-      block.style.margin = "18px 0"; // big gap
+      block.style.margin = "18px 0";
+
       const heading = document.createElement("p");
-      heading.textContent = headingText;
+      heading.textContent = title;
       heading.style.fontWeight = "700";
       heading.style.margin = "0 0 8px 0";
       block.appendChild(heading);
 
       const ul = document.createElement("ul");
       ul.style.margin = "0 0 0 20px";
-      features.forEach(k => {
+      keys.forEach(k => {
         const li = document.createElement("li");
         li.textContent = labels[k];
         li.style.margin = "6px 0";
@@ -1761,17 +1756,18 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(block);
     };
 
-    // Add sections in order
-    if (basicFeatures.length) addSection("Includes from Basic", basicFeatures);
-    if (proFeatures.length) addSection("Includes from Pro", proFeatures);
-    if (currentTierFeatures.length) {
-      currentTierFeatures.forEach(k => {
-        const li = document.createElement("li");
-        li.textContent = labels[k];
-        li.style.margin = "8px 0";
-        list.appendChild(li);
-      });
+    // Show Basic features as separate section only for Pro/Premium
+    if (basicFeatures.length && level !== "basic") {
+      addSection("Includes from Basic", basicFeatures);
     }
+
+    // Always show plan-specific (Pro or Premium) features as main list
+    currentTierFeatures.forEach(k => {
+      const li = document.createElement("li");
+      li.textContent = labels[k];
+      li.style.margin = "8px 0";
+      list.appendChild(li);
+    });
 
     // monthly extras
     if (isMonthly && extraByPlan[level]) {
@@ -1791,14 +1787,13 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // highlight recommended card
+  // Highlight recommended card
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
-    rec.classList.add("recommended","in-view");
-    setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
+    rec.classList.add("recommended", "in-view");
+    setTimeout(() => rec.scrollIntoView({behavior: "smooth", block: "center"}), 200);
   }
 }
- 
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
