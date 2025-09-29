@@ -1627,7 +1627,6 @@ if (initialActive) {
 
 
 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1727,6 +1726,8 @@ function showRecommendedPlan(planType = 'outright') {
       heading.textContent = title;
       heading.style.fontWeight = "700";
       heading.style.margin = "0 0 10px 0";
+      // FIX: Add underline to the section heading
+      heading.style.textDecoration = "underline"; 
       block.appendChild(heading);
 
       const ul = document.createElement("ul");
