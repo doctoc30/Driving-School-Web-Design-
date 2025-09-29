@@ -1759,37 +1759,39 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
-    // ---------------- Lower-tier includes (clear formatting) ----------------
-    if (includesDiv) {
-      includesDiv.innerHTML = ""; // reset
-      const excludeFromIncludes = ["booking", "cta", "bio"]; // exclude some basics
 
-      const basicYes = yes.filter(k => tiers.basic.includes(k)).filter(f => !excludeFromIncludes.includes(f));
-      const proYes   = yes.filter(k => tiers.pro.includes(k)).filter(f => !excludeFromIncludes.includes(f));
+   // --- Consolidate lower-tier features directly into the main list ---
+if (includesDiv) {
+  includesDiv.innerHTML = ""; // remove separate includes text
 
-      const includeLines = [];
-      if ((level === "pro" || level === "premium") && basicYes.length) {
-        includeLines.push(`Includes from Basic: ${basicYes.map(k => labels[k]).join(", ")}`);
-      }
-      if (level === "premium" && proYes.length) {
-        includeLines.push(`Includes from Pro: ${proYes.map(k => labels[k]).join(", ")}`);
-      }
+  if ((level === "pro" || level === "premium") && basicYes.length) {
+    const gap = document.createElement("li");
+    gap.style.marginTop = "8px";
+    gap.textContent = "— Basic tier features —";
+    gap.style.fontWeight = "600";
+    list.appendChild(gap);
 
-      includeLines.forEach(line => {
-        const p = document.createElement("p");
-        p.textContent = line;
-        p.style.margin = "4px 0"; // small gap
-        includesDiv.appendChild(p);
-      });
-    }
-  });
+    basicYes.forEach(k => {
+      const li = document.createElement("li");
+      li.textContent = labels[k];
+      li.style.marginLeft = "10px";
+      list.appendChild(li);
+    });
+  }
 
-  const selectedCard = planCards.find(c => c.dataset.plan === recommendedPlan);
-  if (selectedCard) {
-    selectedCard.classList.add("recommended","in-view");
-    setTimeout(() => {
-      selectedCard.scrollIntoView({behavior:"smooth", block:"center"});
-    }, 200);
+  if (level === "premium" && proYes.length) {
+    const gap = document.createElement("li");
+    gap.style.marginTop = "8px";
+    gap.textContent = "— Pro tier features —";
+    gap.style.fontWeight = "600";
+    list.appendChild(gap);
+
+    proYes.forEach(k => {
+      const li = document.createElement("li");
+      li.textContent = labels[k];
+      li.style.marginLeft = "10px";
+      list.appendChild(li);
+    });
   }
 }
 
