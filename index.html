@@ -1626,7 +1626,7 @@ if (initialActive) {
   }
 
 
-// ---------- showRecommendedPlan (Corrected to properly separate feature sections) ----------
+// ---------- showRecommendedPlan (Corrected to properly separate feature sections AND ensure only one card glows) ----------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1803,12 +1803,19 @@ function showRecommendedPlan(planType = 'outright') {
   });
 
   // highlight recommended card
+  // 1. **CRITICAL FIX**: Remove the classes from ALL cards first.
+  planCards.forEach(card => {
+    card.classList.remove("recommended", "in-view");
+  });
+  
+  // 2. Find the recommended card and apply the glow.
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
     rec.classList.add("recommended","in-view");
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
 
 
   // ------------------ Typewriter Animation ------------------
