@@ -1657,6 +1657,10 @@ if (initialActive) {
 
 
 
+
+
+ 
+
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(
@@ -1859,7 +1863,24 @@ function showRecommendedPlan(planType = 'outright') {
 }
 
 
- 
+  // ======== LEAD CAPTURE SUBMIT FUNCTION ========
+  function submitLeadCapture() {
+    const name = document.getElementById('leadName').value.trim();
+    const email = document.getElementById('leadEmail').value.trim();
+    const consent = document.getElementById('gdprConsent').checked;
+
+    if (!name || !email || !consent) {
+      alert('Please enter your name, email, and consent to proceed.');
+      return;
+    }
+
+    // Save lead info to hidden inputs for form submission
+    document.getElementById('hiddenPlan').value = yesFeatures.join(', ');
+    document.getElementById('hiddenFeatures').value = yesFeatures.join(', ');
+
+    // Proceed to recommended plan / PayPal section
+    showScreen('recommended-plan-screen');
+  }
 
 
 
