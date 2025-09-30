@@ -1113,12 +1113,14 @@ html, body {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
+
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <div class="form-screen active" id="main-intro-options">
+
+   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
       <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
@@ -1126,6 +1128,8 @@ html, body {
       <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
     </div>
   </div>
+
+  <!-- ===================== QUESTIONS 1–18 ===================== -->
 
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
@@ -1303,6 +1307,9 @@ html, body {
     </div>
   </div>
 
+L
+
+  <!-- ===================== FINAL CHOICE ===================== -->
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
@@ -1312,86 +1319,109 @@ html, body {
     </div>
   </div>
 
+  <!-- ===================== OWN OUTRIGHT / MONTHLY ===================== -->
   <div class="form-screen" id="instructor-q19">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+    <div class="button-row">
+      <button type="button" class="own-outright" onclick="showScreen('lead-capture')">Own Outright</button>
+      <button type="button" class="monthly-support">Monthly Support</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
+  <!-- ===================== LEAD CAPTURE BEFORE PAYMENT ===================== -->
+  <div class="form-screen" id="lead-capture">
+    <h2>Almost there! Enter your details to proceed with payment:</h2>
+    <div class="lead-fields">
+      <label for="leadName">Full Name *</label>
+      <input type="text" id="leadName" name="Name" placeholder="Your full name" required>
 
- 
- <!-- ===================== RECOMMENDED PLAN ===================== -->
+      <label for="leadEmail">Email Address *</label>
+      <input type="email" id="leadEmail" name="Email" placeholder="you@example.com" required>
+
+      <div class="gdpr-consent">
+        <input type="checkbox" id="gdprConsent" name="GDPR Consent" required>
+        <label for="gdprConsent">
+          I consent to the collection and processing of my data in accordance with GDPR for the purpose of this purchase.
+        </label>
+      </div>
+    </div>
+    <div class="button-row">
+      <button type="button" onclick="submitLeadCapture()">Continue to Payment</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
+  </div>
+
+  <!-- ===================== RECOMMENDED PLAN / PAYPAL ===================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
 
-  
+    <section id="pricing-section">
+      <div class="pricing-container">
 
-<!-- ===================== PRICING CARDS ===================== -->
- <section id="pricing-section">
-  <div class="pricing-container">
+        <!-- Basic Plan -->
+        <div class="pricing-card" data-plan="basic" data-animate>
+          <h3>Basic</h3>
+          <p class="price">£499</p>
+          <ul class="static-features">
+            <li>5 pages</li>
+            <li>10 revisions</li>
+          </ul>
+          <div style="height:16px;"></div>
+          <ul class="features-list"></ul>
+          <button class="pay-now">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £499 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
 
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="static-features">
-    <li>5 pages</li>
-    <li>10 revisions</li>
-  </ul>
-  <div style="height:16px;"></div>
-  <ul class="features-list"></ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
+        <!-- Pro Plan -->
+        <div class="pricing-card recommended" data-plan="pro" data-animate>
+          <h3>Pro</h3>
+          <p class="price">£999</p>
+          <ul class="static-features">
+            <li>10 pages</li>
+            <li>20 revisions</li>
+          </ul>
+          <div style="height:16px;"></div>
+          <ul class="features-list"></ul>
+          <div style="height:16px;"></div>
+          <div class="includes-message"></div>
+          <button class="pay-now">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £999 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
 
-<!-- Pro Plan -->
-<div class="pricing-card recommended" data-plan="pro" data-animate>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="static-features">
-    <li>10 pages</li>
-    <li>20 revisions</li>
-  </ul>
-  <div style="height:16px;"></div>
-  <ul class="features-list"></ul>
-  <div style="height:16px;"></div>
-  <div class="includes-message"></div>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
+        <!-- Premium Plan -->
+        <div class="pricing-card" data-plan="premium" data-animate>
+          <h3>Premium</h3>
+          <p class="price">£1499</p>
+          <ul class="static-features">
+            <li>30 pages</li>
+            <li>39 revisions</li>
+            <li>Dedicated account manager</li>
+          </ul>
+          <div style="height:16px;"></div>
+          <ul class="features-list"></ul>
+          <div style="height:16px;"></div>
+          <div class="includes-message"></div>
+          <button class="pay-now">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            Pay £1499 via PayPal
+          </button>
+          <small>50% now to secure, 50% on completion</small>
+        </div>
 
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="static-features">
-    <li>30 pages</li>
-    <li>39 revisions</li>
-    <li>Dedicated account manager</li>
-  </ul>
-  <div style="height:16px;"></div>
-  <ul class="features-list"></ul>
-  <div style="height:16px;"></div>
-  <div class="includes-message"></div>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
+      </div>
+    </section>
   </div>
-</section>
 </form>
+
+
+ 
 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
