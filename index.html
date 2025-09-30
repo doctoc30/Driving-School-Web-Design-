@@ -1119,8 +1119,8 @@ html, body {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-
-   <div class="form-screen active" id="main-intro-options">
+  <!-- ===================== INTRO OPTIONS ===================== -->
+  <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
       <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
@@ -1130,7 +1130,6 @@ html, body {
   </div>
 
   <!-- ===================== QUESTIONS 1–18 ===================== -->
-
   <div class="form-screen" id="instructor-q1">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
@@ -1151,13 +1150,14 @@ html, body {
 
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
     </div>
   </div>
 
+  <!-- ===================== Features Q4–Q18 ===================== -->
   <div class="form-screen" id="instructor-q4">
     <h2>Do you want students to book & pay online?</h2>
     <p><strong>(Basic)</strong></p>
@@ -1307,8 +1307,6 @@ html, body {
     </div>
   </div>
 
-L
-
   <!-- ===================== FINAL CHOICE ===================== -->
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
@@ -1323,15 +1321,15 @@ L
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <div class="button-row">
-      <button type="button" class="own-outright" onclick="showScreen('lead-capture')">Own Outright</button>
-      <button type="button" class="monthly-support">Monthly Support</button>
+      <button type="button" class="own-outright" onclick="submitLeadCapture('outright')">Own Outright</button>
+      <button type="button" class="monthly-support" onclick="submitLeadCapture('monthly')">Monthly Support</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
   <!-- ===================== LEAD CAPTURE BEFORE PAYMENT ===================== -->
   <div class="form-screen" id="lead-capture">
-    <h2>Almost there! Enter your details to proceed with payment:</h2>
+    <h2>Almost there! Enter your details to proceed:</h2>
     <div class="lead-fields">
       <label for="leadName">Full Name *</label>
       <input type="text" id="leadName" name="Name" placeholder="Your full name" required>
@@ -1342,12 +1340,13 @@ L
       <div class="gdpr-consent">
         <input type="checkbox" id="gdprConsent" name="GDPR Consent" required>
         <label for="gdprConsent">
-          I consent to the collection and processing of my data in accordance with GDPR for the purpose of this purchase.
+          I consent to the collection and processing of my data in accordance with GDPR for this purchase.
+          <a href="/privacy-policy" target="_blank">Privacy Policy</a>
         </label>
       </div>
     </div>
     <div class="button-row">
-      <button type="button" onclick="submitLeadCapture()">Continue to Payment</button>
+      <button type="button" onclick="submitLeadCapture(finalPlanType)">Continue to Payment</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
@@ -1355,63 +1354,33 @@ L
   <!-- ===================== RECOMMENDED PLAN / PAYPAL ===================== -->
   <div class="form-screen" id="recommended-plan-screen">
     <h2>Your Recommended Plan</h2>
-
     <section id="pricing-section">
       <div class="pricing-container">
 
         <!-- Basic Plan -->
-        <div class="pricing-card" data-plan="basic" data-animate>
+        <div class="pricing-card" data-plan="basic">
           <h3>Basic</h3>
           <p class="price">£499</p>
-          <ul class="static-features">
-            <li>5 pages</li>
-            <li>10 revisions</li>
-          </ul>
-          <div style="height:16px;"></div>
           <ul class="features-list"></ul>
-          <button class="pay-now">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £499 via PayPal
-          </button>
+          <button class="pay-now"></button>
           <small>50% now to secure, 50% on completion</small>
         </div>
 
         <!-- Pro Plan -->
-        <div class="pricing-card recommended" data-plan="pro" data-animate>
+        <div class="pricing-card recommended" data-plan="pro">
           <h3>Pro</h3>
           <p class="price">£999</p>
-          <ul class="static-features">
-            <li>10 pages</li>
-            <li>20 revisions</li>
-          </ul>
-          <div style="height:16px;"></div>
           <ul class="features-list"></ul>
-          <div style="height:16px;"></div>
-          <div class="includes-message"></div>
-          <button class="pay-now">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £999 via PayPal
-          </button>
+          <button class="pay-now"></button>
           <small>50% now to secure, 50% on completion</small>
         </div>
 
         <!-- Premium Plan -->
-        <div class="pricing-card" data-plan="premium" data-animate>
+        <div class="pricing-card" data-plan="premium">
           <h3>Premium</h3>
           <p class="price">£1499</p>
-          <ul class="static-features">
-            <li>30 pages</li>
-            <li>39 revisions</li>
-            <li>Dedicated account manager</li>
-          </ul>
-          <div style="height:16px;"></div>
           <ul class="features-list"></ul>
-          <div style="height:16px;"></div>
-          <div class="includes-message"></div>
-          <button class="pay-now">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            Pay £1499 via PayPal
-          </button>
+          <button class="pay-now"></button>
           <small>50% now to secure, 50% on completion</small>
         </div>
 
@@ -1419,7 +1388,6 @@ L
     </section>
   </div>
 </form>
-
 
  
 
@@ -1657,18 +1625,64 @@ if (initialActive) {
 
 
 
+let yesFeatures = []; // your collected features
+let finalPlanType = 'outright'; // default selection
 
+// ======= RECORD FEATURES =======
+function recordFeature(feature) {
+  if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
+}
+function recordNoFeature(feature) {
+  const index = yesFeatures.indexOf(feature);
+  if (index > -1) yesFeatures.splice(index, 1);
+}
 
- 
+// ======= NAVIGATION =======
+function showScreen(screenId) {
+  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById(screenId);
+  if (screen) screen.classList.add('active');
+}
+function next() {
+  const screens = Array.from(document.querySelectorAll('.form-screen'));
+  const currentIndex = screens.findIndex(s => s.classList.contains('active'));
+  if (currentIndex > -1 && currentIndex < screens.length - 1) {
+    showScreen(screens[currentIndex + 1].id);
+  }
+}
+function prev() {
+  const screens = Array.from(document.querySelectorAll('.form-screen'));
+  const currentIndex = screens.findIndex(s => s.classList.contains('active'));
+  if (currentIndex > 0) {
+    showScreen(screens[currentIndex - 1].id);
+  }
+}
 
+// ======= FINAL PLAN CHOICE =======
+function submitLeadCapture(planType) {
+  finalPlanType = planType; // save selection (outright / monthly)
+  const name = document.getElementById('leadName').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+  const consent = document.getElementById('gdprConsent').checked;
+
+  if (!name || !email || !consent) {
+    alert('Please enter your name, email, and consent to proceed.');
+    return;
+  }
+
+  document.getElementById('hiddenPlan').value = yesFeatures.join(', ');
+  document.getElementById('hiddenFeatures').value = yesFeatures.join(', ');
+
+  // Show recommended plan / PayPal screen with the correct pricing type
+  showRecommendedPlan(finalPlanType);
+  showScreen('recommended-plan-screen');
+}
+
+// ======= RECOMMENDED PLAN DISPLAY =======
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
-  const planCards = Array.from(
-    document.querySelectorAll('#recommended-plan-screen .pricing-card')
-  );
+  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
-
-  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
@@ -1695,24 +1709,14 @@ function showRecommendedPlan(planType = 'outright') {
   };
 
   const extraByPlan = {
-    basic: [
-      "Monthly maintenance & security updates",
-      "Email support (24–48 hr response)"
-    ],
-    pro: [
-      "Monthly maintenance & security updates",
-      "Priority email support & minor content edits"
-    ],
-    premium: [
-      "Monthly maintenance & security updates",
-      "Dedicated account manager support",
-      "Priority content updates & support"
-    ]
+    basic: ["Monthly maintenance & security updates","Email support (24–48 hr response)"],
+    pro: ["Monthly maintenance & security updates","Priority email support & minor content edits"],
+    premium: ["Monthly maintenance & security updates","Dedicated account manager support","Priority content updates & support"]
   };
 
-  const hasPremium = yes.some(f => tiers.premium.includes(f));
-  const hasPro     = yes.some(f => tiers.pro.includes(f));
-  const hasBasic   = yes.some(f => tiers.basic.includes(f));
+  const hasPremium = yesFeatures.some(f => tiers.premium.includes(f));
+  const hasPro     = yesFeatures.some(f => tiers.pro.includes(f));
+  const hasBasic   = yesFeatures.some(f => tiers.basic.includes(f));
 
   const recommended =
         hasPremium ? "premium" :
@@ -1729,14 +1733,15 @@ function showRecommendedPlan(planType = 'outright') {
     const priceEl = card.querySelector(".price");
     const payBtn  = card.querySelector(".pay-now");
     const note    = card.querySelector("small");
+
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ----- Pricing -----
+    // ===== PRICING =====
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}`;
-      let span = priceEl.querySelector("span");
-      if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
+      let span = document.createElement("span");
       span.textContent = "/month";
+      priceEl.appendChild(span);
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
       if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
     } else {
@@ -1746,102 +1751,60 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ----- Features list -----
+    // ===== FEATURES LIST =====
     list.innerHTML = "";
+    const allowedFeatures = level === "basic" ? tiers.basic :
+                            level === "pro" ? [...tiers.basic, ...tiers.pro] :
+                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
+    const relevantFeatures = yesFeatures.filter(f => allowedFeatures.includes(f));
 
-    // helper to render a section
-    const addSection = (title, keys) => {
-      if (!keys.length) return;
+    const basicFeatures = relevantFeatures.filter(f => tiers.basic.includes(f));
+    const proFeatures = relevantFeatures.filter(f => tiers.pro.includes(f));
+    const premiumFeatures = relevantFeatures.filter(f => tiers.premium.includes(f));
+
+    const addSection = (title, features) => {
+      if (!features.length) return;
       const block = document.createElement("div");
-      // Set a large vertical margin for clear section separation
-      block.style.margin = "40px 0"; 
-
+      block.style.margin = "30px 0";
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
-      heading.style.margin = "0 0 10px 0";
-      // FIX: Add underline to the section heading
-      heading.style.textDecoration = "underline"; 
+      heading.style.textDecoration = "underline";
       block.appendChild(heading);
-
       const ul = document.createElement("ul");
-      ul.style.margin = "0 0 0 20px";
-      keys.forEach(k => {
+      features.forEach(f => {
         const li = document.createElement("li");
-        li.textContent = labels[k];
-        // Set margin and line height for clear line-to-line spacing
-        li.style.margin = "12px 0"; 
-        li.style.lineHeight = "1.8"; 
+        li.textContent = labels[f];
+        li.style.margin = "10px 0";
         ul.appendChild(li);
       });
       block.appendChild(ul);
       list.appendChild(block);
     };
 
-    // --- Feature Grouping Logic ---
-
-    // 1. Filter the 'yes' features based on what this plan is *allowed* to show.
-    const allowedFeatures =
-      level === "basic"   ? tiers.basic :
-      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
-                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
-
-    const relevantFeatures = yes.filter(k => allowedFeatures.includes(k));
-
-    // 2. Separate the relevant features into their respective tier groups.
-    const basicFeatures = relevantFeatures.filter(k => tiers.basic.includes(k));
-    const proFeatures = relevantFeatures.filter(k => tiers.pro.includes(k));
-    const premiumFeatures = relevantFeatures.filter(k => tiers.premium.includes(k));
-
-
-    // --- RENDER SECTIONS ---
-
-    if (level === "basic") {
-        addSection("Features Included", basicFeatures);
-
-    } else if (level === "pro") {
-        addSection("Pro Features", proFeatures);
-        
-        if (basicFeatures.length) {
-             addSection("Includes from Basic", basicFeatures);
-        }
-
-    } else if (level === "premium") {
-        addSection("Premium Features", premiumFeatures);
-
-        if (proFeatures.length) {
-             addSection("Includes from Pro", proFeatures);
-        }
-
-        if (basicFeatures.length) {
-             addSection("Includes from Basic", basicFeatures);
-        }
+    if (level === "basic") addSection("Features Included", basicFeatures);
+    if (level === "pro") {
+      addSection("Pro Features", proFeatures);
+      addSection("Includes from Basic", basicFeatures);
+    }
+    if (level === "premium") {
+      addSection("Premium Features", premiumFeatures);
+      addSection("Includes from Pro", proFeatures);
+      addSection("Includes from Basic", basicFeatures);
     }
 
-
-    // monthly extras
     if (isMonthly && extraByPlan[level]) {
-        // Wrap monthly extras in a div for section separation
-        const extrasBlock = document.createElement("div");
-        // Set a large top margin to separate from features above
-        extrasBlock.style.margin = "40px 0 0 0"; 
-        
-        extraByPlan[level].forEach(e => {
-            const li = document.createElement("li");
-            li.textContent = e;
-            li.style.fontStyle = "italic";
-            // Set margin and line height for clarity
-            li.style.margin = "12px 0"; 
-            li.style.lineHeight = "1.8"; 
-            extrasBlock.appendChild(li); 
-        });
-
-        if (extrasBlock.children.length) {
-            list.appendChild(extrasBlock);
-        }
+      const extraBlock = document.createElement("div");
+      extraBlock.style.margin = "30px 0";
+      extraByPlan[level].forEach(e => {
+        const li = document.createElement("li");
+        li.textContent = e;
+        li.style.fontStyle = "italic";
+        extraBlock.appendChild(li);
+      });
+      list.appendChild(extraBlock);
     }
 
-    // Fallback if no features
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
@@ -1849,38 +1812,17 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // highlight recommended card
-  // Ensure only one card glows by clearing classes from ALL cards first.
-  planCards.forEach(card => {
-    card.classList.remove("recommended", "in-view");
-  });
-  
+  // ===== HIGHLIGHT RECOMMENDED CARD =====
+  planCards.forEach(c => c.classList.remove("recommended", "in-view"));
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
-    rec.classList.add("recommended","in-view");
+    rec.classList.add("recommended", "in-view");
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
 
+ 
 
-  // ======== LEAD CAPTURE SUBMIT FUNCTION ========
-  function submitLeadCapture() {
-    const name = document.getElementById('leadName').value.trim();
-    const email = document.getElementById('leadEmail').value.trim();
-    const consent = document.getElementById('gdprConsent').checked;
-
-    if (!name || !email || !consent) {
-      alert('Please enter your name, email, and consent to proceed.');
-      return;
-    }
-
-    // Save lead info to hidden inputs for form submission
-    document.getElementById('hiddenPlan').value = yesFeatures.join(', ');
-    document.getElementById('hiddenFeatures').value = yesFeatures.join(', ');
-
-    // Proceed to recommended plan / PayPal section
-    showScreen('recommended-plan-screen');
-  }
 
 
 
