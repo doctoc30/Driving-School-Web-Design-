@@ -1628,11 +1628,15 @@ if (initialActive) {
 
 
 
-// ======= RECOMMENDED PLAN DISPLAY =======
+
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
-  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
+  const planCards = Array.from(
+    document.querySelectorAll('#recommended-plan-screen .pricing-card')
+  );
   if (!planCards.length) return;
+
+  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
   const tiers = {
     basic:   ["booking","mobile","cta","contact","bio"],
@@ -1659,14 +1663,24 @@ function showRecommendedPlan(planType = 'outright') {
   };
 
   const extraByPlan = {
-    basic: ["Monthly maintenance & security updates","Email support (24–48 hr response)"],
-    pro: ["Monthly maintenance & security updates","Priority email support & minor content edits"],
-    premium: ["Monthly maintenance & security updates","Dedicated account manager support","Priority content updates & support"]
+    basic: [
+      "Monthly maintenance & security updates",
+      "Email support (24–48 hr response)"
+    ],
+    pro: [
+      "Monthly maintenance & security updates",
+      "Priority email support & minor content edits"
+    ],
+    premium: [
+      "Monthly maintenance & security updates",
+      "Dedicated account manager support",
+      "Priority content updates & support"
+    ]
   };
 
-  const hasPremium = yesFeatures.some(f => tiers.premium.includes(f));
-  const hasPro     = yesFeatures.some(f => tiers.pro.includes(f));
-  const hasBasic   = yesFeatures.some(f => tiers.basic.includes(f));
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
 
   const recommended =
         hasPremium ? "premium" :
@@ -1683,15 +1697,14 @@ function showRecommendedPlan(planType = 'outright') {
     const priceEl = card.querySelector(".price");
     const payBtn  = card.querySelector(".pay-now");
     const note    = card.querySelector("small");
-
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ===== PRICING =====
+    // ----- Pricing -----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}`;
-      let span = document.createElement("span");
+      let span = priceEl.querySelector("span");
+      if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
       span.textContent = "/month";
-      priceEl.appendChild(span);
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
       if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
     } else {
@@ -1701,60 +1714,102 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ===== FEATURES LIST =====
+    // ----- Features list -----
     list.innerHTML = "";
-    const allowedFeatures = level === "basic" ? tiers.basic :
-                            level === "pro" ? [...tiers.basic, ...tiers.pro] :
-                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
-    const relevantFeatures = yesFeatures.filter(f => allowedFeatures.includes(f));
 
-    const basicFeatures = relevantFeatures.filter(f => tiers.basic.includes(f));
-    const proFeatures = relevantFeatures.filter(f => tiers.pro.includes(f));
-    const premiumFeatures = relevantFeatures.filter(f => tiers.premium.includes(f));
-
-    const addSection = (title, features) => {
-      if (!features.length) return;
+    // helper to render a section
+    const addSection = (title, keys) => {
+      if (!keys.length) return;
       const block = document.createElement("div");
-      block.style.margin = "30px 0";
+      // Set a large vertical margin for clear section separation
+      block.style.margin = "40px 0"; 
+
       const heading = document.createElement("p");
       heading.textContent = title;
       heading.style.fontWeight = "700";
-      heading.style.textDecoration = "underline";
+      heading.style.margin = "0 0 10px 0";
+      // FIX: Add underline to the section heading
+      heading.style.textDecoration = "underline"; 
       block.appendChild(heading);
+
       const ul = document.createElement("ul");
-      features.forEach(f => {
+      ul.style.margin = "0 0 0 20px";
+      keys.forEach(k => {
         const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.margin = "10px 0";
+        li.textContent = labels[k];
+        // Set margin and line height for clear line-to-line spacing
+        li.style.margin = "12px 0"; 
+        li.style.lineHeight = "1.8"; 
         ul.appendChild(li);
       });
       block.appendChild(ul);
       list.appendChild(block);
     };
 
-    if (level === "basic") addSection("Features Included", basicFeatures);
-    if (level === "pro") {
-      addSection("Pro Features", proFeatures);
-      addSection("Includes from Basic", basicFeatures);
-    }
-    if (level === "premium") {
-      addSection("Premium Features", premiumFeatures);
-      addSection("Includes from Pro", proFeatures);
-      addSection("Includes from Basic", basicFeatures);
+    // --- Feature Grouping Logic ---
+
+    // 1. Filter the 'yes' features based on what this plan is *allowed* to show.
+    const allowedFeatures =
+      level === "basic"   ? tiers.basic :
+      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
+                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
+
+    const relevantFeatures = yes.filter(k => allowedFeatures.includes(k));
+
+    // 2. Separate the relevant features into their respective tier groups.
+    const basicFeatures = relevantFeatures.filter(k => tiers.basic.includes(k));
+    const proFeatures = relevantFeatures.filter(k => tiers.pro.includes(k));
+    const premiumFeatures = relevantFeatures.filter(k => tiers.premium.includes(k));
+
+
+    // --- RENDER SECTIONS ---
+
+    if (level === "basic") {
+        addSection("Features Included", basicFeatures);
+
+    } else if (level === "pro") {
+        addSection("Pro Features", proFeatures);
+        
+        if (basicFeatures.length) {
+             addSection("Includes from Basic", basicFeatures);
+        }
+
+    } else if (level === "premium") {
+        addSection("Premium Features", premiumFeatures);
+
+        if (proFeatures.length) {
+             addSection("Includes from Pro", proFeatures);
+        }
+
+        if (basicFeatures.length) {
+             addSection("Includes from Basic", basicFeatures);
+        }
     }
 
+
+    // monthly extras
     if (isMonthly && extraByPlan[level]) {
-      const extraBlock = document.createElement("div");
-      extraBlock.style.margin = "30px 0";
-      extraByPlan[level].forEach(e => {
-        const li = document.createElement("li");
-        li.textContent = e;
-        li.style.fontStyle = "italic";
-        extraBlock.appendChild(li);
-      });
-      list.appendChild(extraBlock);
+        // Wrap monthly extras in a div for section separation
+        const extrasBlock = document.createElement("div");
+        // Set a large top margin to separate from features above
+        extrasBlock.style.margin = "40px 0 0 0"; 
+        
+        extraByPlan[level].forEach(e => {
+            const li = document.createElement("li");
+            li.textContent = e;
+            li.style.fontStyle = "italic";
+            // Set margin and line height for clarity
+            li.style.margin = "12px 0"; 
+            li.style.lineHeight = "1.8"; 
+            extrasBlock.appendChild(li); 
+        });
+
+        if (extrasBlock.children.length) {
+            list.appendChild(extrasBlock);
+        }
     }
 
+    // Fallback if no features
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
@@ -1762,16 +1817,18 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // ===== HIGHLIGHT RECOMMENDED CARD =====
-  planCards.forEach(c => c.classList.remove("recommended", "in-view"));
+  // highlight recommended card
+  // Ensure only one card glows by clearing classes from ALL cards first.
+  planCards.forEach(card => {
+    card.classList.remove("recommended", "in-view");
+  });
+  
   const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
-    rec.classList.add("recommended", "in-view");
+    rec.classList.add("recommended","in-view");
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
-
- 
 
 
 
