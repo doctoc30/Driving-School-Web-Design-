@@ -1624,59 +1624,9 @@ if (initialActive) {
   }
 
 
+ 
 
-let yesFeatures = []; // your collected features
-let finalPlanType = 'outright'; // default selection
 
-// ======= RECORD FEATURES =======
-function recordFeature(feature) {
-  if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-}
-function recordNoFeature(feature) {
-  const index = yesFeatures.indexOf(feature);
-  if (index > -1) yesFeatures.splice(index, 1);
-}
-
-// ======= NAVIGATION =======
-function showScreen(screenId) {
-  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-  const screen = document.getElementById(screenId);
-  if (screen) screen.classList.add('active');
-}
-function next() {
-  const screens = Array.from(document.querySelectorAll('.form-screen'));
-  const currentIndex = screens.findIndex(s => s.classList.contains('active'));
-  if (currentIndex > -1 && currentIndex < screens.length - 1) {
-    showScreen(screens[currentIndex + 1].id);
-  }
-}
-function prev() {
-  const screens = Array.from(document.querySelectorAll('.form-screen'));
-  const currentIndex = screens.findIndex(s => s.classList.contains('active'));
-  if (currentIndex > 0) {
-    showScreen(screens[currentIndex - 1].id);
-  }
-}
-
-// ======= FINAL PLAN CHOICE =======
-function submitLeadCapture(planType) {
-  finalPlanType = planType; // save selection (outright / monthly)
-  const name = document.getElementById('leadName').value.trim();
-  const email = document.getElementById('leadEmail').value.trim();
-  const consent = document.getElementById('gdprConsent').checked;
-
-  if (!name || !email || !consent) {
-    alert('Please enter your name, email, and consent to proceed.');
-    return;
-  }
-
-  document.getElementById('hiddenPlan').value = yesFeatures.join(', ');
-  document.getElementById('hiddenFeatures').value = yesFeatures.join(', ');
-
-  // Show recommended plan / PayPal screen with the correct pricing type
-  showRecommendedPlan(finalPlanType);
-  showScreen('recommended-plan-screen');
-}
 
 // ======= RECOMMENDED PLAN DISPLAY =======
 function showRecommendedPlan(planType = 'outright') {
