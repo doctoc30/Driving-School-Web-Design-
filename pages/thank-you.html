@@ -3,113 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thank You - Driving School Website</title>
+<title>Thank You - Driving School Websites</title>
+<link rel="stylesheet" href="style.css">
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; }
-  h2 { color: #333; }
-  label { display: block; margin-top: 10px; }
-  textarea, input[type="text"], input[type="file"] { width: 100%; margin-top: 5px; padding: 5px; }
-  .hidden { display: none; }
-  #summaryText { margin: 15px 0; padding: 10px; background: #f4f4f4; border: 1px solid #ddd; }
+  body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; padding:0; }
+  header { background: #1e3a8a; color: #fff; padding: 20px; text-align: center; }
+  header h1 { margin:0; font-size: 28px; }
+  .container { max-width: 800px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1);}
+  h2 { color: #1e3a8a; margin-top: 30px; }
+  .section { margin: 20px 0; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  .plan-card { border: 2px solid #1e3a8a; border-radius: 10px; padding: 20px; margin: 20px 0; background: #f0f4ff; }
+  .plan-card h3 { margin-top:0; }
 </style>
 </head>
 <body>
 
-<h2>Order Details for <span id="planName"></span></h2>
-<div id="summaryText">Loading your selection...</div>
+<header>
+  <h1>Thank You for Choosing Us!</h1>
+</header>
 
-<form id="orderForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
+<div class="container">
+  <p>Hello <strong id="clientName">Client</strong>, thank you for starting your website journey with us. We've recorded your selections below.</p>
 
-  <input type="hidden" id="selectedPlan" name="Selected Plan">
-  <input type="hidden" id="selectedOwnership" name="Ownership">
-  <input type="hidden" id="selectedFeatures" name="Selected Features">
+  <div class="section plan-card">
+    <h3>Selected Plan:</h3>
+    <p id="clientPlan">Pro</p>
 
-  <!-- Basic Plan Fields -->
-  <div class="basic-fields">
-    <label for="logoUpload">Logo Upload</label>
-    <input type="file" id="logoUpload" name="logoUpload" accept="image/*">
+    <h4>Static Features Included:</h4>
+    <ul id="staticFeatures">
+      <!-- Filled dynamically -->
+    </ul>
 
-    <label for="bio">About Me / Company Bio</label>
-    <textarea id="bio" name="bio" required></textarea>
+    <h4>Additional Features You Selected:</h4>
+    <ul id="clientFeatures">
+      <!-- Filled dynamically -->
+    </ul>
   </div>
 
-  <!-- Standard Plan Fields -->
-  <div class="standard-fields hidden">
-    <label for="seoKeywords">SEO Keywords</label>
-    <input type="text" id="seoKeywords" name="seoKeywords">
-
-    <label for="reviews">Reviews / Testimonials</label>
-    <textarea id="reviews" name="reviews"></textarea>
-
-    <label for="faqContent">FAQ / Guide Content</label>
-    <textarea id="faqContent" name="faqContent"></textarea>
+  <div class="section">
+    <h2>Next Steps</h2>
+    <ul>
+      <li>Check your email (<span id="clientEmail">you@example.com</span>) for order confirmation.</li>
+      <li>Our team will contact you to finalize details.</li>
+      <li>Prepare content (images, text) if needed for your website.</li>
+      <li>Once payment is confirmed, development begins immediately.</li>
+    </ul>
   </div>
-
-  <!-- Premium Plan Fields -->
-  <div class="premium-fields hidden">
-    <label for="socialLinks">Social Media Links</label>
-    <input type="text" id="socialLinks" name="socialLinks">
-
-    <label for="emailSetup">Professional Email Setup Info</label>
-    <input type="text" id="emailSetup" name="emailSetup">
-
-    <label for="lessonPackages">Lesson Packages / Gift Vouchers</label>
-    <textarea id="lessonPackages" name="lessonPackages"></textarea>
-
-    <label for="contentUploads">Additional Content Uploads</label>
-    <input type="file" id="contentUploads" name="contentUploads" accept="image/*,.pdf,.doc" multiple>
-  </div>
-
-  <!-- GDPR Consent -->
-  <label>
-    <input type="checkbox" name="gdprConsent" required>
-    I consent to my information being stored and used for website creation.  
-    <a href="/pages/privacy-policy.html" target="_blank">Privacy Policy</a> and 
-    <a href="/pages/cookies-policy.html" target="_blank">Cookies Policy</a>.
-  </label>
-
-  <button type="submit">Submit Order</button>
-</form>
+</div>
 
 <script>
-(function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const plan = urlParams.get('plan') || 'Basic';
-    const ownership = urlParams.get('ownership') || '';
-    const features = urlParams.get('features') || '';
+  const plans = {
+    basic:   ["5 pages", "10 revisions"],
+    pro:     ["10 pages", "20 revisions"],
+    premium: ["30 pages", "39 revisions", "Dedicated account manager"]
+  };
 
-    const planNameEl = document.getElementById('planName');
-    const summaryTextEl = document.getElementById('summaryText');
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "What to Expect guide"
+  };
 
-    const selectedPlanEl = document.getElementById('selectedPlan');
-    const selectedOwnershipEl = document.getElementById('selectedOwnership');
-    const selectedFeaturesEl = document.getElementById('selectedFeatures');
+  function getQueryParams() {
+    const params = {};
+    location.search.substring(1).split("&").forEach(pair => {
+      const [key, value] = pair.split("=");
+      if(key) params[decodeURIComponent(key)] = decodeURIComponent(value.replace(/\+/g, " "));
+    });
+    return params;
+  }
 
-    planNameEl.innerText = plan;
-    selectedPlanEl.value = plan;
-    selectedOwnershipEl.value = ownership;
-    selectedFeaturesEl.value = features;
+  const params = getQueryParams();
 
-    // Show selected features in summary
-    const featureList = features ? features.split(',').map(f => `<li>${f}</li>`).join('') : '<li>No extra features selected</li>';
-    summaryTextEl.innerHTML = `
-      <strong>Ownership / Payment:</strong> ${ownership}<br>
-      <strong>Selected Features:</strong>
-      <ul>${featureList}</ul>
-    `;
+  const clientName = document.getElementById('clientName');
+  const clientEmail = document.getElementById('clientEmail');
+  const clientPlanEl = document.getElementById('clientPlan');
+  const clientFeaturesEl = document.getElementById('clientFeatures');
+  const staticFeaturesEl = document.getElementById('staticFeatures');
 
-    // Show/hide fields based on plan
-    const standardFields = document.querySelector('.standard-fields');
-    const premiumFields = document.querySelector('.premium-fields');
+  clientName.textContent = params.name || "Client";
+  clientEmail.textContent = params.email || "Not provided";
 
-    if(plan.toLowerCase().includes('standard')) {
-      standardFields.classList.remove('hidden');
-    }
-    if(plan.toLowerCase().includes('premium')) {
-      standardFields.classList.remove('hidden');
-      premiumFields.classList.remove('hidden');
-    }
-})();
+  const plan = (params.plan || "pro").toLowerCase();
+  clientPlanEl.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+
+  // Static Features
+  staticFeaturesEl.innerHTML = '';
+  if(plans[plan]) {
+    plans[plan].forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f;
+      staticFeaturesEl.appendChild(li);
+    });
+  }
+
+  // Dynamic Features
+  clientFeaturesEl.innerHTML = '';
+  if(params.features) {
+    params.features.split(",").forEach(f => {
+      if(labels[f]) {
+        const li = document.createElement('li');
+        li.textContent = labels[f];
+        clientFeaturesEl.appendChild(li);
+      }
+    });
+  } else {
+    clientFeaturesEl.innerHTML = "<li>No additional features selected.</li>";
+  }
 </script>
 
 </body>
