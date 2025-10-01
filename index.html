@@ -1393,8 +1393,8 @@ html, body {
 </section>
 </form>
 
-
 <script>
+/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1404,15 +1404,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-
-  // ------------------ Progress Bar Functions ------------------
+  
+  // Progress Bar Functions
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-
+  
   function updateProgress(currentStep) {
     const progressBar = document.querySelector('.progress-bar');
     const progressLabel = document.querySelector('.progress-label');
@@ -1438,9 +1438,11 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan('outright');
-    else if (screen.id === "monthly-plan-screen") showRecommendedPlan('monthly');
-
+    if (screen.id === "recommended-plan-screen") {
+      showRecommendedPlan('outright');
+    } else if (screen.id === "monthly-plan-screen") {
+      showRecommendedPlan('monthly');
+    }
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1463,46 +1465,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const mobileMenu = document.querySelector('.mobile-menu');
-  if(hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-    });
-  }
-
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.querySelector('.typewriter');
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    const text = typewriterEl.dataset.text || typewriterEl.textContent;
-    typewriterEl.textContent = '';
-    let i = 0;
-    const speed = 60;
-    function type() {
-      if(i < text.length){
-        typewriterEl.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      }
-    }
-    type();
-  }
-
-  // ------------------ Color Rise Animation ------------------
-  const colorRiseEl = document.querySelector('.color-rise');
-  function startColorRiseAnimation() {
-    if(!colorRiseEl) return;
-    let colors = ['#FF8C00','#FF0066','#33CCFF','#33FF99'];
-    let index = 0;
-    setInterval(() => {
-      colorRiseEl.style.backgroundColor = colors[index % colors.length];
-      index++;
-    }, 1200);
-  }
-
   // ------------------ User Path & Features ------------------
   let userPath = "";
   const yesFeatures = [];
@@ -1519,12 +1481,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active"))
+    
+    // Update both plan screens if active
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('outright');
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active"))
+    }
+    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('monthly');
-
+    }
+    
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1532,39 +1497,53 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Q19 Buttons ------------------
-  function setupQ19Buttons() {
-    const q19Screen = document.getElementById('instructor-q19');
-    if (!q19Screen) return;
 
-    const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-    const backBtn          = q19Screen.querySelector('.back-button');
 
-    if (ownOutrightBtn) {
-      ownOutrightBtn.onclick = () => {
-        ownershipChoice = 'Owned Outright';
-        featureState['buyOutright'] = true;
-        syncFeatureState();
-        showScreen('recommended-plan-screen');
-      };
-    }
 
-    if (monthlySupportBtn) {
-      monthlySupportBtn.onclick = () => {
-        ownershipChoice = 'Monthly Support';
-        featureState['monthlySupport'] = true;
-        syncFeatureState();
-        showScreen('recommended-plan-screen');
-        showRecommendedPlan('monthly');
-      };
-    }
+ // ------------------ Q19 Buttons - FIXED ------------------
+function setupQ19Buttons() {
+  const q19Screen = document.getElementById('instructor-q19');
+  if (!q19Screen) return;
 
-    if (backBtn) backBtn.onclick = () => prev();
+  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+  const backBtn          = q19Screen.querySelector('.back-button');
+
+  if (ownOutrightBtn) {
+    ownOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      featureState['buyOutright'] = true;
+      syncFeatureState();
+      showScreen('recommended-plan-screen');
+    };
   }
 
-  setupQ19Buttons();
+  if (monthlySupportBtn) {
+    monthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      featureState['monthlySupport'] = true;
+      syncFeatureState();
+      // ✅ use the existing pricing screen in monthly mode
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly');
+    };
+  }
 
+  if (backBtn) {
+    backBtn.onclick = () => prev();
+  }
+}
+
+
+// ensure Q19 buttons are wired and the funnel initial screen is set
+setupQ19Buttons();
+const initialActive = document.querySelector('.form-screen.active');
+if (initialActive) {
+  const idx = screens.indexOf(initialActive);
+  if (idx >= 0) currentScreen = idx;
+  showScreen(initialActive.id);
+}
+ 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1580,7 +1559,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById('designInput');
     if (!input) return;
     const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
     showFilteredTemplate(code);
   };
 
@@ -1643,135 +1625,310 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Pricing & Plans ------------------
-  function showRecommendedPlan(planType = 'outright') {
-    const isMonthly = planType === 'monthly';
-    const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-    if (!planCards.length) return;
 
-    const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
-    const tiers = {
-      basic: ["booking","mobile","cta","contact","bio"],
-      pro: ["seo","reviews","branding","faq","newsletter"],
-      premium: ["packages","social","email","content","guide"]
+function showRecommendedPlan(planType = 'outright') {
+  const isMonthly = planType === 'monthly';
+  const planCards = Array.from(
+    document.querySelectorAll('#recommended-plan-screen .pricing-card')
+  );
+  if (!planCards.length) return;
+
+  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
+
+  const tiers = {
+    basic:   ["booking","mobile","cta","contact","bio"],
+    pro:     ["seo","reviews","branding","faq","newsletter"],
+    premium: ["packages","social","email","content","guide"]
+  };
+
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "What to Expect guide"
+  };
+
+  const extraByPlan = {
+    basic: [
+      "Monthly maintenance & security updates",
+      "Email support (24–48 hr response)"
+    ],
+    pro: [
+      "Monthly maintenance & security updates",
+      "Priority email support & minor content edits"
+    ],
+    premium: [
+      "Monthly maintenance & security updates",
+      "Dedicated account manager support",
+      "Priority content updates & support"
+    ]
+  };
+
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
+
+  const recommended =
+        hasPremium ? "premium" :
+        hasPro     ? "pro" :
+        hasBasic   ? "basic" : "pro";
+
+  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
+  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
+  const setupFees      = { basic: 199, pro: 299, premium: 499 };
+
+  planCards.forEach(card => {
+    const level = (card.dataset.plan || "").toLowerCase();
+    const list  = card.querySelector(".features-list");
+    const priceEl = card.querySelector(".price");
+    const payBtn  = card.querySelector(".pay-now");
+    const note    = card.querySelector("small");
+    if (!level || !list || !priceEl || !payBtn) return;
+
+    // ----- Pricing -----
+    if (isMonthly) {
+      priceEl.textContent = `£${monthlyPrices[level]}`;
+      let span = priceEl.querySelector("span");
+      if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
+      span.textContent = "/month";
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
+      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+    } else {
+      priceEl.textContent = `£${outrightPrices[level]}`;
+      const s = priceEl.querySelector("span"); if (s) s.remove();
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
+      if (note) note.textContent = "50% now to secure, 50% on completion";
+    }
+
+    // ----- Features list -----
+    list.innerHTML = "";
+
+    // helper to render a section
+    const addSection = (title, keys) => {
+      if (!keys.length) return;
+      const block = document.createElement("div");
+      // Set a large vertical margin for clear section separation
+      block.style.margin = "40px 0"; 
+
+      const heading = document.createElement("p");
+      heading.textContent = title;
+      heading.style.fontWeight = "700";
+      heading.style.margin = "0 0 10px 0";
+      // FIX: Add underline to the section heading
+      heading.style.textDecoration = "underline"; 
+      block.appendChild(heading);
+
+      const ul = document.createElement("ul");
+      ul.style.margin = "0 0 0 20px";
+      keys.forEach(k => {
+        const li = document.createElement("li");
+        li.textContent = labels[k];
+        // Set margin and line height for clear line-to-line spacing
+        li.style.margin = "12px 0"; 
+        li.style.lineHeight = "1.8"; 
+        ul.appendChild(li);
+      });
+      block.appendChild(ul);
+      list.appendChild(block);
     };
 
-    const labels = {
-      booking: "Online booking & payment",
-      mobile: "Mobile-friendly design",
-      cta: "Strong call-to-action buttons",
-      contact: "Simple contact form",
-      bio: "About / Instructor bio",
-      seo: "Local Google SEO",
-      reviews: "Student reviews",
-      branding: "Branding help (logo & colors)",
-      faq: "FAQ / Student guide",
-      newsletter: "Newsletter signup",
-      packages: "Lesson packages & gift vouchers",
-      social: "Social media integration",
-      email: "Professional email address",
-      content: "Content creation help",
-      guide: "What to Expect guide"
-    };
+    // --- Feature Grouping Logic ---
 
-    const extraByPlan = {
-      basic: ["Monthly maintenance & security updates","Email support (24–48 hr response)"],
-      pro: ["Monthly maintenance & security updates","Priority email support & minor content edits"],
-      premium: ["Monthly maintenance & security updates","Dedicated account manager support","Priority content updates & support"]
-    };
+    // 1. Filter the 'yes' features based on what this plan is *allowed* to show.
+    const allowedFeatures =
+      level === "basic"   ? tiers.basic :
+      level === "pro"     ? [...tiers.basic, ...tiers.pro] :
+                            [...tiers.basic, ...tiers.pro, ...tiers.premium];
 
-    const hasPremium = yes.some(f => tiers.premium.includes(f));
-    const hasPro = yes.some(f => tiers.pro.includes(f));
-    const hasBasic = yes.some(f => tiers.basic.includes(f));
+    const relevantFeatures = yes.filter(k => allowedFeatures.includes(k));
 
-    const recommended = hasPremium ? "premium" : hasPro ? "pro" : hasBasic ? "basic" : "pro";
+    // 2. Separate the relevant features into their respective tier groups.
+    const basicFeatures = relevantFeatures.filter(k => tiers.basic.includes(k));
+    const proFeatures = relevantFeatures.filter(k => tiers.pro.includes(k));
+    const premiumFeatures = relevantFeatures.filter(k => tiers.premium.includes(k));
 
-    const monthlyPrices = { basic:49, pro:79, premium:129 };
-    const outrightPrices = { basic:499, pro:999, premium:1499 };
-    const setupFees = { basic:199, pro:299, premium:499 };
 
-    planCards.forEach(card => {
-      const level = (card.dataset.plan || "").toLowerCase();
-      const list = card.querySelector(".features-list");
-      const priceEl = card.querySelector(".price");
-      const payBtn = card.querySelector(".pay-now");
-      const note = card.querySelector("small");
-      if (!level || !list || !priceEl || !payBtn) return;
+    // --- RENDER SECTIONS ---
 
-      if (isMonthly) {
-        priceEl.textContent = `£${monthlyPrices[level]}`;
-        let span = priceEl.querySelector("span");
-        if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
-        span.textContent = "/month";
-        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-        if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
-      } else {
-        priceEl.textContent = `£${outrightPrices[level]}`;
-        const s = priceEl.querySelector("span"); if(s) s.remove();
-        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
-        if (note) note.textContent = "50% now to secure, 50% on completion";
-      }
+    if (level === "basic") {
+        addSection("Features Included", basicFeatures);
 
-      list.innerHTML = "";
-      const addSection = (title, keys) => {
-        if(!keys.length) return;
-        const block = document.createElement("div");
-        block.style.margin = "40px 0"; 
-        const heading = document.createElement("p");
-        heading.textContent = title;
-        heading.style.fontWeight = "700";
-        heading.style.margin = "0 0 10px 0";
-        heading.style.textDecoration = "underline"; 
-        block.appendChild(heading);
-        const ul = document.createElement("ul");
-        ul.style.margin = "0 0 0 20px";
-        keys.forEach(k => {
-          const li = document.createElement("li");
-          li.textContent = labels[k];
-          li.style.margin = "12px 0"; 
-          li.style.lineHeight = "1.8"; 
-          ul.appendChild(li);
+    } else if (level === "pro") {
+        addSection("Pro Features", proFeatures);
+        
+        if (basicFeatures.length) {
+             addSection("Includes from Basic", basicFeatures);
+        }
+
+    } else if (level === "premium") {
+        addSection("Premium Features", premiumFeatures);
+
+        if (proFeatures.length) {
+             addSection("Includes from Pro", proFeatures);
+        }
+
+        if (basicFeatures.length) {
+             addSection("Includes from Basic", basicFeatures);
+        }
+    }
+
+
+    // monthly extras
+    if (isMonthly && extraByPlan[level]) {
+        // Wrap monthly extras in a div for section separation
+        const extrasBlock = document.createElement("div");
+        // Set a large top margin to separate from features above
+        extrasBlock.style.margin = "40px 0 0 0"; 
+        
+        extraByPlan[level].forEach(e => {
+            const li = document.createElement("li");
+            li.textContent = e;
+            li.style.fontStyle = "italic";
+            // Set margin and line height for clarity
+            li.style.margin = "12px 0"; 
+            li.style.lineHeight = "1.8"; 
+            extrasBlock.appendChild(li); 
         });
-        block.appendChild(ul);
-        list.appendChild(block);
-      };
 
-      const allowedFeatures = level==="basic"?tiers.basic:level==="pro"?[...tiers.basic,...tiers.pro]:[...tiers.basic,...tiers.pro,...tiers.premium];
-      const relevantFeatures = yes.filter(k => allowedFeatures.includes(k));
-      const basicFeatures = relevantFeatures.filter(k=>tiers.basic.includes(k));
-      const proFeatures = relevantFeatures.filter(k=>tiers.pro.includes(k));
-      const premiumFeatures = relevantFeatures.filter(k=>tiers.premium.includes(k));
+        if (extrasBlock.children.length) {
+            list.appendChild(extrasBlock);
+        }
+    }
 
-      if(level==="basic") addSection("Features Included", basicFeatures);
-      if(level==="pro") { addSection("Pro Features", proFeatures); if(basicFeatures.length)addSection("Includes from Basic", basicFeatures);}
-      if(level==="premium") { addSection("Premium Features", premiumFeatures); if(proFeatures.length)addSection("Includes from Pro", proFeatures); if(basicFeatures.length)addSection("Includes from Basic", basicFeatures);}
+    // Fallback if no features
+    if (!list.children.length) {
+      const li = document.createElement("li");
+      li.textContent = "Standard features included";
+      list.appendChild(li);
+    }
+  });
 
-      if(isMonthly && extraByPlan[level]){
-        const extrasBlock=document.createElement("div");
-        extrasBlock.style.margin="40px 0 0 0";
-        extraByPlan[level].forEach(e=>{
-          const li=document.createElement("li");
-          li.textContent=e;
-          li.style.fontStyle="italic";
-          li.style.margin="12px 0";
-          li.style.lineHeight="1.8";
-          extrasBlock.appendChild(li);
-        });
-        if(extrasBlock.children.length) list.appendChild(extrasBlock);
-      }
-
-      if(!list.children.length){
-        const li=document.createElement("li");
-        li.textContent="Standard features included";
-        list.appendChild(li);
-      }
-    });
-
-    planCards.forEach(card=>{card.classList.remove("recommended","in-view");});
-    const rec=planCards.find(c=>(c.dataset.plan||"").toLowerCase()===recommended);
-    if(rec){rec.classList.add("recommended","in-view"); setTimeout(()=>rec.scrollIntoView({behavior:"smooth", block:"center"}),200);}
+  // highlight recommended card
+  // Ensure only one card glows by clearing classes from ALL cards first.
+  planCards.forEach(card => {
+    card.classList.remove("recommended", "in-view");
+  });
+  
+  const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
+  if (rec) {
+    rec.classList.add("recommended","in-view");
+    setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
+}
+
+
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+
+  // Set up Q19 buttons after DOM is loaded
+  setTimeout(setupQ19Buttons, 100);
+
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      showScreen(screens[0].id);
+    }
+  } else {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
+
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
@@ -1807,31 +1964,34 @@ document.addEventListener("DOMContentLoaded", () => {
     Array.from(cards).forEach(card => observer.observe(card));
   })();
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
 
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) currentScreen = screenIndex;
-    showScreen(stepName);
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-    startColorRiseAnimation();
-    showScreen(screens[0].id);
+
+   // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
   }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
-});
+}); /* end DOMContentLoaded */
 </script>
+
 
 </body>
 </html>
