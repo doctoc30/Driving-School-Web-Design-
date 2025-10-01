@@ -1530,59 +1530,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- // ------------------ Q19 Buttons - FIXED ------------------
-function setupQ19Buttons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
-
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-  const backBtn          = q19Screen.querySelector('.back-button');
-
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      ownershipChoice = 'Owned Outright';
-      featureState['buyOutright'] = true;
-      syncFeatureState();
-      showScreen('recommended-plan-screen');
-    };
-  }
-
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      ownershipChoice = 'Monthly Support';
-      featureState['monthlySupport'] = true;
-      syncFeatureState();
-      // ✅ use the existing pricing screen in monthly mode
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
-    };
-  }
-
-  if (backBtn) {
-    backBtn.onclick = () => prev();
-  }
-}
-
-
-// ensure Q19 buttons are wired and the funnel initial screen is set
-setupQ19Buttons();
-const initialActive = document.querySelector('.form-screen.active');
-if (initialActive) {
-  const idx = screens.indexOf(initialActive);
-  if (idx >= 0) currentScreen = idx;
-  showScreen(initialActive.id);
-}
- 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
@@ -1861,6 +1808,65 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => rec.scrollIntoView({behavior:"smooth", block:"center"}), 200);
   }
 }
+
+
+
+  // ------------------ Q19 Buttons - FIXED ------------------
+
+function setupQ19Buttons() {
+  const q19Screen = document.getElementById('instructor-q19');
+  if (!q19Screen) return;
+
+  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+  const backBtn          = q19Screen.querySelector('.back-button');
+
+  if (ownOutrightBtn) {
+    ownOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      featureState['buyOutright'] = true;
+      syncFeatureState();
+      // ✅ CORRECTED: Go to the lead capture screen
+      showScreen('lead-capture');
+    };
+  }
+
+  if (monthlySupportBtn) {
+    monthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      featureState['monthlySupport'] = true;
+      syncFeatureState();
+      // ✅ Correct, go to pricing screen in monthly mode (Lead capture is not part of this path)
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly');
+    };
+  }
+
+  if (backBtn) {
+    backBtn.onclick = () => prev();
+  }
+}
+
+
+ 
+// ensure Q19 buttons are wired and the funnel initial screen is set
+setupQ19Buttons();
+const initialActive = document.querySelector('.form-screen.active');
+if (initialActive) {
+  const idx = screens.indexOf(initialActive);
+  if (idx >= 0) currentScreen = idx;
+  showScreen(initialActive.id);
+}
+ 
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
 
 
   // ======== LEAD CAPTURE SUBMIT FUNCTION ========
