@@ -198,8 +198,10 @@ footer { flex-direction: column; text-align: center; }
 </div>
 
 <script>
-// ===== AOS (if needed) =====
-AOS && AOS.init();
+// ===== AOS (safe check, only runs if loaded) =====
+if (typeof AOS !== "undefined") {
+  AOS.init();
+}
 
 // Hamburger Menu
 document.addEventListener("DOMContentLoaded", () => {
