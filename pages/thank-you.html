@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Thank You - Driving School Websites</title>
+<title>Submit Your Assets - Driving School Websites</title>
 <style>
-/* ===== BRAND STYLING (HEADER + FOOTER) ===== */
+/* ===== BRAND STYLING ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: 'Poppins', sans-serif;
@@ -13,8 +13,6 @@ body {
   color: white;
   overflow-x: hidden;
 }
-
-/* ===== HEADER ===== */
 header {
   position: fixed; top: 0; left: 0; right: 0;
   height: 60px; display: flex; align-items: center;
@@ -22,46 +20,22 @@ header {
   background-color: #33a7d4; z-index: 2000;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
 }
-.logo {
-  font-weight: 900; font-size: 1.7rem; letter-spacing: 2px;
-  user-select: none; cursor: default;
-}
-
-/* ===== HAMBURGER ===== */
-.hamburger {
-  width: 28px; height: 22px; cursor: pointer;
-  display: flex; flex-direction: column;
-  justify-content: space-between; z-index: 2100;
-}
-.hamburger span {
-  display: block; height: 3.5px; background: white;
-  border-radius: 2px; transition: all 0.35s ease-in-out;
-}
+.logo { font-weight: 900; font-size: 1.7rem; letter-spacing: 2px; user-select: none; cursor: default; }
+.hamburger { width: 28px; height: 22px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; z-index: 2100; }
+.hamburger span { display: block; height: 3.5px; background: white; border-radius: 2px; transition: all 0.35s ease-in-out; }
 .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-/* ===== MOBILE MENU ===== */
 nav.menu {
-  position: fixed; top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background-color: #33a7d4;
-  transform: translateX(-100%);
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: #33a7d4; transform: translateX(-100%);
   transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-  display: flex; flex-direction: column;
-  justify-content: center; padding-left: 4rem;
-  z-index: 2050;
+  display: flex; flex-direction: column; justify-content: center; padding-left: 4rem; z-index: 2050;
 }
 nav.menu.open { transform: translateX(0); }
 nav.menu ul { list-style: none; }
-nav.menu ul li {
-  margin-bottom: 2.2rem; opacity: 0; transform: translateX(-40px);
-  font-weight: 900; font-size: 3rem; letter-spacing: 0.1em;
-}
-nav.menu ul li a {
-  color: white; text-decoration: none;
-  display: inline-block; transition: color 0.3s ease;
-}
+nav.menu ul li { margin-bottom: 2.2rem; opacity: 0; transform: translateX(-40px); font-weight: 900; font-size: 3rem; letter-spacing: 0.1em; }
+nav.menu ul li a { color: white; text-decoration: none; display: inline-block; transition: color 0.3s ease; }
 nav.menu ul li a:hover { color: #222; }
 nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
 nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
@@ -69,72 +43,32 @@ nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
 nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
 nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
 nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
-@keyframes slideInFade {
-  to { opacity: 1; transform: translateX(0); }
+@keyframes slideInFade { to { opacity: 1; transform: translateX(0); } }
+@media (min-width:1024px){
+  .hamburger{display:none;}
+  nav.menu{position:static;height:auto;width:auto;background:transparent;transform:none !important;padding-left:0;flex-direction:row;justify-content:flex-end;align-items:center;}
+  nav.menu ul{display:flex;gap:3rem;}
+  nav.menu ul li{margin:0;opacity:1 !important;transform:none !important;font-size:1.4rem;animation:none !important;}
+  nav.menu ul li a{font-weight:900;font-size:1.2rem;color:white;letter-spacing:0.15em;text-decoration:none;}
+  nav.menu ul li a:hover{color:#222;}
 }
-
-/* ===== DESKTOP MENU ===== */
-@media (min-width: 1024px) {
-  .hamburger { display: none; }
-  nav.menu {
-    position: static; height: auto; width: auto;
-    background: transparent; transform: none !important;
-    padding-left: 0; flex-direction: row;
-    justify-content: flex-end; align-items: center;
-  }
-  nav.menu ul { display: flex; gap: 3rem; }
-  nav.menu ul li {
-    margin: 0; opacity: 1 !important; transform: none !important;
-    font-size: 1.4rem; animation: none !important;
-  }
-  nav.menu ul li a {
-    font-weight: 900; font-size: 1.2rem;
-    color: white; letter-spacing: 0.15em; text-decoration: none;
-  }
-  nav.menu ul li a:hover { color: #222; }
-}
-
-/* ===== MAIN CONTENT ===== */
 main {
-  margin-top: 80px; padding: 20px; text-align: center;
-  max-width: 900px; margin-left: auto; margin-right: auto;
-  background: rgba(255,255,255,0.1);
-  border-radius: 12px;
+  margin-top: 80px; padding: 20px; text-align: center; max-width: 900px; margin-left:auto; margin-right:auto;
+  background: rgba(255,255,255,0.1); border-radius: 12px;
 }
-main h1, main h2, main h3, main h4, main p, main li {
-  color: white;
-}
+main h1, main h2, main h3, main p, main li { color: white; }
 main ul { text-align: left; margin: 10px auto; max-width: 600px; }
-
-/* ===== FOOTER ===== */
-footer { flex-direction: column; text-align: center; }
-.social-icons {
-  max-width: 400px; width: 100%; margin: 0 auto;
-  justify-content: center; align-items: center;
-  display: flex !important; flex-wrap: nowrap; padding: 0;
-}
-.social-icons a {
-  width: 60px; height: 60px; font-size: 40px; color: #fff;
-  display: flex; justify-content: center; align-items: center;
-  animation: coin-spin 6s linear infinite;
-  transform-style: preserve-3d; perspective: 1000px; margin: 0;
-}
-.social-icons img {
-  width: 48px; height: 48px;
-  filter: brightness(0) invert(1);
-  transition: transform 0.4s ease;
-}
-.social-icons a:not(:last-child) { margin-right: 40px; }
-@keyframes coin-spin {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-.footer-inner {
-  display: flex; justify-content: center; align-items: center;
-  text-align: center; width: 100%;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.95rem; padding-top: 10px;
-}
+form { margin-top: 20px; text-align: left; }
+.form-section { margin-bottom: 24px; background: rgba(255,255,255,0.1); padding: 16px; border-radius: 8px; }
+.form-section label { display: block; margin-bottom: 6px; font-weight: bold; }
+.form-section input, .form-section textarea { width: 100%; padding: 8px; border-radius: 4px; border: none; outline: none; margin-bottom: 8px; }
+.form-section input[type="file"] { background: #fff; color: #000; }
+button { background: #fff; color: #33a7d4; font-weight: bold; padding: 12px 24px; border:none; border-radius:6px; cursor:pointer; margin-top:12px; }
+button:hover { background: #f5f5f5; }
+.social-icons { max-width: 400px; width:100%; margin:20px auto; justify-content:center; display:flex; }
+.social-icons a { width: 60px; height:60px; display:flex; justify-content:center; align-items:center; margin-right:20px; }
+.social-icons img { width:48px; height:48px; filter:brightness(0) invert(1); }
+.footer-inner { text-align:center; color: rgba(255,255,255,0.6); padding-top:10px; }
 </style>
 </head>
 <body>
@@ -156,41 +90,45 @@ footer { flex-direction: column; text-align: center; }
 </header>
 
 <main>
-  <h1>Thank You for Choosing Us!</h1>
-  <p>Hello <strong id="clientName">Client</strong>, thank you for starting your website journey with us. We've recorded your selections below.</p>
+  <h1>Almost Done! Submit Your Assets</h1>
+  <p>Hello <strong id="clientName">Client</strong>, thank you for starting your website with us. Please submit your content, files, and any additional details to speed up your project.</p>
 
-  <section>
-    <h3>Selected Plan:</h3>
-    <p id="clientPlan">Pro</p>
+  <form id="clientAssetsForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="Selected Plan" id="hiddenPlan">
+    <input type="hidden" name="Selected Features" id="hiddenFeatures">
 
-    <h4>Static Features Included:</h4>
-    <ul id="staticFeatures"></ul>
+    <div class="form-section">
+      <label for="logoUpload">Upload Logo (if available)</label>
+      <input type="file" name="Logo" id="logoUpload" accept="image/*">
+    </div>
 
-    <h4>Additional Features You Selected:</h4>
-    <ul id="clientFeatures"></ul>
-  </section>
+    <div class="form-section">
+      <label for="homeText">Home Page Text / Introduction</label>
+      <textarea name="Home Text" id="homeText" rows="3" placeholder="Welcome message, key info"></textarea>
+    </div>
 
-  <section>
-    <h2>Next Steps</h2>
-    <ul>
-      <li>Check your email (<span id="clientEmail">you@example.com</span>) for order confirmation.</li>
-      <li>Our team will contact you to finalize details.</li>
-      <li>Prepare content (images, text) if needed for your website.</li>
-      <li>Once payment is confirmed, development begins immediately.</li>
-    </ul>
-  </section>
+    <div class="form-section" id="additionalPages">
+      <!-- Dynamic page inputs based on plan will appear here -->
+    </div>
+
+    <div class="form-section">
+      <label for="imagesUpload">Upload Images for Website (optional)</label>
+      <input type="file" name="Website Images" id="imagesUpload" accept="image/*" multiple>
+    </div>
+
+    <div class="form-section">
+      <label for="notes">Additional Notes / Instructions</label>
+      <textarea name="Notes" id="notes" rows="4" placeholder="Anything else you want us to know"></textarea>
+    </div>
+
+    <button type="submit">Submit My Assets</button>
+  </form>
 </main>
 
-<div class="social-icons" aria-label="Social media links">
-  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
-  </a>
-  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
-  </a>
-  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
-  </a>
+<div class="social-icons">
+  <a href="https://x.com/yourprofile" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter"></a>
+  <a href="https://facebook.com/yourpage" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
+  <a href="https://instagram.com/yourhandle" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
 </div>
 
 <div class="footer-inner">
@@ -198,103 +136,43 @@ footer { flex-direction: column; text-align: center; }
 </div>
 
 <script>
-// ===== AOS (safe check, only runs if loaded) =====
-if (typeof AOS !== "undefined") {
-  AOS.init();
-}
-
-// Hamburger Menu
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
+  hamburger.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); hamburger.classList.toggle('active'); });
+  document.addEventListener('click', e => { if(!menu.contains(e.target) && !hamburger.contains(e.target)){ menu.classList.remove('open'); hamburger.classList.remove('active'); } });
 
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+  // Pre-fill client info from URL params
+  function getParams() {
+    const p = {};
+    location.search.substring(1).split("&").forEach(pair => {
+      const [key, value] = pair.split("=");
+      if(key) p[decodeURIComponent(key)] = decodeURIComponent((value||"").replace(/\+/g," "));
+    });
+    return p;
   }
+  const params = getParams();
+  document.getElementById('clientName').textContent = params.name || "Client";
+  document.getElementById('hiddenPlan').value = params.plan || "";
+  document.getElementById('hiddenFeatures').value = params.features || "";
 
-  hamburger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMenu();
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', false);
-      menu.setAttribute('aria-hidden', true);
-      document.body.style.overflow = '';
-    }
-  });
+  // Dynamically generate page sections based on plan
+  const pagesByPlan = {
+    basic: ["Home","About","Contact","Services","Testimonials"],
+    pro: ["Home","About","Services","Blog","Contact","Testimonials","Portfolio","FAQ","Pricing","Team"],
+    premium: ["Home","About","Services","Blog","Contact","Testimonials","Portfolio","FAQ","Pricing","Team","Gift Vouchers","Newsletter","Social Media","Content Pages"]
+  };
+  const plan = (params.plan || "basic").toLowerCase();
+  const container = document.getElementById('additionalPages');
+  if(pagesByPlan[plan]){
+    pagesByPlan[plan].forEach(page=>{
+      const section = document.createElement('div');
+      section.className="form-section";
+      section.innerHTML = `<label>${page} Page Content / Text</label><textarea name="${page} Text" rows="2" placeholder="Content for ${page} page"></textarea>`;
+      container.appendChild(section);
+    });
+  }
 });
-
-// ===== Thank You Page Logic =====
-const plans = {
-  basic:   ["5 pages", "10 revisions"],
-  pro:     ["10 pages", "20 revisions"],
-  premium: ["30 pages", "39 revisions", "Dedicated account manager"]
-};
-const labels = {
-  booking: "Online booking & payment",
-  mobile: "Mobile-friendly design",
-  cta: "Strong call-to-action buttons",
-  contact: "Simple contact form",
-  bio: "About / Instructor bio",
-  seo: "Local Google SEO",
-  reviews: "Student reviews",
-  branding: "Branding help (logo & colors)",
-  faq: "FAQ / Student guide",
-  newsletter: "Newsletter signup",
-  packages: "Lesson packages & gift vouchers",
-  social: "Social media integration",
-  email: "Professional email address",
-  content: "Content creation help",
-  guide: "What to Expect guide"
-};
-function getQueryParams() {
-  const params = {};
-  location.search.substring(1).split("&").forEach(pair => {
-    const [key, value] = pair.split("=");
-    if(key) params[decodeURIComponent(key)] = decodeURIComponent((value || "").replace(/\+/g, " "));
-  });
-  return params;
-}
-const params = getQueryParams();
-const clientName = document.getElementById('clientName');
-const clientEmail = document.getElementById('clientEmail');
-const clientPlanEl = document.getElementById('clientPlan');
-const clientFeaturesEl = document.getElementById('clientFeatures');
-const staticFeaturesEl = document.getElementById('staticFeatures');
-
-clientName.textContent = params.name || "Client";
-clientEmail.textContent = params.email || "Not provided";
-const plan = (params.plan || "pro").toLowerCase();
-clientPlanEl.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
-
-staticFeaturesEl.innerHTML = '';
-if(plans[plan]) {
-  plans[plan].forEach(f => {
-    const li = document.createElement('li');
-    li.textContent = f;
-    staticFeaturesEl.appendChild(li);
-  });
-}
-clientFeaturesEl.innerHTML = '';
-if(params.features) {
-  params.features.split(",").forEach(f => {
-    if(labels[f]) {
-      const li = document.createElement('li');
-      li.textContent = labels[f];
-      clientFeaturesEl.appendChild(li);
-    }
-  });
-} else {
-  clientFeaturesEl.innerHTML = "<li>No additional features selected.</li>";
-}
 </script>
 
 </body>
