@@ -1,142 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thank You - Driving School Website</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thank You</title>
 <style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333; }
-  header { display:flex; justify-content:space-between; align-items:center; padding:20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-  .logo { font-size:24px; font-weight:bold; letter-spacing:2px; }
-  nav.menu ul { display:flex; list-style:none; gap:20px; }
-  nav.menu ul li a { text-decoration:none; color:#333; font-weight:500; }
-  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
-  .hamburger span { width:25px; height:3px; background:#333; display:block; }
-  @media (max-width:768px) {
-    nav.menu { display:none; flex-direction:column; background:#fff; position:absolute; top:70px; right:0; width:200px; padding:20px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
-    nav.menu.open { display:flex; }
-    .hamburger { display:flex; }
-  }
-
-  .thank-you { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:80vh; text-align:center; padding:40px 20px; }
-  .thank-you h1 { font-size:32px; margin-bottom:20px; color:#0052cc; }
-  .thank-you p { font-size:18px; margin-bottom:30px; line-height:1.6; }
-  .button-row { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:20px; }
-  button { padding:12px 24px; font-size:16px; border:none; border-radius:5px; cursor:pointer; background:#0052cc; color:#fff; transition: background 0.3s; }
-  button:hover { background:#003d99; }
-  .plan-summary { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-top:20px; max-width:600px; width:100%; text-align:left; }
-  .plan-summary h2 { margin-top:0; color:#0052cc; }
-  .plan-summary ul { list-style:none; padding-left:20px; }
-  .plan-summary li { margin-bottom:10px; }
+  body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; overflow-x: hidden; padding-top: 80px; }
+  header, footer { background-color: #33a7d4; color: white; }
+  main { max-width: 900px; margin: auto; padding: 20px; }
+  h1 { font-size: 2rem; margin-bottom: 20px; text-align: center; }
+  h2 { margin-top: 20px; }
+  ul { margin-left: 20px; margin-bottom: 20px; }
+  label { display: block; margin-top: 12px; font-weight: bold; }
+  input, textarea, select { width: 100%; padding: 10px; margin-top: 4px; border-radius: 6px; border: none; }
+  input[type="file"] { background: #fff; color: #000; }
+  button { margin-top: 20px; padding: 12px 20px; background: #fff; color: #33a7d4; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+  .feature-list { margin-bottom: 20px; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">D S W D</div>
-  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu" tabindex="0">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
   </div>
   <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
     <ul>
-      <li><a href="/pages/home.html">Home</a></li>
-      <li><a href="/pages/about.html">About</a></li>
-      <li><a href="/pages/concepts.html">Concepts</a></li>
-      <li><a href="/pages/pricing.html">Pricing</a></li>
-      <li><a href="/pages/contact.html">Contact</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<section class="thank-you">
-  <h1>Thank You!</h1>
-  <p>Your website request has been successfully submitted. Here’s a summary of your selections:</p>
+<main>
+  <h1>Thank You for Your Order!</h1>
+  <p>We’ve received your choices and now need some details to get started on your website.</p>
 
-  <div class="plan-summary" id="plan-summary">
-    <!-- Dynamic plan info will be injected here -->
+  <div id="planSummary">
+    <h2>Your Selected Plan:</h2>
+    <p id="selectedPlan"></p>
+
+    <h2>Your Selected Features:</h2>
+    <ul id="selectedFeatures" class="feature-list"></ul>
   </div>
 
-  <div class="button-row">
-    <button onclick="window.location.href='/pages/home.html'">Back to Home</button>
-    <button onclick="window.location.href='/pages/concepts.html'">View Website Concepts</button>
+  <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="Selected Plan" id="hiddenPlan">
+    <input type="hidden" name="Selected Features" id="hiddenFeatures">
+
+    <label for="businessName">Business Name:</label>
+    <input type="text" name="Business Name" id="businessName" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="text" name="Phone Number" id="phone" required>
+
+    <label for="email">Email Address:</label>
+    <input type="email" name="Email" id="email" required>
+
+    <label for="socialLinks">Social Media Links (comma separated):</label>
+    <input type="text" name="Social Links" id="socialLinks">
+
+    <label for="homepageDesc">Home Page Description:</label>
+    <textarea name="Home Page Description" id="homepageDesc" rows="4" required></textarea>
+
+    <label for="logoUpload">Upload Your Logo:</label>
+    <input type="file" name="Logo" id="logoUpload" accept="image/*">
+
+    <label for="imagesUpload">Upload Images (e.g., cars, classes):</label>
+    <input type="file" name="Images" id="imagesUpload" accept="image/*" multiple>
+
+    <label for="videoUpload">Upload Video (optional):</label>
+    <input type="file" name="Video" id="videoUpload" accept="video/*">
+
+    <button type="submit">Submit Details</button>
+  </form>
+</main>
+
+<footer>
+  <div class="social-icons" aria-label="Social media links">
+    <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter"></a>
+    <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
+    <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
   </div>
-</section>
+  <div class="footer-inner">
+    <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
-  // Hamburger menu toggle
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
+// Load selections from sessionStorage
+document.addEventListener('DOMContentLoaded', () => {
+  const plan = sessionStorage.getItem('selectedPlan') || 'No plan selected';
+  const features = JSON.parse(sessionStorage.getItem('selectedFeatures') || '[]');
 
-  // --- DYNAMIC THANK YOU PAGE ---
-  // 1. Load data from localStorage / sessionStorage (from funnel)
-  const yesFeatures = JSON.parse(localStorage.getItem('yesFeatures') || '[]');
-  const noFeatures = JSON.parse(localStorage.getItem('noFeatures') || '[]');
-  const planType = localStorage.getItem('ownershipChoice') || 'Owned Outright';
-  const designCode = localStorage.getItem('designCode') || '';
+  document.getElementById('selectedPlan').textContent = plan;
+  document.getElementById('hiddenPlan').value = plan;
 
-  // Labels mapping
-  const labels = {
-    booking: "Online booking & payment",
-    mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    social: "Social media integration",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "What to Expect guide"
-  };
+  const featureListEl = document.getElementById('selectedFeatures');
+  const hiddenFeaturesEl = document.getElementById('hiddenFeatures');
 
-  function renderPlanSummary() {
-    const container = document.getElementById('plan-summary');
-    if (!container) return;
+  featureListEl.innerHTML = '';
+  features.forEach(f => {
+    const li = document.createElement('li');
+    li.textContent = f;
+    featureListEl.appendChild(li);
+  });
 
-    let html = `<h2>Selected Plan: ${planType}</h2>`;
-    if (designCode) html += `<p><strong>Design Code:</strong> ${designCode}</p>`;
-    if (yesFeatures.length) {
-      html += `<p><strong>Features You've Selected:</strong></p><ul>`;
-      yesFeatures.forEach(f => {
-        html += `<li>${labels[f] || f}</li>`;
-      });
-      html += `</ul>`;
-    } else {
-      html += `<p>No extra features selected.</p>`;
-    }
-
-    // Include instructions or next steps
-    html += `<p>We will contact you shortly to get started and confirm all details. If you selected a monthly plan, a payment link will be sent to your email.</p>`;
-
-    container.innerHTML = html;
-  }
-
-  renderPlanSummary();
+  hiddenFeaturesEl.value = features.join(', ');
+});
 </script>
 
 </body>
