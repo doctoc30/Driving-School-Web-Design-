@@ -468,6 +468,132 @@ button:hover, .brand-btn:hover { background: #f0f8ff; color: #33a7d4; }
 @media (max-width: 768px) {
   .pricing-card { min-height: 90vh; padding: 60px 20px; }
 }
+
+
+
+
+  /* ---------- GLOBAL FONT STYLES ---------- */
+body, html {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ---------- HEADER / LOGO ---------- */
+header, .logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+}
+
+.logo {
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  user-select: none;
+  cursor: default;
+}
+
+/* ---------- NAV MENU ---------- */
+nav.menu ul li a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+nav.menu ul li a:hover {
+  color: #222;
+}
+
+/* ---------- TYPEWRITER / OVERLAY TEXT ---------- */
+#typewriter, .overlay-text {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  line-height: 1.2;
+}
+
+.overlay-text {
+  text-shadow: 0 0 30px #227090;
+  white-space: pre-line;
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+#typewriter .typed-line {
+  display: block;
+  font-size: inherit;
+  white-space: normal;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  background: white;
+  animation: blink 1s step-start infinite;
+  vertical-align: bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  50% { background: transparent; }
+}
+
+/* ---------- FORM HEADINGS / TEXT ---------- */
+.form-screen h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  margin-bottom: 3rem;
+}
+
+/* ---------- FORM INPUTS / SELECT ---------- */
+select, input[type="text"], input[type="email"], input[type="tel"] {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ---------- BUTTONS ---------- */
+button, .brand-btn, .pay-now {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* ---------- PRICING CARDS / RECOMMENDED BADGE ---------- */
+.pricing-card h3, .pricing-card .price, .pricing-card ul li {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+}
+
+.pricing-card ul li {
+  font-size: 1.1rem;
+}
+
+/* ---------- MOBILE / RESPONSIVE FONT ADJUSTMENTS ---------- */
+@media screen and (max-width: 599px) {
+  #typewriter { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+  .typewriter-text { font-size: clamp(2rem, 6vw, 3rem); }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
+  #typewriter { font-size: 6rem !important; }
+  .typewriter-text { font-size: 3.5rem !important; }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
+  #typewriter { font-size: 5.5rem !important; }
+  .typewriter-text { font-size: 3.2rem !important; }
+}
+
+@media screen and (min-width: 1025px) {
+  #typewriter { font-size: 6.5rem !important; }
+  .typewriter-text { font-size: 4rem !important; }
+}
 </style>
 
 </head>
