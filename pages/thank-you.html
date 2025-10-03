@@ -399,6 +399,46 @@ footer {
     input[type="file"]::before { padding: 0.6rem 1rem; }
   }
 
+
+
+
+  .form-screen { 
+    display:none; 
+    padding:40px 20px; 
+    text-align:center; 
+  }
+  .form-screen.active { display:block; }
+
+  h2 { font-size:2rem; margin-bottom:10px; }
+  .instruction { font-size:1.2rem; margin-bottom:20px; color:#444; }
+
+  .big-display {
+    font-size:1.5rem;
+    font-weight:bold;
+    background:#f8f9fc;
+    padding:15px;
+    border-radius:8px;
+    margin:20px auto;
+    display:inline-block;
+  }
+
+  h3 { font-size:1.4rem; margin-top:30px; }
+  .page-list { list-style:none; padding:0; font-size:1.2rem; margin:20px 0; }
+  .page-list li { padding:8px 0; border-bottom:1px solid #eee; }
+
+  .button-row { margin-top:30px; }
+  .funnel-btn {
+    font-size:1.2rem;
+    padding:15px 30px;
+    border:none;
+    border-radius:8px;
+    background:#1e90ff;
+    color:#fff;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .funnel-btn:hover { background:#0f6cd2; }
+
 </style>
 </head>
 <body>
@@ -419,89 +459,78 @@ footer {
   </nav>
 </header>
 
-  
-<main>
-  <form id="client-assets-form">
-    <!-- ===== Plan & Pages (auto-filled) ===== -->
-    <section class="form-screen active" id="screen-plan-pages">
-      <h2>🎉 Your Selected Plan</h2>
-      <p class="intro">This is the plan you purchased. No confirmation needed.</p>
-      <div class="form-section">
-        <label for="plan">Plan:</label>
-        <input type="text" id="plan" name="plan" readonly>
-      </div>
-      <div class="form-section">
-        <label>Pages Included:</label>
-        <ul id="pages-list"></ul>
-      </div>
-      <div class="button-row">
-        <button type="button" class="funnel-btn" onclick="nextScreen('screen-text-content')">Next</button>
-      </div>
-    </section>
+  <main>
+  <!-- Screen 1: Plan -->
+  <section class="form-screen active" id="screen-plan">
+    <h2>🎉 Your Plan</h2>
+    <p class="instruction">You purchased:</p>
+    <div class="big-display" id="plan-name"></div>
+    <h3>📄 Pages Included</h3>
+    <ul class="page-list" id="pages-list"></ul>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-homepage')">Continue ➡️</button>
+    </div>
+  </section>
 
-    <!-- ===== Website Text Content ===== -->
-    <section class="form-screen" id="screen-text-content">
-      <h2>📝 Website Text Content</h2>
-      <p class="intro">Provide the text content for the pages included in your plan.</p>
+  <!-- Screen 2: Homepage Text -->
+  <section class="form-screen" id="screen-homepage">
+    <h2>📝 Homepage Intro</h2>
+    <p class="instruction">Write a short welcome message (50–100 words).</p>
+    <textarea id="homepage-text"></textarea>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-about')">Continue ➡️</button>
+    </div>
+  </section>
 
-      <div class="form-section" id="text-homepage" style="display:none;">
-        <label for="homepage-text">Home Page Introduction</label>
-        <textarea id="homepage-text" name="homepage-text" placeholder="Write a compelling welcome message..."></textarea>
-      </div>
-      <div class="form-section" id="text-about" style="display:none;">
-        <label for="about-page-text">About Page</label>
-        <textarea id="about-page-text" name="about-page-text" placeholder="Tell the story of your business..."></textarea>
-      </div>
-      <div class="form-section" id="text-services" style="display:none;">
-        <label for="services-page-text">Services / Other Pages</label>
-        <textarea id="services-page-text" name="services-page-text" placeholder="Content for your services or other pages..."></textarea>
-      </div>
+  <!-- Screen 3: About Page -->
+  <section class="form-screen" id="screen-about">
+    <h2>👤 About Page</h2>
+    <p class="instruction">Tell your story, mission, and values.</p>
+    <textarea id="about-text"></textarea>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-services')">Continue ➡️</button>
+    </div>
+  </section>
 
-      <div class="button-row">
-        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-plan-pages')">Back</button>
-        <button type="button" class="funnel-btn" onclick="nextScreen('screen-media')">Next</button>
-      </div>
-    </section>
+  <!-- Screen 4: Services/Other Pages -->
+  <section class="form-screen" id="screen-services">
+    <h2>💡 Services / Other Pages</h2>
+    <p class="instruction">Paste content for Services, Pricing, or other pages.</p>
+    <textarea id="services-text"></textarea>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-logo')">Continue ➡️</button>
+    </div>
+  </section>
 
-    <!-- ===== Branding & Media ===== -->
-    <section class="form-screen" id="screen-media">
-      <h2>🖼️ Branding & Media Assets</h2>
-      <p class="intro">Upload your branding and media files based on the features you selected.</p>
+  <!-- Screen 5: Logo -->
+  <section class="form-screen" id="screen-logo">
+    <h2>🎨 Upload Logo</h2>
+    <input type="file" id="logo" accept="image/*">
+    <p class="instruction">High-resolution PNG or SVG preferred.</p>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-images')">Continue ➡️</button>
+    </div>
+  </section>
 
-      <div class="form-section" id="branding-logo" style="display:none;">
-        <label for="logo">Company Logo</label>
-        <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/svg+xml">
-      </div>
-      <div class="form-section" id="media-images" style="display:none;">
-        <label for="images">Supporting Images</label>
-        <input type="file" id="images" name="images[]" accept="image/*" multiple>
-      </div>
-      <div class="form-section" id="media-video" style="display:none;">
-        <label for="video">Video (Optional)</label>
-        <input type="file" id="video" name="video" accept="video/*">
-      </div>
+  <!-- Screen 6: Images -->
+  <section class="form-screen" id="screen-images">
+    <h2>🖼️ Upload Images</h2>
+    <input type="file" id="images" multiple accept="image/*">
+    <p class="instruction">Add product photos, team shots, or backgrounds.</p>
+    <div class="button-row">
+      <button type="button" class="funnel-btn" onclick="nextScreen('screen-notes')">Continue ➡️</button>
+    </div>
+  </section>
 
-      <div class="button-row">
-        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-text-content')">Back</button>
-        <button type="button" class="funnel-btn" onclick="nextScreen('screen-notes')">Next</button>
-      </div>
-    </section>
-
-    <!-- ===== Additional Notes ===== -->
-    <section class="form-screen" id="screen-notes">
-      <h2>📝 Additional Notes / Preferences</h2>
-      <p class="intro">Include any special requests, deadlines, or design preferences here.</p>
-
-      <div class="form-section">
-        <textarea id="notes" name="notes" placeholder="Color palette, layout ideas, or other info..."></textarea>
-      </div>
-
-      <div class="button-row">
-        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-media')">Back</button>
-        <button type="submit" class="funnel-btn submit">Submit All Assets</button>
-      </div>
-    </section>
-  </form>
+  <!-- Screen 7: Notes -->
+  <section class="form-screen" id="screen-notes">
+    <h2>📝 Final Notes</h2>
+    <p class="instruction">Any design preferences, deadlines, or special requests?</p>
+    <textarea id="notes"></textarea>
+    <div class="button-row">
+      <button type="submit" class="funnel-btn">✅ Submit Assets</button>
+    </div>
+  </section>
 </main>
 
 <div class="social-icons" aria-label="Social media links">
