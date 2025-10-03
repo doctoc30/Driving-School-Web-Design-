@@ -3,135 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit Your Website Assets | DSWD</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+<title>DSWD Client Assets</title>
 <style>
-/* === BASE STYLING FROM YOUR CSS === */
-body, html {
-  margin:0; padding:0; font-family:'Poppins',sans-serif; background:#33a7d4; color:white; width:100%; height:auto;
-}
-header {
-  position:fixed; top:0; left:0; right:0; height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background:#33a7d4; z-index:2000; box-shadow:0 2px 8px rgba(0,0,0,0.15);
-}
-.logo { font-weight:900; font-size:1.7rem; letter-spacing:2px; user-select:none; cursor:default; }
-.hamburger { width:28px; height:22px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; }
-.hamburger span { display:block; height:3.5px; background:white; border-radius:2px; transition:all 0.35s ease-in-out; }
-nav.menu { position:fixed; top:0; left:0; width:100vw; height:100vh; background:#33a7d4; transform:translateX(-100%); transition:transform 0.5s ease; display:flex; flex-direction:column; justify-content:center; padding-left:4rem; z-index:2050; }
-nav.menu.open { transform:translateX(0); }
-nav.menu ul { list-style:none; padding:0; }
-nav.menu ul li { margin-bottom:2.2rem; font-weight:900; font-size:3rem; letter-spacing:0.1em; opacity:0; transform:translateX(-40px); }
-nav.menu ul li a { color:white; text-decoration:none; }
-nav.menu.open ul li { animation:slideInFade 0.4s forwards; }
-@keyframes slideInFade { to { opacity:1; transform:translateX(0); } }
-@media(min-width:1024px){ .hamburger{display:none;} nav.menu{position:static;height:auto;width:auto;background:transparent;transform:none !important;padding-left:0;flex-direction:row;justify-content:flex-end;align-items:center;} nav.menu ul{display:flex;gap:3rem;} nav.menu ul li{margin:0;opacity:1 !important;transform:none !important;font-size:1.25rem;} nav.menu ul li a{font-weight:900;color:white;letter-spacing:0.15em;} }
+  /* ---------- BASE ---------- */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Poppins', sans-serif; background-color:#33a7d4; color:white; overflow-x:hidden; }
+  header { position:fixed; top:0; left:0; right:0; height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background-color:#33a7d4; z-index:2000; box-shadow:0 2px 8px rgb(0 0 0 / 0.15);}
+  .logo { font-weight:900; font-size:1.7rem; letter-spacing:2px; user-select:none; cursor:default; }
+  .hamburger { width:28px; height:22px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; }
+  .hamburger span { display:block; height:3.5px; background:white; border-radius:2px; transition: all 0.35s ease-in-out; }
+  .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity:0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+  nav.menu { position:fixed; top:0; left:0; width:100vw; height:100vh; background:#33a7d4; transform:translateX(-100%); transition:0.5s; display:flex; flex-direction:column; justify-content:center; padding-left:4rem; z-index:2050; }
+  nav.menu.open { transform:translateX(0); }
+  nav.menu ul { list-style:none; }
+  nav.menu ul li { margin-bottom:2.2rem; font-weight:900; font-size:3rem; opacity:0; transform:translateX(-40px); }
+  nav.menu ul li a { color:white; text-decoration:none; display:inline-block; transition:color 0.3s ease; }
+  nav.menu ul li a:hover { color:#222; }
+  nav.menu.open ul li { animation:slideInFade 0.4s forwards; }
+  nav.menu.open ul li:nth-child(1) { animation-delay:0.15s; }
+  nav.menu.open ul li:nth-child(2) { animation-delay:0.35s; }
+  nav.menu.open ul li:nth-child(3) { animation-delay:0.55s; }
+  nav.menu.open ul li:nth-child(4) { animation-delay:0.75s; }
+  nav.menu.open ul li:nth-child(5) { animation-delay:0.95s; }
+  @keyframes slideInFade { to { opacity:1; transform:translateX(0); } }
+  @media(min-width:1024px) { .hamburger{display:none;} nav.menu{position:static;height:auto;width:auto;background:transparent;transform:none!important;padding-left:0;flex-direction:row;justify-content:flex-end;align-items:center;} nav.menu ul{display:flex;gap:3rem;} nav.menu ul li{margin:0;opacity:1!important;transform:none!important;font-size:1.25rem;} nav.menu ul li a{font-weight:900;font-size:1.1rem;color:white;letter-spacing:0.15em;} nav.menu ul li a:hover{color:#222;} }
 
-/* === MODERN FORM CARD === */
-main {
-  margin-top:80px; padding:20px; display:flex; justify-content:center; align-items:flex-start; flex-direction:column; gap:30px;
-}
-.asset-card {
-  background: rgba(255,255,255,0.08); backdrop-filter:blur(10px); border-radius:16px; padding:40px 30px; max-width:800px; width:90%; margin:auto; box-shadow:0 8px 20px rgba(0,0,0,0.25); transition:all 0.3s ease;
-}
-.asset-card h1 { font-size:2.5rem; margin-bottom:1rem; font-weight:900; }
-.asset-card p { font-size:1.1rem; margin-bottom:2rem; line-height:1.5; }
-.asset-card form { display:flex; flex-direction:column; gap:20px; }
-.asset-card label { font-weight:600; margin-bottom:6px; display:block; }
-.asset-card input[type="text"], .asset-card input[type="email"], .asset-card textarea, .asset-card input[type="file"], .asset-card select {
-  padding:1rem; border-radius:12px; border:none; font-size:1rem; width:100%; background:white; color:#333; box-sizing:border-box;
-}
-.asset-card textarea { resize:vertical; min-height:80px; }
-.asset-card button {
-  background:white; color:#33a7d4; font-weight:900; font-size:1rem; padding:1rem 2rem; border:none; border-radius:12px; cursor:pointer; transition:0.3s;
-}
-.asset-card button:hover { background:#227090; color:white; transform:translateY(-2px); }
-
-/* === RESPONSIVE SOCIAL ICONS === */
-.social-icons { display:flex; justify-content:center; gap:20px; margin-top:20px; }
-.social-icons img { width:48px; height:48px; filter:brightness(0) invert(1); }
-
-/* === ADDITIONAL STYLING === */
-.asset-card .section-title { font-size:1.4rem; font-weight:800; margin-top:1rem; margin-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.3); padding-bottom:4px; }
+  main { margin-top:80px; padding:20px; display:flex; justify-content:center; align-items:center; min-height:calc(100vh - 80px); }
+  .form-screen { background:#33a7d4; padding:2rem; border-radius:12px; width:100%; max-width:500px; display:flex; flex-direction:column; gap:1.5rem; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
+  .form-screen h2 { font-size:2rem; margin-bottom:1rem; }
+  .form-section { display:flex; flex-direction:column; gap:0.5rem; text-align:left; }
+  label { font-weight:600; }
+  input[type="text"], input[type="email"], input[type="file"], textarea { padding:1rem; border-radius:8px; border:none; font-size:1rem; width:100%; }
+  textarea { min-height:80px; resize:vertical; }
+  .button-row { display:flex; justify-content:center; margin-top:1rem; }
+  .brand-btn { background:white; color:#33a7d4; font-weight:900; padding:1rem 2rem; border-radius:12px; border:none; cursor:pointer; transition:0.3s; }
+  .brand-btn:hover { background:#f0f8ff; }
+  footer { text-align:center; padding:20px; font-size:0.9rem; opacity:0.8; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">D S W D</div>
-  <div class="hamburger" onclick="document.querySelector('nav.menu').classList.toggle('open'); this.classList.toggle('active');">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hamburger"><span></span><span></span><span></span></div>
   <nav class="menu">
     <ul>
-      <li><a href="/pages/home.html">Home</a></li>
-      <li><a href="/pages/about.html">About</a></li>
-      <li><a href="/pages/concepts.html">Concepts</a></li>
-      <li><a href="/pages/pricing.html">Pricing</a></li>
-      <li><a href="/pages/contact.html">Contact</a></li>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="concepts.html">Concepts</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 </header>
 
 <main>
-  <div class="asset-card">
-    <h1>Submit Your Website Assets</h1>
-    <p>Hello <strong id="clientName">Client</strong>! Complete your website setup by providing your content, images, and any other files below.</p>
-
-    <form id="assetForm" action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="Selected Plan" id="hiddenPlan">
-      <input type="hidden" name="Selected Features" id="hiddenFeatures">
-
-      <div class="section-title">Logo & Branding</div>
-      <label for="logoUpload">Upload Logo</label>
-      <input type="file" id="logoUpload" name="Logo" accept="image/*">
-
-      <div class="section-title">Homepage Content</div>
-      <label for="homeText">Introduction / Welcome Message</label>
-      <textarea id="homeText" name="Home Text" placeholder="Write your homepage text here..."></textarea>
-
-      <div class="section-title">Other Pages</div>
-      <div id="additionalPages"></div>
-
-      <div class="section-title">Images</div>
-      <label for="imagesUpload">Website Images</label>
-      <input type="file" id="imagesUpload" name="Website Images" accept="image/*" multiple>
-
-      <div class="section-title">Additional Notes</div>
-      <label for="notes">Instructions / Notes</label>
-      <textarea id="notes" name="Notes" placeholder="Anything else for our team..."></textarea>
-
-      <button type="submit">Submit Assets</button>
+  <section class="form-screen active">
+    <h2>Thank you for your order!</h2>
+    <p>Let's gather everything we need to start designing your website.</p>
+    <form id="client-assets-form">
+      <div class="form-section">
+        <label for="plan">Your Plan</label>
+        <input type="text" id="plan" name="plan" readonly>
+      </div>
+      <div class="form-section">
+        <label>Pages included in your plan</label>
+        <div id="pages-checkboxes"></div>
+      </div>
+      <div class="form-section">
+        <label for="homepage-text">Home Page Text</label>
+        <textarea id="homepage-text" name="homepage-text" placeholder="Write your homepage intro..."></textarea>
+      </div>
+      <div class="form-section">
+        <label for="logo">Logo (optional)</label>
+        <input type="file" id="logo" name="logo" accept="image/*">
+      </div>
+      <div class="form-section">
+        <label for="images">Upload images (optional)</label>
+        <input type="file" id="images" name="images[]" accept="image/*" multiple>
+      </div>
+      <div class="form-section">
+        <label for="notes">Additional notes / preferences</label>
+        <textarea id="notes" name="notes" placeholder="Anything else we should know..."></textarea>
+      </div>
+      <div class="button-row">
+        <button type="submit" class="brand-btn">Submit All Assets</button>
+      </div>
     </form>
-  </div>
-
-  <div class="social-icons">
-    <a href="https://x.com/yourprofile" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X"></a>
-    <a href="https://facebook.com/yourpage" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
-    <a href="https://instagram.com/yourhandle" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
-  </div>
+  </section>
 </main>
 
-<script>
-// Pre-fill client info from URL
-const params = new URLSearchParams(window.location.search);
-document.getElementById('clientName').textContent = params.get('name') || "Client";
-document.getElementById('hiddenPlan').value = params.get('plan') || "";
-document.getElementById('hiddenFeatures').value = params.get('features') || "";
+<footer>&copy; 2025 Faz Designs. All rights reserved.</footer>
 
-// Dynamic page sections based on plan
-const pagesByPlan = {
-  basic: ["Home","About","Contact","Services","Testimonials"],
-  pro: ["Home","About","Services","Blog","Contact","Testimonials","Portfolio","FAQ","Pricing","Team"],
-  premium: ["Home","About","Services","Blog","Contact","Testimonials","Portfolio","FAQ","Pricing","Team","Gift Vouchers","Newsletter","Social Media","Content Pages"]
-};
-const plan = (params.get('plan') || 'basic').toLowerCase();
-const container = document.getElementById('additionalPages');
-if(pagesByPlan[plan]){
-  pagesByPlan[plan].forEach(page=>{
-    const div = document.createElement('div');
-    div.innerHTML = `<label>${page} Page Content</label><textarea name="${page} Text" placeholder="Content for ${page} page..."></textarea>`;
-    container.appendChild(div);
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const planInput = document.getElementById("plan");
+  const pagesContainer = document.getElementById("pages-checkboxes");
+
+  // Pre-fill example (replace with real funnel data)
+  const clientData = { plan: "Pro Plan", pages: ["Home","About","Services","Contact"] };
+  planInput.value = clientData.plan;
+  clientData.pages.forEach(page => {
+    const label = document.createElement("label");
+    label.style.display="block";
+    label.innerHTML = `<input type="checkbox" name="pages" value="${page}" checked> ${page}`;
+    pagesContainer.appendChild(label);
   });
-}
+
+  document.getElementById("client-assets-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    console.log("Form submitted:", Object.fromEntries(formData.entries()));
+    alert("Thanks! Your assets have been submitted.");
+  });
+
+  // Hamburger
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  hamburger.addEventListener('click', ()=> {
+    const open = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+  });
+});
 </script>
 
 </body>
