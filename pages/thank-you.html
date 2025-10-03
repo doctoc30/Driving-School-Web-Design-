@@ -247,54 +247,8 @@ footer {
     </ul>
   </nav>
 </header>
-  
 
-<main>
-  <h1>Thank You for Your Order!</h1>
-  <p>We’ve received your choices and now need some details to get started on your website.</p>
-
-  <div id="planSummary">
-    <h2>Your Selected Plan:</h2>
-    <p id="selectedPlan"></p>
-
-    <h2>Your Selected Features:</h2>
-    <ul id="selectedFeatures" class="feature-list"></ul>
-  </div>
-
-  <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="Selected Plan" id="hiddenPlan">
-    <input type="hidden" name="Selected Features" id="hiddenFeatures">
-
-    <label for="businessName">Business Name:</label>
-    <input type="text" name="Business Name" id="businessName" required>
-
-    <label for="phone">Phone Number:</label>
-    <input type="text" name="Phone Number" id="phone" required>
-
-    <label for="email">Email Address:</label>
-    <input type="email" name="Email" id="email" required>
-
-    <label for="socialLinks">Social Media Links (comma separated):</label>
-    <input type="text" name="Social Links" id="socialLinks">
-
-    <label for="homepageDesc">Home Page Description:</label>
-    <textarea name="Home Page Description" id="homepageDesc" rows="4" required></textarea>
-
-    <label for="logoUpload">Upload Your Logo:</label>
-    <input type="file" name="Logo" id="logoUpload" accept="image/*">
-
-    <label for="imagesUpload">Upload Images (e.g., cars, classes):</label>
-    <input type="file" name="Images" id="imagesUpload" accept="image/*" multiple>
-
-    <label for="videoUpload">Upload Video (optional):</label>
-    <input type="file" name="Video" id="videoUpload" accept="video/*">
-
-    <button type="submit">Submit Details</button>
-  </form>
-</main>
-
-
-  <div class="social-icons" aria-label="Social media links">
+<div class="social-icons" aria-label="Social media links">
   <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
   </a>
@@ -310,30 +264,8 @@ footer {
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
-
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-// Load selections from sessionStorage
-document.addEventListener('DOMContentLoaded', () => {
-  const plan = sessionStorage.getItem('selectedPlan') || 'No plan selected';
-  const features = JSON.parse(sessionStorage.getItem('selectedFeatures') || '[]');
-
-  document.getElementById('selectedPlan').textContent = plan;
-  document.getElementById('hiddenPlan').value = plan;
-
-  const featureListEl = document.getElementById('selectedFeatures');
-  const hiddenFeaturesEl = document.getElementById('hiddenFeatures');
-
-  featureListEl.innerHTML = '';
-  features.forEach(f => {
-    const li = document.createElement('li');
-    li.textContent = f;
-    featureListEl.appendChild(li);
-  });
-
-  hiddenFeaturesEl.value = features.join(', ');
-});
-
-  
   // Initialize AOS animation
   AOS.init();
 
@@ -377,8 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
-
 </script>
-
+  
 </body>
 </html>
