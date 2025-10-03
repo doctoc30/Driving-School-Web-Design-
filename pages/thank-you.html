@@ -3,394 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DSWD Client Assets | Submission</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<title>Thank You - Driving School Website</title>
 <style>
-  /* ---------- BRAND COLORS (Reverted to Original) ---------- */
-  :root {
-    --brand-primary: #33a7d4; /* Original Blue */
-    --brand-dark: #227090;    /* Original Darker Blue/Shadow */
-    --text-color: #333;
-    --background-light: #f4f8fb; /* App-like light background */
-    --card-background: #ffffff;
-    --border-color: #e0eeef;
-  }
-  
-  /* ---------- BASE & RESET ---------- */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { 
-    font-family: 'Poppins', sans-serif; 
-    background-color: var(--background-light); /* App-like light background */
-    color: var(--text-color); 
-    overflow-x:hidden; 
-  }
-  
-  /* ---------- HEADER & NAVIGATION (App-like Bar) ---------- */
-  header { 
-    position:fixed; 
-    top:0; left:0; right:0; 
-    height:64px; 
-    display:flex; 
-    align-items:center; 
-    justify-content:space-between; 
-    padding:0 24px; 
-    background-color: var(--brand-primary); /* Original Brand Color */
-    color: white; 
-    z-index:2000; 
-    box-shadow:0 1px 12px rgba(0,0,0,0.15); 
-  }
-  .logo { 
-    font-weight:900; 
-    font-size:1.6rem; 
-    letter-spacing:1px; 
-    user-select:none; 
-    cursor:default; 
-  }
-  
-  /* Hamburger and Menu styles - Updated for Brand Color */
-  .hamburger { width:28px; height:22px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; z-index:2100; }
-  .hamburger span { display:block; height:3px; background:white; border-radius:2px; transition: all 0.35s ease-in-out; }
-  .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-  .hamburger.active span:nth-child(2) { opacity:0; }
-  .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-  nav.menu { position:fixed; top:0; left:0; width:100vw; height:100vh; background:var(--brand-primary); transform:translateX(-100%); transition:0.5s; display:flex; flex-direction:column; justify-content:center; padding-left:4rem; z-index:2050; }
-  nav.menu.open { transform:translateX(0); }
-  nav.menu ul { list-style:none; }
-  nav.menu ul li { margin-bottom:2rem; font-weight:700; font-size:2rem; opacity:0; transform:translateX(-40px); }
-  nav.menu ul li a { color:white; text-decoration:none; display:inline-block; transition:color 0.3s ease; }
-  nav.menu ul li a:hover { color:var(--brand-dark); }
-  /* ... rest of menu animations ... */
-  @keyframes slideInFade { to { opacity:1; transform:translateX(0); } }
-  @media(min-width:1024px) { 
-    .hamburger{display:none;} 
-    nav.menu{position:static;height:auto;width:auto;background:transparent;transform:none!important;padding-left:0;flex-direction:row;justify-content:flex-end;align-items:center;} 
-    nav.menu ul{display:flex;gap:3rem;} 
-    nav.menu ul li{margin:0;opacity:1!important;transform:none!important;font-size:1.2rem;} 
-    nav.menu ul li a{font-weight:700;font-size:1rem;color:white;letter-spacing:0.1em;} 
-    nav.menu ul li a:hover{color:#efefef;} 
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+  .logo { font-size:24px; font-weight:bold; letter-spacing:2px; }
+  nav.menu ul { display:flex; list-style:none; gap:20px; }
+  nav.menu ul li a { text-decoration:none; color:#333; font-weight:500; }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+  .hamburger span { width:25px; height:3px; background:#333; display:block; }
+  @media (max-width:768px) {
+    nav.menu { display:none; flex-direction:column; background:#fff; position:absolute; top:70px; right:0; width:200px; padding:20px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+    nav.menu.open { display:flex; }
+    .hamburger { display:flex; }
   }
 
-  /* ---------- MAIN CONTENT AREA ---------- */
-  main { 
-    margin-top:64px; 
-    padding:30px 20px; 
-    display:flex; 
-    justify-content:center; 
-    align-items:flex-start; 
-    min-height:calc(100vh - 64px); 
-  }
-
-  /* ---------- FORM SCREEN / CARD (App-like UI) ---------- */
-  .form-screen {
-    background:var(--card-background); 
-    color:var(--text-color); 
-    padding:3rem; /* Increased spacing */
-    border-radius:20px; 
-    width:100%; 
-    max-width:600px; 
-    display:flex; 
-    flex-direction:column; 
-    gap:2rem; /* Increased spacing */
-    box-shadow:0 8px 30px rgba(0,0,0,0.1); 
-    border-top:5px solid var(--brand-dark); /* Bold color accent */
-    animation: fadeInUp 0.6s ease forwards;
-  }
-  @keyframes fadeInUp { 0% {opacity:0; transform:translateY(20px);} 100% {opacity:1; transform:translateY(0);} }
-
-  .form-screen h2 { 
-    font-size:1.8rem; 
-    font-weight:700; 
-    color:var(--brand-dark); /* Darker shade for contrast */
-    margin-bottom:0.5rem; 
-    text-align:center; 
-  }
-  .form-screen h3 {
-    font-size:1.4rem;
-    font-weight:700;
-    color:var(--brand-dark);
-    margin-top: 0.5rem;
-  }
-  .form-screen p.intro { 
-    font-size:1rem; 
-    margin-bottom:1.5rem; 
-    text-align:center; 
-    color:#666;
-  }
-  
-  /* Section Separator */
-  .section-separator {
-    border-top: 1px solid var(--border-color);
-    margin-top: 1rem;
-    padding-top: 1rem;
-  }
-
-  /* ---------- FORM FIELDS & Instructions (App-like Spacing) ---------- */
-  .form-section { 
-    display:flex; 
-    flex-direction:column; 
-    gap:0.5rem; 
-    margin-bottom:1.5rem; /* Better spacing between fields */
-  }
-  label { 
-    font-weight:600; 
-    margin-bottom:0.1rem; 
-    font-size:0.95rem;
-    color:var(--text-color);
-  }
-  .input-instruction {
-    font-size:0.85rem;
-    color:#777;
-    margin-top: 0.2rem;
-    padding-left: 0.1rem;
-  }
-  
-  input[type="text"], input[type="email"], textarea { 
-    padding:1rem; 
-    border-radius:10px; 
-    border:1px solid var(--border-color); 
-    font-size:1rem; 
-    width:100%; 
-    transition:0.3s;
-    background-color: #f9f9f9;
-  }
-  input[type="text"]:focus, input[type="email"]:focus, textarea:focus { 
-    border-color:var(--brand-primary); 
-    background-color: #ffffff;
-    outline:none; 
-    box-shadow:0 0 0 3px rgba(51,167,212,0.2); 
-  }
-  textarea { min-height:120px; resize:vertical; }
-
-  /* File Input Styling */
-  input[type="file"] {
-    border: 1px solid var(--border-color);
-    padding: 0.8rem;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-  }
-  /* Style file button with brand color */
-  input[type="file"]::-webkit-file-upload-button { visibility: hidden; }
-  input[type="file"]::before { content: 'Select File(s)'; display: inline-block; background: var(--brand-primary); color: white; border-radius: 8px; padding: 0.6rem 1.2rem; outline: none; white-space: nowrap; cursor: pointer; font-weight: 700; margin-right: 1rem; }
-  input[type="file"]:hover::before { background: var(--brand-dark); }
-
-
-  /* ---------- BUTTONS ---------- */
-  .button-row { display:flex; justify-content:center; margin-top:2rem; }
-  .brand-btn {
-    background:var(--brand-primary); 
-    color:white; 
-    font-weight:700; 
-    padding:1rem 2.5rem; 
-    border-radius:12px; 
-    border:none; 
-    cursor:pointer; 
-    font-size:1.1rem; 
-    transition:all 0.3s ease;
-    box-shadow:0 4px 10px rgba(51,167,212,0.3);
-  }
-  .brand-btn:hover { 
-    background:var(--brand-dark); 
-    transform:translateY(-1px); 
-    box-shadow:0 6px 15px rgba(51,167,212,0.4); 
-  }
-
-  /* ---------- FOOTER ---------- */
-  footer { 
-    text-align:center; 
-    padding:20px; 
-    font-size:0.85rem; 
-    opacity:0.7; 
-    color:#666; 
-    background-color: var(--background-light); 
-  }
-
-  /* ---------- CHECKBOXES / PAGES ---------- */
-  #pages-checkboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem; /* Increased spacing */
-    padding: 0.8rem 0;
-  }
-  #pages-checkboxes label { 
-    display:flex; 
-    align-items:center; 
-    gap:0.5rem; 
-    font-weight:500; 
-    color: var(--text-color);
-    cursor: default; 
-  }
-  #pages-checkboxes input[type="checkbox"] {
-    accent-color: var(--brand-primary); /* Color the checkbox */
-    width: 18px;
-    height: 18px;
-  }
-
-  /* ---------- RESPONSIVE ---------- */
-  @media(max-width:768px) {
-    .form-screen { 
-      padding:2rem 1.5rem; 
-      border-radius:16px; 
-      gap:1.5rem;
-    }
-    .form-screen h2 { font-size:1.5rem; }
-    main { padding:20px 10px; }
-    input[type="file"]::before { padding: 0.6rem 1rem; }
-  }
-
+  .thank-you { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:80vh; text-align:center; padding:40px 20px; }
+  .thank-you h1 { font-size:32px; margin-bottom:20px; color:#0052cc; }
+  .thank-you p { font-size:18px; margin-bottom:30px; line-height:1.6; }
+  .button-row { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:20px; }
+  button { padding:12px 24px; font-size:16px; border:none; border-radius:5px; cursor:pointer; background:#0052cc; color:#fff; transition: background 0.3s; }
+  button:hover { background:#003d99; }
+  .plan-summary { background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-top:20px; max-width:600px; width:100%; text-align:left; }
+  .plan-summary h2 { margin-top:0; color:#0052cc; }
+  .plan-summary ul { list-style:none; padding-left:20px; }
+  .plan-summary li { margin-bottom:10px; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">D S W D</div>
-  <div class="hamburger"><span></span><span></span><span></span></div>
-  <nav class="menu">
+  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu" tabindex="0">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
     <ul>
-      <li><a href="home.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="concepts.html">Concepts</a></li>
-      <li><a href="pricing.html">Pricing</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="/pages/home.html">Home</a></li>
+      <li><a href="/pages/about.html">About</a></li>
+      <li><a href="/pages/concepts.html">Concepts</a></li>
+      <li><a href="/pages/pricing.html">Pricing</a></li>
+      <li><a href="/pages/contact.html">Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<main>
-  <section class="form-screen active">
-    <h2>Client Asset Submission</h2>
-    <p class="intro">
-      🎉 Thank you for starting your project! Please provide the necessary content and branding assets below so we can begin the design process.
-    </p>
+<section class="thank-you">
+  <h1>Thank You!</h1>
+  <p>Your website request has been successfully submitted. Here’s a summary of your selections:</p>
 
-    <form id="client-assets-form">
-      
-      <div class="form-section">
-        <label for="plan">Your Selected Plan</label>
-        <input type="text" id="plan" name="plan" readonly>
-        <small class="input-instruction">This shows the package you selected. If this is incorrect, please contact us.</small>
-      </div>
+  <div class="plan-summary" id="plan-summary">
+    <!-- Dynamic plan info will be injected here -->
+  </div>
 
-      <div class="form-section">
-        <label>Pages Included in Your Plan</label>
-        <div id="pages-checkboxes">
-          </div>
-        <small class="input-instruction">These pages will be created based on your package. Please focus your content submission on these pages.</small>
-      </div>
-
-      <div class="section-separator"></div>
-
-      <h3>📝 Website Text Content</h3>
-      <div class="form-section">
-        <label for="homepage-text">Home Page Introduction Text</label>
-        <textarea id="homepage-text" name="homepage-text" placeholder="Write your main value proposition, a brief introduction, or a compelling welcome message for the home page..."></textarea>
-        <small class="input-instruction">Provide a strong, engaging paragraph (approx. 50-100 words) that captures what your business is about and why people should stay.</small>
-      </div>
-
-      <div class="form-section">
-        <label for="about-page-text">About Page Text</label>
-        <textarea id="about-page-text" name="about-page-text" placeholder="Tell the story of your company, your mission, and your team..."></textarea>
-        <small class="input-instruction">A detailed history, mission statement, and information about your values. This can be longer (200+ words). *Only required if 'About' is one of your included pages.*</small>
-      </div>
-      
-      <div class="form-section">
-        <label for="other-pages-text">Services/Concepts/Other Page Content</label>
-        <textarea id="other-pages-text" name="other-pages-text" placeholder="Paste the content for your Services page, Concepts page, or any other primary pages here. Clearly label which section belongs to which page."></textarea>
-        <small class="input-instruction">If your plan includes pages like Services, Pricing, or Concepts, please provide the dedicated text content for each here. Use headings to separate content for clarity.</small>
-      </div>
-
-      <div class="section-separator"></div>
-
-      <h3>🖼️ Branding and Media Assets</h3>
-      <div class="form-section">
-        <label for="logo">Company Logo (Optional but Recommended)</label>
-        <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/svg+xml">
-        <small class="input-instruction">Upload your high-resolution logo (PNG with transparent background or SVG preferred). Max size 5MB.</small>
-      </div>
-
-      <div class="form-section">
-        <label for="images">Upload Supporting Images (Optional)</label>
-        <input type="file" id="images" name="images[]" accept="image/*" multiple>
-        <small class="input-instruction">Select all high-quality photos, product shots, or background images you wish to include. You can upload multiple files at once.</small>
-      </div>
-
-      <div class="section-separator"></div>
-
-      <div class="form-section">
-        <label for="notes">Additional Notes / Design Preferences</label>
-        <textarea id="notes" name="notes" placeholder="e.g., Preferred color palette (HEX codes if different from logo), link to a website you like, specific layout ideas, or any deadlines..."></textarea>
-        <small class="input-instruction">Use this space for any specific design requirements, brand guidelines, or critical information not covered above.</small>
-      </div>
-      
-      <div class="button-row">
-        <button type="submit" class="brand-btn">Submit All Assets</button>
-      </div>
-    </form>
-  </section>
-</main>
-
-<footer>&copy; 2025 Faz Designs. All rights reserved.</footer>
+  <div class="button-row">
+    <button onclick="window.location.href='/pages/home.html'">Back to Home</button>
+    <button onclick="window.location.href='/pages/concepts.html'">View Website Concepts</button>
+  </div>
+</section>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const planInput = document.getElementById("plan");
-  const pagesContainer = document.getElementById("pages-checkboxes");
-  const form = document.getElementById("client-assets-form");
-
-  // --- EXAMPLE PRE-FILL DATA ---
-  const clientData = { 
-    plan: "Pro Plan - 5 Pages", 
-    pages: ["Home","About","Concepts","Pricing","Contact"],
-    homepageText: "Welcome to DSWD, your partner in modern, reliable web solutions. We craft digital experiences that are not only visually appealing but also strategically built for performance and user engagement.",
-    aboutPageText: "DSWD was founded on the principle of providing clear, honest, and high-quality digital services. Our dedicated team of experts works closely with clients to transform concepts into powerful online assets, ensuring your project meets both creative and technical goals."
-  };
-  
-  // Apply pre-fill data
-  planInput.value = clientData.plan;
-  document.getElementById("homepage-text").value = clientData.homepageText;
-  document.getElementById("about-page-text").value = clientData.aboutPageText;
-
-  // Generate pages checkboxes
-  clientData.pages.forEach(page => {
-    const label = document.createElement("label");
-    // Checkboxes are displayed as checked and disabled as they are part of the plan
-    label.innerHTML = `<input type="checkbox" name="pages" value="${page}" checked disabled> ${page}`;
-    pagesContainer.appendChild(label);
-  });
-
-  // --- FORM SUBMISSION HANDLING ---
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    const formData = new FormData(form);
-    
-    // For demonstration: show data submitted
-    const data = {};
-    for (let [key, value] of formData.entries()) {
-      // Handle multiple files
-      if (key.endsWith('[]')) { 
-        if (!data[key]) data[key] = [];
-        data[key].push(value.name);
-      } else {
-        // Log file names instead of the file object itself
-        data[key] = value instanceof File ? value.name : value;
-      }
-    }
-    
-    console.log("Form submitted:", data);
-    alert("Thanks! Your assets have been submitted successfully. We will review them shortly.");
-    // In a real application, replace the console.log and alert with an actual server submission (Fetch API/XHR).
-  });
-
-  // --- HAMBURGER MENU TOGGLE ---
+  // Hamburger menu toggle
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
-  hamburger.addEventListener('click', ()=> {
-    menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-  });
-});
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // --- DYNAMIC THANK YOU PAGE ---
+  // 1. Load data from localStorage / sessionStorage (from funnel)
+  const yesFeatures = JSON.parse(localStorage.getItem('yesFeatures') || '[]');
+  const noFeatures = JSON.parse(localStorage.getItem('noFeatures') || '[]');
+  const planType = localStorage.getItem('ownershipChoice') || 'Owned Outright';
+  const designCode = localStorage.getItem('designCode') || '';
+
+  // Labels mapping
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "What to Expect guide"
+  };
+
+  function renderPlanSummary() {
+    const container = document.getElementById('plan-summary');
+    if (!container) return;
+
+    let html = `<h2>Selected Plan: ${planType}</h2>`;
+    if (designCode) html += `<p><strong>Design Code:</strong> ${designCode}</p>`;
+    if (yesFeatures.length) {
+      html += `<p><strong>Features You've Selected:</strong></p><ul>`;
+      yesFeatures.forEach(f => {
+        html += `<li>${labels[f] || f}</li>`;
+      });
+      html += `</ul>`;
+    } else {
+      html += `<p>No extra features selected.</p>`;
+    }
+
+    // Include instructions or next steps
+    html += `<p>We will contact you shortly to get started and confirm all details. If you selected a monthly plan, a payment link will be sent to your email.</p>`;
+
+    container.innerHTML = html;
+  }
+
+  renderPlanSummary();
 </script>
 
 </body>
 </html>
-
