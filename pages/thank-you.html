@@ -421,76 +421,87 @@ footer {
 
   
 <main>
-  <section class="form-screen active">
-    <h2>Client Asset Submission</h2>
-    <p class="intro">
-      🎉 Thank you for starting your project! Please provide the necessary content and branding assets below so we can begin the design process.
-    </p>
-
-    <form id="client-assets-form">
-      
+  <form id="client-assets-form">
+    <!-- ===== Plan & Pages (auto-filled) ===== -->
+    <section class="form-screen active" id="screen-plan-pages">
+      <h2>🎉 Your Selected Plan</h2>
+      <p class="intro">This is the plan you purchased. No confirmation needed.</p>
       <div class="form-section">
-        <label for="plan">Your Selected Plan</label>
+        <label for="plan">Plan:</label>
         <input type="text" id="plan" name="plan" readonly>
-        <small class="input-instruction">This shows the package you selected. If this is incorrect, please contact us.</small>
       </div>
-
       <div class="form-section">
-        <label>Pages Included in Your Plan</label>
-        <div id="pages-checkboxes">
-          </div>
-        <small class="input-instruction">These pages will be created based on your package. Please focus your content submission on these pages.</small>
+        <label>Pages Included:</label>
+        <ul id="pages-list"></ul>
       </div>
-
-      <div class="section-separator"></div>
-
-      <h3>📝 Website Text Content</h3>
-      <div class="form-section">
-        <label for="homepage-text">Home Page Introduction Text</label>
-        <textarea id="homepage-text" name="homepage-text" placeholder="Write your main value proposition, a brief introduction, or a compelling welcome message for the home page..."></textarea>
-        <small class="input-instruction">Provide a strong, engaging paragraph (approx. 50-100 words) that captures what your business is about and why people should stay.</small>
-      </div>
-
-      <div class="form-section">
-        <label for="about-page-text">About Page Text</label>
-        <textarea id="about-page-text" name="about-page-text" placeholder="Tell the story of your company, your mission, and your team..."></textarea>
-        <small class="input-instruction">A detailed history, mission statement, and information about your values. This can be longer (200+ words). *Only required if 'About' is one of your included pages.*</small>
-      </div>
-      
-      <div class="form-section">
-        <label for="other-pages-text">Services/Concepts/Other Page Content</label>
-        <textarea id="other-pages-text" name="other-pages-text" placeholder="Paste the content for your Services page, Concepts page, or any other primary pages here. Clearly label which section belongs to which page."></textarea>
-        <small class="input-instruction">If your plan includes pages like Services, Pricing, or Concepts, please provide the dedicated text content for each here. Use headings to separate content for clarity.</small>
-      </div>
-
-      <div class="section-separator"></div>
-
-      <h3>🖼️ Branding and Media Assets</h3>
-      <div class="form-section">
-        <label for="logo">Company Logo (Optional but Recommended)</label>
-        <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/svg+xml">
-        <small class="input-instruction">Upload your high-resolution logo (PNG with transparent background or SVG preferred). Max size 5MB.</small>
-      </div>
-
-      <div class="form-section">
-        <label for="images">Upload Supporting Images (Optional)</label>
-        <input type="file" id="images" name="images[]" accept="image/*" multiple>
-        <small class="input-instruction">Select all high-quality photos, product shots, or background images you wish to include. You can upload multiple files at once.</small>
-      </div>
-
-      <div class="section-separator"></div>
-
-      <div class="form-section">
-        <label for="notes">Additional Notes / Design Preferences</label>
-        <textarea id="notes" name="notes" placeholder="e.g., Preferred color palette (HEX codes if different from logo), link to a website you like, specific layout ideas, or any deadlines..."></textarea>
-        <small class="input-instruction">Use this space for any specific design requirements, brand guidelines, or critical information not covered above.</small>
-      </div>
-      
       <div class="button-row">
-        <button type="submit" class="brand-btn">Submit All Assets</button>
+        <button type="button" class="funnel-btn" onclick="nextScreen('screen-text-content')">Next</button>
       </div>
-    </form>
-  </section>
+    </section>
+
+    <!-- ===== Website Text Content ===== -->
+    <section class="form-screen" id="screen-text-content">
+      <h2>📝 Website Text Content</h2>
+      <p class="intro">Provide the text content for the pages included in your plan.</p>
+
+      <div class="form-section" id="text-homepage" style="display:none;">
+        <label for="homepage-text">Home Page Introduction</label>
+        <textarea id="homepage-text" name="homepage-text" placeholder="Write a compelling welcome message..."></textarea>
+      </div>
+      <div class="form-section" id="text-about" style="display:none;">
+        <label for="about-page-text">About Page</label>
+        <textarea id="about-page-text" name="about-page-text" placeholder="Tell the story of your business..."></textarea>
+      </div>
+      <div class="form-section" id="text-services" style="display:none;">
+        <label for="services-page-text">Services / Other Pages</label>
+        <textarea id="services-page-text" name="services-page-text" placeholder="Content for your services or other pages..."></textarea>
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-plan-pages')">Back</button>
+        <button type="button" class="funnel-btn" onclick="nextScreen('screen-media')">Next</button>
+      </div>
+    </section>
+
+    <!-- ===== Branding & Media ===== -->
+    <section class="form-screen" id="screen-media">
+      <h2>🖼️ Branding & Media Assets</h2>
+      <p class="intro">Upload your branding and media files based on the features you selected.</p>
+
+      <div class="form-section" id="branding-logo" style="display:none;">
+        <label for="logo">Company Logo</label>
+        <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/svg+xml">
+      </div>
+      <div class="form-section" id="media-images" style="display:none;">
+        <label for="images">Supporting Images</label>
+        <input type="file" id="images" name="images[]" accept="image/*" multiple>
+      </div>
+      <div class="form-section" id="media-video" style="display:none;">
+        <label for="video">Video (Optional)</label>
+        <input type="file" id="video" name="video" accept="video/*">
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-text-content')">Back</button>
+        <button type="button" class="funnel-btn" onclick="nextScreen('screen-notes')">Next</button>
+      </div>
+    </section>
+
+    <!-- ===== Additional Notes ===== -->
+    <section class="form-screen" id="screen-notes">
+      <h2>📝 Additional Notes / Preferences</h2>
+      <p class="intro">Include any special requests, deadlines, or design preferences here.</p>
+
+      <div class="form-section">
+        <textarea id="notes" name="notes" placeholder="Color palette, layout ideas, or other info..."></textarea>
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="funnel-btn back" onclick="prevScreen('screen-media')">Back</button>
+        <button type="submit" class="funnel-btn submit">Submit All Assets</button>
+      </div>
+    </section>
+  </form>
 </main>
 
 <div class="social-icons" aria-label="Social media links">
@@ -554,6 +565,42 @@ footer {
       });
     });
   });
+
+
+
+
+    const screens = Array.from(document.querySelectorAll('.form-screen'));
+  function nextScreen(id) {
+    screens.forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+  function prevScreen(id) {
+    screens.forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ===== Populate Plan & Pages dynamically =====
+  const planInput = document.getElementById('plan');
+  const pagesList = document.getElementById('pages-list');
+
+  const clientPlan = 'Pro'; // replace with funnel data
+  const planPages = ['Home', 'About', 'Services', 'Pricing', 'Contact'];
+  const yesFeatures = ['branding','content','guide']; // replace with client answers
+
+  planInput.value = clientPlan;
+  planPages.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = p;
+    pagesList.appendChild(li);
+
+    if(p.toLowerCase() === 'home') document.getElementById('text-homepage').style.display = 'block';
+    if(p.toLowerCase() === 'about') document.getElementById('text-about').style.display = 'block';
+    if(p.toLowerCase() === 'services') document.getElementById('text-services').style.display = 'block';
+  });
+
+  if(yesFeatures.includes('branding')) document.getElementById('branding-logo').style.display = 'block';
+  if(yesFeatures.includes('content')) document.getElementById('media-images').style.display = 'block';
+  if(yesFeatures.includes('guide')) document.getElementById('media-video').style.display = 'block';
 </script>
   
 </body>
