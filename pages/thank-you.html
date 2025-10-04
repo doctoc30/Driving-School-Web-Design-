@@ -5,19 +5,345 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thank You & Client Funnel</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
-<style>
-  /* ====== Your existing CSS can go here ====== */
-  /* Include all your index.html funnel CSS, buttons, .form-screen, .button-row, etc. */
-  body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; margin:0; padding:0; }
-  .form-screen { display:none; flex-direction: column; justify-content:center; align-items:center; min-height:100vh; padding:20px; box-sizing:border-box; text-align:center; transition: all 0.3s ease;}
-  .form-screen.active { display:flex; }
-  .button-row { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:20px; }
-  button.brand-btn { background:#fff; color:#33a7d4; border:2px solid #33a7d4; border-radius:12px; padding:1rem 2rem; font-weight:bold; cursor:pointer; transition:all 0.2s ease; }
-  button.brand-btn:hover { background:#f0f8ff; }
-  .pricing-container { display:flex; flex-direction:column; gap:20px; width:100%; max-width:600px; }
-  .pricing-card { background:rgba(255,255,255,0.1); border-radius:12px; padding:20px; text-align:center; }
-  .pricing-card ul { list-style:none; padding:0; margin:10px 0 0 0; }
+
+  <style>
+  <style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #33a7d4;
+    color: white;
+    overflow-x: hidden;
+  }
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: #33a7d4;
+    z-index: 2000;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+  .logo {
+    font-weight: 900;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+    user-select: none;
+    cursor: default;
+  }
+  .hamburger {
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2100;
+  }
+  .hamburger span {
+    display: block;
+    height: 3.5px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.35s ease-in-out;
+  }
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  nav.menu {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #33a7d4;
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4rem;
+    z-index: 2050;
+  }
+  nav.menu.open { transform: translateX(0); }
+  nav.menu ul { list-style: none; }
+  nav.menu ul li {
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    transform: translateX(-40px);
+    font-weight: 900;
+    font-size: 3rem;
+    letter-spacing: 0.1em;
+  }
+  nav.menu ul li a {
+    color: white;
+    text-decoration: none;
+    user-select: none;
+    display: inline-block;
+    transition: color 0.3s ease;
+  }
+  nav.menu ul li a:hover { color: #222; }
+  nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
+  nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
+  nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
+  nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
+  nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
+  nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
+  @keyframes slideInFade {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (min-width: 1024px) {
+    .hamburger { display: none; }
+    nav.menu {
+      position: static;
+      height: auto;
+      width: auto;
+      background: transparent;
+      transform: none !important;
+      padding-left: 0;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    nav.menu ul { display: flex; gap: 3rem; }
+    nav.menu ul li {
+      margin: 0;
+      opacity: 1 !important;
+      transform: none !important;
+      font-size: 1.25rem;
+      animation: none !important;
+    }
+    nav.menu ul li a {
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: white;
+      letter-spacing: 0.15em;
+    }
+    nav.menu ul li a:hover { color: #222; }
+  }
+
+  /* 1. FIRST QUESTION SCREEN */
+  #form-start-choice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background: #33a7d4;
+    color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  #form-start-choice.show { display: flex; opacity: 1; }
+
+  /* 2. MULTI-STEP FORM SCREENS */
+  .form-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    min-height: 60vh;
+    background: #33a7d4;
+    color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    border-radius: 12px;
+  }
+  .form-screen.active { display: flex; }
+  @media (max-height: 600px) {
+    .form-screen {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      justify-content: flex-start;
+      padding-top: 4rem;
+      min-height: auto;
+    }
+  }
+
+  .form-screen h2 {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+    line-height: 1.4;
+  }
+
+  /* 3. FORM FIELDS */
+  select,
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    appearance: none;
+    background-color: white;
+    color: #333;
+    height: 3.5rem;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  /* 4. CONSENT CHECKBOX */
+  .consent-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 2rem;
+  }
+  .consent-wrapper input[type="checkbox"] { margin-right: 8px; }
+
+  /* 5. BUTTONS */
+  button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #33a7d4;
+    font-weight: bold;
+    margin: 0.5rem;
+    cursor: pointer;
+  }
+  button:hover { opacity: 0.9; }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .button-row button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #33a7d4;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto;
+    min-width: 100px;
+  }
+
+  .skip-link {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+    color: #ffffff;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    font-weight: normal;
+    text-decoration: none;
+    z-index: 10000;
+    box-shadow: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  .skip-link:hover { opacity: 0.8; }
+
+  .logo img { height: 40px; width: auto; display: block; }
+
+  #main-intro-options {
+    justify-content: center !important;
+    min-height: 100vh;
+    padding-top: 0 !important;
+  }
+
+  .brand-btn {
+    background: #fff;
+    color: #33a7d4;
+    border: 2px solid #33a7d4;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    margin: 0.5rem 0;
+    transition: all 0.2s ease;
+  }
+  .brand-btn:hover { background: #f0f8ff; }
+
+  .btn-subtext {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: normal;
+    margin-top: 0.3rem;
+  }
+
+  /* Scroll adjustments */
+  html, body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .includes-message {
+    border-top: 1px solid #fff;
+    margin: 15px 0;
+    padding-top: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fff;
+    list-style: none;
+  }
 </style>
+
+  </style>
+
+
+  
 </head>
 <body>
 
