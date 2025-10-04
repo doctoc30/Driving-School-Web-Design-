@@ -1,223 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Thank You | DSWD Funnel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You & Client Funnel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #33a7d4;
-    color: white;
-    overflow-x: hidden;
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 60px; display: flex; align-items: center;
-    justify-content: space-between; padding: 0 20px;
-    background-color: #33a7d4; z-index: 2000;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-  }
-  .logo {
-    font-weight: 900; font-size: 1.7rem; letter-spacing: 2px;
-  }
-
-  /* ===== HAMBURGER ===== */
-  .hamburger {
-    width: 28px; height: 22px; cursor: pointer;
-    display: flex; flex-direction: column;
-    justify-content: space-between; z-index: 2100;
-  }
-  .hamburger span {
-    display: block; height: 3.5px; background: white;
-    border-radius: 2px; transition: all 0.35s ease-in-out;
-  }
-  .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-  .hamburger.active span:nth-child(2) { opacity: 0; }
-  .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-  nav.menu {
-    position: fixed; top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: #33a7d4;
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    display: flex; flex-direction: column;
-    justify-content: center; padding-left: 4rem;
-    z-index: 2050;
-  }
-  nav.menu.open { transform: translateX(0); }
-  nav.menu ul { list-style: none; }
-  nav.menu ul li {
-    margin-bottom: 2.2rem; opacity: 0; transform: translateX(-40px);
-    font-weight: 900; font-size: 3rem;
-  }
-  nav.menu ul li a {
-    color: white; text-decoration: none;
-  }
-  @keyframes slideInFade { to { opacity: 1; transform: translateX(0); } }
-
-  @media (min-width: 1024px) {
-    .hamburger { display: none; }
-    nav.menu {
-      position: static; height: auto; width: auto;
-      background: transparent; transform: none !important;
-      padding-left: 0; flex-direction: row;
-      justify-content: flex-end; align-items: center;
-    }
-    nav.menu ul { display: flex; gap: 3rem; }
-    nav.menu ul li { margin: 0; opacity: 1; transform: none; font-size: 1.2rem; }
-  }
-
-  /* ===== THANK YOU SECTION ===== */
-  main {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 120px 20px 80px;
-  }
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  .summary {
-    margin: 30px auto;
-    max-width: 600px;
-    text-align: left;
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    border-radius: 10px;
-    line-height: 1.6;
-  }
-  .summary p {
-    color: white;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  .continue-btn {
-    display: inline-block;
-    background: white;
-    color: #33a7d4;
-    padding: 14px 28px;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-  .continue-btn:hover {
-    background: #33a7d4;
-    color: white;
-    border: 2px solid white;
-  }
-
-  @media (max-width: 600px) and (orientation: portrait) {
-    main {
-      justify-content: center;
-      text-align: center;
-      padding-top: 120px;
-    }
-    h1 { font-size: 1.7rem; }
-    .summary { text-align: center; }
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    text-align: center;
-    padding: 30px 10px;
-  }
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .social-icons a {
-    margin: 0 10px;
-  }
-  .social-icons img {
-    width: 40px;
-    height: 40px;
-    filter: brightness(0) invert(1);
-  }
-  .footer-inner {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.9rem;
-  }
+  /* ====== Your existing CSS can go here ====== */
+  /* Include all your index.html funnel CSS, buttons, .form-screen, .button-row, etc. */
+  body { font-family: 'Poppins', sans-serif; background-color: #33a7d4; color: white; margin:0; padding:0; }
+  .form-screen { display:none; flex-direction: column; justify-content:center; align-items:center; min-height:100vh; padding:20px; box-sizing:border-box; text-align:center; transition: all 0.3s ease;}
+  .form-screen.active { display:flex; }
+  .button-row { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:20px; }
+  button.brand-btn { background:#fff; color:#33a7d4; border:2px solid #33a7d4; border-radius:12px; padding:1rem 2rem; font-weight:bold; cursor:pointer; transition:all 0.2s ease; }
+  button.brand-btn:hover { background:#f0f8ff; }
+  .pricing-container { display:flex; flex-direction:column; gap:20px; width:100%; max-width:600px; }
+  .pricing-card { background:rgba(255,255,255,0.1); border-radius:12px; padding:20px; text-align:center; }
+  .pricing-card ul { list-style:none; padding:0; margin:10px 0 0 0; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">D S W D</div>
-  <div class="hamburger"><span></span><span></span><span></span></div>
-  <nav class="menu">
-    <ul>
-      <li><a href="/pages/home.html">Home</a></li>
-      <li><a href="/pages/about.html">About</a></li>
-      <li><a href="/pages/concepts.html">Concepts</a></li>
-      <li><a href="/pages/pricing.html">Pricing</a></li>
-      <li><a href="/pages/contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
+<!-- =================== 1. Thank You Screen =================== -->
+<div id="thank-you-screen" class="form-screen active">
+  <h2>Thank You for Your Order!</h2>
 
-<main>
-  <h1>Thank You for Your Submission</h1>
-  <p>Here’s a summary of what you selected:</p>
-  <div class="summary" id="summary-container">
-    <!-- dynamically filled by JS -->
+  <div class="pricing-container">
+    <div class="pricing-card recommended in-view" id="summary-card">
+      <h3 id="plan-name">Your Plan</h3>
+      <ul id="selected-features"></ul>
+      <ul id="not-selected-features"></ul>
+    </div>
   </div>
-  <a href="#order" class="continue-btn" id="continue-btn">Continue to Order Form</a>
-</main>
 
-<footer>
-  <div class="social-icons">
-    <a href="https://x.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X"></a>
-    <a href="https://facebook.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
-    <a href="https://instagram.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+  <button class="brand-btn" id="continue-funnel">Continue</button>
+</div>
+
+<!-- =================== 2. Logo Upload =================== -->
+<div id="logo-upload-screen" class="form-screen">
+  <h2>Upload Your Logo</h2>
+  <input type="file" accept="image/*" id="logo-file" />
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="next()">Next</button>
   </div>
-  <div class="footer-inner">
-    <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+</div>
+
+<!-- =================== 3. Branding Colors =================== -->
+<div id="branding-colors-screen" class="form-screen">
+  <h2>Your Branding Colors</h2>
+  <input type="text" placeholder="Primary Color" id="primary-color" />
+  <input type="text" placeholder="Secondary Color" id="secondary-color" />
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="next()">Next</button>
   </div>
-</footer>
+</div>
+
+<!-- =================== 4. Business Info =================== -->
+<div id="additional-details-screen" class="form-screen">
+  <h2>Additional Information</h2>
+  <input type="text" placeholder="Business Name" id="business-name" />
+  <textarea placeholder="Additional Notes" id="notes" style="width:80%;height:120px;border-radius:8px;padding:1rem;"></textarea>
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+  </div>
+</div>
 
 <script>
-  // ===== HAMBURGER MENU =====
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    menu.classList.toggle('open');
-  });
+  // =================== Dynamic Data Example ===================
+  // These would normally come from your index.html payment selection
+  let selectedPlan = "Premium Plan";  
+  let yesFeatures = ["Website", "SEO Optimization"];  
+  let noFeatures = ["Social Media Setup"];
 
-  // ===== LOAD USER SELECTIONS =====
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("summary-container");
-    const data = JSON.parse(localStorage.getItem("funnelSelections")) || {};
+  function showThankYouScreen() {
+    hideAllScreens();
+    const screen = document.getElementById("thank-you-screen");
+    screen.classList.add("active");
 
-    if (Object.keys(data).length === 0) {
-      container.innerHTML = "<p>No selections found.</p>";
-    } else {
-      let html = "";
-      for (const [question, answer] of Object.entries(data)) {
-        html += `<p><strong>${question}:</strong> ${answer}</p>`;
-      }
-      container.innerHTML = html;
-    }
+    document.getElementById("plan-name").textContent = selectedPlan;
 
-    // Continue to order step (same funnel)
-    document.getElementById("continue-btn").addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href = "index.html#order"; // Adjust anchor to your funnel’s order section
+    const yesList = document.getElementById("selected-features");
+    yesList.innerHTML = "";
+    yesFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      yesList.appendChild(li);
     });
-  });
+
+    const noList = document.getElementById("not-selected-features");
+    noList.innerHTML = "";
+    noFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.style.opacity = "0.7";
+      noList.appendChild(li);
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // =================== Funnel Navigation ===================
+  const screens = [
+    document.getElementById("thank-you-screen"),
+    document.getElementById("logo-upload-screen"),
+    document.getElementById("branding-colors-screen"),
+    document.getElementById("additional-details-screen")
+  ];
+
+  let currentScreen = 0;
+
+  function hideAllScreens() {
+    screens.forEach(s => s.classList.remove("active"));
+  }
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add("active");
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add("active");
+    }
+  }
+
+  document.getElementById("continue-funnel").onclick = next;
+
+  // =================== Funnel Submission ===================
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      selectedFeatures: yesFeatures.join(", "),
+      unselectedFeatures: noFeatures.join(", "),
+      logo: document.getElementById("logo-file").files[0]?.name || "",
+      primaryColor: document.getElementById("primary-color").value,
+      secondaryColor: document.getElementById("secondary-color").value,
+      businessName: document.getElementById("business-name").value,
+      notes: document.getElementById("notes").value
+    };
+
+    console.log("Funnel submission:", data);
+
+    alert("Thank you! Your details have been submitted.");
+  }
+
+  // =================== Initialize ===================
+  showThankYouScreen();
 </script>
 
 </body>
