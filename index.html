@@ -1620,21 +1620,23 @@ if (initialActive) {
 
 
 
-function showRecommendedPlan(planType = 'outright') {
+
+ function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  const yes = yesFeatures.slice();
+  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
+  // Define tiers & feature labels **in the exact funnel question order**
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
+    basic: ["mobile","contact","bio","social","booking","cta"],
     pro: ["seo","reviews","branding","faq","newsletter"],
     premium: ["packages","email","content","guide"]
   };
 
   const labels = {
-    booking: "Online booking & payment",
+    booking: "Booking lessons & online payment",
     mobile: "Mobile-friendly design",
     cta: "Strong call-to-action buttons",
     contact: "Simple contact form",
@@ -1658,17 +1660,16 @@ function showRecommendedPlan(planType = 'outright') {
   };
 
   const tierOrder = ["basic","pro","premium"];
-  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
+  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees = { basic: 199, pro: 299, premium: 499 };
+  const setupFees      = { basic: 199, pro: 299, premium: 499 };
 
   planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector(".features-list");
+    const level = (card.dataset.plan || "").toLowerCase();
+    const list  = card.querySelector(".features-list");
     const priceEl = card.querySelector(".price");
-    const payBtn = card.querySelector(".pay-now");
-    const note = card.querySelector("small");
-
+    const payBtn  = card.querySelector(".pay-now");
+    const note    = card.querySelector("small");
     if (!level || !list || !priceEl || !payBtn) return;
 
     // ----- Pricing -----
@@ -1685,7 +1686,7 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Features List -----
     list.innerHTML = "";
 
-    // 1️⃣ Core Defaults
+    // 1️⃣ Core Default Services
     coreDefaults[level].forEach(f => {
       const li = document.createElement("li");
       li.textContent = f;
@@ -1693,24 +1694,17 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     });
 
-    // Insert gradient divider after core defaults
-    const divider = document.createElement("li");
-    divider.className = "gradient-divider";
-    divider.style.height = "2px";
-    divider.style.margin = "25px 0";
-    divider.style.listStyle = "none";
-    divider.style.border = "none";
-    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-    list.appendChild(divider);
+    // Determine which tiers to show for this card
+    const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) <= tierOrder.indexOf(level));
 
-    // ----- Lower-tier YES features -----
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
-      const features = yes.filter(f => tiers[tier].includes(f));
+    // Lower-tier YES features
+    allowedTiers.forEach(t => {
+      if (t === level) return; // skip current tier
+      const features = yes.filter(f => tiers[t].includes(f));
       if (!features.length) return;
 
       const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+      heading.textContent = `Included from ${t.charAt(0).toUpperCase() + t.slice(1)}`;
       heading.style.fontWeight = "700";
       heading.style.marginTop = "20px";
       list.appendChild(heading);
@@ -1724,7 +1718,7 @@ function showRecommendedPlan(planType = 'outright') {
       });
     });
 
-    // ----- Current-tier YES features -----
+    // Current tier YES features
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -1742,14 +1736,13 @@ function showRecommendedPlan(planType = 'outright') {
       });
     }
 
-    // Fallback
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
       list.appendChild(li);
     }
 
-    // ----- PayPal button -----
+    // ✅ PayPal redirect
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1767,11 +1760,9 @@ function showRecommendedPlan(planType = 'outright') {
 
   // Highlight recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const recCard = planCards.find(c =>
-    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
-    : c.dataset.plan === "basic"
-  );
+  const recCard = planCards.find(c => yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
+                    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
+                    : c.dataset.plan === "basic");
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
