@@ -337,37 +337,6 @@
     color: #fff;
     list-style: none;
   }
-
-
-
-
-      body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: #fff;
-    padding: 2rem;
-  }
-  h2 {
-    margin-bottom: 1rem;
-  }
-  #summary-card {
-    background: #1e1e1e;
-    border-radius: 12px;
-    padding: 1.5rem;
-    max-width: 600px;
-    margin: auto;
-  }
-  #grouped-features {
-    margin-top: 1rem;
-  }
-  .feature-block {
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-
 </style>
   
 </head>
@@ -375,244 +344,265 @@
 
 <!-- =================== THANK YOU ORDER FORM =================== -->
 
-<div id="thank-you-screen" class="form-screen active">
-  <h2>Thank You for Your Order!</h2>
+<div id="thank-you-container">
 
-  <div class="pricing-container">
-    <div class="pricing-card recommended in-view" id="summary-card">
-      <h3 id="plan-name">Your Plan</h3>
-      <div id="grouped-features"></div>
+  <!-- 1️⃣ Thank You Summary Screen -->
+  <div id="thank-you-screen" class="form-screen active">
+    <h2>Thank You for Your Order!</h2>
+    <div class="pricing-container">
+      <div class="pricing-card recommended in-view" id="summary-card">
+        <h3 id="plan-name">Your Plan</h3>
+        <p class="price" id="plan-price"></p>
+        <ul id="selected-features"></ul>
+        <ul id="not-selected-features"></ul>
+      </div>
     </div>
+    <button class="brand-btn" id="continue-funnel">Continue</button>
   </div>
 
-  <button class="brand-btn" id="continue-funnel" onclick="alert('Continue to the next step')">Continue</button>
+  <!-- 2️⃣ Dynamic Step Container (features/assets collection) -->
+  <div id="dynamic-step-container"></div>
+
 </div>
 
-
-
 <script>
-// =================== Dynamic Data ===================
-let selectedPlan = localStorage.getItem("selectedPlan") || "Premium Plan";  
-let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");  
-let noFeatures = JSON.parse(localStorage.getItem("noFeatures") || "[]");  
+  // =================== Dynamic Data ===================
+  let selectedPlan = localStorage.getItem("selectedPlan") || "Premium Plan";  
+  let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");  
+  let noFeatures = JSON.parse(localStorage.getItem("noFeatures") || "[]");  
 
-const featureLabels = {
-  booking: "Booking & Payment System",
-  mobile: "Mobile-Friendly Site",
-  cta: "Call-to-Action Buttons",
-  contact: "Contact Form",
-  bio: "About / Instructor Bio",
-  social: "Social Media Integration",
-  seo: "SEO Optimization",
-  reviews: "Student Reviews Display",
-  branding: "Branding Help (Logo / Colors)",
-  faq: "FAQ / Student Guide",
-  newsletter: "Newsletter Signup",
-  packages: "Lesson Packages / Gift Vouchers",
-  email: "Professional Email Address",
-  content: "Content Files (Text / Images)",
-  guide: "“What to Expect” Guide"
-};
-
-// =================== Show Thank You Summary ===================
-function showThankYouScreen() {
-  hideAllScreens();
-  const screen = document.getElementById("thank-you-screen");
-  screen.classList.add("active");
-
-  document.getElementById("plan-name").textContent = selectedPlan;
-
-  const groupedContainer = document.createElement('div');
-  groupedContainer.id = 'grouped-features';
-  yesFeatures.forEach(f => {
-    const block = document.createElement('div');
-    block.className = 'feature-block';
-    block.textContent = featureLabels[f] || f;
-    groupedContainer.appendChild(block);
-  });
-
-  // Clear old and append new
-  const oldContainer = document.getElementById('feature-summary-container');
-  if (oldContainer) oldContainer.remove();
-  screen.appendChild(groupedContainer);
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// =================== Generate Dynamic Steps ===================
-function generateDynamicSteps() {
-  const container = document.getElementById('dynamic-step-container');
-  container.innerHTML = '';
-
-  const stepMapping = {
-    booking: { type: 'text', label: 'Provide your Booking System details' },
-    mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
-    cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
-    contact: { type: 'text', label: 'Contact Form Details' },
-    bio: { type: 'textarea', label: 'Instructor / About Me Bio' },
-    social: { type: 'text', label: 'Social Media Links' },
-    seo: { type: 'text', label: 'SEO Keywords / Locations' },
-    reviews: { type: 'text', label: 'Student Reviews / Testimonials' },
-    branding: { type: 'text', label: 'Branding Notes / Logo Ideas' },
-    faq: { type: 'textarea', label: 'FAQ / Student Guide Content' },
-    newsletter: { type: 'text', label: 'Newsletter / Mailing List Setup Info' },
-    packages: { type: 'text', label: 'Lesson Packages / Gift Voucher Info' },
-    email: { type: 'text', label: 'Professional Email Address (info@domain.com)' },
-    content: { type: 'file', label: 'Upload Content Files (Text / Images)' },
-    guide: { type: 'file', label: 'Upload “What to Expect” Guide' },
-    logo: { type: 'file', label: 'Upload Your Logo' }
+  const featureLabels = {
+    booking: "Booking & Payment System",
+    mobile: "Mobile-Friendly Site",
+    cta: "Call-to-Action Buttons",
+    contact: "Contact Form",
+    bio: "About / Instructor Bio",
+    social: "Social Media Integration",
+    seo: "SEO Optimization",
+    reviews: "Student Reviews Display",
+    branding: "Branding Help (Logo / Colors)",
+    faq: "FAQ / Student Guide",
+    newsletter: "Newsletter Signup",
+    packages: "Lesson Packages / Gift Vouchers",
+    email: "Professional Email Address",
+    content: "Content Files (Text / Images)",
+    guide: "“What to Expect” Guide"
   };
 
-  yesFeatures.forEach((feature, index) => {
-    const step = stepMapping[feature];
-    if (!step) return;
-
-    const div = document.createElement('div');
-    div.className = 'form-screen';
-    div.id = `step-${index}`;
-
-    const h2 = document.createElement('h2');
-    h2.textContent = step.label;
-    div.appendChild(h2);
-
-    let input;
-    if (step.type === 'textarea') {
-      input = document.createElement('textarea');
-    } else if (step.type === 'file') {
-      input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = true;
-
-      // Drag-and-drop support
-      const dropArea = document.createElement('div');
-      dropArea.className = 'drop-area';
-      dropArea.textContent = 'Drag & drop files here or click to upload';
-      dropArea.style.padding = '1rem';
-      dropArea.style.border = '2px dashed #ccc';
-      dropArea.style.borderRadius = '8px';
-      dropArea.style.marginBottom = '1rem';
-
-      dropArea.addEventListener('click', () => input.click());
-      dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = '#000'; });
-      dropArea.addEventListener('dragleave', (e) => { e.preventDefault(); dropArea.style.borderColor = '#ccc'; });
-      dropArea.addEventListener('drop', (e) => { e.preventDefault(); input.files = e.dataTransfer.files; showFilePreview(dropArea, input.files); });
-      input.addEventListener('change', () => showFilePreview(dropArea, input.files));
-
-      div.appendChild(dropArea);
-    } else {
-      input = document.createElement('input');
-      input.type = step.type;
-    }
-    input.id = `input-${feature}`;
-    if (step.type !== 'file') div.appendChild(input);
-
-    const nav = document.createElement('div');
-    nav.className = 'button-row';
-    const backBtn = document.createElement('button');
-    backBtn.className = 'brand-btn';
-    backBtn.textContent = 'Back';
-    backBtn.onclick = prev;
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'brand-btn';
-    nextBtn.textContent = 'Next';
-    nextBtn.onclick = next;
-    nav.appendChild(backBtn);
-    nav.appendChild(nextBtn);
-    div.appendChild(nav);
-
-    container.appendChild(div);
-  });
-
-  // Mandatory business info step
-  const businessDiv = document.createElement('div');
-  businessDiv.className = 'form-screen';
-  businessDiv.id = 'mandatory-info';
-  businessDiv.innerHTML = `
-    <h2>Business & Contact Information</h2>
-    <input type="text" id="business-name" placeholder="Business Name" required />
-    <input type="text" id="phone" placeholder="Phone Number" required />
-    <input type="email" id="email" placeholder="Email Address" required />
-    <div class="button-row">
-      <button class="brand-btn" onclick="prev()">Back</button>
-      <button class="brand-btn" onclick="submitFunnel()">Submit</button>
-    </div>
-    <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
-  `;
-  container.appendChild(businessDiv);
-}
-
-// =================== File Preview ===================
-function showFilePreview(container, files) {
-  let preview = container.querySelector('.file-preview');
-  if (!preview) {
-    preview = document.createElement('ul');
-    preview.className = 'file-preview';
-    container.appendChild(preview);
-  }
-  preview.innerHTML = '';
-  Array.from(files).forEach(f => {
-    const li = document.createElement('li');
-    li.textContent = f.name;
-    preview.appendChild(li);
-  });
-}
-
-// =================== Funnel Navigation ===================
-let screens = [];
-let currentScreen = 0;
-
-function hideAllScreens() {
-  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-}
-
-function next() {
-  if (currentScreen < screens.length - 1) {
+  // =================== Show Thank You Summary ===================
+  function showThankYouScreen() {
     hideAllScreens();
-    currentScreen++;
-    screens[currentScreen].classList.add('active');
+    const screen = document.getElementById("thank-you-screen");
+    screen.classList.add("active");
+
+    document.getElementById("plan-name").textContent = selectedPlan;
+
+    const yesList = document.getElementById("selected-features");
+    yesList.innerHTML = "";
+    yesFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = featureLabels[f] || f;
+      yesList.appendChild(li);
+    });
+
+    const noList = document.getElementById("not-selected-features");
+    noList.innerHTML = "";
+    noFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = featureLabels[f] || f;
+      li.style.opacity = "0.7";
+      noList.appendChild(li);
+    });
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-}
 
-function prev() {
-  if (currentScreen > 0) {
-    hideAllScreens();
-    currentScreen--;
-    screens[currentScreen].classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // =================== Generate Dynamic Steps with Drag & Drop ===================
+  function generateDynamicSteps() {
+    const container = document.getElementById('dynamic-step-container');
+    container.innerHTML = '';
+
+    const stepMapping = {
+      booking: { type: 'text', label: 'Provide your Booking System details' },
+      mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
+      cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
+      contact: { type: 'text', label: 'Contact Form Details' },
+      bio: { type: 'textarea', label: 'Instructor / About Me Bio' },
+      social: { type: 'text', label: 'Social Media Links' },
+      seo: { type: 'text', label: 'SEO Keywords / Locations' },
+      reviews: { type: 'text', label: 'Student Reviews / Testimonials' },
+      branding: { type: 'text', label: 'Branding Notes / Logo Ideas' },
+      faq: { type: 'textarea', label: 'FAQ / Student Guide Content' },
+      newsletter: { type: 'text', label: 'Newsletter / Mailing List Setup Info' },
+      packages: { type: 'text', label: 'Lesson Packages / Gift Voucher Info' },
+      email: { type: 'text', label: 'Professional Email Address (info@domain.com)' },
+      content: { type: 'file', label: 'Upload Content Files (Text / Images)' },
+      guide: { type: 'file', label: 'Upload “What to Expect” Guide' },
+      logo: { type: 'file', label: 'Upload Your Logo' }
+    };
+
+    yesFeatures.forEach((feature, index) => {
+      const step = stepMapping[feature];
+      if (!step) return;
+
+      const div = document.createElement('div');
+      div.className = 'form-screen';
+      div.id = `step-${index}`;
+
+      const h2 = document.createElement('h2');
+      h2.textContent = step.label;
+      div.appendChild(h2);
+
+      let input;
+      if (step.type === 'textarea') {
+        input = document.createElement('textarea');
+      } else if (step.type === 'file') {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+
+        // Drag-and-drop support
+        const dropArea = document.createElement('div');
+        dropArea.className = 'drop-area';
+        dropArea.textContent = 'Drag & drop files here or click to upload';
+        dropArea.style.padding = '1rem';
+        dropArea.style.border = '2px dashed #ccc';
+        dropArea.style.borderRadius = '8px';
+        dropArea.style.marginBottom = '1rem';
+
+        dropArea.addEventListener('click', () => input.click());
+        dropArea.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropArea.style.borderColor = '#000';
+        });
+        dropArea.addEventListener('dragleave', (e) => {
+          e.preventDefault();
+          dropArea.style.borderColor = '#ccc';
+        });
+        dropArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          input.files = e.dataTransfer.files;
+          showFilePreview(dropArea, input.files);
+        });
+
+        input.addEventListener('change', () => showFilePreview(dropArea, input.files));
+
+        div.appendChild(dropArea);
+      } else {
+        input = document.createElement('input');
+        input.type = step.type;
+      }
+      input.id = `input-${feature}`;
+      if (step.type !== 'file') div.appendChild(input);
+
+      // Navigation
+      const nav = document.createElement('div');
+      nav.className = 'button-row';
+      const backBtn = document.createElement('button');
+      backBtn.className = 'brand-btn';
+      backBtn.textContent = 'Back';
+      backBtn.onclick = prev;
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'brand-btn';
+      nextBtn.textContent = 'Next';
+      nextBtn.onclick = next;
+      nav.appendChild(backBtn);
+      nav.appendChild(nextBtn);
+      div.appendChild(nav);
+
+      container.appendChild(div);
+    });
+
+    // Mandatory business info step
+    const businessDiv = document.createElement('div');
+    businessDiv.className = 'form-screen';
+    businessDiv.id = 'mandatory-info';
+    businessDiv.innerHTML = `
+      <h2>Business & Contact Information</h2>
+      <input type="text" id="business-name" placeholder="Business Name" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <div class="button-row">
+        <button class="brand-btn" onclick="prev()">Back</button>
+        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+      </div>
+      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
+    `;
+    container.appendChild(businessDiv);
   }
-}
 
-document.getElementById("continue-funnel").onclick = next;
-
-// =================== Funnel Submission ===================
-function submitFunnel() {
-  const data = {
-    plan: selectedPlan,
-    selectedFeatures: yesFeatures.join(", "),
-    unselectedFeatures: noFeatures.join(", "),
-    businessName: document.getElementById("business-name").value,
-    phone: document.getElementById("phone").value,
-    email: document.getElementById("email").value,
-    gdprConsent: document.getElementById("gdpr-consent").checked
-  };
-
-  yesFeatures.forEach(f => {
-    const el = document.getElementById(`input-${f}`);
-    if (el) {
-      data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
+  // =================== File Preview ===================
+  function showFilePreview(container, files) {
+    let preview = container.querySelector('.file-preview');
+    if (!preview) {
+      preview = document.createElement('ul');
+      preview.className = 'file-preview';
+      container.appendChild(preview);
     }
-  });
+    preview.innerHTML = '';
+    Array.from(files).forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.name;
+      preview.appendChild(li);
+    });
+  }
 
-  console.log("Funnel submission:", data);
-  alert("Thank you! Your details have been submitted.");
-}
+  // =================== Funnel Navigation ===================
+  let screens = [];
+  let currentScreen = 0;
 
-// =================== Initialize ===================
-showThankYouScreen();
-generateDynamicSteps();
-screens = Array.from(document.querySelectorAll('.form-screen'));
-screens[0].classList.add('active');
+  function hideAllScreens() {
+    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+  }
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById("continue-funnel").onclick = next;
+
+  // =================== Funnel Submission ===================
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      selectedFeatures: yesFeatures.join(", "),
+      unselectedFeatures: noFeatures.join(", "),
+      businessName: document.getElementById("business-name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      gdprConsent: document.getElementById("gdpr-consent").checked
+    };
+
+    yesFeatures.forEach(f => {
+      const el = document.getElementById(`input-${f}`);
+      if (el) {
+        data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
+      }
+    });
+
+    console.log("Funnel submission:", data);
+    alert("Thank you! Your details have been submitted.");
+  }
+
+  // =================== Initialize ===================
+  showThankYouScreen();
+  generateDynamicSteps();
+  screens = Array.from(document.querySelectorAll('.form-screen'));
+  screens[0].classList.add('active');
 </script>
 
 </body>
