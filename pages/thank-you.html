@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
 
   <style>
-  <style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -343,60 +342,54 @@
 </head>
 <body>
 
-<!-- =================== 1. Thank You Screen =================== -->
-<div id="thank-you-screen" class="form-screen active">
-  <h2>Thank You for Your Order!</h2>
+<!-- =================== THANK YOU ORDER FORM =================== -->
 
-  <div class="pricing-container">
-    <div class="pricing-card recommended in-view" id="summary-card">
-      <h3 id="plan-name">Your Plan</h3>
-      <ul id="selected-features"></ul>
-      <ul id="not-selected-features"></ul>
+<div id="thank-you-container">
+
+  <!-- 1️⃣ Thank You Summary Screen -->
+  <div id="thank-you-screen" class="form-screen active">
+    <h2>Thank You for Your Order!</h2>
+    <div class="pricing-container">
+      <div class="pricing-card recommended in-view" id="summary-card">
+        <h3 id="plan-name">Your Plan</h3>
+        <p class="price" id="plan-price"></p>
+        <ul id="selected-features"></ul>
+        <ul id="not-selected-features"></ul>
+      </div>
     </div>
+    <button class="brand-btn" id="continue-funnel">Continue</button>
   </div>
 
-  <button class="brand-btn" id="continue-funnel">Continue</button>
-</div>
+  <!-- 2️⃣ Dynamic Step Container (features/assets collection) -->
+  <div id="dynamic-step-container"></div>
 
-<!-- =================== 2. Logo Upload =================== -->
-<div id="logo-upload-screen" class="form-screen">
-  <h2>Upload Your Logo</h2>
-  <input type="file" accept="image/*" id="logo-file" />
-  <div class="button-row">
-    <button class="brand-btn" onclick="prev()">Back</button>
-    <button class="brand-btn" onclick="next()">Next</button>
-  </div>
-</div>
-
-<!-- =================== 3. Branding Colors =================== -->
-<div id="branding-colors-screen" class="form-screen">
-  <h2>Your Branding Colors</h2>
-  <input type="text" placeholder="Primary Color" id="primary-color" />
-  <input type="text" placeholder="Secondary Color" id="secondary-color" />
-  <div class="button-row">
-    <button class="brand-btn" onclick="prev()">Back</button>
-    <button class="brand-btn" onclick="next()">Next</button>
-  </div>
-</div>
-
-<!-- =================== 4. Business Info =================== -->
-<div id="additional-details-screen" class="form-screen">
-  <h2>Additional Information</h2>
-  <input type="text" placeholder="Business Name" id="business-name" />
-  <textarea placeholder="Additional Notes" id="notes" style="width:80%;height:120px;border-radius:8px;padding:1rem;"></textarea>
-  <div class="button-row">
-    <button class="brand-btn" onclick="prev()">Back</button>
-    <button class="brand-btn" onclick="submitFunnel()">Submit</button>
-  </div>
 </div>
 
 <script>
-  // =================== Dynamic Data Example ===================
-  // These would normally come from your index.html payment selection
-  let selectedPlan = "Premium Plan";  
-  let yesFeatures = ["Website", "SEO Optimization"];  
-  let noFeatures = ["Social Media Setup"];
+  // =================== Dynamic Data ===================
+  let selectedPlan = localStorage.getItem("selectedPlan") || "Premium Plan";  
+  let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");  
+  let noFeatures = JSON.parse(localStorage.getItem("noFeatures") || "[]");  
 
+  const featureLabels = {
+    booking: "Booking & Payment System",
+    mobile: "Mobile-Friendly Site",
+    cta: "Call-to-Action Buttons",
+    contact: "Contact Form",
+    bio: "About / Instructor Bio",
+    social: "Social Media Integration",
+    seo: "SEO Optimization",
+    reviews: "Student Reviews Display",
+    branding: "Branding Help (Logo / Colors)",
+    faq: "FAQ / Student Guide",
+    newsletter: "Newsletter Signup",
+    packages: "Lesson Packages / Gift Vouchers",
+    email: "Professional Email Address",
+    content: "Content Files (Text / Images)",
+    guide: "“What to Expect” Guide"
+  };
+
+  // =================== Show Thank You Summary ===================
   function showThankYouScreen() {
     hideAllScreens();
     const screen = document.getElementById("thank-you-screen");
@@ -408,7 +401,7 @@
     yesList.innerHTML = "";
     yesFeatures.forEach(f => {
       const li = document.createElement("li");
-      li.textContent = f;
+      li.textContent = featureLabels[f] || f;
       yesList.appendChild(li);
     });
 
@@ -416,7 +409,7 @@
     noList.innerHTML = "";
     noFeatures.forEach(f => {
       const li = document.createElement("li");
-      li.textContent = f;
+      li.textContent = featureLabels[f] || f;
       li.style.opacity = "0.7";
       noList.appendChild(li);
     });
@@ -424,25 +417,150 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Funnel Navigation ===================
-  const screens = [
-    document.getElementById("thank-you-screen"),
-    document.getElementById("logo-upload-screen"),
-    document.getElementById("branding-colors-screen"),
-    document.getElementById("additional-details-screen")
-  ];
+  // =================== Generate Dynamic Steps with Drag & Drop ===================
+  function generateDynamicSteps() {
+    const container = document.getElementById('dynamic-step-container');
+    container.innerHTML = '';
 
+    const stepMapping = {
+      booking: { type: 'text', label: 'Provide your Booking System details' },
+      mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
+      cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
+      contact: { type: 'text', label: 'Contact Form Details' },
+      bio: { type: 'textarea', label: 'Instructor / About Me Bio' },
+      social: { type: 'text', label: 'Social Media Links' },
+      seo: { type: 'text', label: 'SEO Keywords / Locations' },
+      reviews: { type: 'text', label: 'Student Reviews / Testimonials' },
+      branding: { type: 'text', label: 'Branding Notes / Logo Ideas' },
+      faq: { type: 'textarea', label: 'FAQ / Student Guide Content' },
+      newsletter: { type: 'text', label: 'Newsletter / Mailing List Setup Info' },
+      packages: { type: 'text', label: 'Lesson Packages / Gift Voucher Info' },
+      email: { type: 'text', label: 'Professional Email Address (info@domain.com)' },
+      content: { type: 'file', label: 'Upload Content Files (Text / Images)' },
+      guide: { type: 'file', label: 'Upload “What to Expect” Guide' },
+      logo: { type: 'file', label: 'Upload Your Logo' }
+    };
+
+    yesFeatures.forEach((feature, index) => {
+      const step = stepMapping[feature];
+      if (!step) return;
+
+      const div = document.createElement('div');
+      div.className = 'form-screen';
+      div.id = `step-${index}`;
+
+      const h2 = document.createElement('h2');
+      h2.textContent = step.label;
+      div.appendChild(h2);
+
+      let input;
+      if (step.type === 'textarea') {
+        input = document.createElement('textarea');
+      } else if (step.type === 'file') {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+
+        // Drag-and-drop support
+        const dropArea = document.createElement('div');
+        dropArea.className = 'drop-area';
+        dropArea.textContent = 'Drag & drop files here or click to upload';
+        dropArea.style.padding = '1rem';
+        dropArea.style.border = '2px dashed #ccc';
+        dropArea.style.borderRadius = '8px';
+        dropArea.style.marginBottom = '1rem';
+
+        dropArea.addEventListener('click', () => input.click());
+        dropArea.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropArea.style.borderColor = '#000';
+        });
+        dropArea.addEventListener('dragleave', (e) => {
+          e.preventDefault();
+          dropArea.style.borderColor = '#ccc';
+        });
+        dropArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          input.files = e.dataTransfer.files;
+          showFilePreview(dropArea, input.files);
+        });
+
+        input.addEventListener('change', () => showFilePreview(dropArea, input.files));
+
+        div.appendChild(dropArea);
+      } else {
+        input = document.createElement('input');
+        input.type = step.type;
+      }
+      input.id = `input-${feature}`;
+      if (step.type !== 'file') div.appendChild(input);
+
+      // Navigation
+      const nav = document.createElement('div');
+      nav.className = 'button-row';
+      const backBtn = document.createElement('button');
+      backBtn.className = 'brand-btn';
+      backBtn.textContent = 'Back';
+      backBtn.onclick = prev;
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'brand-btn';
+      nextBtn.textContent = 'Next';
+      nextBtn.onclick = next;
+      nav.appendChild(backBtn);
+      nav.appendChild(nextBtn);
+      div.appendChild(nav);
+
+      container.appendChild(div);
+    });
+
+    // Mandatory business info step
+    const businessDiv = document.createElement('div');
+    businessDiv.className = 'form-screen';
+    businessDiv.id = 'mandatory-info';
+    businessDiv.innerHTML = `
+      <h2>Business & Contact Information</h2>
+      <input type="text" id="business-name" placeholder="Business Name" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <div class="button-row">
+        <button class="brand-btn" onclick="prev()">Back</button>
+        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+      </div>
+      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
+    `;
+    container.appendChild(businessDiv);
+  }
+
+  // =================== File Preview ===================
+  function showFilePreview(container, files) {
+    let preview = container.querySelector('.file-preview');
+    if (!preview) {
+      preview = document.createElement('ul');
+      preview.className = 'file-preview';
+      container.appendChild(preview);
+    }
+    preview.innerHTML = '';
+    Array.from(files).forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.name;
+      preview.appendChild(li);
+    });
+  }
+
+  // =================== Funnel Navigation ===================
+  let screens = [];
   let currentScreen = 0;
 
   function hideAllScreens() {
-    screens.forEach(s => s.classList.remove("active"));
+    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
   }
 
   function next() {
     if (currentScreen < screens.length - 1) {
       hideAllScreens();
       currentScreen++;
-      screens[currentScreen].classList.add("active");
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -450,7 +568,8 @@
     if (currentScreen > 0) {
       hideAllScreens();
       currentScreen--;
-      screens[currentScreen].classList.add("active");
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -462,22 +581,29 @@
       plan: selectedPlan,
       selectedFeatures: yesFeatures.join(", "),
       unselectedFeatures: noFeatures.join(", "),
-      logo: document.getElementById("logo-file").files[0]?.name || "",
-      primaryColor: document.getElementById("primary-color").value,
-      secondaryColor: document.getElementById("secondary-color").value,
       businessName: document.getElementById("business-name").value,
-      notes: document.getElementById("notes").value
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      gdprConsent: document.getElementById("gdpr-consent").checked
     };
 
-    console.log("Funnel submission:", data);
+    yesFeatures.forEach(f => {
+      const el = document.getElementById(`input-${f}`);
+      if (el) {
+        data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
+      }
+    });
 
+    console.log("Funnel submission:", data);
     alert("Thank you! Your details have been submitted.");
   }
 
   // =================== Initialize ===================
   showThankYouScreen();
+  generateDynamicSteps();
+  screens = Array.from(document.querySelectorAll('.form-screen'));
+  screens[0].classList.add('active');
 </script>
-
 
 </body>
 </html>
