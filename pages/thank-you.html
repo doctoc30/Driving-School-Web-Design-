@@ -337,6 +337,37 @@
     color: #fff;
     list-style: none;
   }
+
+
+
+
+      body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #fff;
+    padding: 2rem;
+  }
+  h2 {
+    margin-bottom: 1rem;
+  }
+  #summary-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 600px;
+    margin: auto;
+  }
+  #grouped-features {
+    margin-top: 1rem;
+  }
+  .feature-block {
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
 </style>
   
 </head>
@@ -344,26 +375,20 @@
 
 <!-- =================== THANK YOU ORDER FORM =================== -->
 
-<div id="thank-you-container">
+<div id="thank-you-screen" class="form-screen active">
+  <h2>Thank You for Your Order!</h2>
 
-  <!-- 1️⃣ Thank You Summary Screen -->
-  <div id="thank-you-screen" class="form-screen active">
-    <h2>Thank You for Your Order!</h2>
-    <div class="pricing-container">
-      <div class="pricing-card recommended in-view" id="summary-card">
-        <h3 id="plan-name">Your Plan</h3>
-        <p class="price" id="plan-price"></p>
-        <ul id="selected-features"></ul>
-        <ul id="not-selected-features"></ul>
-      </div>
+  <div class="pricing-container">
+    <div class="pricing-card recommended in-view" id="summary-card">
+      <h3 id="plan-name">Your Plan</h3>
+      <div id="grouped-features"></div>
     </div>
-    <button class="brand-btn" id="continue-funnel">Continue</button>
   </div>
 
-  <!-- 2️⃣ Dynamic Step Container (features/assets collection) -->
-  <div id="dynamic-step-container"></div>
-
+  <button class="brand-btn" id="continue-funnel" onclick="alert('Continue to the next step')">Continue</button>
 </div>
+
+
 
 <script>
   // =================== Dynamic Data ===================
