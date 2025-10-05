@@ -526,22 +526,38 @@
 
   document.getElementById("continue-funnel").onclick = next;
 
-  function submitFunnel(){
-    const data={
-      plan:selectedPlan,
-      selectedFeatures:yesFeatures.join(", "),
-      businessName:document.getElementById("business-name").value,
-      phone:document.getElementById("phone").value,
-      email:document.getElementById("email").value,
-      gdprConsent:document.getElementById("gdpr-consent").checked
-    };
-    yesFeatures.forEach(f=>{
-      const el=document.getElementById(`input-${f}`);
-      if(el){ data[f] = el.type==="file" ? Array.from(el.files).map(file=>file.name) : el.value; }
-    });
-    console.log("Funnel submission:", data);
-    alert("Thank you! Your details have been submitted.");
-  }
+  function submitFunnel() {
+  // Collect all form data
+  const data = {
+    plan: selectedPlan,
+    selectedFeatures: yesFeatures.join(", "),
+    businessName: document.getElementById("business-name")?.value || "",
+    phone: document.getElementById("phone")?.value || "",
+    email: document.getElementById("email")?.value || "",
+    gdprConsent: document.getElementById("gdpr-consent")?.checked || false
+  };
+
+  // Collect any dynamic feature inputs (text, textarea, files)
+  yesFeatures.forEach(f => {
+    const el = document.getElementById(`input-${f}`);
+    if (el) {
+      data[f] = el.type === "file" 
+        ? Array.from(el.files).map(file => file.name) 
+        : el.value || "";
+    }
+  });
+
+  // Show collected data for testing (on iPhone this works)
+  alert("Collected Data:\n" + JSON.stringify(data, null, 2));
+
+  // Also log in console (optional)
+  console.log("Funnel submission:", data);
+
+  // Generic thank-you message
+  // alert("Thank you! Your details have been submitted.");
+}
+
+  
 
   // =================== Initialize ===================
   showThankYouScreen();
