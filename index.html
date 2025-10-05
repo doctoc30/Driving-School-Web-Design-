@@ -1721,11 +1721,7 @@ if (initialActive) {
       list.appendChild(li);
     });
 
-    // Divider
-    const hr = document.createElement("hr");
-    hr.style.borderColor = "white";
-    hr.style.margin = "25px 0";
-    list.appendChild(hr);
+  
 
     // Determine which tiers to show for this card
     const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) <= tierOrder.indexOf(level));
@@ -1834,6 +1830,47 @@ document.addEventListener('DOMContentLoaded', addGradientDividers);
 
 
 
+
+ function applyGradientDividers() {
+  const cards = document.querySelectorAll('.pricing-card');
+
+  cards.forEach(card => {
+    const list = card.querySelector('ul, .features-list');
+    if (!list) return;
+
+    // Remove existing dividers (prevents duplicates)
+    const existingDividers = list.querySelectorAll('.gradient-divider');
+    existingDividers.forEach(d => d.remove());
+
+    // Find the core default services (<li> items)
+    const coreServicesCount = 3;
+    const coreItems = Array.from(list.querySelectorAll('li')).slice(0, coreServicesCount);
+
+    if (coreItems.length === coreServicesCount) {
+      const divider = document.createElement('li');
+      divider.className = 'gradient-divider';
+      divider.style.height = '2px';
+      divider.style.margin = '25px 0';
+      divider.style.listStyle = 'none';
+      divider.style.border = 'none';
+      divider.style.background = 'linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))';
+
+      // Insert **after last core service**
+      coreItems[coreItems.length - 1].insertAdjacentElement('afterend', divider);
+    }
+  });
+}
+
+// Run after features are dynamically inserted
+document.addEventListener('DOMContentLoaded', () => {
+  applyGradientDividers();
+
+  // Optional: re-apply after any dynamic content updates
+  const observer = new MutationObserver(() => applyGradientDividers());
+  document.querySelectorAll('.pricing-card ul').forEach(list => {
+    observer.observe(list, { childList: true });
+  });
+});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
