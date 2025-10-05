@@ -342,34 +342,28 @@
 </head>
 <body>
 
-<!-- =================== THANK YOU ORDER FORM =================== -->
+<!-- 1️⃣ Thank You Summary Screen -->
+<div id="thank-you-screen" class="form-screen active">
+  <h2>Thank You for Your Order!</h2>
 
-<div id="thank-you-container">
-
-  <!-- 1️⃣ Thank You Summary Screen -->
-  <div id="thank-you-screen" class="form-screen active">
-    <h2>Thank You for Your Order!</h2>
-    <div class="pricing-container">
-      <div class="pricing-card recommended in-view" id="summary-card">
-        <h3 id="plan-name">Your Plan</h3>
-        <p class="price" id="plan-price"></p>
-        <ul id="selected-features"></ul>
-        <ul id="not-selected-features"></ul>
-      </div>
+  <div class="pricing-container">
+    <div class="pricing-card recommended in-view" id="summary-card">
+      <h3 id="plan-name">Your Plan</h3>
+      <p class="price" id="plan-price"></p>
+      <div id="selected-features" class="features-container"></div>
     </div>
-    <button class="brand-btn" id="continue-funnel">Continue</button>
   </div>
 
-  <!-- 2️⃣ Dynamic Step Container (features/assets collection) -->
-  <div id="dynamic-step-container"></div>
-
+  <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
+
+<!-- 2️⃣ Dynamic Asset Collection Container -->
+<div id="dynamic-step-container"></div>
 
 <script>
   // =================== Dynamic Data ===================
   let selectedPlan = localStorage.getItem("selectedPlan") || "Premium Plan";  
   let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");  
-  let noFeatures = JSON.parse(localStorage.getItem("noFeatures") || "[]");  
 
   const featureLabels = {
     booking: "Booking & Payment System",
@@ -397,33 +391,31 @@
 
     document.getElementById("plan-name").textContent = selectedPlan;
 
-    const yesList = document.getElementById("selected-features");
-    yesList.innerHTML = "";
-    yesFeatures.forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = featureLabels[f] || f;
-      yesList.appendChild(li);
-    });
+    const featuresContainer = document.getElementById("selected-features");
+    featuresContainer.innerHTML = "";
 
-    const noList = document.getElementById("not-selected-features");
-    noList.innerHTML = "";
-    noFeatures.forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = featureLabels[f] || f;
-      li.style.opacity = "0.7";
-      noList.appendChild(li);
+    yesFeatures.forEach(f => {
+      const featureDiv = document.createElement("div");
+      featureDiv.className = "feature-item";
+      featureDiv.textContent = featureLabels[f] || f;
+
+      const divider = document.createElement("div");
+      divider.className = "feature-divider";
+
+      featuresContainer.appendChild(featureDiv);
+      featuresContainer.appendChild(divider);
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Generate Dynamic Steps with Drag & Drop ===================
+  // =================== Generate Dynamic Steps ===================
   function generateDynamicSteps() {
     const container = document.getElementById('dynamic-step-container');
     container.innerHTML = '';
 
     const stepMapping = {
-      booking: { type: 'text', label: 'Provide your Booking System details' },
+      booking: { type: 'text', label: 'Enter Booking System Details' },
       mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
       cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
       contact: { type: 'text', label: 'Contact Form Details' },
@@ -454,14 +446,13 @@
       div.appendChild(h2);
 
       let input;
-      if (step.type === 'textarea') {
+      if(step.type === 'textarea'){
         input = document.createElement('textarea');
-      } else if (step.type === 'file') {
+      } else if(step.type === 'file'){
         input = document.createElement('input');
         input.type = 'file';
         input.multiple = true;
 
-        // Drag-and-drop support
         const dropArea = document.createElement('div');
         dropArea.className = 'drop-area';
         dropArea.textContent = 'Drag & drop files here or click to upload';
@@ -470,32 +461,19 @@
         dropArea.style.borderRadius = '8px';
         dropArea.style.marginBottom = '1rem';
 
-        dropArea.addEventListener('click', () => input.click());
-        dropArea.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          dropArea.style.borderColor = '#000';
-        });
-        dropArea.addEventListener('dragleave', (e) => {
-          e.preventDefault();
-          dropArea.style.borderColor = '#ccc';
-        });
-        dropArea.addEventListener('drop', (e) => {
-          e.preventDefault();
-          input.files = e.dataTransfer.files;
-          showFilePreview(dropArea, input.files);
-        });
-
-        input.addEventListener('change', () => showFilePreview(dropArea, input.files));
-
+        dropArea.addEventListener('click', ()=>input.click());
+        dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.style.borderColor='#000'; });
+        dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.style.borderColor='#ccc'; });
+        dropArea.addEventListener('drop', e=>{ e.preventDefault(); input.files=e.dataTransfer.files; showFilePreview(dropArea,input.files); });
+        input.addEventListener('change', ()=>showFilePreview(dropArea,input.files));
         div.appendChild(dropArea);
       } else {
         input = document.createElement('input');
         input.type = step.type;
       }
       input.id = `input-${feature}`;
-      if (step.type !== 'file') div.appendChild(input);
+      if(step.type !== 'file') div.appendChild(input);
 
-      // Navigation
       const nav = document.createElement('div');
       nav.className = 'button-row';
       const backBtn = document.createElement('button');
@@ -531,69 +509,36 @@
     container.appendChild(businessDiv);
   }
 
-  // =================== File Preview ===================
-  function showFilePreview(container, files) {
+  function showFilePreview(container, files){
     let preview = container.querySelector('.file-preview');
-    if (!preview) {
-      preview = document.createElement('ul');
-      preview.className = 'file-preview';
-      container.appendChild(preview);
-    }
+    if(!preview){ preview = document.createElement('ul'); preview.className='file-preview'; container.appendChild(preview); }
     preview.innerHTML = '';
-    Array.from(files).forEach(f => {
-      const li = document.createElement('li');
-      li.textContent = f.name;
-      preview.appendChild(li);
-    });
+    Array.from(files).forEach(f=>{ const li=document.createElement('li'); li.textContent=f.name; preview.appendChild(li); });
   }
 
   // =================== Funnel Navigation ===================
-  let screens = [];
-  let currentScreen = 0;
+  let screens=[];
+  let currentScreen=0;
 
-  function hideAllScreens() {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-  }
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      hideAllScreens();
-      currentScreen++;
-      screens[currentScreen].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      hideAllScreens();
-      currentScreen--;
-      screens[currentScreen].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
+  function hideAllScreens(){ document.querySelectorAll('.form-screen').forEach(s=>s.classList.remove('active')); }
+  function next(){ if(currentScreen<screens.length-1){ hideAllScreens(); currentScreen++; screens[currentScreen].classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); } }
+  function prev(){ if(currentScreen>0){ hideAllScreens(); currentScreen--; screens[currentScreen].classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); } }
 
   document.getElementById("continue-funnel").onclick = next;
 
-  // =================== Funnel Submission ===================
-  function submitFunnel() {
-    const data = {
-      plan: selectedPlan,
-      selectedFeatures: yesFeatures.join(", "),
-      unselectedFeatures: noFeatures.join(", "),
-      businessName: document.getElementById("business-name").value,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("email").value,
-      gdprConsent: document.getElementById("gdpr-consent").checked
+  function submitFunnel(){
+    const data={
+      plan:selectedPlan,
+      selectedFeatures:yesFeatures.join(", "),
+      businessName:document.getElementById("business-name").value,
+      phone:document.getElementById("phone").value,
+      email:document.getElementById("email").value,
+      gdprConsent:document.getElementById("gdpr-consent").checked
     };
-
-    yesFeatures.forEach(f => {
-      const el = document.getElementById(`input-${f}`);
-      if (el) {
-        data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
-      }
+    yesFeatures.forEach(f=>{
+      const el=document.getElementById(`input-${f}`);
+      if(el){ data[f] = el.type==="file" ? Array.from(el.files).map(file=>file.name) : el.value; }
     });
-
     console.log("Funnel submission:", data);
     alert("Thank you! Your details have been submitted.");
   }
@@ -604,6 +549,13 @@
   screens = Array.from(document.querySelectorAll('.form-screen'));
   screens[0].classList.add('active');
 </script>
+
+<style>
+.features-container{display:flex;flex-direction:column;margin-top:1rem;}
+.feature-item{padding:0.5rem 0;font-weight:500;}
+.feature-divider{height:2px;margin:0.25rem 0 0.5rem 0;background:linear-gradient(to right,rgba(255,255,255,0.2),rgba(255,255,255,0));}
+</style>
+
 
 </body>
 </html>
