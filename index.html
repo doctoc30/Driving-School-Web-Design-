@@ -1644,20 +1644,16 @@ if (initialActive) {
 
 
 
-
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
-  const planCards = Array.from(
-    document.querySelectorAll('#recommended-plan-screen .pricing-card')
-  );
+  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
   const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
-  // Define tiers & feature labels
   const tiers = {
-    basic:   ["booking","mobile","cta","contact","bio","social"],
-    pro:     ["seo","reviews","branding","faq","newsletter"],
+    basic: ["booking","mobile","cta","contact","bio","social"],
+    pro: ["seo","reviews","branding","faq","newsletter"],
     premium: ["packages","email","content","guide"]
   };
 
@@ -1686,7 +1682,6 @@ if (initialActive) {
   };
 
   const tierOrder = ["basic","pro","premium"];
-
   const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees      = { basic: 199, pro: 299, premium: 499 };
@@ -1721,21 +1716,36 @@ if (initialActive) {
       list.appendChild(li);
     });
 
-  
+    // 2️⃣ Gradient Divider after core services
+    const divider = document.createElement("li");
+    divider.className = "gradient-divider";
+    divider.style.height = "2px";
+    divider.style.margin = "25px 0";
+    divider.style.listStyle = "none";
+    divider.style.border = "none";
+    divider.style.background = "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)";
+    list.appendChild(divider);
 
-    // Determine which tiers to show for this card
-    const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) <= tierOrder.indexOf(level));
-
-    // Lower-tier YES features
+    // ----- Lower-tier YES features -----
+    const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) < tierOrder.indexOf(level));
     allowedTiers.forEach(t => {
-      if (t === level) return; // skip current tier
       const features = yes.filter(f => tiers[t].includes(f));
       if (!features.length) return;
+
+      // Optional: Divider before lower-tier features
+      const tierDivider = document.createElement("li");
+      tierDivider.className = "gradient-divider";
+      tierDivider.style.height = "2px";
+      tierDivider.style.margin = "20px 0";
+      tierDivider.style.listStyle = "none";
+      tierDivider.style.border = "none";
+      tierDivider.style.background = "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)";
+      list.appendChild(tierDivider);
 
       const heading = document.createElement("li");
       heading.textContent = `Included from ${t.charAt(0).toUpperCase() + t.slice(1)}`;
       heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
+      heading.style.marginTop = "10px";
       list.appendChild(heading);
 
       features.forEach(f => {
@@ -1747,7 +1757,7 @@ if (initialActive) {
       });
     });
 
-    // Current tier YES features
+    // ----- Current-tier YES features -----
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -1771,7 +1781,7 @@ if (initialActive) {
       list.appendChild(li);
     }
 
-    // ✅ Add PayPal redirect logic
+    // ----- PayPal logic -----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1797,80 +1807,6 @@ if (initialActive) {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
-
-
- // Function to insert gradient dividers like pricing.html
-function addGradientDividers() {
-  const cards = document.querySelectorAll('.pricing-card');
-
-  cards.forEach(card => {
-    const list = card.querySelector('ul, .features-list');
-    if (!list) return;
-
-    // Assume core services are first 3 <li> items
-    const coreServiceCount = 3;
-    const coreLis = list.querySelectorAll('li');
-    if (coreLis.length < coreServiceCount) return;
-
-    const divider = document.createElement('li');
-    divider.style.height = '2px';
-    divider.style.margin = '25px 0';
-    divider.style.listStyle = 'none';
-    divider.style.background = 'linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))';
-    divider.style.border = 'none';
-    divider.classList.add('gradient-divider');
-
-    // Insert divider after core services
-    coreLis[coreServiceCount - 1].insertAdjacentElement('afterend', divider);
-  });
-}
-
-// Run after DOM loads
-document.addEventListener('DOMContentLoaded', addGradientDividers);
-
-
-
-
- function applyGradientDividers() {
-  const cards = document.querySelectorAll('.pricing-card');
-
-  cards.forEach(card => {
-    const list = card.querySelector('ul, .features-list');
-    if (!list) return;
-
-    // Remove existing dividers (prevents duplicates)
-    const existingDividers = list.querySelectorAll('.gradient-divider');
-    existingDividers.forEach(d => d.remove());
-
-    // Find the core default services (<li> items)
-    const coreServicesCount = 3;
-    const coreItems = Array.from(list.querySelectorAll('li')).slice(0, coreServicesCount);
-
-    if (coreItems.length === coreServicesCount) {
-      const divider = document.createElement('li');
-      divider.className = 'gradient-divider';
-      divider.style.height = '2px';
-      divider.style.margin = '25px 0';
-      divider.style.listStyle = 'none';
-      divider.style.border = 'none';
-      divider.style.background = 'linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))';
-
-      // Insert **after last core service**
-      coreItems[coreItems.length - 1].insertAdjacentElement('afterend', divider);
-    }
-  });
-}
-
-// Run after features are dynamically inserted
-document.addEventListener('DOMContentLoaded', () => {
-  applyGradientDividers();
-
-  // Optional: re-apply after any dynamic content updates
-  const observer = new MutationObserver(() => applyGradientDividers());
-  document.querySelectorAll('.pricing-card ul').forEach(list => {
-    observer.observe(list, { childList: true });
-  });
-});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
