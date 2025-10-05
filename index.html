@@ -1801,7 +1801,37 @@ if (initialActive) {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
- 
+
+
+
+
+ // Function to insert gradient dividers in pricing cards
+function addGradientDividers() {
+  const cards = document.querySelectorAll('.pricing-card');
+
+  cards.forEach(card => {
+    const list = card.querySelector('ul, .features-list');
+    if (!list) return;
+
+    // Find the index after core default services
+    // Assuming core services are first 3 <li> items
+    const coreServiceCount = 3;
+    const coreLis = list.querySelectorAll('li');
+    if (coreLis.length < coreServiceCount) return;
+
+    const divider = document.createElement('li');
+    divider.style.height = '2px';
+    divider.style.margin = '25px 0';
+    divider.style.background = 'linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))';
+    divider.classList.add('gradient-divider');
+
+    // Insert divider after core services
+    coreLis[coreServiceCount - 1].insertAdjacentElement('afterend', divider);
+  });
+}
+
+// Run after DOM loads
+document.addEventListener('DOMContentLoaded', addGradientDividers);
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
