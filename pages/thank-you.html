@@ -339,65 +339,144 @@
     list-style: none;
   }
 </style>
-
-  </style>
-
-
   
 </head>
 <body>
 
-<!-- =================== Thank You Order Screen =================== -->
+<!-- =================== 1. Thank You Screen =================== -->
 <div id="thank-you-screen" class="form-screen active">
   <h2>Thank You for Your Order!</h2>
-  <p>Please confirm your website details below so we can begin your project.</p>
 
   <div class="pricing-container">
     <div class="pricing-card recommended in-view" id="summary-card">
       <h3 id="plan-name">Your Plan</h3>
-
-      <h4>Included Features</h4>
       <ul id="selected-features"></ul>
-
-      <h4>Not Included</h4>
       <ul id="not-selected-features"></ul>
     </div>
   </div>
 
-  <!-- =================== Essential Client Info =================== -->
-  <form 
-    id="order-form"
-    action="https://formsubmit.co/youremail@example.com"
-    method="POST"
-    style="margin-top: 2rem;"
-  >
-    <!-- Hidden Fields (auto-filled via JS) -->
-    <input type="hidden" name="Selected Plan" id="hidden-plan" />
-    <input type="hidden" name="Selected Features" id="hidden-yes" />
-    <input type="hidden" name="Unselected Features" id="hidden-no" />
-
-    <!-- Required Business Info -->
-    <h3>Business Information</h3>
-    <input type="text" name="Business Name" placeholder="Business Name" required />
-    <input type="text" name="Full Name" placeholder="Your Full Name" required />
-    <input type="email" name="Email Address" placeholder="Email Address" required />
-    <input type="tel" name="Phone Number" placeholder="Phone Number" required />
-    <input type="text" name="Business Address" placeholder="Business Address (optional)" />
-
-    <!-- Additional Notes -->
-    <textarea 
-      name="Additional Notes" 
-      placeholder="Any specific requests, notes, or instructions?" 
-      rows="4"
-      style="width:100%;margin-top:1rem;border-radius:6px;padding:0.75rem;"
-    ></textarea>
-
-    <button type="submit" class="brand-btn" style="margin-top: 1rem;">
-      Submit Order
-    </button>
-  </form>
+  <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
 
+<!-- =================== 2. Logo Upload =================== -->
+<div id="logo-upload-screen" class="form-screen">
+  <h2>Upload Your Logo</h2>
+  <input type="file" accept="image/*" id="logo-file" />
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- =================== 3. Branding Colors =================== -->
+<div id="branding-colors-screen" class="form-screen">
+  <h2>Your Branding Colors</h2>
+  <input type="text" placeholder="Primary Color" id="primary-color" />
+  <input type="text" placeholder="Secondary Color" id="secondary-color" />
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="next()">Next</button>
+  </div>
+</div>
+
+<!-- =================== 4. Business Info =================== -->
+<div id="additional-details-screen" class="form-screen">
+  <h2>Additional Information</h2>
+  <input type="text" placeholder="Business Name" id="business-name" />
+  <textarea placeholder="Additional Notes" id="notes" style="width:80%;height:120px;border-radius:8px;padding:1rem;"></textarea>
+  <div class="button-row">
+    <button class="brand-btn" onclick="prev()">Back</button>
+    <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+  </div>
+</div>
+
+<script>
+  // =================== Dynamic Data Example ===================
+  // These would normally come from your index.html payment selection
+  let selectedPlan = "Premium Plan";  
+  let yesFeatures = ["Website", "SEO Optimization"];  
+  let noFeatures = ["Social Media Setup"];
+
+  function showThankYouScreen() {
+    hideAllScreens();
+    const screen = document.getElementById("thank-you-screen");
+    screen.classList.add("active");
+
+    document.getElementById("plan-name").textContent = selectedPlan;
+
+    const yesList = document.getElementById("selected-features");
+    yesList.innerHTML = "";
+    yesFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      yesList.appendChild(li);
+    });
+
+    const noList = document.getElementById("not-selected-features");
+    noList.innerHTML = "";
+    noFeatures.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.style.opacity = "0.7";
+      noList.appendChild(li);
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // =================== Funnel Navigation ===================
+  const screens = [
+    document.getElementById("thank-you-screen"),
+    document.getElementById("logo-upload-screen"),
+    document.getElementById("branding-colors-screen"),
+    document.getElementById("additional-details-screen")
+  ];
+
+  let currentScreen = 0;
+
+  function hideAllScreens() {
+    screens.forEach(s => s.classList.remove("active"));
+  }
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add("active");
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add("active");
+    }
+  }
+
+  document.getElementById("continue-funnel").onclick = next;
+
+  // =================== Funnel Submission ===================
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      selectedFeatures: yesFeatures.join(", "),
+      unselectedFeatures: noFeatures.join(", "),
+      logo: document.getElementById("logo-file").files[0]?.name || "",
+      primaryColor: document.getElementById("primary-color").value,
+      secondaryColor: document.getElementById("secondary-color").value,
+      businessName: document.getElementById("business-name").value,
+      notes: document.getElementById("notes").value
+    };
+
+    console.log("Funnel submission:", data);
+
+    alert("Thank you! Your details have been submitted.");
+  }
+
+  // =================== Initialize ===================
+  showThankYouScreen();
+</script>
 
 
 </body>
