@@ -1086,23 +1086,7 @@ html, body {
 
 
 
- /* Divider line inside pricing cards */
-.features-list .divider-line {
-  display: block;
-  width: 100%;
-  height: 2px;
-  margin: 12px 0;
-  border-radius: 3px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.85) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-  content: "";
-  opacity: 0.9;
-}
+
 </style>
 
 
@@ -1797,6 +1781,29 @@ if (initialActive) {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Find all pricing cards
+  document.querySelectorAll(".pricing-card .features-list").forEach(list => {
+    // Remove any previous dividers
+    list.querySelectorAll(".gradient-divider").forEach(d => d.remove());
+
+    // Create gradient divider
+    const divider = document.createElement("li");
+    divider.classList.add("gradient-divider");
+    divider.style.height = "2px";
+    divider.style.margin = "20px 0";
+    divider.style.borderRadius = "3px";
+    divider.style.background = "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)";
+
+    // Insert after the third li (Delivery)
+    const details = list.querySelectorAll("li");
+    if (details.length >= 3) details[2].insertAdjacentElement("afterend", divider);
+  });
+});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
