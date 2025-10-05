@@ -1627,99 +1627,72 @@ if (initialActive) {
   }
 
 
+
+
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
-  const planCards = document.querySelectorAll('#recommended-plan-screen .pricing-card');
+  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  // Core default services
-  const coreServices = {
-    basic:   ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro:     ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
+  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
 
-  // Define tiers and labels
   const tiers = {
-    basic:   ["booking","mobile","cta","contact","bio","social"],
+    basic:   ["booking","mobile","cta","contact","bio"],
     pro:     ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
+    premium: ["packages","social","email","content","guide"]
   };
 
   const labels = {
     booking: "Online booking & payment",
     mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
+    cta: "Call-to-action buttons",
     contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    social: "Social media integration",
+    bio: "Instructor bio",
     seo: "Local Google SEO",
     reviews: "Student reviews",
     branding: "Branding help (logo & colors)",
     faq: "FAQ / Student guide",
     newsletter: "Newsletter signup",
     packages: "Lesson packages & gift vouchers",
+    social: "Social media integration",
     email: "Professional email address",
     content: "Content creation help",
     guide: "What to Expect guide"
   };
 
-  // Decide recommended plan based on selected features
-  const hasPremium = yesFeatures.some(f => tiers.premium.includes(f));
-  const hasPro     = yesFeatures.some(f => tiers.pro.includes(f));
-  const hasBasic   = yesFeatures.some(f => tiers.basic.includes(f));
+  const coreDefaults = {
+    basic:   ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
+    pro:     ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
+    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
+  };
+
+  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
+  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
+  const setupFees      = { basic: 199, pro: 299, premium: 499 };
+
+  // Determine recommended plan based on YES features
+  const hasPremium = yes.some(f => tiers.premium.includes(f));
+  const hasPro     = yes.some(f => tiers.pro.includes(f));
+  const hasBasic   = yes.some(f => tiers.basic.includes(f));
   const recommended =
         hasPremium ? "premium" :
         hasPro     ? "pro" :
         hasBasic   ? "basic" : "pro";
 
-  // Pricing
-  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
-  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees      = { basic: 199, pro: 299, premium: 499 };
-
   planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector('.features-list');
-    const priceEl = card.querySelector('.price');
-    const payBtn  = card.querySelector('.pay-now');
-    const note    = card.querySelector('small');
+    const level = (card.dataset.plan || "").toLowerCase();
+    const list  = card.querySelector(".features-list");
+    const priceEl = card.querySelector(".price");
+    const payBtn  = card.querySelector(".pay-now");
+    const note    = card.querySelector("small");
+    if (!level || !list || !priceEl || !payBtn) return;
 
-    // --- Core Services ---
-    list.innerHTML = '';
-    coreServices[level].forEach(service => {
-      const li = document.createElement('li');
-      li.textContent = service;
-      li.style.marginBottom = "12px";
-      list.appendChild(li);
-    });
-
-    // Divider
-    const hr = document.createElement('hr');
-    hr.style.borderColor = "white";
-    hr.style.margin = "25px 0";
-    list.appendChild(hr);
-
-    // --- Additional Features (user-selected + lower-tier included) ---
-    let allowedFeatures = [];
-    if (level === 'basic') allowedFeatures = [...tiers.basic];
-    if (level === 'pro') allowedFeatures = [...tiers.basic, ...tiers.pro];
-    if (level === 'premium') allowedFeatures = [...tiers.basic, ...tiers.pro, ...tiers.premium];
-
-    yesFeatures.filter(f => allowedFeatures.includes(f)).forEach(f => {
-      const li = document.createElement('li');
-      li.textContent = labels[f];
-      li.style.margin = "12px 0";
-      li.style.lineHeight = "1.8";
-      list.appendChild(li);
-    });
-
-    // --- Pricing & PayPal ---
+    // ----- Pricing -----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}`;
-      const span = document.createElement("span");
+      let span = priceEl.querySelector("span");
+      if (!span) { span = document.createElement("span"); priceEl.appendChild(span); }
       span.textContent = "/month";
-      priceEl.appendChild(span);
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
       if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
     } else {
@@ -1729,7 +1702,7 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // PayPal redirect
+    // ✅ PayPal click logic
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1743,18 +1716,75 @@ function showRecommendedPlan(planType = 'outright') {
       const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
       window.location.href = `${paypalLink}&return=${thankYouURL}`;
     };
+
+    // ----- Features List -----
+    list.innerHTML = "";
+
+    // 1️⃣ Core Default Services
+    coreDefaults[level].forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.style.marginBottom = "12px";
+      list.appendChild(li);
+    });
+
+    // White divider
+    const hr = document.createElement("hr");
+    hr.style.borderColor = "white";
+    hr.style.margin = "25px 0";
+    list.appendChild(hr);
+
+    // 2️⃣ Lower-tier YES features
+    const tierOrder = ["basic","pro","premium"];
+    tierOrder.forEach(t => {
+      if (t === level) return; // skip current tier
+      const features = yes.filter(f => tiers[t].includes(f));
+      if (!features.length) return;
+
+      const heading = document.createElement("li");
+      heading.textContent = `Included from ${t.charAt(0).toUpperCase() + t.slice(1)}`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      features.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    });
+
+    // 3️⃣ Current tier YES features
+    const currentFeatures = yes.filter(f => tiers[level].includes(f));
+    if (currentFeatures.length) {
+      const heading = document.createElement("li");
+      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      currentFeatures.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    }
   });
 
   // Highlight recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const rec = Array.from(planCards).find(c => (c.dataset.plan || "").toLowerCase() === recommended);
+  const rec = planCards.find(c => (c.dataset.plan || "").toLowerCase() === recommended);
   if (rec) {
     rec.classList.add("recommended", "in-view");
     setTimeout(() => rec.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
 
-
+ 
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
