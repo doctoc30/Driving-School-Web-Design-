@@ -360,6 +360,18 @@
 <!-- 2️⃣ Dynamic Asset Collection Container -->
 <div id="dynamic-step-container"></div>
 
+<!-- ✅ Thank You Summary Screen -->
+<div id="thank-you-screen" class="form-screen active">
+  <h2>Thank You for Your Order!</h2>
+  <div class="pricing-container">
+    <div class="pricing-card recommended in-view" id="summary-card">
+      <h3 id="plan-name">Your Plan</h3>
+      <div id="selected-features" class="feature-list"></div>
+    </div>
+  </div>
+  <button class="brand-btn" id="continue-funnel">Continue</button>
+</div>
+
 <script>
   // =================== Dynamic Data ===================
   let selectedPlan = localStorage.getItem("selectedPlan") || "Premium Plan";  
@@ -389,188 +401,34 @@
     const screen = document.getElementById("thank-you-screen");
     screen.classList.add("active");
 
+    // Set plan name
     document.getElementById("plan-name").textContent = selectedPlan;
 
-    const featuresContainer = document.getElementById("selected-features");
-    featuresContainer.innerHTML = "";
-
+    // Build feature list
+    const featuresDiv = document.getElementById("selected-features");
+    featuresDiv.innerHTML = "";
     yesFeatures.forEach(f => {
-      const featureDiv = document.createElement("div");
-      featureDiv.className = "feature-item";
-      featureDiv.textContent = featureLabels[f] || f;
-
-      const divider = document.createElement("div");
-      divider.className = "feature-divider";
-
-      featuresContainer.appendChild(featureDiv);
-      featuresContainer.appendChild(divider);
+      const div = document.createElement("div");
+      div.className = "feature-item";
+      div.textContent = featureLabels[f] || f;
+      featuresDiv.appendChild(div);
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Generate Dynamic Steps ===================
-  function generateDynamicSteps() {
-    const container = document.getElementById('dynamic-step-container');
-    container.innerHTML = '';
-
-    const stepMapping = {
-      booking: { type: 'text', label: 'Enter Booking System Details' },
-      mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
-      cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
-      contact: { type: 'text', label: 'Contact Form Details' },
-      bio: { type: 'textarea', label: 'Instructor / About Me Bio' },
-      social: { type: 'text', label: 'Social Media Links' },
-      seo: { type: 'text', label: 'SEO Keywords / Locations' },
-      reviews: { type: 'text', label: 'Student Reviews / Testimonials' },
-      branding: { type: 'text', label: 'Branding Notes / Logo Ideas' },
-      faq: { type: 'textarea', label: 'FAQ / Student Guide Content' },
-      newsletter: { type: 'text', label: 'Newsletter / Mailing List Setup Info' },
-      packages: { type: 'text', label: 'Lesson Packages / Gift Voucher Info' },
-      email: { type: 'text', label: 'Professional Email Address (info@domain.com)' },
-      content: { type: 'file', label: 'Upload Content Files (Text / Images)' },
-      guide: { type: 'file', label: 'Upload “What to Expect” Guide' },
-      logo: { type: 'file', label: 'Upload Your Logo' }
-    };
-
-    yesFeatures.forEach((feature, index) => {
-      const step = stepMapping[feature];
-      if (!step) return;
-
-      const div = document.createElement('div');
-      div.className = 'form-screen';
-      div.id = `step-${index}`;
-
-      const h2 = document.createElement('h2');
-      h2.textContent = step.label;
-      div.appendChild(h2);
-
-      let input;
-      if(step.type === 'textarea'){
-        input = document.createElement('textarea');
-      } else if(step.type === 'file'){
-        input = document.createElement('input');
-        input.type = 'file';
-        input.multiple = true;
-
-        const dropArea = document.createElement('div');
-        dropArea.className = 'drop-area';
-        dropArea.textContent = 'Drag & drop files here or click to upload';
-        dropArea.style.padding = '1rem';
-        dropArea.style.border = '2px dashed #ccc';
-        dropArea.style.borderRadius = '8px';
-        dropArea.style.marginBottom = '1rem';
-
-        dropArea.addEventListener('click', ()=>input.click());
-        dropArea.addEventListener('dragover', e=>{ e.preventDefault(); dropArea.style.borderColor='#000'; });
-        dropArea.addEventListener('dragleave', e=>{ e.preventDefault(); dropArea.style.borderColor='#ccc'; });
-        dropArea.addEventListener('drop', e=>{ e.preventDefault(); input.files=e.dataTransfer.files; showFilePreview(dropArea,input.files); });
-        input.addEventListener('change', ()=>showFilePreview(dropArea,input.files));
-        div.appendChild(dropArea);
-      } else {
-        input = document.createElement('input');
-        input.type = step.type;
-      }
-      input.id = `input-${feature}`;
-      if(step.type !== 'file') div.appendChild(input);
-
-      const nav = document.createElement('div');
-      nav.className = 'button-row';
-      const backBtn = document.createElement('button');
-      backBtn.className = 'brand-btn';
-      backBtn.textContent = 'Back';
-      backBtn.onclick = prev;
-      const nextBtn = document.createElement('button');
-      nextBtn.className = 'brand-btn';
-      nextBtn.textContent = 'Next';
-      nextBtn.onclick = next;
-      nav.appendChild(backBtn);
-      nav.appendChild(nextBtn);
-      div.appendChild(nav);
-
-      container.appendChild(div);
-    });
-
-    // Mandatory business info step
-    const businessDiv = document.createElement('div');
-    businessDiv.className = 'form-screen';
-    businessDiv.id = 'mandatory-info';
-    businessDiv.innerHTML = `
-      <h2>Business & Contact Information</h2>
-      <input type="text" id="business-name" placeholder="Business Name" required />
-      <input type="text" id="phone" placeholder="Phone Number" required />
-      <input type="email" id="email" placeholder="Email Address" required />
-      <div class="button-row">
-        <button class="brand-btn" onclick="prev()">Back</button>
-        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
-      </div>
-      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
-    `;
-    container.appendChild(businessDiv);
+  // =================== Helper: Hide All Screens ===================
+  function hideAllScreens() {
+    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
   }
 
-  function showFilePreview(container, files){
-    let preview = container.querySelector('.file-preview');
-    if(!preview){ preview = document.createElement('ul'); preview.className='file-preview'; container.appendChild(preview); }
-    preview.innerHTML = '';
-    Array.from(files).forEach(f=>{ const li=document.createElement('li'); li.textContent=f.name; preview.appendChild(li); });
-  }
-
-  // =================== Funnel Navigation ===================
-  let screens=[];
-  let currentScreen=0;
-
-  function hideAllScreens(){ document.querySelectorAll('.form-screen').forEach(s=>s.classList.remove('active')); }
-  function next(){ if(currentScreen<screens.length-1){ hideAllScreens(); currentScreen++; screens[currentScreen].classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); } }
-  function prev(){ if(currentScreen>0){ hideAllScreens(); currentScreen--; screens[currentScreen].classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); } }
-
-  document.getElementById("continue-funnel").onclick = next;
-
-  function submitFunnel() {
-  // Collect all form data
-  const data = {
-    plan: selectedPlan,
-    selectedFeatures: yesFeatures.join(", "),
-    businessName: document.getElementById("business-name")?.value || "",
-    phone: document.getElementById("phone")?.value || "",
-    email: document.getElementById("email")?.value || "",
-    gdprConsent: document.getElementById("gdpr-consent")?.checked || false
+  document.getElementById("continue-funnel").onclick = () => {
+    next();
   };
 
-  // Collect any dynamic feature inputs (text, textarea, files)
-  yesFeatures.forEach(f => {
-    const el = document.getElementById(`input-${f}`);
-    if (el) {
-      data[f] = el.type === "file" 
-        ? Array.from(el.files).map(file => file.name) 
-        : el.value || "";
-    }
-  });
-
-  // Show collected data for testing (on iPhone this works)
-  alert("Collected Data:\n" + JSON.stringify(data, null, 2));
-
-  // Also log in console (optional)
-  console.log("Funnel submission:", data);
-
-  // Generic thank-you message
-  // alert("Thank you! Your details have been submitted.");
-}
-
-  
-
-  // =================== Initialize ===================
+  // Initialize
   showThankYouScreen();
-  generateDynamicSteps();
-  screens = Array.from(document.querySelectorAll('.form-screen'));
-  screens[0].classList.add('active');
 </script>
-
-<style>
-.features-container{display:flex;flex-direction:column;margin-top:1rem;}
-.feature-item{padding:0.5rem 0;font-weight:500;}
-.feature-divider{height:2px;margin:0.25rem 0 0.5rem 0;background:linear-gradient(to right,rgba(255,255,255,0.2),rgba(255,255,255,0));}
-</style>
 
 
 </body>
