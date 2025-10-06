@@ -343,30 +343,19 @@
 <body>
 
 
-<!-- =================== 1️⃣ Thank You Summary Screen =================== -->
+<!-- 1️⃣ Thank You Summary Screen -->
 <div id="thank-you-screen" class="form-screen active">
   <h2>Thank You for Your Order!</h2>
-
   <div class="pricing-container">
     <div class="pricing-card recommended in-view" id="summary-card">
       <h3 id="plan-name">Your Plan</h3>
-
-      <!-- Base Pages / Revisions / Delivery -->
-      <div id="base-features" class="feature-group"></div>
-      <hr>
-
-      <!-- Plan-specific groups -->
-      <div id="plan-features" class="feature-group"></div>
-
-      <!-- User-selected optional features -->
-      <div id="optional-features" class="feature-group"></div>
+      <div id="thank-you-features" class="features-container"></div>
     </div>
   </div>
-
   <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
 
-<!-- =================== 2️⃣ Dynamic Asset Collection Container =================== -->
+<!-- 2️⃣ Dynamic Asset Collection Container -->
 <div id="dynamic-step-container"></div>
 
 <script>
@@ -374,7 +363,6 @@
   let selectedPlan = localStorage.getItem("selectedPlan") || "Premium";
   let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
-  // Labels for optional features
   const featureLabels = {
     booking: "Booking & Payment System",
     mobile: "Mobile-Friendly Site",
@@ -393,18 +381,11 @@
     guide: "“What to Expect” Guide"
   };
 
-  // Base plan features (Pages, Revisions, Delivery)
+  // =================== Base, Pro, Premium Features ===================
   const planBaseFeatures = {
     basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
-
-  // Features included by tier
-  const planIncludedFeatures = {
-    basic: ["Booking & Payment System", "Mobile-Friendly Site", "Call-to-Action Buttons", "About / Instructor Bio"],
-    pro: ["Student Reviews", "FAQ / Student Guide", "Newsletter Signup"],
-    premium: ["Lesson Packages / Gift Vouchers", "Social Media Integration", "Professional Email Address", "Content Files", "“What to Expect” Guide"]
+    pro: ["Included from Basic", "Booking & Payment System", "Call-to-Action Buttons", "About / Instructor Bio", "Student Reviews", "FAQ / Student Guide", "Newsletter Signup"],
+    premium: ["Included from Pro", "Lesson Packages / Gift Vouchers", "Social Media Integration", "Professional Email Address", "Content Files (Text / Images)", "“What to Expect” Guide"]
   };
 
   // =================== Show Thank You Summary ===================
@@ -413,103 +394,229 @@
     const screen = document.getElementById("thank-you-screen");
     screen.classList.add("active");
 
-    // Set plan name
     document.getElementById("plan-name").textContent = selectedPlan;
 
-    const planKey = selectedPlan.toLowerCase();
+    const container = document.getElementById("thank-you-features");
+    container.innerHTML = "";
 
-    // 1️⃣ Base features (Pages, Revisions, Delivery)
-    const baseContainer = document.getElementById("base-features");
-    baseContainer.innerHTML = "";
-    planBaseFeatures[planKey].forEach(f => {
-      const div = document.createElement("div");
-      div.className = "feature-card";
-      div.textContent = f;
-      baseContainer.appendChild(div);
-    });
-
-    // 2️⃣ Features included from lower tiers
-    const planContainer = document.getElementById("plan-features");
-    planContainer.innerHTML = "";
-
-    if (planKey === "pro" || planKey === "premium") {
-      const basicDiv = document.createElement("div");
-      basicDiv.className = "feature-section";
-      const title = document.createElement("h4");
-      title.textContent = "Includes Basic Features";
-      basicDiv.appendChild(title);
-      planIncludedFeatures.basic.forEach(f => {
-        const div = document.createElement("div");
-        div.className = "feature-card";
-        div.textContent = f;
-        basicDiv.appendChild(div);
-      });
-      planContainer.appendChild(basicDiv);
+    // Show base features first
+    if(selectedPlan.toLowerCase() === "basic") {
+      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
+    }
+    if(selectedPlan.toLowerCase() === "pro") {
+      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
+      createDivider(container);
+      planBaseFeatures.pro.forEach(f => createFeatureDiv(container, f));
+    }
+    if(selectedPlan.toLowerCase() === "premium") {
+      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
+      createDivider(container);
+      planBaseFeatures.pro.forEach(f => createFeatureDiv(container, f));
+      createDivider(container);
+      planBaseFeatures.premium.forEach(f => createFeatureDiv(container, f));
     }
 
-    if (planKey === "premium") {
-      const proDiv = document.createElement("div");
-      proDiv.className = "feature-section";
-      const title = document.createElement("h4");
-      title.textContent = "Includes Pro Features";
-      proDiv.appendChild(title);
-      planIncludedFeatures.pro.forEach(f => {
-        const div = document.createElement("div");
-        div.className = "feature-card";
-        div.textContent = f;
-        proDiv.appendChild(div);
-      });
-      planContainer.appendChild(proDiv);
-    }
-
-    // 3️⃣ Current plan’s additional features
-    const addOnDiv = document.createElement("div");
-    addOnDiv.className = "feature-section";
-    const titleAdd = document.createElement("h4");
-    titleAdd.textContent = selectedPlan + " Add-On Features";
-    addOnDiv.appendChild(titleAdd);
-
-    planIncludedFeatures[planKey].forEach(f => {
-      if (!planIncludedFeatures.basic.includes(f) && !planIncludedFeatures.pro.includes(f)) {
-        const div = document.createElement("div");
-        div.className = "feature-card";
-        div.textContent = f;
-        addOnDiv.appendChild(div);
-      }
-    });
-    planContainer.appendChild(addOnDiv);
-
-    // 4️⃣ Optional user-selected features
-    const optionalContainer = document.getElementById("optional-features");
-    optionalContainer.innerHTML = "";
+    // Merge any extra selected features
     yesFeatures.forEach(f => {
       const label = featureLabels[f] || f;
-      // Avoid duplicates from included features
-      if (!planIncludedFeatures.basic.includes(label) &&
-          !planIncludedFeatures.pro.includes(label) &&
-          !planIncludedFeatures[planKey].includes(label)) {
-        const div = document.createElement("div");
-        div.className = "feature-card";
-        div.textContent = label;
-        optionalContainer.appendChild(div);
-      }
+      createFeatureDiv(container, label);
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Helper: Hide All Screens ===================
-  function hideAllScreens() {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+  function createFeatureDiv(container, text) {
+    const div = document.createElement("div");
+    div.className = "feature-card";
+    div.textContent = text;
+    container.appendChild(div);
+  }
+
+  function createDivider(container) {
+    const divider = document.createElement("hr");
+    divider.style.margin = "0.5rem 0";
+    divider.style.border = "1px dashed #ccc";
+    container.appendChild(divider);
   }
 
   // =================== Funnel Navigation ===================
+  let screens = [];
+  let currentScreen = 0;
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add("active");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add("active");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   document.getElementById("continue-funnel").onclick = () => {
-    // Move to asset collection steps
-    document.getElementById("thank-you-screen").classList.remove("active");
-    document.getElementById("dynamic-step-container").classList.add("active");
-    // Here you can call your generateDynamicSteps() if needed
+    generateAssetSteps();
+    screens = Array.from(document.querySelectorAll(".form-screen"));
+    currentScreen = 1; // start from first asset step
+    hideAllScreens();
+    screens[currentScreen].classList.add("active");
   };
+
+  function hideAllScreens() {
+    document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
+  }
+
+  // =================== Asset Collection Step Generator ===================
+  function generateAssetSteps() {
+    const container = document.getElementById("dynamic-step-container");
+    container.innerHTML = "";
+
+    const stepMapping = {
+      booking: { type: "text", label: "Booking & Payment System Details" },
+      mobile: { type: "text", label: "Mobile-Friendly Site Notes" },
+      cta: { type: "text", label: "Call-to-Action Button Texts" },
+      contact: { type: "text", label: "Contact Form Details" },
+      bio: { type: "textarea", label: "Instructor / About Me Bio" },
+      social: { type: "text", label: "Social Media Links" },
+      seo: { type: "text", label: "SEO Keywords / Locations" },
+      reviews: { type: "text", label: "Student Reviews / Testimonials" },
+      branding: { type: "text", label: "Branding Notes / Logo Ideas" },
+      faq: { type: "textarea", label: "FAQ / Student Guide Content" },
+      newsletter: { type: "text", label: "Newsletter / Mailing List Info" },
+      packages: { type: "text", label: "Lesson Packages / Gift Voucher Info" },
+      email: { type: "text", label: "Professional Email Address" },
+      content: { type: "file", label: "Upload Content Files (Text / Images)" },
+      guide: { type: "file", label: "Upload “What to Expect” Guide" },
+      logo: { type: "file", label: "Upload Your Logo" }
+    };
+
+    yesFeatures.forEach((feature, index) => {
+      const step = stepMapping[feature];
+      if (!step) return;
+
+      const div = document.createElement("div");
+      div.className = "form-screen";
+      div.id = `step-${index}`;
+
+      const h2 = document.createElement("h2");
+      h2.textContent = step.label;
+      div.appendChild(h2);
+
+      let input;
+      if (step.type === "textarea") {
+        input = document.createElement("textarea");
+        input.id = `input-${feature}`;
+        div.appendChild(input);
+      } else if (step.type === "file") {
+        input = document.createElement("input");
+        input.type = "file";
+        input.multiple = true;
+        input.id = `input-${feature}`;
+
+        const dropArea = document.createElement("div");
+        dropArea.className = "drop-area";
+        dropArea.textContent = "Drag & drop files here or click to upload";
+        dropArea.style.padding = "1rem";
+        dropArea.style.border = "2px dashed #ccc";
+        dropArea.style.borderRadius = "8px";
+        dropArea.style.marginBottom = "1rem";
+
+        dropArea.addEventListener("click", () => input.click());
+        dropArea.addEventListener("dragover", (e) => { e.preventDefault(); dropArea.style.borderColor = "#000"; });
+        dropArea.addEventListener("dragleave", (e) => { e.preventDefault(); dropArea.style.borderColor = "#ccc"; });
+        dropArea.addEventListener("drop", (e) => { e.preventDefault(); input.files = e.dataTransfer.files; showFilePreview(dropArea, input.files); });
+        input.addEventListener("change", () => showFilePreview(dropArea, input.files));
+        div.appendChild(dropArea);
+      } else {
+        input = document.createElement("input");
+        input.type = step.type;
+        input.id = `input-${feature}`;
+        div.appendChild(input);
+      }
+
+      // Navigation buttons
+      const nav = document.createElement("div");
+      nav.className = "button-row";
+
+      const backBtn = document.createElement("button");
+      backBtn.className = "brand-btn";
+      backBtn.textContent = "Back";
+      backBtn.onclick = prev;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.className = "brand-btn";
+      nextBtn.textContent = "Next";
+      nextBtn.onclick = next;
+
+      nav.appendChild(backBtn);
+      nav.appendChild(nextBtn);
+      div.appendChild(nav);
+
+      container.appendChild(div);
+    });
+
+    // Mandatory business info step
+    const businessDiv = document.createElement("div");
+    businessDiv.className = "form-screen";
+    businessDiv.id = "mandatory-info";
+    businessDiv.innerHTML = `
+      <h2>Business & Contact Information</h2>
+      <input type="text" id="business-name" placeholder="Business Name" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <div class="button-row">
+        <button class="brand-btn" onclick="prev()">Back</button>
+        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+      </div>
+      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
+    `;
+    container.appendChild(businessDiv);
+  }
+
+  // =================== File Preview ===================
+  function showFilePreview(container, files) {
+    let preview = container.querySelector(".file-preview");
+    if (!preview) {
+      preview = document.createElement("ul");
+      preview.className = "file-preview";
+      container.appendChild(preview);
+    }
+    preview.innerHTML = "";
+    Array.from(files).forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f.name;
+      preview.appendChild(li);
+    });
+  }
+
+  // =================== Funnel Submission ===================
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      selectedFeatures: yesFeatures.join(", "),
+      businessName: document.getElementById("business-name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      gdprConsent: document.getElementById("gdpr-consent").checked
+    };
+
+    yesFeatures.forEach(f => {
+      const el = document.getElementById(`input-${f}`);
+      if (el) {
+        data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
+      }
+    });
+
+    console.log("Funnel submission:", data);
+    alert("Thank you! Your details have been submitted.");
+  }
 
   // =================== Initialize ===================
   showThankYouScreen();
