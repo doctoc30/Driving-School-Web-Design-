@@ -342,25 +342,7 @@
 </head>
 <body>
 
-<!-- 1️⃣ Thank You Summary Screen -->
-<div id="thank-you-screen" class="form-screen active">
-  <h2>Thank You for Your Order!</h2>
-
-  <div class="pricing-container">
-    <div class="pricing-card recommended in-view" id="summary-card">
-      <h3 id="plan-name">Your Plan</h3>
-      <p class="price" id="plan-price"></p>
-      <div id="selected-features" class="features-container"></div>
-    </div>
-  </div>
-
-  <button class="brand-btn" id="continue-funnel">Continue</button>
-</div>
-
-<!-- 2️⃣ Dynamic Asset Collection Container -->
-<div id="dynamic-step-container"></div>
-
-<!-- ✅ Thank You Summary Screen -->
+  <!-- ✅ Thank You Summary Screen -->
 <div id="thank-you-screen" class="form-screen active">
   <h2>Thank You for Your Order!</h2>
   <div class="pricing-container">
@@ -371,6 +353,9 @@
   </div>
   <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
+
+<!-- ✅ Dynamic Asset Collection -->
+<div id="dynamic-step-container"></div>
 
 <script>
   // =================== Dynamic Data ===================
@@ -417,18 +402,147 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Helper: Hide All Screens ===================
+  // =================== Generate Dynamic Steps ===================
+  function generateDynamicSteps() {
+    const container = document.getElementById('dynamic-step-container');
+    container.innerHTML = '';
+
+    const stepMapping = {
+      booking: { type: 'text', label: 'Provide your Booking System details' },
+      mobile: { type: 'text', label: 'Notes for Mobile-Friendly Design' },
+      cta: { type: 'text', label: 'Text for Call-to-Action Buttons' },
+      contact: { type: 'text', label: 'Contact Form Details' },
+      bio: { type: 'textarea', label: 'Instructor / About Me Bio' },
+      social: { type: 'text', label: 'Social Media Links' },
+      seo: { type: 'text', label: 'SEO Keywords / Locations' },
+      reviews: { type: 'text', label: 'Student Reviews / Testimonials' },
+      branding: { type: 'text', label: 'Branding Notes / Logo Ideas' },
+      faq: { type: 'textarea', label: 'FAQ / Student Guide Content' },
+      newsletter: { type: 'text', label: 'Newsletter / Mailing List Setup Info' },
+      packages: { type: 'text', label: 'Lesson Packages / Gift Voucher Info' },
+      email: { type: 'text', label: 'Professional Email Address (info@domain.com)' },
+      content: { type: 'file', label: 'Upload Content Files (Text / Images)' },
+      guide: { type: 'file', label: 'Upload “What to Expect” Guide' },
+      logo: { type: 'file', label: 'Upload Your Logo' }
+    };
+
+    yesFeatures.forEach((feature, index) => {
+      const step = stepMapping[feature];
+      if (!step) return;
+
+      const div = document.createElement('div');
+      div.className = 'form-screen';
+      div.id = `step-${index}`;
+
+      const h2 = document.createElement('h2');
+      h2.textContent = step.label;
+      div.appendChild(h2);
+
+      let input;
+      if (step.type === 'textarea') {
+        input = document.createElement('textarea');
+      } else if (step.type === 'file') {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+      } else {
+        input = document.createElement('input');
+        input.type = step.type;
+      }
+
+      input.id = `input-${feature}`;
+      div.appendChild(input);
+
+      // Navigation
+      const nav = document.createElement('div');
+      nav.className = 'button-row';
+      const backBtn = document.createElement('button');
+      backBtn.className = 'brand-btn';
+      backBtn.textContent = 'Back';
+      backBtn.onclick = prev;
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'brand-btn';
+      nextBtn.textContent = 'Next';
+      nextBtn.onclick = next;
+      nav.appendChild(backBtn);
+      nav.appendChild(nextBtn);
+      div.appendChild(nav);
+
+      container.appendChild(div);
+    });
+
+    // Add final business info step
+    const businessDiv = document.createElement('div');
+    businessDiv.className = 'form-screen';
+    businessDiv.id = 'mandatory-info';
+    businessDiv.innerHTML = `
+      <h2>Business & Contact Information</h2>
+      <input type="text" id="business-name" placeholder="Business Name" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
+      <div class="button-row">
+        <button class="brand-btn" onclick="prev()">Back</button>
+        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
+      </div>
+    `;
+    container.appendChild(businessDiv);
+  }
+
+  // =================== Navigation Logic ===================
+  let screens = [];
+  let currentScreen = 0;
+
   function hideAllScreens() {
     document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
   }
 
-  document.getElementById("continue-funnel").onclick = () => {
-    next();
-  };
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
 
-  // Initialize
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      businessName: document.getElementById("business-name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      gdprConsent: document.getElementById("gdpr-consent").checked
+    };
+
+    yesFeatures.forEach(f => {
+      const el = document.getElementById(`input-${f}`);
+      if (el) data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
+    });
+
+    alert("Collected Data:\n" + JSON.stringify(data, null, 2));
+    console.log("Funnel submission:", data);
+  }
+
+  // =================== Initialize ===================
+  generateDynamicSteps();
   showThankYouScreen();
+  screens = Array.from(document.querySelectorAll('.form-screen'));
+  screens[0].classList.add('active');
+
+  document.getElementById("continue-funnel").onclick = next;
 </script>
+
+
 
 
 </body>
