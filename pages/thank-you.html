@@ -342,27 +342,25 @@
 </head>
 <body>
 
-<!-- 1️⃣ Thank You Summary Screen -->
+
+  <!-- Thank You Summary Screen -->
 <div id="thank-you-screen" class="form-screen active">
   <h2>Thank You for Your Order!</h2>
-
   <div class="pricing-container">
     <div class="pricing-card recommended in-view" id="summary-card">
       <h3 id="plan-name">Your Plan</h3>
       <div id="thank-you-features" class="features-container"></div>
     </div>
   </div>
-
   <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
 
-<!-- 2️⃣ Dynamic Asset Collection Container -->
+<!-- Dynamic Asset Collection Container -->
 <div id="dynamic-step-container"></div>
-
 
 <script>
   // =================== Dynamic Data ===================
-  let selectedPlan = localStorage.getItem("selectedPlan") || "Premium";
+  let selectedPlan = (localStorage.getItem("selectedPlan") || "Premium Plan").toLowerCase().replace(" plan","");
   let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
   const featureLabels = {
@@ -383,7 +381,6 @@
     guide: "“What to Expect” Guide"
   };
 
-  // Base plan features
   const planBaseFeatures = {
     basic: [
       "Pages - 10",
@@ -422,25 +419,23 @@
   // =================== Show Thank You Summary ===================
   function showThankYouScreen() {
     hideAllScreens();
-    const screen = document.getElementById("thank-you-screen");
-    screen.classList.add("active");
+    document.getElementById("thank-you-screen").classList.add("active");
 
-    document.getElementById("plan-name").textContent = selectedPlan;
+    document.getElementById("plan-name").textContent = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
 
     const container = document.getElementById("thank-you-features");
     container.innerHTML = "";
 
-    const planKey = selectedPlan.toLowerCase();
-    const baseFeatures = planBaseFeatures[planKey] || [];
+    const baseFeatures = planBaseFeatures[selectedPlan] || [];
 
-    // Merge base features + yesFeatures without duplicates
+    // Merge base + yes features
     const allFeatures = [...baseFeatures];
     yesFeatures.forEach(f => {
       const label = featureLabels[f] || f;
       if (!allFeatures.includes(label)) allFeatures.push(label);
     });
 
-    // Render features as cards
+    // Render features
     allFeatures.forEach(f => {
       const div = document.createElement("div");
       div.className = "feature-card";
@@ -451,15 +446,109 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // =================== Helper: Hide All Screens ===================
-  function hideAllScreens() {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+  // =================== Asset Collection Steps ===================
+  function generateAssetSteps() {
+    const container = document.getElementById("dynamic-step-container");
+    container.innerHTML = "";
+
+    yesFeatures.forEach((f, index) => {
+      const div = document.createElement("div");
+      div.className = "form-screen";
+      div.id = `step-${index}`;
+
+      const h2 = document.createElement("h2");
+      h2.textContent = `Provide ${featureLabels[f] || f} details`;
+      div.appendChild(h2);
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = `input-${f}`;
+      div.appendChild(input);
+
+      const nav = document.createElement("div");
+      nav.className = "button-row";
+      const back = document.createElement("button");
+      back.textContent = "Back";
+      back.onclick = prev;
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next";
+      nextBtn.onclick = next;
+      nav.appendChild(back);
+      nav.appendChild(nextBtn);
+      div.appendChild(nav);
+
+      container.appendChild(div);
+    });
+
+    // Collect business info last
+    const businessDiv = document.createElement("div");
+    businessDiv.className = "form-screen";
+    businessDiv.id = "business-info";
+    businessDiv.innerHTML = `
+      <h2>Business & Contact Information</h2>
+      <input type="text" id="business-name" placeholder="Business Name" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <div class="button-row">
+        <button onclick="prev()">Back</button>
+        <button onclick="submitFunnel()">Submit</button>
+      </div>
+      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data.</p>
+    `;
+    container.appendChild(businessDiv);
+
+    // Set screens for navigation
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+    currentScreen = screens.indexOf(document.getElementById("thank-you-screen"));
   }
 
-  // =================== Funnel Navigation ===================
+  // =================== Navigation ===================
+  let screens = [];
+  let currentScreen = 0;
+
+  function hideAllScreens() { document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active')); }
+
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      hideAllScreens();
+      currentScreen++;
+      screens[currentScreen].classList.add('active');
+    }
+  }
+
+  function prev() {
+    if (currentScreen > 0) {
+      hideAllScreens();
+      currentScreen--;
+      screens[currentScreen].classList.add('active');
+    }
+  }
+
+  // Continue button triggers asset collection
   document.getElementById("continue-funnel").onclick = () => {
-    next(); // Replace with your function to show asset collection steps
+    generateAssetSteps();
+    next();
   };
+
+  // =================== Funnel Submission ===================
+  function submitFunnel() {
+    const data = {
+      plan: selectedPlan,
+      features: yesFeatures,
+      businessName: document.getElementById("business-name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      gdprConsent: document.getElementById("gdpr-consent").checked
+    };
+
+    yesFeatures.forEach(f => {
+      const el = document.getElementById(`input-${f}`);
+      if (el) data[f] = el.value;
+    });
+
+    console.log("Collected Data:", data);
+    alert("Thank you! Your details have been submitted.");
+  }
 
   // =================== Initialize ===================
   showThankYouScreen();
