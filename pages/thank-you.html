@@ -346,12 +346,14 @@
 <!-- 1️⃣ Thank You Summary Screen -->
 <div id="thank-you-screen" class="form-screen active">
   <h2>Thank You for Your Order!</h2>
+
   <div class="pricing-container">
     <div class="pricing-card recommended in-view" id="summary-card">
       <h3 id="plan-name">Your Plan</h3>
       <div id="thank-you-features" class="features-container"></div>
     </div>
   </div>
+
   <button class="brand-btn" id="continue-funnel">Continue</button>
 </div>
 
@@ -378,14 +380,21 @@
     packages: "Lesson Packages / Gift Vouchers",
     email: "Professional Email Address",
     content: "Content Files (Text / Images)",
-    guide: "“What to Expect” Guide"
+    guide: "“What to Expect” Guide",
+    buyOutright: "buyOutright"
   };
 
-  // =================== Base, Pro, Premium Features ===================
+  // =================== Plan Base Features ===================
   const planBaseFeatures = {
     basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Included from Basic", "Booking & Payment System", "Call-to-Action Buttons", "About / Instructor Bio", "Student Reviews", "FAQ / Student Guide", "Newsletter Signup"],
-    premium: ["Included from Pro", "Lesson Packages / Gift Vouchers", "Social Media Integration", "Professional Email Address", "Content Files (Text / Images)", "“What to Expect” Guide"]
+    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
+    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
+  };
+
+  const planHierarchy = {
+    basic: [],
+    pro: ["basic"],
+    premium: ["basic", "pro"]
   };
 
   // =================== Show Thank You Summary ===================
@@ -399,48 +408,71 @@
     const container = document.getElementById("thank-you-features");
     container.innerHTML = "";
 
-    // Show base features first
-    if(selectedPlan.toLowerCase() === "basic") {
-      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
-    }
-    if(selectedPlan.toLowerCase() === "pro") {
-      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
-      createDivider(container);
-      planBaseFeatures.pro.forEach(f => createFeatureDiv(container, f));
-    }
-    if(selectedPlan.toLowerCase() === "premium") {
-      planBaseFeatures.basic.forEach(f => createFeatureDiv(container, f));
-      createDivider(container);
-      planBaseFeatures.pro.forEach(f => createFeatureDiv(container, f));
-      createDivider(container);
-      planBaseFeatures.premium.forEach(f => createFeatureDiv(container, f));
-    }
+    const planKey = selectedPlan.toLowerCase();
 
-    // Merge any extra selected features
+    // 1️⃣ Show main plan features first (Pages / Revisions / Delivery)
+    planBaseFeatures[planKey].forEach(f => {
+      const div = document.createElement("div");
+      div.className = "feature-card";
+      div.textContent = f;
+      container.appendChild(div);
+    });
+
+    // Add a divider after base features
+    const baseDivider = document.createElement("hr");
+    baseDivider.style.margin = "1rem 0";
+    container.appendChild(baseDivider);
+
+    // 2️⃣ Show included features from lower-tier plans
+    planHierarchy[planKey].forEach(lowerPlan => {
+      const header = document.createElement("div");
+      header.className = "feature-divider";
+      header.textContent = `Included from ${capitalize(lowerPlan)} Plan`;
+      container.appendChild(header);
+
+      planBaseFeatures[lowerPlan].forEach(f => {
+        const div = document.createElement("div");
+        div.className = "feature-card";
+        div.textContent = f;
+        container.appendChild(div);
+      });
+
+      // Add a divider between included plans
+      const divider = document.createElement("hr");
+      divider.style.margin = "0.5rem 0";
+      container.appendChild(divider);
+    });
+
+    // 3️⃣ Show user-selected features not already included
     yesFeatures.forEach(f => {
       const label = featureLabels[f] || f;
-      createFeatureDiv(container, label);
+      // Avoid duplicates from base and included plans
+      const allBase = [
+        ...planBaseFeatures[planKey],
+        ...planHierarchy[planKey].flatMap(p => planBaseFeatures[p])
+      ];
+      if (!allBase.includes(label)) {
+        const div = document.createElement("div");
+        div.className = "feature-card";
+        div.textContent = label;
+        container.appendChild(div);
+      }
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function createFeatureDiv(container, text) {
-    const div = document.createElement("div");
-    div.className = "feature-card";
-    div.textContent = text;
-    container.appendChild(div);
+  // =================== Helper Functions ===================
+  function hideAllScreens() {
+    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
   }
 
-  function createDivider(container) {
-    const divider = document.createElement("hr");
-    divider.style.margin = "0.5rem 0";
-    divider.style.border = "1px dashed #ccc";
-    container.appendChild(divider);
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   // =================== Funnel Navigation ===================
-  let screens = [];
+  let screens = [document.getElementById("thank-you-screen"), document.getElementById("dynamic-step-container")];
   let currentScreen = 0;
 
   function next() {
@@ -448,175 +480,11 @@
       hideAllScreens();
       currentScreen++;
       screens[currentScreen].classList.add("active");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
-  function prev() {
-    if (currentScreen > 0) {
-      hideAllScreens();
-      currentScreen--;
-      screens[currentScreen].classList.add("active");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  document.getElementById("continue-funnel").onclick = () => {
-    generateAssetSteps();
-    screens = Array.from(document.querySelectorAll(".form-screen"));
-    currentScreen = 1; // start from first asset step
-    hideAllScreens();
-    screens[currentScreen].classList.add("active");
-  };
-
-  function hideAllScreens() {
-    document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
-  }
-
-  // =================== Asset Collection Step Generator ===================
-  function generateAssetSteps() {
-    const container = document.getElementById("dynamic-step-container");
-    container.innerHTML = "";
-
-    const stepMapping = {
-      booking: { type: "text", label: "Booking & Payment System Details" },
-      mobile: { type: "text", label: "Mobile-Friendly Site Notes" },
-      cta: { type: "text", label: "Call-to-Action Button Texts" },
-      contact: { type: "text", label: "Contact Form Details" },
-      bio: { type: "textarea", label: "Instructor / About Me Bio" },
-      social: { type: "text", label: "Social Media Links" },
-      seo: { type: "text", label: "SEO Keywords / Locations" },
-      reviews: { type: "text", label: "Student Reviews / Testimonials" },
-      branding: { type: "text", label: "Branding Notes / Logo Ideas" },
-      faq: { type: "textarea", label: "FAQ / Student Guide Content" },
-      newsletter: { type: "text", label: "Newsletter / Mailing List Info" },
-      packages: { type: "text", label: "Lesson Packages / Gift Voucher Info" },
-      email: { type: "text", label: "Professional Email Address" },
-      content: { type: "file", label: "Upload Content Files (Text / Images)" },
-      guide: { type: "file", label: "Upload “What to Expect” Guide" },
-      logo: { type: "file", label: "Upload Your Logo" }
-    };
-
-    yesFeatures.forEach((feature, index) => {
-      const step = stepMapping[feature];
-      if (!step) return;
-
-      const div = document.createElement("div");
-      div.className = "form-screen";
-      div.id = `step-${index}`;
-
-      const h2 = document.createElement("h2");
-      h2.textContent = step.label;
-      div.appendChild(h2);
-
-      let input;
-      if (step.type === "textarea") {
-        input = document.createElement("textarea");
-        input.id = `input-${feature}`;
-        div.appendChild(input);
-      } else if (step.type === "file") {
-        input = document.createElement("input");
-        input.type = "file";
-        input.multiple = true;
-        input.id = `input-${feature}`;
-
-        const dropArea = document.createElement("div");
-        dropArea.className = "drop-area";
-        dropArea.textContent = "Drag & drop files here or click to upload";
-        dropArea.style.padding = "1rem";
-        dropArea.style.border = "2px dashed #ccc";
-        dropArea.style.borderRadius = "8px";
-        dropArea.style.marginBottom = "1rem";
-
-        dropArea.addEventListener("click", () => input.click());
-        dropArea.addEventListener("dragover", (e) => { e.preventDefault(); dropArea.style.borderColor = "#000"; });
-        dropArea.addEventListener("dragleave", (e) => { e.preventDefault(); dropArea.style.borderColor = "#ccc"; });
-        dropArea.addEventListener("drop", (e) => { e.preventDefault(); input.files = e.dataTransfer.files; showFilePreview(dropArea, input.files); });
-        input.addEventListener("change", () => showFilePreview(dropArea, input.files));
-        div.appendChild(dropArea);
-      } else {
-        input = document.createElement("input");
-        input.type = step.type;
-        input.id = `input-${feature}`;
-        div.appendChild(input);
-      }
-
-      // Navigation buttons
-      const nav = document.createElement("div");
-      nav.className = "button-row";
-
-      const backBtn = document.createElement("button");
-      backBtn.className = "brand-btn";
-      backBtn.textContent = "Back";
-      backBtn.onclick = prev;
-
-      const nextBtn = document.createElement("button");
-      nextBtn.className = "brand-btn";
-      nextBtn.textContent = "Next";
-      nextBtn.onclick = next;
-
-      nav.appendChild(backBtn);
-      nav.appendChild(nextBtn);
-      div.appendChild(nav);
-
-      container.appendChild(div);
-    });
-
-    // Mandatory business info step
-    const businessDiv = document.createElement("div");
-    businessDiv.className = "form-screen";
-    businessDiv.id = "mandatory-info";
-    businessDiv.innerHTML = `
-      <h2>Business & Contact Information</h2>
-      <input type="text" id="business-name" placeholder="Business Name" required />
-      <input type="text" id="phone" placeholder="Phone Number" required />
-      <input type="email" id="email" placeholder="Email Address" required />
-      <div class="button-row">
-        <button class="brand-btn" onclick="prev()">Back</button>
-        <button class="brand-btn" onclick="submitFunnel()">Submit</button>
-      </div>
-      <p><input type="checkbox" id="gdpr-consent" required /> I consent to storing my data in accordance with GDPR.</p>
-    `;
-    container.appendChild(businessDiv);
-  }
-
-  // =================== File Preview ===================
-  function showFilePreview(container, files) {
-    let preview = container.querySelector(".file-preview");
-    if (!preview) {
-      preview = document.createElement("ul");
-      preview.className = "file-preview";
-      container.appendChild(preview);
-    }
-    preview.innerHTML = "";
-    Array.from(files).forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f.name;
-      preview.appendChild(li);
-    });
-  }
-
-  // =================== Funnel Submission ===================
-  function submitFunnel() {
-    const data = {
-      plan: selectedPlan,
-      selectedFeatures: yesFeatures.join(", "),
-      businessName: document.getElementById("business-name").value,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("email").value,
-      gdprConsent: document.getElementById("gdpr-consent").checked
-    };
-
-    yesFeatures.forEach(f => {
-      const el = document.getElementById(`input-${f}`);
-      if (el) {
-        data[f] = el.type === "file" ? Array.from(el.files).map(file => file.name) : el.value;
-      }
-    });
-
-    console.log("Funnel submission:", data);
-    alert("Thank you! Your details have been submitted.");
-  }
+  document.getElementById("continue-funnel").onclick = next;
 
   // =================== Initialize ===================
   showThankYouScreen();
