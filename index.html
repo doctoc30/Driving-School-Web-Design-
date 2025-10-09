@@ -1561,20 +1561,34 @@ html, body {
  
 
 
-
 <script>
-/* ---------- FULL FUNNEL JS WITH TYPEWRITER & MONTHLY SUPPORT ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------ Basic setup ------------------
+  // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const navMenu = document.querySelector('.nav-menu');
+
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu?.classList.toggle('active');
+    });
+  }
+
+  // ------------------ Funnel Setup ------------------
   let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
+  let ownershipChoice = "";
+  const featureState = {};
 
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // ------------------ Progress Bar Functions ------------------
+  // ------------------ Progress Bar ------------------
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
@@ -1632,13 +1646,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ User Path & Features ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = "";
-  const featureState = {};
-
+  // ------------------ Feature Recording ------------------
   function syncFeatureState() {
     yesFeatures.length = 0;
     noFeatures.length = 0;
@@ -1657,32 +1665,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Q19 Ownership Buttons ------------------
-  const q19Screen = document.getElementById('instructor-q19');
-  if (q19Screen) {
-    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
-    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-    const backBtn = q19Screen.querySelector('.back-button');
+  // ------------------ Ownership Choice ------------------
+  window.chooseOwnership = (type) => {
+    ownershipChoice = type === 'outright' ? 'Owned Outright' : 'Monthly Support';
+    featureState[type === 'outright' ? 'buyOutright' : 'monthlySupport'] = true;
+    syncFeatureState();
+    showScreen('recommended-plan-screen');
+    if (type === 'monthly') showRecommendedPlan('monthly');
+  };
 
-    if (ownOutrightBtn) ownOutrightBtn.onclick = () => {
-      ownershipChoice = 'Owned Outright';
-      featureState['buyOutright'] = true;
-      syncFeatureState();
-      showScreen('recommended-plan-screen');
-    };
-
-    if (monthlySupportBtn) monthlySupportBtn.onclick = () => {
-      ownershipChoice = 'Monthly Support';
-      featureState['monthlySupport'] = true;
-      syncFeatureState();
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
-    };
-
-    if (backBtn) backBtn.onclick = () => prev();
-  }
-
-  // ------------------ Design Code Handling ------------------
+  // ------------------ Design Code ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
@@ -1743,7 +1735,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ Show Recommended Plan ------------------
+  // ------------------ Recommended Plan ------------------
   function showRecommendedPlan(planType = 'outright') {
     const isMonthly = planType === 'monthly';
     const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1825,23 +1817,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-  const initialActive = document.querySelector('.form-screen.active');
-  if (initialActive) {
-    const idx = screens.indexOf(initialActive);
-    if (idx >= 0) currentScreen = idx;
-    showScreen(initialActive.id);
-  }
-
-  if (codeParam) showFilteredTemplate(codeParam);
-  else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) { currentScreen = screenIndex; showScreen(stepName); }
-  }
-
-  // IntersectionObserver for pricing cards
+  // ------------------ IntersectionObserver for Pricing Cards ------------------
   const cards = document.querySelectorAll('.pricing-card[data-animate]');
   if (cards.length && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries, obs) => {
@@ -1855,7 +1831,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cards.forEach(card => observer.observe(card));
   } else { cards.forEach(c => c.classList.add('in-view')); }
 
-  // ------------------ Typewriter Animation ------------------
+  // ------------------ Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
@@ -1876,36 +1852,51 @@ document.addEventListener("DOMContentLoaded", () => {
         : ["We build", "your", "website.", "You approve,", "then pay."];
     }
 
-    function typeChar() {
+    function typeLine() {
       if (currentLine >= lines.length) {
-        cursor.remove();
         setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
+          typewriterEl.style.opacity = 0;
+          setTimeout(() => {
+            typewriterEl.innerHTML = "";
+            typewriterEl.appendChild(cursor);
+            startTypewriterAnimation();
+          }, 1000);
+        }, 2000);
         return;
       }
+
       const text = lines[currentLine];
-      if (!lineEl) { lineEl = document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
-      if (currentChar < text.length) { lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor); currentChar++; setTimeout(typeChar, typingSpeed); }
-      else { currentLine++; currentChar = 0; lineEl = null; setTimeout(typeChar, lineDelay); }
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('type-line');
+        typewriterEl.insertBefore(lineEl, cursor);
+      }
+
+      if (currentChar < text.length) {
+        lineEl.textContent += text[currentChar];
+        currentChar++;
+        setTimeout(typeLine, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeLine, lineDelay);
+      }
     }
 
     setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0; currentChar = 0; lineEl = null; typewriterEl.textContent = ''; typewriterEl.appendChild(cursor); setLinesByOrientation(); typeChar();
-    }, 300));
+    window.addEventListener("orientationchange", setLinesByOrientation);
+    typeLine();
   }
 
-  function debounce(func, wait) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
-
-  // ✅ Correct initialization
   startTypewriterAnimation();
+
+  // ------------------ Query Params (resume flow) ------------------
+  if (stepParam) showScreen(stepParam);
+  else if (codeParam) showFilteredTemplate(codeParam);
+  else showScreen(screens[0].id);
 
 });
 </script>
-
 </body>
 </html>
