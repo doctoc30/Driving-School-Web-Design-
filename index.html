@@ -1560,6 +1560,8 @@ html, body {
 
  
 
+
+
 <script>
 /* ---------- FULL FUNNEL JS WITH TYPEWRITER & MONTHLY SUPPORT ---------- */
 document.addEventListener("DOMContentLoaded", () => {
@@ -1647,7 +1649,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
-    // Update plan screens if active
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) showRecommendedPlan('outright');
     if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) showRecommendedPlan('monthly');
   }
@@ -1900,30 +1901,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function debounce(func, wait) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
 
+  // ✅ Correct initialization
   startTypewriterAnimation();
-
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
 
 });
 </script>
