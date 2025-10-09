@@ -1119,287 +1119,449 @@ html, body {
 <div class="color-rise"></div>
 <div id="typewriter"></div>
 
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
-  <input type="hidden" id="hiddenPlan" name="Selected Plan">
-  <input type="hidden" id="hiddenFeatures" name="Selected Features">
-  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
+<div class="container">
 
-  <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-label">Question <span id="progress-count">0</span> of 30 — <span id="progress-percent">0%</span></div>
+    <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="funnel progress">
+      <div class="progress-bar" id="progress-bar"></div>
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q1">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
-      <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
-    </div>
-  </div>
+  <!-- ================= FORM START ================= -->
+  <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+    <input type="hidden" id="hiddenPlan" name="Selected Plan" value="">
+    <input type="hidden" id="hiddenFeatures" name="Selected Features" value="">
+    <input type="hidden" id="hiddenPaymentLink" name="Payment Link" value="">
 
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
-      <button type="button" onclick="next()">Custom design</button>
+    <!-- ===== INTRO ===== -->
+    <div class="form-screen active" id="main-intro-options">
+      <h2>Welcome — what do you need help with?</h2>
+      <p>Choose one to get started. We'll guide you step-by-step to collect everything we need.</p>
+      <div class="button-row">
+        <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+        <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Site</button>
+        <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="design-code">
-    <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-    <div class="button-row">
-      <button type="button" onclick="goToConcept()">Continue</button>
-      <button type="button" onclick="next()">Skip</button>
+    <div class="form-screen" id="instructor-q1">
+      <h2>Solo instructor or driving school?</h2>
+      <p>Tell us which best describes you — we tailor the plan and questions accordingly.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
+        <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q4">
-    <h2>Do you want students to book & pay online?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
+    <div class="form-screen" id="instructor-q2">
+      <h2>Have a design concept?</h2>
+      <p>Enter a design code, view templates, or pick "Custom design".</p>
+      <div class="button-row">
+        <button type="button" onclick="showScreen('design-code')">Yes — I have a code</button>
+        <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show templates</button>
+        <button type="button" onclick="next()">Custom design</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q5">
-    <h2>Do you want your site optimized for mobile?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="design-code">
+      <h2>Design code</h2>
+      <p>Enter the template/design code if you have one (optional).</p>
+      <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
+      <div class="button-row">
+        <button type="button" onclick="goToConcept()">Apply code</button>
+        <button type="button" class="back-button" onclick="prev()">Back</button>
+        <button type="button" onclick="next()">Skip</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q6">
-    <h2>Do you want strong call-to-action buttons?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <!-- ================= BASIC 1–10 ================= -->
+    <div class="form-screen" id="basic-q1">
+      <h2>1 of 30 — Mobile-Friendly Design</h2>
+      <p>Will you need the site fully responsive for phones/tablets?</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q7">
-    <h2>Do you want a simple contact form?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q2">
+      <h2>2 of 30 — Contact Form</h2>
+      <p>Add a contact form so students can message you directly.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q8">
-    <h2>Do you want an About Me / Instructor Bio section?</h2>
-    <p><strong>(Basic)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q3">
+      <h2>3 of 30 — Instructor Bio</h2>
+      <p>Include an About / Instructor bio section to introduce yourself.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q9">
-    <h2>Do you want your site to rank on Google locally?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q4">
+      <h2>4 of 30 — Social Links</h2>
+      <p>Show links to your social profiles (Facebook, Instagram, X, TikTok, YouTube).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('socialLinks'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('socialLinks'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q10">
-    <h2>Would you like to display student reviews?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q5">
+      <h2>5 of 30 — Booking & Online Payment</h2>
+      <p>Allow students to book lessons and pay online (PayPal/Stripe integration).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q11">
-    <h2>Do you want branding help (logo, colors)?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q6">
+      <h2>6 of 30 — Call-to-Action Buttons</h2>
+      <p>Strong CTAs such as Book Now, Call, or WhatsApp floating buttons.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('ctaButtons'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('ctaButtons'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q12">
-    <h2>Do you want a FAQ or student guide section?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q7">
+      <h2>7 of 30 — Home Page Structure</h2>
+      <p>A clear home hero, benefits, and quick booking area.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('homeStructure'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('homeStructure'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q13">
-    <h2>Do you want newsletter signup or mailing list?</h2>
-    <p><strong>(Pro)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q8">
+      <h2>8 of 30 — Services / What We Teach</h2>
+      <p>Page or section listing lesson types (e.g. manual, automatic, refresher).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('servicesPage'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('servicesPage'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q14">
-    <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q9">
+      <h2>9 of 30 — Testimonials Section</h2>
+      <p>Showcase student quotes & star ratings to build trust.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('testimonials'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('testimonials'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q15">
-    <h2>Do you want social media integration?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('social'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="basic-q10">
+      <h2>10 of 30 — Google Map Integration</h2>
+      <p>Embed Google Maps to show service area or meeting point.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('googleMap'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('googleMap'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q16">
-    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <!-- ================= PRO 11–20 ================= -->
+    <div class="form-screen" id="pro-q11">
+      <h2>11 of 30 — Local SEO (On-page)</h2>
+      <p>Basic on-page SEO: meta titles, headings, alt text and local keywords.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q17">
-    <h2>Do you want help creating content (text/images)?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('content'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="pro-q12">
+      <h2>12 of 30 — Student Reviews Integration</h2>
+      <p>Display verified reviews or Google Reviews on the site.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('studentReviews'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('studentReviews'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q18">
-    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="pro-q13">
+      <h2>13 of 30 — Branding & Logo</h2>
+      <p>Logo file + brand colors and fonts applied across the site.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('brandingLogo'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('brandingLogo'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
+    <div class="form-screen" id="pro-q14">
+      <h2>14 of 30 — FAQ / Student Guide</h2>
+      <p>FAQ section to reduce repeat questions and speed conversions.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
+      </div>
     </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q19">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
+    <div class="form-screen" id="pro-q15">
+      <h2>15 of 30 — Newsletter / Mailing List</h2>
+      <p>Collect emails for offers and lesson reminders.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="pro-q16">
+      <h2>16 of 30 — Photo Gallery</h2>
+      <p>Image sliders or gallery of car, training, passes, etc.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('photoGallery'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('photoGallery'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="pro-q17">
+      <h2>17 of 30 — Blog / Updates</h2>
+      <p>Short articles with driving tips that help SEO and engagement.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('blog'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('blog'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="pro-q18">
+      <h2>18 of 30 — Multi-page Navigation</h2>
+      <p>Structured menu and subpages for a larger site (10 pages).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('multiNav'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('multiNav'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="pro-q19">
+      <h2>19 of 30 — Lesson Pricing Table</h2>
+      <p>Clear pricing table for single lessons, blocks, and packages.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('pricingTable'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('pricingTable'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="pro-q20">
+      <h2>20 of 30 — Analytics Setup</h2>
+      <p>Google Analytics / basic tracking to see visitor behaviour.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('analytics'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('analytics'); next()">No</button>
+      </div>
+    </div>
+
+    <!-- ================= PREMIUM 21–30 ================= -->
+    <div class="form-screen" id="premium-q21">
+      <h2>21 of 30 — Lesson Packages</h2>
+      <p>Sell pre-paid lesson packages with checkout buttons.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('lessonPackages'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('lessonPackages'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q22">
+      <h2>22 of 30 — Professional Email</h2>
+      <p>Setup of an email like info@yourdomain.com (hosting required).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('professionalEmail'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('professionalEmail'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q23">
+      <h2>23 of 30 — Content Creation Help</h2>
+      <p>We write web copy and choose stock images for your site.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('contentHelp'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('contentHelp'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q24">
+      <h2>24 of 30 — “What to Expect” Guide</h2>
+      <p>A step-by-step guide for students before their first lesson.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('whatToExpect'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('whatToExpect'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q25">
+      <h2>25 of 30 — Downloadable PDFs</h2>
+      <p>PDFs: T&Cs, checklists, GDPR summary or learning guides for students.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('pdfs'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('pdfs'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q26">
+      <h2>26 of 30 — Video Embed Section</h2>
+      <p>Embed driving demos, instructor intros or lesson clips (YouTube/Vimeo).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('videoEmbed'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('videoEmbed'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q27">
+      <h2>27 of 30 — Google Ads Landing Page</h2>
+      <p>Create a conversion-focused landing page for paid ads (optional).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('adsLanding'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('adsLanding'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q28">
+      <h2>28 of 30 — Student Portal (optional login)</h2>
+      <p>Optional: student logins for lesson history, invoices, and resources (advanced).</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('studentPortal'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('studentPortal'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q29">
+      <h2>29 of 30 — Custom Icons & Visuals</h2>
+      <p>Design of small custom icons, accents and visual enhancements.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('customIcons'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('customIcons'); next()">No</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="premium-q30">
+      <h2>30 of 30 — Priority Support & Maintenance</h2>
+      <p>Ongoing priority updates, backups and fast support response.</p>
+      <div class="button-row">
+        <button type="button" onclick="recordFeature('prioritySupport'); next()">Yes</button>
+        <button type="button" onclick="recordNoFeature('prioritySupport'); next()">No</button>
+      </div>
+    </div>
+
+    <!-- ===== final choice screens ===== -->
+    <div class="form-screen" id="final-choice">
+      <h2>What would you like to do next?</h2>
+      <p>Choose to start now, ask for more info, or go back to change answers.</p>
+      <div class="button-row">
+        <button type="button" onclick="showScreen('instructor-q19')">Start my website ASAP</button>
+        <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+        <button type="button" class="back-button" onclick="prev()">Back</button>
+      </div>
+    </div>
+
+    <div class="form-screen" id="instructor-q19">
+      <h2>Own outright or monthly support?</h2>
+      <p>Choose. Owning outright means one payment; monthly includes hosting & maintenance.</p>
+      <div class="button-row">
+        <button type="button" class="own-outright" onclick="chooseOwnership('outright')">Own Outright</button>
+        <button type="button" class="monthly-support" onclick="chooseOwnership('monthly')">Monthly Support</button>
+        <button type="button" class="back-button" onclick="prev()">Back</button>
+      </div>
+    </div>
+
+    <!-- ================= RECOMMENDED PLAN / PRICING CARDS ================= -->
+    <div class="form-screen" id="recommended-plan-screen">
+      <h2>Your Recommended Plan</h2>
+      <p class="small">Pick a plan below — prices shown are examples. Click Pay to proceed (placeholder links).</p>
+
+      <div class="pricing-container">
+
+        <!-- Basic -->
+        <div class="pricing-card" data-plan="basic" data-animate>
+          <h3>Basic</h3>
+          <p class="price">5 Pages | 10 Revisions Per Page | 15 Days | £750 | HTML Site</p>
+          <ul class="features-list">
+            <li>1. Mobile-Friendly Design</li>
+            <li>2. Contact Form</li>
+            <li>3. Instructor Bio</li>
+            <li>4. Social Media Links</li>
+            <li>5. Booking & Online Payment</li>
+            <li>6. Call-to-Action Buttons</li>
+            <li>7. Home Page Structure</li>
+            <li>8. Services Page Setup</li>
+            <li>9. Testimonials Section</li>
+            <li>10. Google Map Integration</li>
+            <li class="divider-line"></li>
+          </ul>
+          <button class="pay-now" data-plan="basic" onclick="payNow('basic', false)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £750 (50% now)
+          </button>
+          <div class="note">50% now to secure, 50% on completion</div>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card" data-plan="pro" data-animate>
+          <div class="badge">Recommended</div>
+          <h3>Pro</h3>
+          <p class="price">10 Pages | 15 Revisions Per Page | 20 Days | £1,500 | HTML Site</p>
+          <ul class="features-list">
+            <li>11. Local SEO Optimization</li>
+            <li>12. Student Reviews</li>
+            <li>13. Branding & Logo</li>
+            <li>14. FAQ / Student Guide</li>
+            <li>15. Newsletter Signup</li>
+            <li>16. Photo Gallery</li>
+            <li>17. Blog / Updates Section</li>
+            <li>18. Multi-page Navigation</li>
+            <li>19. Lesson Pricing Table</li>
+            <li>20. Analytics Setup</li>
+            <li class="divider-line"></li>
+          </ul>
+          <button class="pay-now" data-plan="pro" onclick="payNow('pro', false)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £1,500 (50% now)
+          </button>
+          <div class="note">50% now to secure, 50% on completion</div>
+        </div>
+
+        <!-- Premium -->
+        <div class="pricing-card" data-plan="premium" data-animate>
+          <h3>Premium</h3>
+          <p class="price">20 Pages | 25 Revisions Per Page | 30 Days | £2,500 | HTML Site</p>
+          <ul class="features-list">
+            <li>21. Lesson Packages</li>
+            <li>22. Professional Email</li>
+            <li>23. Content Creation Help</li>
+            <li>24. “What to Expect” Guide</li>
+            <li>25. Downloadable PDFs</li>
+            <li>26. Video Embed Section</li>
+            <li>27. Google Ads Landing Page</li>
+            <li>28. Student Portal (Optional)</li>
+            <li>29. Custom Icons & Visuals</li>
+            <li>30. Priority Support & Maintenance</li>
+            <li class="divider-line"></li>
+          </ul>
+          <button class="pay-now" data-plan="premium" onclick="payNow('premium', false)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £2,500 (50% now)
+          </button>
+          <div class="note">50% now to secure, 50% on completion</div>
+        </div>
+
+      </div> <!-- /pricing-container -->
+
+    </div> <!-- /recommended-plan-screen -->
+
+  </form> <!-- /form -->
+
+</div> <!-- /container -->
+
+
 
 
  
 
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-  <div class="pricing-container">
-
-    <!-- Basic Plan -->
-    <div class="pricing-card" data-plan="basic" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£499</p>
-      <ul class="features-list">
-        <li>Pages - 10</li>
-        <li>Revisions - 10</li>
-        <li>Delivery - 15 Days</li>
-
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-    <!-- Pro Plan -->
-    <div class="pricing-card" data-plan="pro" data-animate>
-      <div class="badge">Recommended</div>
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-      <ul class="features-list">
-        <li>Pages - 20</li>
-        <li>Revisions - 20</li>
-        <li>Delivery - 20 Days</li>
-
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-    <!-- Premium Plan -->
-    <div class="pricing-card" data-plan="premium" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£1499</p>
-      <ul class="features-list">
-        <li>Pages - 30</li>
-        <li>Revisions - 30</li>
-        <li>Delivery - 30 Days</li>
-
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-  
-</div>
-</form>
-
 <script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
+/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION & UPDATED PRICING ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1409,7 +1571,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  
+
   // Progress Bar Functions
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
@@ -1417,7 +1579,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-  
+
   function updateProgress(currentStep) {
     const progressBar = document.querySelector('.progress-bar');
     const progressLabel = document.querySelector('.progress-label');
@@ -1486,7 +1648,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    
+
     // Update both plan screens if active
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('outright');
@@ -1494,7 +1656,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('monthly');
     }
-    
+
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1502,62 +1664,40 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
+  // ------------------ Q19 Buttons ------------------
+  function setupQ19Buttons() {
+    const q19Screen = document.getElementById('instructor-q19');
+    if (!q19Screen) return;
 
+    const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+    const backBtn          = q19Screen.querySelector('.back-button');
 
+    if (ownOutrightBtn) {
+      ownOutrightBtn.onclick = () => {
+        ownershipChoice = 'Owned Outright';
+        featureState['buyOutright'] = true;
+        syncFeatureState();
+        showScreen('recommended-plan-screen');
+      };
+    }
 
- // ------------------ Q19 Buttons - FIXED ------------------
-function setupQ19Buttons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
+    if (monthlySupportBtn) {
+      monthlySupportBtn.onclick = () => {
+        ownershipChoice = 'Monthly Support';
+        featureState['monthlySupport'] = true;
+        syncFeatureState();
+        showScreen('recommended-plan-screen');
+        showRecommendedPlan('monthly');
+      };
+    }
 
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-  const backBtn          = q19Screen.querySelector('.back-button');
-
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      ownershipChoice = 'Owned Outright';
-      featureState['buyOutright'] = true;
-      syncFeatureState();
-      showScreen('recommended-plan-screen');
-    };
+    if (backBtn) {
+      backBtn.onclick = () => prev();
+    }
   }
 
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      ownershipChoice = 'Monthly Support';
-      featureState['monthlySupport'] = true;
-      syncFeatureState();
-      // ✅ use the existing pricing screen in monthly mode
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
-    };
-  }
-
-  if (backBtn) {
-    backBtn.onclick = () => prev();
-  }
-}
-
-
-// ensure Q19 buttons are wired and the funnel initial screen is set
-setupQ19Buttons();
-const initialActive = document.querySelector('.form-screen.active');
-if (initialActive) {
-  const idx = screens.indexOf(initialActive);
-  if (idx >= 0) currentScreen = idx;
-  showScreen(initialActive.id);
-}
- 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
+  setupQ19Buttons();
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
@@ -1575,13 +1715,6 @@ if (initialActive) {
     const code = String(rawCode || '').trim().toUpperCase();
     if (!code) return;
     hideAllScreens();
-
-    if (stepParam === "4") {
-      const designInput = document.getElementById("designInput");
-      if (designInput) designInput.value = code;
-      showScreen("instructor-q4");
-      return;
-    }
 
     let templateScreen = document.getElementById('template-results');
     if (!templateScreen) {
@@ -1630,259 +1763,122 @@ if (initialActive) {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
+  // ------------------ Show Recommended Plan ------------------
+  function showRecommendedPlan(planType = 'outright') {
+    const isMonthly = planType === 'monthly';
+    const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
+    if (!planCards.length) return;
 
-
-
-
- function showRecommendedPlan(planType = 'outright') {
-  const isMonthly = planType === 'monthly';
-  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-  if (!planCards.length) return;
-
-  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
-
-  // Define tiers & feature labels **in the exact funnel question order**
-  const tiers = {
-    basic: ["mobile","contact","bio","social","booking","cta"],
-    pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
-  };
-
-  const labels = {
-    booking: "Booking lessons & online payment",
-    mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    social: "Social media integration",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "What to Expect guide"
-  };
-
-  const coreDefaults = {
-    basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
-
-  const tierOrder = ["basic","pro","premium"];
-  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
-  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees      = { basic: 199, pro: 299, premium: 499 };
-
-  planCards.forEach(card => {
-    const level = (card.dataset.plan || "").toLowerCase();
-    const list  = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const payBtn  = card.querySelector(".pay-now");
-    const note    = card.querySelector("small");
-    if (!level || !list || !priceEl || !payBtn) return;
-
-    // ----- Pricing -----
-    if (isMonthly) {
-      priceEl.textContent = `£${monthlyPrices[level]}/month`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
-    } else {
-      priceEl.textContent = `£${outrightPrices[level]}`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
-      if (note) note.textContent = "50% now to secure, 50% on completion";
-    }
-
-    // ----- Features List -----
-    list.innerHTML = "";
-
-    // 1️⃣ Core Default Services
-    coreDefaults[level].forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f;
-      li.style.marginBottom = "12px";
-      list.appendChild(li);
-    });
-
-    // Determine which tiers to show for this card
-    const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) <= tierOrder.indexOf(level));
-
-    // Lower-tier YES features
-    allowedTiers.forEach(t => {
-      if (t === level) return; // skip current tier
-      const features = yes.filter(f => tiers[t].includes(f));
-      if (!features.length) return;
-
-      const heading = document.createElement("li");
-      heading.textContent = `Included from ${t.charAt(0).toUpperCase() + t.slice(1)}`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      features.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    });
-
-    // Current tier YES features
-    const currentFeatures = yes.filter(f => tiers[level].includes(f));
-    if (currentFeatures.length) {
-      const heading = document.createElement("li");
-      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      currentFeatures.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    }
-
-    if (!list.children.length) {
-      const li = document.createElement("li");
-      li.textContent = "Standard features included";
-      list.appendChild(li);
-    }
-
-    // ✅ PayPal redirect
-    payBtn.onclick = () => {
-      localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
-      localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
-      localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
-      localStorage.setItem("noFeatures", JSON.stringify(noFeatures));
-
-      const paypalLink = isMonthly
-        ? "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_MONTHLY_BUTTON_ID"
-        : "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_OUTRIGHT_BUTTON_ID";
-
-      const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
-      window.location.href = `${paypalLink}&return=${thankYouURL}`;
+    // Pricing and Features (Static and Full)
+    const pricingData = {
+      basic: {
+        pages: "5 Pages | 10 Revisions Per Page | 15 Days | £750 | HTML Site",
+        features: [
+          "Mobile-Friendly Design","Contact Form","Instructor Bio","Social Media Links",
+          "Booking & Online Payment","Call-to-Action Buttons","Home Page Structure",
+          "Services Page Setup","Testimonials Section","Google Map Integration"
+        ],
+        price: { outright: 750, monthly: 49 },
+        setup: 199
+      },
+      pro: {
+        pages: "10 Pages | 15 Revisions Per Page | 20 Days | £1,500 | HTML Site",
+        features: [
+          "Local SEO Optimization","Student Reviews","Branding & Logo","FAQ / Student Guide",
+          "Newsletter Signup","Photo Gallery","Blog / Updates Section","Multi-page Navigation",
+          "Lesson Pricing Table","Analytics Setup"
+        ],
+        price: { outright: 1500, monthly: 79 },
+        setup: 299
+      },
+      premium: {
+        pages: "20 Pages | 25 Revisions Per Page | 30 Days | £2,500 | HTML Site",
+        features: [
+          "Lesson Packages","Professional Email","Content Creation Help","What to Expect Guide",
+          "Downloadable PDFs (e.g., Terms, Checklists)","Video Embed Section","Google Ads Landing Page",
+          "Student Portal (Optional Login Area)","Custom Icons & Visual Enhancements","Priority Support & Maintenance"
+        ],
+        price: { outright: 2500, monthly: 129 },
+        setup: 499
+      }
     };
-  });
 
-  // Highlight recommended plan
-  planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const recCard = planCards.find(c => yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-                    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
-                    : c.dataset.plan === "basic");
-  if (recCard) {
-    recCard.classList.add("recommended", "in-view");
-    setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-  }
-}
+    planCards.forEach(card => {
+      const level = (card.dataset.plan || "").toLowerCase();
+      const list  = card.querySelector(".features-list");
+      const priceEl = card.querySelector(".price");
+      const payBtn  = card.querySelector(".pay-now");
+      const note    = card.querySelector("small");
+      if (!level || !list || !priceEl || !payBtn) return;
 
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Find all pricing cards
-  document.querySelectorAll(".pricing-card .features-list").forEach(list => {
-    // Remove any previous dividers
-    list.querySelectorAll(".gradient-divider").forEach(d => d.remove());
-
-    // Create gradient divider
-    const divider = document.createElement("li");
-    divider.classList.add("gradient-divider");
-    divider.style.height = "2px";
-    divider.style.margin = "20px 0";
-    divider.style.borderRadius = "3px";
-    divider.style.background = "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)";
-
-    // Insert after the third li (Delivery)
-    const details = list.querySelectorAll("li");
-    if (details.length >= 3) details[2].insertAdjacentElement("afterend", divider);
-  });
-});
- 
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
+      // Set price
+      if (isMonthly) {
+        priceEl.textContent = `£${pricingData[level].price.monthly}/month`;
+        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
+        if (note) note.textContent = `£${pricingData[level].setup} setup + £${pricingData[level].price.monthly}/month`;
       } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
+        priceEl.textContent = `£${pricingData[level].price.outright}`;
+        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${pricingData[level].price.outright} via PayPal`;
+        if (note) note.textContent = "50% now to secure, 50% on completion";
       }
+
+      // Features List
+      list.innerHTML = "";
+      const staticLi = document.createElement("li");
+      staticLi.textContent = pricingData[level].pages;
+      staticLi.style.fontWeight = "700";
+      staticLi.style.marginBottom = "12px";
+      list.appendChild(staticLi);
+
+      const divider = document.createElement("li");
+      divider.style.height = "2px";
+      divider.style.background = "#1e90ff"; // brand blue
+      divider.style.margin = "10px 0";
+      list.appendChild(divider);
+
+      pricingData[level].features.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f;
+        li.style.marginBottom = "8px";
+        list.appendChild(li);
+      });
+
+      // PayPal button click
+      payBtn.onclick = () => {
+        localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
+        localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
+        localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
+        localStorage.setItem("noFeatures", JSON.stringify(noFeatures));
+
+        const paypalLink = isMonthly
+          ? "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_MONTHLY_BUTTON_ID"
+          : "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_OUTRIGHT_BUTTON_ID";
+
+        const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
+        window.location.href = `${paypalLink}&return=${thankYouURL}`;
+      };
+    });
+
+    // Highlight recommended plan (Premium > Pro > Basic)
+    planCards.forEach(card => card.classList.remove("recommended", "in-view"));
+    let recCard = planCards.find(c => yesFeatures.length >= 20 ? c.dataset.plan === "premium"
+      : yesFeatures.length >= 10 ? c.dataset.plan === "pro"
+      : c.dataset.plan === "basic");
+    if (recCard) {
+      recCard.classList.add("recommended", "in-view");
+      setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
     }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
   }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
+  const initialActive = document.querySelector('.form-screen.active');
+  if (initialActive) {
+    const idx = screens.indexOf(initialActive);
+    if (idx >= 0) currentScreen = idx;
+    showScreen(initialActive.id);
+  }
 
   if (codeParam) {
     const inputEl = document.getElementById("designInput");
@@ -1894,51 +1890,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (screenIndex !== -1) {
       currentScreen = screenIndex;
       showScreen(stepName);
-    } else {
-      showScreen(screens[0].id);
     }
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
   }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
+  // IntersectionObserver for pricing cards
+  const cards = document.querySelectorAll('.pricing-card[data-animate]');
+  if (cards.length && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
         }
       });
-    }, observerOptions);
+    }, { threshold: 0.1 });
+    cards.forEach(card => observer.observe(card));
+  } else {
+    cards.forEach(c => c.classList.add('in-view'));
+  }
 
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
+});
 
 
 
