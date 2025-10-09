@@ -1561,7 +1561,7 @@ html, body {
  
 
 <script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION & UPDATED PRICING ---------- */
+/* ---------- FULL FUNNEL JS WITH TYPEWRITER & MONTHLY SUPPORT ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1572,7 +1572,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // Progress Bar Functions
+  // ------------------ Progress Bar Functions ------------------
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
@@ -1585,7 +1585,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressLabel = document.querySelector('.progress-label');
     const percent = Math.round((currentStep / screens.length) * 100);
     if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
+    if (progressLabel) progressLabel.textContent = `Question ${currentStep} of 30 — ${percent}%`;
   }
 
   // ------------------ Screen Navigation ------------------
@@ -1605,11 +1605,9 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan('outright');
-    } else if (screen.id === "monthly-plan-screen") {
-      showRecommendedPlan('monthly');
-    }
+    if (screen.id === "recommended-plan-screen") showRecommendedPlan('outright');
+    if (screen.id === "monthly-plan-screen") showRecommendedPlan('monthly');
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1649,65 +1647,46 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
-    // Update both plan screens if active
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('outright');
-    }
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('monthly');
-    }
-
-    console.log("Current YES Features:", yesFeatures);
+    // Update plan screens if active
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) showRecommendedPlan('outright');
+    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) showRecommendedPlan('monthly');
   }
 
   window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Q19 Buttons ------------------
-  function setupQ19Buttons() {
-    const q19Screen = document.getElementById('instructor-q19');
-    if (!q19Screen) return;
-
-    const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+  // ------------------ Q19 Ownership Buttons ------------------
+  const q19Screen = document.getElementById('instructor-q19');
+  if (q19Screen) {
+    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
     const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-    const backBtn          = q19Screen.querySelector('.back-button');
+    const backBtn = q19Screen.querySelector('.back-button');
 
-    if (ownOutrightBtn) {
-      ownOutrightBtn.onclick = () => {
-        ownershipChoice = 'Owned Outright';
-        featureState['buyOutright'] = true;
-        syncFeatureState();
-        showScreen('recommended-plan-screen');
-      };
-    }
+    if (ownOutrightBtn) ownOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      featureState['buyOutright'] = true;
+      syncFeatureState();
+      showScreen('recommended-plan-screen');
+    };
 
-    if (monthlySupportBtn) {
-      monthlySupportBtn.onclick = () => {
-        ownershipChoice = 'Monthly Support';
-        featureState['monthlySupport'] = true;
-        syncFeatureState();
-        showScreen('recommended-plan-screen');
-        showRecommendedPlan('monthly');
-      };
-    }
+    if (monthlySupportBtn) monthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      featureState['monthlySupport'] = true;
+      syncFeatureState();
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly');
+    };
 
-    if (backBtn) {
-      backBtn.onclick = () => prev();
-    }
+    if (backBtn) backBtn.onclick = () => prev();
   }
-
-  setupQ19Buttons();
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
     const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
+    if (!code) { alert("Please enter a design code."); return; }
     showFilteredTemplate(code);
   };
 
@@ -1769,38 +1748,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
     if (!planCards.length) return;
 
-    // Pricing and Features (Static and Full)
     const pricingData = {
-      basic: {
-        pages: "5 Pages | 10 Revisions Per Page | 15 Days | £750 | HTML Site",
-        features: [
-          "Mobile-Friendly Design","Contact Form","Instructor Bio","Social Media Links",
-          "Booking & Online Payment","Call-to-Action Buttons","Home Page Structure",
-          "Services Page Setup","Testimonials Section","Google Map Integration"
-        ],
-        price: { outright: 750, monthly: 49 },
-        setup: 199
-      },
-      pro: {
-        pages: "10 Pages | 15 Revisions Per Page | 20 Days | £1,500 | HTML Site",
-        features: [
-          "Local SEO Optimization","Student Reviews","Branding & Logo","FAQ / Student Guide",
-          "Newsletter Signup","Photo Gallery","Blog / Updates Section","Multi-page Navigation",
-          "Lesson Pricing Table","Analytics Setup"
-        ],
-        price: { outright: 1500, monthly: 79 },
-        setup: 299
-      },
-      premium: {
-        pages: "20 Pages | 25 Revisions Per Page | 30 Days | £2,500 | HTML Site",
-        features: [
-          "Lesson Packages","Professional Email","Content Creation Help","What to Expect Guide",
-          "Downloadable PDFs (e.g., Terms, Checklists)","Video Embed Section","Google Ads Landing Page",
-          "Student Portal (Optional Login Area)","Custom Icons & Visual Enhancements","Priority Support & Maintenance"
-        ],
-        price: { outright: 2500, monthly: 129 },
-        setup: 499
-      }
+      basic: { pages: "5 Pages | 10 Revisions Per Page | 15 Days | £750 | HTML Site",
+               features: ["Mobile-Friendly Design","Contact Form","Instructor Bio","Social Media Links","Booking & Online Payment","Call-to-Action Buttons","Home Page Structure","Services Page Setup","Testimonials Section","Google Map Integration"],
+               price: { outright: 750, monthly: 49 }, setup: 199 },
+      pro: { pages: "10 Pages | 15 Revisions Per Page | 20 Days | £1,500 | HTML Site",
+             features: ["Local SEO Optimization","Student Reviews","Branding & Logo","FAQ / Student Guide","Newsletter Signup","Photo Gallery","Blog / Updates Section","Multi-page Navigation","Lesson Pricing Table","Analytics Setup"],
+             price: { outright: 1500, monthly: 79 }, setup: 299 },
+      premium: { pages: "20 Pages | 25 Revisions Per Page | 30 Days | £2,500 | HTML Site",
+                 features: ["Lesson Packages","Professional Email","Content Creation Help","What to Expect Guide","Downloadable PDFs (e.g., Terms, Checklists)","Video Embed Section","Google Ads Landing Page","Student Portal (Optional Login Area)","Custom Icons & Visual Enhancements","Priority Support & Maintenance"],
+                 price: { outright: 2500, monthly: 129 }, setup: 499 }
     };
 
     planCards.forEach(card => {
@@ -1808,10 +1765,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const list  = card.querySelector(".features-list");
       const priceEl = card.querySelector(".price");
       const payBtn  = card.querySelector(".pay-now");
-      const note    = card.querySelector("small");
+      const note    = card.querySelector(".note");
+
       if (!level || !list || !priceEl || !payBtn) return;
 
-      // Set price
       if (isMonthly) {
         priceEl.textContent = `£${pricingData[level].price.monthly}/month`;
         payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
@@ -1822,7 +1779,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (note) note.textContent = "50% now to secure, 50% on completion";
       }
 
-      // Features List
       list.innerHTML = "";
       const staticLi = document.createElement("li");
       staticLi.textContent = pricingData[level].pages;
@@ -1832,7 +1788,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const divider = document.createElement("li");
       divider.style.height = "2px";
-      divider.style.background = "#1e90ff"; // brand blue
+      divider.style.background = "#1e90ff";
       divider.style.margin = "10px 0";
       list.appendChild(divider);
 
@@ -1843,7 +1799,6 @@ document.addEventListener("DOMContentLoaded", () => {
         list.appendChild(li);
       });
 
-      // PayPal button click
       payBtn.onclick = () => {
         localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
         localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1859,7 +1814,6 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
 
-    // Highlight recommended plan (Premium > Pro > Basic)
     planCards.forEach(card => card.classList.remove("recommended", "in-view"));
     let recCard = planCards.find(c => yesFeatures.length >= 20 ? c.dataset.plan === "premium"
       : yesFeatures.length >= 10 ? c.dataset.plan === "pro"
@@ -1872,7 +1826,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
-
   const initialActive = document.querySelector('.form-screen.active');
   if (initialActive) {
     const idx = screens.indexOf(initialActive);
@@ -1880,17 +1833,11 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen(initialActive.id);
   }
 
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
+  if (codeParam) showFilteredTemplate(codeParam);
+  else if (stepParam) {
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    }
+    if (screenIndex !== -1) { currentScreen = screenIndex; showScreen(stepName); }
   }
 
   // IntersectionObserver for pricing cards
@@ -1905,15 +1852,57 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }, { threshold: 0.1 });
     cards.forEach(card => observer.observe(card));
-  } else {
-    cards.forEach(c => c.classList.add('in-view'));
+  } else { cards.forEach(c => c.classList.add('in-view')); }
+
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) { lineEl = document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
+      if (currentChar < text.length) { lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor); currentChar++; setTimeout(typeChar, typingSpeed); }
+      else { currentLine++; currentChar = 0; lineEl = null; setTimeout(typeChar, lineDelay); }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0; currentChar = 0; lineEl = null; typewriterEl.textContent = ''; typewriterEl.appendChild(cursor); setLinesByOrientation(); typeChar();
+    }, 300));
   }
 
-});
+  function debounce(func, wait) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
 
+  startTypewriterAnimation();
 
-
-   // ------------------ Hamburger Menu ------------------
+  // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
@@ -1936,9 +1925,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-}); /* end DOMContentLoaded */
+});
 </script>
-
 
 </body>
 </html>
