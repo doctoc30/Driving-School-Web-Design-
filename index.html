@@ -1560,12 +1560,26 @@ html, body {
 
  
 
-
 <script>
-/* ---------- FULL FUNNEL JS WITH TYPEWRITER, HAMBURGER, PRICING & MONTHLY SUPPORT ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
+  // ---------- Pre-fill design code from URL ----------
+  const params = new URLSearchParams(window.location.search);
+  const designCode = params.get("designCode");
+
+  if (designCode) {
+    const designInput = document.getElementById("designInput");
+    if (designInput) designInput.value = designCode;
+
+    // Optional: automatically open design-code screen
+    // showScreen('design-code');
+  }
+  // ---------- End snippet ----------
+
   // ------------------ Basic setup ------------------
+  // Your existing funnel JS continues here...
+});
+
   let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
 
