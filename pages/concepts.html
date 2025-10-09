@@ -677,9 +677,12 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const wrapper = document.querySelector(".slider-wrapper");
@@ -704,7 +707,6 @@ footer {
     const isDesktop = window.innerWidth >= 992;
 
     if (codeParam && isDesktop) {
-      // Desktop full-screen view for selected template
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -720,13 +722,10 @@ footer {
             img.style.maxHeight = "100%";
             img.style.objectFit = "contain";
           }
-        } else {
-          slide.style.display = "none";
-        }
+        } else slide.style.display = "none";
       });
       wrapper.style.transform = "none";
     } else if (codeParam && !isDesktop) {
-      // Mobile swipeable
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -738,7 +737,6 @@ footer {
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Full library view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -778,8 +776,8 @@ footer {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      // Redirect to funnel step 4 with code param
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      // Redirect to funnel intro with designCode
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?designCode=${encodeURIComponent(code)}`;
       window.location.assign(funnelURL);
     });
   });
@@ -803,9 +801,9 @@ footer {
     });
   }
 
-  // ------------------ Initialize AOS (optional) ------------------
+  // ------------------ Initialize AOS ------------------
   if (window.AOS) AOS.init();
 });
-  </script>
+</script>
 </body>
 </html>
