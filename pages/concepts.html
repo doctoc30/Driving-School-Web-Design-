@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -678,7 +679,7 @@ footer {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const wrapper = document.querySelector(".slider-wrapper");
@@ -777,6 +778,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
+      // Redirect to funnel step 4 with code param
       const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       window.location.assign(funnelURL);
     });
@@ -801,9 +803,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ Initialize AOS ------------------
+  // ------------------ Initialize AOS (optional) ------------------
   if (window.AOS) AOS.init();
 });
-</script>
+  </script>
 </body>
 </html>
