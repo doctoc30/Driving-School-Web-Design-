@@ -1879,6 +1879,26 @@ function showRecommendedPlan(planType = 'outright') {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
+
+
+ // ✅ Detect if user came from concept.html and jump to instructor question
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromConcept = params.get("fromConcept");
+
+  if (fromConcept === "1") {
+    // Hide all other screens
+    document.querySelectorAll(".form-screen").forEach(screen => screen.classList.remove("active"));
+
+    // Show the instructor question directly
+    const targetScreen = document.getElementById("instructor-q1");
+    if (targetScreen) {
+      targetScreen.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+});
+
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
