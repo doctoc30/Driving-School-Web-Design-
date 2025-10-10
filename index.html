@@ -1749,6 +1749,9 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
+
+
+   
     // ----- PayPal button -----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
@@ -1934,6 +1937,31 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
 
+
+
+ // ✅ Detect if user came from concept.html and jump to instructor question
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromConcept = params.get("fromConcept");
+  const selectedCode = params.get("code");
+
+  // If a concept code exists, store it for later use (e.g., at form submission)
+  if (selectedCode) {
+    localStorage.setItem("selectedConcept", selectedCode);
+  }
+
+  if (fromConcept === "1") {
+    // Hide all other screens
+    document.querySelectorAll(".form-screen").forEach(screen => screen.classList.remove("active"));
+
+    // Show the instructor question directly
+    const targetScreen = document.getElementById("instructor-q1");
+    if (targetScreen) {
+      targetScreen.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+});
 
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
