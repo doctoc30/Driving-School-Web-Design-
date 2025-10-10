@@ -1807,7 +1807,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- // ------------------ Initialize Funnel ------------------
+// ------------------ Initialize Funnel ------------------
 hideAllScreens();
 
 // Set up Q19 buttons after DOM is loaded
@@ -1818,51 +1818,50 @@ const codeParam = params.get("code");
 const stepParam = params.get("step");
 const fromConcept = params.get("fromConcept");
 
-// ------------------ URL Parameter Handling ------------------
-if (codeParam && stepParam === "4") {
-  // Direct jump from concept.html
+// 1️⃣ Coming from concept.html
+if (fromConcept && codeParam) {
   const inputEl = document.getElementById("designInput");
   if (inputEl) inputEl.value = codeParam;
-  showScreen("instructor-q4");
 
-} else if (fromConcept) {
-  // Coming from concept.html but step not 4
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
+  // Start directly at instructor-q1
+  const targetScreen = document.getElementById("instructor-q1");
+  if (targetScreen) {
+    currentScreen = screens.indexOf(targetScreen); // ensure next()/prev() work
+    showScreen("instructor-q1");
   }
-  showScreen("instructor-q1");
 
+// 2️⃣ Step parameter handling (from index.html links)
 } else if (stepParam) {
   let stepName;
   if (stepParam === "type") stepName = "instructor-q1";
   else stepName = `instructor-q${stepParam}`;
 
   const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) showScreen(stepName);
-  else showScreen(screens[0].id);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id); // fallback
+  }
 
+// 3️⃣ Code parameter handling (direct link with ?code=)
 } else if (codeParam) {
   const inputEl = document.getElementById("designInput");
   if (inputEl) inputEl.value = codeParam;
   showFilteredTemplate(codeParam);
 
+// 4️⃣ Default landing / intro animation
 } else {
-  // Only run typewriter if no URL parameters exist
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
   if (typewriterEl) typewriterEl.classList.add('active');
   if (colorRiseEl) colorRiseEl.classList.add('active');
   startTypewriterAnimation();
 }
 
-// ✅ Remove any code like:
-// const initialActive = document.querySelector('.form-screen.active');
-// if (initialActive) { ... }
-// That was overriding stepParam/codeParam
-
+// Update progress bar
 updateWaterProgress();
 updateProgress(currentScreen + 1);
-
-
 
 
 
