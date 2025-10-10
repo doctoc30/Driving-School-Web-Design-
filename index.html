@@ -1806,27 +1806,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
  
 
-  // ------------------ Initialize Funnel ------------------
+// ------------------ Initialize Funnel ------------------
 hideAllScreens();
 
 // Set up Q19 buttons after DOM is loaded
 setTimeout(setupQ19Buttons, 100);
 
 const params = new URLSearchParams(window.location.search);
+const codeParam = params.get("code");
 const stepParam = params.get("step");
 
-if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
+if (stepParam) {
   let stepName;
 
   // Map descriptive step names
   if (stepParam === "type") {
-    stepName = "instructor-q2"; // "Are you a solo driving instructor or a driving school?"
+    stepName = "instructor-q2"; // Solo Instructor / Driving School
   } else {
-    stepName = `instructor-q${stepParam}`; // fallback for numeric steps
+    stepName = `instructor-q${stepParam}`; // fallback numeric steps
   }
 
   const screenIndex = screens.findIndex(s => s.id === stepName);
@@ -1834,17 +1831,20 @@ if (codeParam) {
     currentScreen = screenIndex;
     showScreen(stepName);
   } else {
-    showScreen(screens[0].id); // fallback to first screen
+    showScreen(screens[0].id);
   }
+} else if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showFilteredTemplate(codeParam);
 } else {
   if (typewriterEl) typewriterEl.classList.add('active');
   if (colorRiseEl) colorRiseEl.classList.add('active');
   startTypewriterAnimation();
 }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
+updateWaterProgress();
+updateProgress(currentScreen + 1);
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
