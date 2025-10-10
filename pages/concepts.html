@@ -678,7 +678,7 @@ footer {
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const wrapper = document.querySelector(".slider-wrapper");
@@ -777,11 +777,15 @@ footer {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      // Redirect to funnel step 4 with code param
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+
+      // ✅ Save selected concept for later use
+      localStorage.setItem("selectedConcept", code);
+
+      // ✅ Redirect to funnel and skip intro
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?fromConcept=1`;
       window.location.assign(funnelURL);
     });
-  });
+  
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
