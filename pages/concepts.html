@@ -778,11 +778,14 @@ document.querySelectorAll(".want-concept").forEach(btn => {
   btn.addEventListener("click", () => {
     const code = btn.dataset.code;
     if (!code) return;
-    // Redirect to funnel question: "Are you a solo driving instructor or a driving school?"
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=2`;
+
+    // Redirect to index.html with code and a flag indicating it's from concept library
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&fromConcept=1`;
     window.location.assign(funnelURL);
   });
 });
+
+    
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
