@@ -1804,9 +1804,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (details.length >= 3) details[2].insertAdjacentElement("afterend", divider);
   });
 });
- 
 
-// ------------------ Initialize Funnel ------------------
+
+ // ------------------ Initialize Funnel ------------------
 hideAllScreens();
 
 // Set up Q19 buttons after DOM is loaded
@@ -1814,37 +1814,44 @@ setTimeout(setupQ19Buttons, 100);
 
 const params = new URLSearchParams(window.location.search);
 const codeParam = params.get("code");
+const fromConcept = params.get("fromConcept");
 const stepParam = params.get("step");
 
-if (stepParam) {
-  let stepName;
-
-  // Map descriptive step names
-  if (stepParam === "type") {
-    stepName = "instructor-q2"; // Solo Instructor / Driving School
-  } else {
-    stepName = `instructor-q${stepParam}`; // fallback numeric steps
+// ------------------ If coming from concept library ------------------
+if (fromConcept) {
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
   }
+  showScreen("instructor-q1"); // Solo Instructor / Driving School
 
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
-  } else {
-    showScreen(screens[0].id);
-  }
-} else if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
 } else {
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
+  // ------------------ Existing funnel logic ------------------
+  if (stepParam) {
+    let stepName;
+    if (stepParam === "type") stepName = "instructor-q1";
+    else stepName = `instructor-q${stepParam}`;
+
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) showScreen(stepName);
+    else showScreen(screens[0].id);
+
+  } else if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+
+  } else {
+    // Default intro screen
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
 }
 
 updateWaterProgress();
 updateProgress(currentScreen + 1);
+
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
