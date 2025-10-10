@@ -676,7 +676,8 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -772,32 +773,18 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-
-
-
   // ------------------ "I want this concept" Button ------------------
-document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
 
-      const isConceptPage = window.location.pathname.includes("concept");
-
-      if (isConceptPage) {
-        // Redirect directly to instructor question and include selected concept code
-        const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?fromConcept=1&code=${encodeURIComponent(code)}`;
-        window.location.href = funnelURL;
-      } else {
-        // Regular index page behavior
-        const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
-        window.location.href = funnelURL;
-      }
+      // Always redirect to index.html and start at instructor-q1
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?fromConcept=1&code=${encodeURIComponent(code)}`;
+      window.location.href = funnelURL;
     });
   });
-});
 
-  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
@@ -817,9 +804,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------ Initialize AOS (optional) ------------------
+  // ------------------ Initialize AOS ------------------
   if (window.AOS) AOS.init();
 });
-  </script>
+</script>
 </body>
 </html>
