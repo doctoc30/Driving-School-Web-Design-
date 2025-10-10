@@ -773,18 +773,27 @@ footer {
   updateSlider();
 
 
+
     // ------------------ "I want this concept" Button ------------------
 document.querySelectorAll(".want-concept").forEach(btn => {
   btn.addEventListener("click", () => {
     const code = btn.dataset.code;
     if (!code) return;
 
-    // Redirect to index.html with code and a flag indicating it's from concept library
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&fromConcept=1`;
+    let funnelURL;
+
+    // If clicked from concept library, flag fromConcept=1
+    if (window.location.pathname.includes("concepts.html")) {
+      funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&fromConcept=1`;
+    } else {
+      // If clicked from index.html, just pass codeParam without fromConcept
+      funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
+    }
+
     window.location.assign(funnelURL);
   });
 });
-
+  
     
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
