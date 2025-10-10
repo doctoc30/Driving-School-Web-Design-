@@ -772,17 +772,17 @@ footer {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I want this concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      // Redirect to funnel step 4 with code param
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
 
+    // ------------------ "I want this concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
+    if (!code) return;
+    // Redirect to funnel question: "Are you a solo driving instructor or a driving school?"
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=2`;
+    window.location.assign(funnelURL);
+  });
+});
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
