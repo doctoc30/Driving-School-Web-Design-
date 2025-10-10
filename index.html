@@ -1807,62 +1807,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ------------------ Initialize Funnel ------------------
-hideAllScreens();
 
-// Set up Q19 buttons after DOM is loaded
-setTimeout(setupQ19Buttons, 100);
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
 
-const params = new URLSearchParams(window.location.search);
-const codeParam = params.get("code");
-const stepParam = params.get("step");
-const fromConcept = params.get("fromConcept");
+  // Set up Q19 buttons after DOM is loaded
+  setTimeout(setupQ19Buttons, 100);
 
-// 1️⃣ Coming from concept.html
-if (fromConcept && codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-
-  // Start directly at instructor-q1
-  const targetScreen = document.getElementById("instructor-q1");
-  if (targetScreen) {
-    currentScreen = screens.indexOf(targetScreen); // ensure next()/prev() work
-    showScreen("instructor-q1");
-  }
-
-// 2️⃣ Step parameter handling (from index.html links)
-} else if (stepParam) {
-  let stepName;
-  if (stepParam === "type") stepName = "instructor-q1";
-  else stepName = `instructor-q${stepParam}`;
-
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      showScreen(screens[0].id);
+    }
   } else {
-    showScreen(screens[0].id); // fallback
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
   }
 
-// 3️⃣ Code parameter handling (direct link with ?code=)
-} else if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-
-// 4️⃣ Default landing / intro animation
-} else {
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
-}
-
-// Update progress bar
-updateWaterProgress();
-updateProgress(currentScreen + 1);
-
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
 
 
 
