@@ -1806,7 +1806,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ------------------ Initialize Funnel ------------------
+
+
+ // ------------------ Initialize Funnel ------------------
 hideAllScreens();
 
 // Set up Q19 buttons after DOM is loaded
@@ -1823,34 +1825,43 @@ if (fromConcept) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
   }
-  showScreen("instructor-q1"); // Solo Instructor / Driving School
 
-} else {
-  // ------------------ Existing funnel logic ------------------
-  if (stepParam) {
-    let stepName;
-    if (stepParam === "type") stepName = "instructor-q1";
-    else stepName = `instructor-q${stepParam}`;
-
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) showScreen(stepName);
-    else showScreen(screens[0].id);
-
-  } else if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-
-  } else {
-    // Default intro screen
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+  const targetScreen = document.getElementById("instructor-q1");
+  if (targetScreen) {
+    currentScreen = screens.indexOf(targetScreen); // ✅ ensure next()/prev() work
+    showScreen("instructor-q1");
   }
+
+// ------------------ Step parameter handling ------------------
+} else if (stepParam) {
+  let stepName;
+  if (stepParam === "type") stepName = "instructor-q1";
+  else stepName = `instructor-q${stepParam}`;
+
+  const screenIndex = screens.findIndex(s => s.id === stepName);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id);
+  }
+
+// ------------------ Code parameter handling ------------------
+} else if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showFilteredTemplate(codeParam);
+
+// ------------------ Default intro screen ------------------
+} else {
+  if (typewriterEl) typewriterEl.classList.add('active');
+  if (colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
 }
 
 updateWaterProgress();
 updateProgress(currentScreen + 1);
+
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
