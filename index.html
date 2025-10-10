@@ -1084,9 +1084,6 @@ html, body {
   list-style: none;  /* no bullets */
 }
 
-
-
-
 </style>
 
 
@@ -1329,72 +1326,62 @@ html, body {
 
 
  
-
 <!-- ===================== RECOMMENDED PLAN ===================== -->
 <div class="form-screen" id="recommended-plan-screen">
   <h2>Your Recommended Plan</h2>
 
   <div class="pricing-container">
 
-    <!-- Basic Plan -->
-    <div class="pricing-card" data-plan="basic" data-animate>
-      <h3>Basic</h3>
-      <p class="price">£499</p>
-      <ul class="features-list">
-        <li>Pages - 10</li>
-        <li>Revisions - 10</li>
-        <li>Delivery - 15 Days</li>
+<!-- Basic Plan -->
+<div class="pricing-card" data-plan="basic" data-animate>
+  <h3>Basic</h3>
+  <p class="price">£499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 10</li>
+    <li style="margin-bottom: 12px;">Revisions - 10</li>
+    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
+<!-- Pro Plan -->
+<div class="pricing-card" data-plan="pro" data-animate>
+  <div class="badge">Recommended</div>
+  <h3>Pro</h3>
+  <p class="price">£999</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 20</li>
+    <li style="margin-bottom: 12px;">Revisions - 20</li>
+    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £999 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
-    <!-- Pro Plan -->
-    <div class="pricing-card" data-plan="pro" data-animate>
-      <div class="badge">Recommended</div>
-      <h3>Pro</h3>
-      <p class="price">£999</p>
-      <ul class="features-list">
-        <li>Pages - 20</li>
-        <li>Revisions - 20</li>
-        <li>Delivery - 20 Days</li>
+<!-- Premium Plan -->
+<div class="pricing-card" data-plan="premium" data-animate>
+  <h3>Premium</h3>
+  <p class="price">£1499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 30</li>
+    <li style="margin-bottom: 12px;">Revisions - 30</li>
+    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £1499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £999 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
 
-    <!-- Premium Plan -->
-    <div class="pricing-card" data-plan="premium" data-animate>
-      <h3>Premium</h3>
-      <p class="price">£1499</p>
-      <ul class="features-list">
-        <li>Pages - 30</li>
-        <li>Revisions - 30</li>
-        <li>Delivery - 30 Days</li>
-
-        <!-- Divider -->
-        <li class="divider-line"></li>
-      </ul>
-      <button class="pay-now">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-        Pay £1499 via PayPal
-      </button>
-      <small>50% now to secure, 50% on completion</small>
-    </div>
-
-  
 </div>
 </form>
 
@@ -1633,23 +1620,21 @@ if (initialActive) {
 
 
 
-
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  const yes = Array.isArray(yesFeatures) ? yesFeatures.slice() : [];
+  const yes = yesFeatures.slice();
 
-  // Define tiers & feature labels **in the exact funnel question order**
   const tiers = {
-    basic: ["mobile","contact","bio","social","booking","cta"],
+    basic: ["booking","mobile","cta","contact","bio","social"],
     pro: ["seo","reviews","branding","faq","newsletter"],
     premium: ["packages","email","content","guide"]
   };
 
   const labels = {
-    booking: "Booking lessons & online payment",
+    booking: "Online booking & payment",
     mobile: "Mobile-friendly design",
     cta: "Strong call-to-action buttons",
     contact: "Simple contact form",
@@ -1673,16 +1658,17 @@ if (initialActive) {
   };
 
   const tierOrder = ["basic","pro","premium"];
-  const monthlyPrices  = { basic: 49, pro: 79, premium: 129 };
+  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees      = { basic: 199, pro: 299, premium: 499 };
+  const setupFees = { basic: 199, pro: 299, premium: 499 };
 
   planCards.forEach(card => {
-    const level = (card.dataset.plan || "").toLowerCase();
-    const list  = card.querySelector(".features-list");
+    const level = card.dataset.plan.toLowerCase();
+    const list = card.querySelector(".features-list");
     const priceEl = card.querySelector(".price");
-    const payBtn  = card.querySelector(".pay-now");
-    const note    = card.querySelector("small");
+    const payBtn = card.querySelector(".pay-now");
+    const note = card.querySelector("small");
+
     if (!level || !list || !priceEl || !payBtn) return;
 
     // ----- Pricing -----
@@ -1699,7 +1685,7 @@ if (initialActive) {
     // ----- Features List -----
     list.innerHTML = "";
 
-    // 1️⃣ Core Default Services
+    // 1️⃣ Core Defaults
     coreDefaults[level].forEach(f => {
       const li = document.createElement("li");
       li.textContent = f;
@@ -1707,17 +1693,24 @@ if (initialActive) {
       list.appendChild(li);
     });
 
-    // Determine which tiers to show for this card
-    const allowedTiers = tierOrder.filter(t => tierOrder.indexOf(t) <= tierOrder.indexOf(level));
+    // Insert gradient divider after core defaults
+    const divider = document.createElement("li");
+    divider.className = "gradient-divider";
+    divider.style.height = "2px";
+    divider.style.margin = "25px 0";
+    divider.style.listStyle = "none";
+    divider.style.border = "none";
+    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+    list.appendChild(divider);
 
-    // Lower-tier YES features
-    allowedTiers.forEach(t => {
-      if (t === level) return; // skip current tier
-      const features = yes.filter(f => tiers[t].includes(f));
+    // ----- Lower-tier YES features -----
+    tierOrder.forEach(tier => {
+      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+      const features = yes.filter(f => tiers[tier].includes(f));
       if (!features.length) return;
 
       const heading = document.createElement("li");
-      heading.textContent = `Included from ${t.charAt(0).toUpperCase() + t.slice(1)}`;
+      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
       heading.style.fontWeight = "700";
       heading.style.marginTop = "20px";
       list.appendChild(heading);
@@ -1731,7 +1724,7 @@ if (initialActive) {
       });
     });
 
-    // Current tier YES features
+    // ----- Current-tier YES features -----
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -1749,13 +1742,14 @@ if (initialActive) {
       });
     }
 
+    // Fallback
     if (!list.children.length) {
       const li = document.createElement("li");
       li.textContent = "Standard features included";
       list.appendChild(li);
     }
 
-    // ✅ PayPal redirect
+    // ----- PayPal button -----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1773,37 +1767,16 @@ if (initialActive) {
 
   // Highlight recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const recCard = planCards.find(c => yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-                    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
-                    : c.dataset.plan === "basic");
+  const recCard = planCards.find(c =>
+    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
+    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
+    : c.dataset.plan === "basic"
+  );
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Find all pricing cards
-  document.querySelectorAll(".pricing-card .features-list").forEach(list => {
-    // Remove any previous dividers
-    list.querySelectorAll(".gradient-divider").forEach(d => d.remove());
-
-    // Create gradient divider
-    const divider = document.createElement("li");
-    divider.classList.add("gradient-divider");
-    divider.style.height = "2px";
-    divider.style.margin = "20px 0";
-    divider.style.borderRadius = "3px";
-    divider.style.background = "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)";
-
-    // Insert after the third li (Delivery)
-    const details = list.querySelectorAll("li");
-    if (details.length >= 3) details[2].insertAdjacentElement("afterend", divider);
-  });
-});
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
@@ -1967,6 +1940,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 }); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
-
