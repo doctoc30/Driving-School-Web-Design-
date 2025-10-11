@@ -772,16 +772,34 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
+  
   // ------------------ "I want this concept" Button ------------------
+
+  document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
-window.location.assign(funnelURL);
+
+      // Detect current page
+      const currentPage = window.location.pathname.split("/").pop(); // 'index.html' or 'concept.html'
+
+      // Base funnel URL
+      let funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
+
+      // If on concept.html, redirect straight to instructor-q1
+      if (currentPage === "concept.html") {
+        funnelURL += "&direct=instructor-q1";
+      }
+
+      // Redirect
+      window.location.href = funnelURL;
     });
   });
+});
 
+
+  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
