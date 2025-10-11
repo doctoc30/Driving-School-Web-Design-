@@ -703,7 +703,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const isDesktop = window.innerWidth >= 992;
 
     if (codeParam && isDesktop) {
-      // Desktop full-screen view for selected template
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -725,7 +724,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = "none";
     } else if (codeParam && !isDesktop) {
-      // Mobile swipeable
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -737,7 +735,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     } else {
-      // Full library view
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       wrapper.style.display = "flex";
@@ -772,19 +769,21 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
+  // ------------------ "I want this concept" Button ------------------
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".want-concept");
+    if (!btn) return;
 
-  
- // ------------------ "I want this concept" Button ------------------
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest(".want-concept");
-  if (!btn) return;
+    e.preventDefault();  // prevents page refresh
+    e.stopPropagation(); // avoids interfering with other click handlers
 
-  const code = btn.dataset.code;
-  if (!code) return;
+    const code = btn.dataset.code;
+    if (!code) return;
 
-  const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
-  window.location.assign(funnelURL);
-});
+    // Redirect to funnel with correct step
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
+    window.location.assign(funnelURL);
+  });
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
