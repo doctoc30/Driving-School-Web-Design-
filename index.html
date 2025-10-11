@@ -1550,15 +1550,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupQ19Buttons();
 
-  // ------------------ "I Want This Concept" Button ------------------
+
+
+  
+  // ------------------ "I want this concept" Button ------------------
+
+  document.addEventListener("DOMContentLoaded", () => {
+  // Handle all "I want this concept" buttons
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
-      window.location.assign(funnelURL);
+
+      // Detect current page
+      const currentPage = window.location.pathname.split("/").pop(); // 'index.html' or 'concept.html'
+
+      // Base funnel URL
+      let funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}`;
+
+      // If on concept.html, go directly to instructor-q1
+      if (currentPage === "concept.html") {
+        funnelURL += "&direct=instructor-q1";
+      }
+
+      // Redirect
+      window.location.href = funnelURL;
     });
   });
+
+  // Funnel JS: handle direct parameter to skip intro if needed
+  const params = new URLSearchParams(window.location.search);
+  const directScreen = params.get("direct");
+
+  if (directScreen) {
+    const screen = document.getElementById(directScreen);
+    if (screen) {
+      // Hide all screens and show the direct one
+      document.querySelectorAll(".form-screen").forEach(s => {
+        s.classList.remove("active");
+        s.style.display = "none";
+      });
+      screen.classList.add("active");
+      screen.style.display = "flex";
+    }
+  }
+});
+
+
+
+
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
