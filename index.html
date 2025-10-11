@@ -1547,6 +1547,28 @@ if (initialActive) {
     });
   });
 
+
+
+
+ document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const directScreen = params.get("direct");
+
+  if (directScreen) {
+    const target = document.getElementById(directScreen);
+    if (target) {
+      // Hide all other screens
+      document.querySelectorAll(".form-screen").forEach(screen => {
+        screen.classList.remove("active");
+        screen.style.display = "none";
+      });
+
+      // Show the requested one
+      target.classList.add("active");
+      target.style.display = "flex";
+    }
+  }
+});
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
