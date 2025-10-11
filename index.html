@@ -1504,6 +1504,33 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+ // ------------------ Intro Screen Buttons ------------------
+function setupIntroButtons() {
+  const introScreen = document.getElementById("main-intro-options");
+  if (!introScreen) return;
+
+  const newBtn = introScreen.querySelector(".new-website");
+  const redesignBtn = introScreen.querySelector(".redesign-website");
+  const updatesBtn = introScreen.querySelector(".maintenance-updates");
+
+  if (newBtn) newBtn.onclick = () => {
+    userPath = "New Website";
+    showScreen("instructor-q1");
+  };
+
+  if (redesignBtn) redesignBtn.onclick = () => {
+    userPath = "Redesign Existing Website";
+    showScreen("instructor-q1");
+  };
+
+  if (updatesBtn) updatesBtn.onclick = () => {
+    userPath = "Maintenance / Updates";
+    showScreen("instructor-q1");
+  };
+}
+
+setupIntroButtons();
+
 
  // ------------------ Q19 Buttons - FIXED ------------------
 function setupQ19Buttons() {
