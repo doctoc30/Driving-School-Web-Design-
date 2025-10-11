@@ -1396,15 +1396,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  
-  // Progress Bar Functions
+  const directScreen = params.get("direct"); // ✅ NEW: detect direct entry
+
+  // ✅ NEW: if coming from concept.html, skip intro and go straight to instructor-q1
+  if (directScreen) {
+    if (codeParam) {
+      recordFeature(codeParam); // Optional: store concept code as feature
+    }
+    showScreen(directScreen);
+    return; // Skip intro flow
+  }
+
+  // Default flow for index.html
+  showScreen("main-intro-options");
+
+  // ------------------ Progress Bar Functions ------------------
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-  
+
   function updateProgress(currentStep) {
     const progressBar = document.querySelector('.progress-bar');
     const progressLabel = document.querySelector('.progress-label');
@@ -1488,7 +1501,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
-
+});
 
 
 
