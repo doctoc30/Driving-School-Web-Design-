@@ -1853,55 +1853,55 @@ function showRecommendedPlan(planType = 'outright') {
 
 
 
- // ------------------ Initialize Funnel ------------------
+// ------------------ Initialize Funnel ------------------
 hideAllScreens();
 
 // Set up Q19 buttons after DOM is loaded
 setTimeout(setupQ19Buttons, 100);
 
-// Prefill design code if present
+// Prefill code if coming from concept.html or user input
 if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
 }
 
-// Handle step parameter (from concept.html or direct URL)
-if (stepParam) {
-  if (stepParam === "instructor-q1") {
-    // Jump directly to Q1
+// Handle "direct" jump from concept.html
+const urlParams = new URLSearchParams(window.location.search);
+const directTarget = urlParams.get("direct");
+
+if (directTarget === "instructor-q1") {
+    // Concept.html button: jump straight to Q1
     setPath('instructor');
-    const screen = document.getElementById("instructor-q1");
-    if (screen) {
-      hideAllScreens();
-      screen.classList.add("active");
-      screen.style.display = "flex";
-      currentScreen = screens.indexOf(screen);
-    } else {
-      showScreen('main-intro-options'); // fallback if Q1 not found
-    }
-  } else {
-    // Handle numeric steps or other Q screens
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      showScreen('main-intro-options'); // fallback
-    }
-  }
+    showScreen('instructor-q1');
 } else {
-  // Default intro screen with animations
-  showScreen('main-intro-options');
-  if (typeof typewriterEl !== "undefined" && typewriterEl) typewriterEl.classList.add('active');
-  if (typeof colorRiseEl !== "undefined" && colorRiseEl) colorRiseEl.classList.add('active');
-  if (typeof startTypewriterAnimation === "function") startTypewriterAnimation();
+    // Normal funnel flow
+    const stepParam = urlParams.get("step");
+    if (stepParam) {
+        // numeric step, e.g., ?step=4
+        const stepName = `instructor-q${stepParam}`;
+        const screenIndex = screens.findIndex(s => s.id === stepName);
+        if (screenIndex !== -1) {
+            currentScreen = screenIndex;
+            showScreen(stepName);
+        } else {
+            showScreen('main-intro-options'); // fallback
+        }
+    } else {
+        // default intro screen with animations
+        showScreen('main-intro-options');
+        if (typeof typewriterEl !== "undefined" && typewriterEl) typewriterEl.classList.add('active');
+        if (typeof colorRiseEl !== "undefined" && colorRiseEl) colorRiseEl.classList.add('active');
+        if (typeof startTypewriterAnimation === "function") startTypewriterAnimation();
+    }
 }
 
 // Update progress bars
 updateWaterProgress();
 updateProgress(currentScreen + 1);
 
+
+
+ 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
