@@ -1536,25 +1536,16 @@ if (initialActive) {
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
-
-
-
-
-
- // ------------------ "I Want This Concept" Button (for internal buttons on index.html) ------------------
-document.querySelectorAll(".want-concept").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const code = btn.dataset.code;
-    if (!code) return;
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-    window.location.assign(funnelURL);
-  });
-});
-
-
  
-
-
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
@@ -1788,88 +1779,6 @@ function showRecommendedPlan(planType = 'outright') {
   }
 }
  
-
- // ------------------ Initialize Funnel ------------------
-hideAllScreens();
-setTimeout(setupQ19Buttons, 100);
-
-const directTarget = urlParams.get("direct");
-
-if (directTarget === "instructor-q1") {
-  const code = urlParams.get("code");
-  if (code) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = code;
-    console.log("Concept code received:", code);
-  }
-
-  setPath('instructor');
-  showScreen('instructor-q1');
-} else if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
-  const stepName = `instructor-q${stepParam}`;
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
-  } else {
-    showScreen(screens[0].id);
-  }
-} else {
-  if (typeof typewriterEl !== "undefined") typewriterEl.classList.add('active');
-  if (typeof colorRiseEl !== "undefined") colorRiseEl.classList.add('active');
-  if (typeof startTypewriterAnimation === "function") startTypewriterAnimation();
-  showScreen(screens[0].id);
-}
-
-updateWaterProgress();
-updateProgress(currentScreen + 1);
-
-
-
- 
-
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
-        }
-      });
-    }, observerOptions);
-
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
-
-
-
-
-
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1943,6 +1852,69 @@ updateProgress(currentScreen + 1);
     };
   }
 
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+
+  // Set up Q19 buttons after DOM is loaded
+  setTimeout(setupQ19Buttons, 100);
+
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      showScreen(screens[0].id);
+    }
+  } else {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
+
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
+
+  // ------------------ IntersectionObserver for pricing cards ------------------
+  (function initPricingObserver(){
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards || cards.length === 0) return; 
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in-view'));
+      return;
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -12% 0px',
+      threshold: [0, 0.05, 0.15]
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        try {
+          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+          if (isVisible) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        } catch (err) {
+          try { entry.target.classList.add('in-view'); } catch(e) {}
+          try { obs.unobserve(entry.target); } catch(e) {}
+        }
+      });
+    }, observerOptions);
+
+    Array.from(cards).forEach(card => observer.observe(card));
+  })();
+
+
 
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
@@ -1969,6 +1941,5 @@ updateProgress(currentScreen + 1);
 
 }); /* end DOMContentLoaded */
 </script>
-
 </body>
 </html>
