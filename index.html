@@ -1857,23 +1857,36 @@ function showRecommendedPlan(planType = 'outright') {
   // Set up Q19 buttons after DOM is loaded
   setTimeout(setupQ19Buttons, 100);
 
-if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-} else if (stepParam) {
-    if (stepParam === "instructor-q1") {
-        showScreen('instructor-q1');
+
+ if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+}
+
+// Handle step param from concept.html
+if (stepParam) {
+  // Handles both ?step=instructor-q1 and numeric ?step=4 etc.
+  if (stepParam.startsWith("instructor-q")) {
+    setPath('instructor');
+    showScreen(stepParam);
+  } else {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
     } else {
-        const stepName = `instructor-q${stepParam}`;
-        const screenIndex = screens.findIndex(s => s.id === stepName);
-        if (screenIndex !== -1) {
-            currentScreen = screenIndex;
-            showScreen(stepName);
-        } else {
-            showScreen(screens[0].id);
-        }
+      showScreen('main-intro-options'); // fallback
     }
+  }
+} else {
+  // default behaviour (intro animation)
+  if (typeof typewriterEl !== "undefined" && typewriterEl) typewriterEl.classList.add('active');
+  if (typeof colorRiseEl !== "undefined" && colorRiseEl) colorRiseEl.classList.add('active');
+  if (typeof startTypewriterAnimation === "function") startTypewriterAnimation();
+}
+
+ 
 } else {
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
