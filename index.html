@@ -1806,15 +1806,15 @@ function showRecommendedPlan(planType = 'outright') {
   }
 }
  
- 
-  // ------------------ Initialize Funnel ------------------
+
+ // ------------------ Initialize Funnel ------------------
 hideAllScreens();
 setTimeout(setupQ19Buttons, 100);
 
-const directTarget = params.get("direct");
+const directTarget = urlParams.get("direct");
 
 if (directTarget === "instructor-q1") {
-  const code = params.get("code");
+  const code = urlParams.get("code");
   if (code) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = code;
@@ -1845,6 +1845,7 @@ if (directTarget === "instructor-q1") {
 
 updateWaterProgress();
 updateProgress(currentScreen + 1);
+
 
 
  
