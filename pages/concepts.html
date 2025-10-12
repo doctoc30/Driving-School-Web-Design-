@@ -772,15 +772,18 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I want this concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=1`;
-      window.location.assign(funnelURL);
-    });
+
+
+  // ------------------ "I want this concept" Buttons ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Redirect to funnel starting on Q1
+    const funnelURL = 'https://doctoc30.github.io/Driving-School-Web-Design-/index.html?startQ=1';
+    window.location.assign(funnelURL);
   });
+});
+
+  
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
@@ -805,5 +808,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.AOS) AOS.init();
 });
 </script>
+
+
+  
 </body>
 </html>
