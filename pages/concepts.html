@@ -770,20 +770,23 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-// ------------------ "I want this concept" Button ------------------
+
+  // ------------------ "I want this concept" Button ------------------
 document.body.addEventListener("click", (e) => {
-    const btn = e.target.closest(".want-concept");
-    if (!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const code = btn.dataset.code?.trim();
-    if (!code) return;
-    const funnelURL = `index.html?code=${encodeURIComponent(code)}&step=instructor-q1`;
-    window.location.assign(funnelURL);
+  const btn = e.target.closest(".want-concept");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const code = btn.dataset.code?.trim();
+  if (!code) return;
+
+  // ✅ Absolute path (fixes 404 error)
+  const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?code=${encodeURIComponent(code)}&step=instructor-q1`;
+  window.location.href = funnelURL;
 });
 
   
-
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
