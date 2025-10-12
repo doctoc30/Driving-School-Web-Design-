@@ -675,8 +675,8 @@ footer {
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
-<!-- ✅ JS -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -702,49 +702,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
-    if (codeParam && isDesktop) {
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
-      slides.forEach((slide, idx) => {
-        const img = slide.querySelector("img");
-        if (idx === currentIndex) {
-          slide.style.display = "flex";
-          slide.style.width = "100vw";
-          slide.style.height = "100vh";
-          slide.style.justifyContent = "center";
-          slide.style.alignItems = "center";
-          if (img) {
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "100%";
-            img.style.objectFit = "contain";
-          }
-        } else {
-          slide.style.display = "none";
+    slides.forEach((slide, idx) => {
+      const img = slide.querySelector("img");
+      if (idx === currentIndex) {
+        slide.style.display = "flex";
+        slide.style.width = isDesktop ? "100vw" : "100%";
+        slide.style.height = isDesktop ? "100vh" : "auto";
+        slide.style.justifyContent = "center";
+        slide.style.alignItems = "center";
+        if (img) {
+          img.style.maxWidth = "100%";
+          img.style.maxHeight = "100%";
+          img.style.objectFit = "contain";
         }
-      });
-      wrapper.style.transform = "none";
-    } else if (codeParam && !isDesktop) {
-      nextBtn.style.display = "none";
-      prevBtn.style.display = "none";
-      wrapper.style.display = "flex";
-      wrapper.style.justifyContent = "flex-start";
-      slides.forEach(slide => {
-        slide.style.display = "flex";
-        slide.style.width = "100%";
-        slide.style.height = "auto";
-      });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    } else {
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
-      wrapper.style.display = "flex";
-      slides.forEach(slide => {
-        slide.style.display = "flex";
-        slide.style.width = "";
-        slide.style.height = "";
-      });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
+      } else {
+        slide.style.display = "none";
+      }
+    });
+
+    nextBtn.style.display = isDesktop ? "block" : "none";
+    prevBtn.style.display = isDesktop ? "block" : "none";
   }
 
   // ------------------ Arrow Navigation ------------------
@@ -752,6 +729,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
   });
+
   prevBtn.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     updateSlider();
@@ -769,9 +747,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-
   // ------------------ "I want this concept" Button ------------------
-document.body.addEventListener("click", (e) => {
+  document.body.addEventListener("click", (e) => {
     const btn = e.target.closest(".want-concept");
     if (!btn) return;
 
@@ -781,11 +758,10 @@ document.body.addEventListener("click", (e) => {
     const code = btn.dataset.code?.trim();
     if (!code) return;
 
-    // Redirect to index.html and jump to Q1
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=instructor-q1`;
+    // ✅ Redirect to index.html and jump straight to instructor Q1
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
     window.location.assign(funnelURL);
-});
-  
+  });
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
@@ -810,5 +786,6 @@ document.body.addEventListener("click", (e) => {
   if (window.AOS) AOS.init();
 });
 </script>
+
 </body>
 </html>
