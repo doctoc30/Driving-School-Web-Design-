@@ -1536,39 +1536,51 @@ if (initialActive) {
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
- 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
+
+
+
+
+
+ // ------------------ "I Want This Concept" Button (for internal buttons on index.html) ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
+    if (!code) return;
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+    window.location.assign(funnelURL);
   });
+});
 
-
-
-
- document.addEventListener("DOMContentLoaded", () => {
+// ------------------ Auto-jump to Q1 if coming from concept page ------------------
+document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const directScreen = params.get("direct");
+  const direct = params.get("direct");
+  const code = params.get("code");
 
-  if (directScreen) {
-    const target = document.getElementById(directScreen);
-    if (target) {
-      // Hide all other screens
-      document.querySelectorAll(".form-screen").forEach(screen => {
-        screen.classList.remove("active");
-        screen.style.display = "none";
-      });
+  if (direct === "instructor-q1") {
+    console.log("Redirected from concept page with code:", code);
 
-      // Show the requested one
-      target.classList.add("active");
-      target.style.display = "flex";
+    // Hide intro and show Q1
+    const intro = document.getElementById("main-intro-options");
+    const q1 = document.getElementById("instructor-q1");
+
+    if (intro && q1) {
+      // Hide intro
+      intro.classList.remove("active");
+      intro.style.display = "none";
+
+      // Show Q1
+      q1.classList.add("active");
+      q1.style.display = "flex";
+    }
+
+    // Optional: store selected concept code for tracking or later use
+    if (code) {
+      window.selectedConceptCode = code;
     }
   }
 });
+
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
