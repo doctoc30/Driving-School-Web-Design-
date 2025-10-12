@@ -770,7 +770,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-
   // ------------------ "I want this concept" Button ------------------
 document.body.addEventListener("click", (e) => {
   const btn = e.target.closest(".want-concept");
@@ -782,12 +781,16 @@ document.body.addEventListener("click", (e) => {
   const code = btn.dataset.code?.trim();
   if (!code) return;
 
-  // Debugging line (remove after confirming it works)
-  console.log("Redirecting with code:", code);
+  // Debugging (you can remove this later)
+  console.log("Redirecting to funnel with code:", code);
 
+  // Redirect to index.html and trigger Q1 automatically
   const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
-  window.location.assign(funnelURL);
+  window.location.href = funnelURL;
 });
+
+
+  
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
