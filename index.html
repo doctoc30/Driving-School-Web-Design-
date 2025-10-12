@@ -1857,25 +1857,28 @@ function showRecommendedPlan(planType = 'outright') {
   // Set up Q19 buttons after DOM is loaded
   setTimeout(setupQ19Buttons, 100);
 
-  if (codeParam) {
+if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
+} else if (stepParam) {
+    if (stepParam === "instructor-q1") {
+        showScreen('instructor-q1');
     } else {
-      showScreen(screens[0].id);
+        const stepName = `instructor-q${stepParam}`;
+        const screenIndex = screens.findIndex(s => s.id === stepName);
+        if (screenIndex !== -1) {
+            currentScreen = screenIndex;
+            showScreen(stepName);
+        } else {
+            showScreen(screens[0].id);
+        }
     }
-  } else {
+} else {
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
-  }
-
+}
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
