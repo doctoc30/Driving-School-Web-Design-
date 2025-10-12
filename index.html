@@ -1551,35 +1551,28 @@ document.querySelectorAll(".want-concept").forEach(btn => {
   });
 });
 
-// ------------------ Auto-jump to Q1 if coming from concept page ------------------
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const direct = params.get("direct");
-  const code = params.get("code");
 
-  if (direct === "instructor-q1") {
-    console.log("Redirected from concept page with code:", code);
+ 
 
-    // Hide intro and show Q1
-    const intro = document.getElementById("main-intro-options");
-    const q1 = document.getElementById("instructor-q1");
 
-    if (intro && q1) {
-      // Hide intro
-      intro.classList.remove("active");
-      intro.style.display = "none";
+ document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const directTarget = urlParams.get("direct");
 
-      // Show Q1
-      q1.classList.add("active");
-      q1.style.display = "flex";
-    }
-
-    // Optional: store selected concept code for tracking or later use
+  if (directTarget === "instructor-q1") {
+    // Optional: capture the concept code for tracking or later use
+    const code = urlParams.get("code");
     if (code) {
-      window.selectedConceptCode = code;
+      console.log("Concept code received:", code);
+      // You can store it in localStorage or a global variable if needed
     }
+
+    // Skip intro and jump straight to Q1
+    setPath('instructor');
+    showScreen('instructor-q1');
   }
 });
+
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
