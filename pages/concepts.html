@@ -676,6 +676,9 @@ footer {
 </div>
 
 
+
+
+
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -720,8 +723,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    nextBtn.style.display = isDesktop ? "block" : "none";
-    prevBtn.style.display = isDesktop ? "block" : "none";
+    if (isDesktop) {
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+      wrapper.style.transform = "none";
+    } else {
+      nextBtn.style.display = "none";
+      prevBtn.style.display = "none";
+      wrapper.style.display = "flex";
+      wrapper.style.transition = "transform 0.3s ease";
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
   }
 
   // ------------------ Arrow Navigation ------------------
@@ -729,7 +741,6 @@ document.addEventListener("DOMContentLoaded", () => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateSlider();
   });
-
   prevBtn.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
     updateSlider();
@@ -758,8 +769,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const code = btn.dataset.code?.trim();
     if (!code) return;
 
-    // ✅ Redirect to index.html and jump straight to instructor Q1
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q1`;
+    // Redirect to index.html and jump straight to instructor-q4
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&direct=instructor-q4`;
     window.location.assign(funnelURL);
   });
 
@@ -771,13 +782,17 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopPropagation();
       const isOpen = menu.classList.toggle("open");
       hamburger.classList.toggle("active");
-      document.body.style.overflow = isOpen ? "hidden" : "";
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
     document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
         menu.classList.remove("open");
         hamburger.classList.remove("active");
-        document.body.style.overflow = "";
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
       }
     });
   }
