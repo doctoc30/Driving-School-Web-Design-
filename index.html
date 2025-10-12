@@ -1851,25 +1851,36 @@ function showRecommendedPlan(planType = 'outright') {
     };
   }
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
 
 
- if (codeParam) {
+ // ------------------ Initialize Funnel ------------------
+hideAllScreens();
+
+// Set up Q19 buttons after DOM is loaded
+setTimeout(setupQ19Buttons, 100);
+
+// Prefill design code if present
+if (codeParam) {
   const inputEl = document.getElementById("designInput");
   if (inputEl) inputEl.value = codeParam;
 }
 
-// Handle step param from concept.html
+// Handle step parameter (from concept.html or direct URL)
 if (stepParam) {
-  // Handles both ?step=instructor-q1 and numeric ?step=4 etc.
-  if (stepParam.startsWith("instructor-q")) {
+  if (stepParam === "instructor-q1") {
+    // Jump directly to Q1
     setPath('instructor');
-    showScreen(stepParam);
+    const screen = document.getElementById("instructor-q1");
+    if (screen) {
+      hideAllScreens();
+      screen.classList.add("active");
+      screen.style.display = "flex";
+      currentScreen = screens.indexOf(screen);
+    } else {
+      showScreen('main-intro-options'); // fallback if Q1 not found
+    }
   } else {
+    // Handle numeric steps or other Q screens
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
@@ -1880,20 +1891,16 @@ if (stepParam) {
     }
   }
 } else {
-  // default behaviour (intro animation)
+  // Default intro screen with animations
+  showScreen('main-intro-options');
   if (typeof typewriterEl !== "undefined" && typewriterEl) typewriterEl.classList.add('active');
   if (typeof colorRiseEl !== "undefined" && colorRiseEl) colorRiseEl.classList.add('active');
   if (typeof startTypewriterAnimation === "function") startTypewriterAnimation();
 }
 
- 
-} else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-}
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
+// Update progress bars
+updateWaterProgress();
+updateProgress(currentScreen + 1);
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
