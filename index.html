@@ -1851,33 +1851,43 @@ function showRecommendedPlan(planType = 'outright') {
     };
   }
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
 
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
+ // ------------------ Initialize Funnel ------------------
+hideAllScreens();
 
+// Set up Q19 buttons after DOM is loaded
+setTimeout(setupQ19Buttons, 100);
+
+if (stepParam) {
+  // Respect the step parameter first
+  const stepName = `instructor-q${stepParam}`;
+  const screenIndex = screens.findIndex(s => s.id === stepName);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id);
+  }
+
+  // If a code is present, prefill design input
   if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      showScreen(screens[0].id);
-    }
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
   }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
+} else if (codeParam) {
+  // Only code provided, default to Q1 instead of Q4
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showScreen('instructor-q1'); // Force Q1 instead of calling showFilteredTemplate
+} else {
+  if (typewriterEl) typewriterEl.classList.add('active');
+  if (colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
+}
+
+updateWaterProgress();
+updateProgress(currentScreen + 1);
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
