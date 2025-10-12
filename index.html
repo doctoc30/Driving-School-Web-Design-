@@ -1555,24 +1555,6 @@ document.querySelectorAll(".want-concept").forEach(btn => {
  
 
 
- document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const directTarget = urlParams.get("direct");
-
-  if (directTarget === "instructor-q1") {
-    // Optional: capture the concept code for tracking or later use
-    const code = urlParams.get("code");
-    if (code) {
-      console.log("Concept code received:", code);
-      // You can store it in localStorage or a global variable if needed
-    }
-
-    // Skip intro and jump straight to Q1
-    setPath('instructor');
-    showScreen('instructor-q1');
-  }
-});
-
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
