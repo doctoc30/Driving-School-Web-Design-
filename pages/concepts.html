@@ -734,8 +734,10 @@ footer {
       
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Only run this JS on concepts.html
+  if (!window.location.pathname.endsWith("concepts.html")) return;
 
-  document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".slider-wrapper");
   const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
@@ -826,19 +828,18 @@ footer {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I Want This Concept" Buttons ------------------
+  // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
 
-      // Redirect to concepts-funnel.html at step Q1 (concepts page)
+      // Always go to Q1 funnel for concepts.html
       const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=Q1`;
       window.location.assign(funnelURL);
     });
   });
 });
-
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
