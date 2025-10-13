@@ -1538,15 +1538,13 @@ if (initialActive) {
 
 
 
- // ------------------ Handle "I want this concept" in main funnel ------------------
+// ------------------ Handle "I want this concept" in main funnel ------------------
 function selectConcept(code) {
-  // Keep user on the same funnel (index.html)
-  // Continue the flow at step 4 or wherever “concept chosen” should lead
+  // Redirect user from index funnel to the main concept funnel at question 4
   const nextStep = 4;
-  const url = `${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(code)}&step=${nextStep}`;
+  const url = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=Q${nextStep}`;
   window.location.href = url;
 }
-
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
