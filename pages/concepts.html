@@ -734,9 +734,10 @@ footer {
       
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
+  const fromFunnel = params.has("fromFunnel"); // detect if coming from funnel
   const wrapper = document.querySelector(".slider-wrapper");
   const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
@@ -758,7 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
-    if (codeParam && isDesktop) {
+    if (isDesktop) {
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -779,7 +780,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       wrapper.style.transform = "none";
-    } else if (codeParam && !isDesktop) {
+    } else {
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -788,16 +789,6 @@ document.addEventListener("DOMContentLoaded", () => {
         slide.style.display = "flex";
         slide.style.width = "100%";
         slide.style.height = "auto";
-      });
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    } else {
-      nextBtn.style.display = "block";
-      prevBtn.style.display = "block";
-      wrapper.style.display = "flex";
-      slides.forEach(slide => {
-        slide.style.display = "flex";
-        slide.style.width = "";
-        slide.style.height = "";
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
@@ -830,11 +821,14 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      // Redirect to concepts-funnel.html starting at Q1
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=Q1`;
+
+      // Decide starting step based on source
+      const step = fromFunnel ? "Q4" : "Q1";
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=${step}`;
       window.location.assign(funnelURL);
     });
   });
+});
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
