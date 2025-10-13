@@ -734,10 +734,7 @@ footer {
       
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get("code");
-  const fromFunnel = params.has("fromFunnel"); // detect if coming from funnel
+document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".slider-wrapper");
   const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
@@ -746,7 +743,9 @@ footer {
 
   if (!wrapper || slides.length === 0) return;
 
-  // ------------------ Filter slide if ?code= is present ------------------
+  // ------------------ Get ?code= param if present ------------------
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
   if (codeParam) {
     const match = slides.find(slide => {
       const span = slide.querySelector(".concept-code");
@@ -759,7 +758,7 @@ footer {
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
-    if (isDesktop) {
+    if (codeParam && isDesktop) {
       nextBtn.style.display = "block";
       prevBtn.style.display = "block";
       slides.forEach((slide, idx) => {
@@ -780,7 +779,7 @@ footer {
         }
       });
       wrapper.style.transform = "none";
-    } else {
+    } else if (codeParam && !isDesktop) {
       nextBtn.style.display = "none";
       prevBtn.style.display = "none";
       wrapper.style.display = "flex";
@@ -789,6 +788,16 @@ footer {
         slide.style.display = "flex";
         slide.style.width = "100%";
         slide.style.height = "auto";
+      });
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    } else {
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+      wrapper.style.display = "flex";
+      slides.forEach(slide => {
+        slide.style.display = "flex";
+        slide.style.width = "";
+        slide.style.height = "";
       });
       wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
@@ -816,17 +825,21 @@ footer {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I want this concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
+  // ------------------ "I want this concept" Buttons ------------------
+  document.body.addEventListener("click", (e) => {
+    const btn = e.target.closest(".want-concept");
+    if (!btn) return;
+    const code = btn.dataset.code;
+    if (!code) return;
 
-      // Decide starting step based on source
-      const step = fromFunnel ? "Q4" : "Q1";
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=${step}`;
-      window.location.assign(funnelURL);
-    });
+    // Determine current page
+    const isIndex = window.location.pathname.endsWith("index.html") || window.location.pathname === "/";
+    
+    // Funnel step based on origin
+    const step = isIndex ? "Q4" : "Q1";
+    
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=${step}`;
+    window.location.assign(funnelURL);
   });
 });
 
