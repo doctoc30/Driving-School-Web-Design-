@@ -1535,16 +1535,18 @@ if (initialActive) {
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
- 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
+
+
+
+ // ------------------ Handle "I want this concept" in main funnel ------------------
+function selectConcept(code) {
+  // Keep user on the same funnel (index.html)
+  // Continue the flow at step 4 or wherever “concept chosen” should lead
+  const nextStep = 4;
+  const url = `${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(code)}&step=${nextStep}`;
+  window.location.href = url;
+}
+
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
