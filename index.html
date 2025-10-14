@@ -1940,6 +1940,32 @@ function showRecommendedPlan(planType = 'outright') {
     });
   }
 
+    
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.addEventListener('load', function() {
+            const startScreen = getQueryParam('start');
+            
+            // If the URL contains ?start=q1 (meaning the user came from concepts.html)
+            if (startScreen === 'q1') {
+                // 1. Deactivate ALL form screens
+                document.querySelectorAll('.form-screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                
+                // 2. Explicitly activate Q1 (instructor-q1)
+                const q1Screen = document.getElementById('instructor-q1');
+                if (q1Screen) {
+                    q1Screen.classList.add('active');
+                }
+            }
+        });
+
+ 
+
 }); /* end DOMContentLoaded */
 </script>
 
