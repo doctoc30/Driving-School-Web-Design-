@@ -677,7 +677,8 @@ footer {
   </div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
+
+  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -772,12 +773,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ "I want this concept" Button ------------------
+  // ------------------ "I want this concept" Button (REVISED) ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      
+      // *** FIX APPLIED HERE: Changed URL to use ?start=q1 instead of &step=4 ***
+      // We are sending the user to index.html with the new command: ?start=q1
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&start=q1`;
+      
       window.location.assign(funnelURL);
     });
   });
@@ -805,5 +810,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.AOS) AOS.init();
 });
 </script>
+
 </body>
 </html>
