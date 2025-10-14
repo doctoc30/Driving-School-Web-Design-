@@ -1538,13 +1538,15 @@ if (initialActive) {
 
 
 
-// ------------------ Handle "I want this concept" in main funnel ------------------
-function selectConcept(code) {
-  // Redirect user from index funnel to the main concept funnel at question 4
-  const nextStep = 4;
-  const url = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=Q${nextStep}`;
-  window.location.href = url;
-}
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
