@@ -1,6 +1,4 @@
-// JS for concepts.html
 document.addEventListener("DOMContentLoaded", () => {
-  // Add click listener for "I want this concept"
   document.body.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".want-concept");
     if (!btn) return;
@@ -8,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const code = btn.dataset.code;
     if (!code) return;
 
-    // Redirect to concepts-funnel.html starting from Q1
+    // ✅ Redirect to funnel page (not index)
     const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts-funnel.html?code=${encodeURIComponent(code)}&step=Q1`;
     window.location.href = funnelURL;
   });
