@@ -679,7 +679,8 @@ footer {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ------------------ Slider Setup ------------------
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
   const wrapper = document.querySelector(".slider-wrapper");
   const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
@@ -688,31 +689,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!wrapper || slides.length === 0) return;
 
+  // ------------------ Filter slide if ?code= is present ------------------
+  if (codeParam) {
+    const match = slides.find(slide => {
+      const span = slide.querySelector(".buttons span");
+      return span && span.textContent.trim().toUpperCase() === codeParam.toUpperCase();
+    });
+    if (match) currentIndex = slides.indexOf(match);
+  }
+
   // ------------------ Update Slider Layout ------------------
   function updateSlider() {
     const isDesktop = window.innerWidth >= 992;
 
-    slides.forEach((slide, idx) => {
-      const img = slide.querySelector("img");
-      if (idx === currentIndex) {
-        slide.style.display = "flex";
-        slide.style.width = isDesktop ? "100vw" : "100%";
-        slide.style.height = isDesktop ? "100vh" : "auto";
-        slide.style.justifyContent = "center";
-        slide.style.alignItems = "center";
-        if (img) {
-          img.style.maxWidth = "100%";
-          img.style.maxHeight = "100%";
-          img.style.objectFit = "contain";
+    if (codeParam && isDesktop) {
+      // Desktop full-screen view for selected template
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+      slides.forEach((slide, idx) => {
+        const img = slide.querySelector("img");
+        if (idx === currentIndex) {
+          slide.style.display = "flex";
+          slide.style.width = "100vw";
+          slide.style.height = "100vh";
+          slide.style.justifyContent = "center";
+          slide.style.alignItems = "center";
+          if (img) {
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "100%";
+            img.style.objectFit = "contain";
+          }
+        } else {
+          slide.style.display = "none";
         }
-      } else {
-        slide.style.display = "none";
-      }
-    });
-
-    wrapper.style.transform = "none";
-    nextBtn.style.display = "block";
-    prevBtn.style.display = "block";
+      });
+      wrapper.style.transform = "none";
+    } else if (codeParam && !isDesktop) {
+      // Mobile swipeable
+      nextBtn.style.display = "none";
+      prevBtn.style.display = "none";
+      wrapper.style.display = "flex";
+      wrapper.style.justifyContent = "flex-start";
+      slides.forEach(slide => {
+        slide.style.display = "flex";
+        slide.style.width = "100%";
+        slide.style.height = "auto";
+      });
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    } else {
+      // Full library view
+      nextBtn.style.display = "block";
+      prevBtn.style.display = "block";
+      wrapper.style.display = "flex";
+      slides.forEach(slide => {
+        slide.style.display = "flex";
+        slide.style.width = "";
+        slide.style.height = "";
+      });
+      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
   }
 
   // ------------------ Arrow Navigation ------------------
@@ -737,8 +772,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-
-    // ------------------ "I want this concept" Button ------------------
+  // ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
@@ -748,8 +782,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-
-  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
