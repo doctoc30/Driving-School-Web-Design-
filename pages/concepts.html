@@ -774,20 +774,24 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-// Revised code for concepts.html
-  // ------------------ "I want this concept" Button ------------------
+
+  // Revised code for concepts.html
+// ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
       
-      // *** FIX APPLIED: Changed to &start=q1 instead of &step=4 ***
-      // This sends the user to index.html with the Q1 override command.
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&start=q1`;
+      // *** FIX APPLIED: Using relative path "../index.html" ***
+      // This is a safer way to navigate up one directory to index.html
+      const funnelURL = `../index.html?code=${encodeURIComponent(code)}&start=q1`;
       
       window.location.assign(funnelURL);
     });
   });
+
+
+
 
 
 
