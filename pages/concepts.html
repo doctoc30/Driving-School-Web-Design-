@@ -676,8 +676,7 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -773,25 +772,31 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-  // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+  // ------------------ "I want this concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
     });
-    document.addEventListener('click', e => {
+  });
+
+  // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector(".hamburger");
+  const menu = document.querySelector("nav.menu");
+  if (hamburger && menu) {
+    hamburger.addEventListener("click", e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle("open");
+      hamburger.classList.toggle("active");
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+    document.addEventListener("click", e => {
       if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
+        menu.classList.remove("open");
+        hamburger.classList.remove("active");
+        document.body.style.overflow = "";
       }
     });
   }
@@ -800,9 +805,5 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.AOS) AOS.init();
 });
 </script>
-
-<!-- ✅ Custom JS file for concept button logic -->
-<script src="concepts.js"></script>
 </body>
 </html>
-
