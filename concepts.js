@@ -1,8 +1,5 @@
-// This JS is only for concepts.html
+// JS for concepts.html
 document.addEventListener("DOMContentLoaded", () => {
-  // Check we’re really on concepts.html (safety)
-  if (!window.location.pathname.includes("concepts.html")) return;
-
   // Add click listener for "I want this concept"
   document.body.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".want-concept");
