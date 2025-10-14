@@ -676,7 +676,8 @@ footer {
     <p>&copy; 2025 Faz Designs. All rights reserved.</p>
   </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -772,11 +773,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-
-
-
-
-
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
@@ -800,16 +796,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-      // ------------------ Initialize AOS ------------------
-      if (window.AOS) AOS.init();
-    });
+  // ------------------ Initialize AOS ------------------
+  if (window.AOS) AOS.init();
+});
+</script>
 
-
-
-  
- 
-    <!-- ✅ Your custom JS file for concepts page -->
+<!-- ✅ Custom JS file for concept button logic -->
 <script src="concepts.js"></script>
 </body>
 </html>
-                          
+
