@@ -1914,34 +1914,5 @@ function showRecommendedPlan(planType = 'outright') {
 </script>
 
 
-<script>
-    // This script runs its check immediately when the page starts loading.
-    const urlParams = new URLSearchParams(window.location.search);
-    const startScreen = urlParams.get('start');
-    
-    if (startScreen === 'q1') {
-        // We use DOMContentLoaded to ensure the HTML elements exist before we try to show Q1.
-        document.addEventListener("DOMContentLoaded", () => {
-            
-            // 1. Hide everything (the default intro screen, etc.)
-            document.querySelectorAll('.form-screen').forEach(screen => {
-                screen.style.display = 'none';
-                screen.classList.remove('active');
-            });
-            
-            // 2. Force Q1 to be visible
-            const q1Screen = document.getElementById('instructor-q1');
-            if (q1Screen) {
-                q1Screen.style.display = 'flex';
-                q1Screen.classList.add('active'); 
-            }
-
-            // 3. CRUCIAL: Manually call setPath('instructor') for funnel logic to work
-            if (typeof setPath === 'function') {
-                setPath('instructor');
-            }
-        });
-    }
-</script>
 </body>
 </html>
