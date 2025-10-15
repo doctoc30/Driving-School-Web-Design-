@@ -677,8 +677,7 @@ footer {
   </div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
@@ -773,39 +772,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", updateSlider);
   updateSlider();
 
-
-
-
-  // ------------------ "I want this concept" Button (Contextual) ------------------
+  // ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-
-      const params = new URLSearchParams(window.location.search);
-      const cameFromFunnel = params.get('fromFunnel');
-      
-      let targetCommand;
-      
-      // Determine the correct screen to land on:
-      if (cameFromFunnel === '1') {
-        // Returning from funnel, go to Q4
-        targetCommand = 'step=4';
-      } else {
-        // Starting fresh, go to Q1
-        targetCommand = 'start=q1';
-      }
-
-      // 🔥 FINAL FIX: Use the simple RELATIVE PATH (../index.html)
-      // This is the most stable method if absolute paths are failing.
-      const funnelURL = `../index.html?${targetCommand}&code=${encodeURIComponent(code)}`;
-      
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
       window.location.assign(funnelURL);
     });
   });
 
-
-  
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
   const menu = document.querySelector("nav.menu");
@@ -829,6 +805,5 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.AOS) AOS.init();
 });
 </script>
-
 </body>
 </html>
