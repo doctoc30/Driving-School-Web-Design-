@@ -774,7 +774,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-
   // ------------------ "I want this concept" Button (Contextual) ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -794,8 +793,9 @@ document.addEventListener("DOMContentLoaded", () => {
         targetCommand = '&start=q1';
       }
 
-      // Final URL Construction using the determined command
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?code=${encodeURIComponent(code)}${targetCommand}`;
+      // 🔥 FINAL FIX: Change the base URL to include the trailing slash
+      // This is the most common fix for GitHub Pages 404 errors on the root file.
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/${targetCommand}&code=${encodeURIComponent(code)}`;
       
       window.location.assign(funnelURL);
     });
