@@ -1853,17 +1853,32 @@ function showRecommendedPlan(planType = 'outright') {
     };
   }
 
-  // ------------------ Initialize Funnel ------------------
+
+
+
+   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
   // Set up Q19 buttons after DOM is loaded
   setTimeout(setupQ19Buttons, 100);
 
-  if (codeParam) {
+  const startScreen = getQueryParam('start'); // Check for the Q1 command
+
+  if (startScreen === 'q1') {
+    // 🔥 New Logic: If the command is present, go straight to Q1.
+    if (typeof setPath === 'function') {
+        setPath('instructor'); // Manually set the path since intro buttons are skipped
+    }
+    showScreen('instructor-q1');
+    
+  } else if (codeParam) {
+    // Existing logic for design codes
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
+    
   } else if (stepParam) {
+    // Existing logic for steps
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
@@ -1873,13 +1888,15 @@ function showRecommendedPlan(planType = 'outright') {
       showScreen(screens[0].id);
     }
   } else {
+    // Default logic: start the animation
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   }
-
+  
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+  // ------------------ End Initialize Funnel ------------------
 
 
 
