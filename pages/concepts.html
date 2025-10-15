@@ -775,19 +775,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-    // ------------------ "I want this concept" Button ------------------
+  // ------------------ "I want this concept" Button (Contextual) ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const cameFromFunnel = params.get('fromFunnel');
       
-      // FIX: Using the correct absolute path and the command '&start=q1'
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?code=${encodeURIComponent(code)}&start=q1`;
+      let targetCommand;
+      
+      // If the user came from the index funnel (after answering Q1-Q3), go to Q4.
+      if (cameFromFunnel === '1') {
+        targetCommand = '&step=4';
+      } else {
+        // If the user started directly from the concept page, start the funnel at Q1.
+        targetCommand = '&start=q1';
+      }
+
+      // Final URL Construction using the determined command
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?code=${encodeURIComponent(code)}${targetCommand}`;
       
       window.location.assign(funnelURL);
     });
   });
+
 
   
   // ------------------ Hamburger Menu ------------------
