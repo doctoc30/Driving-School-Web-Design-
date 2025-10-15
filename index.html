@@ -1942,25 +1942,50 @@ function showRecommendedPlan(planType = 'outright') {
     });
   }
 
-    
-// ... (Right before the final closing }); /* end DOMContentLoaded */) ...
 
+      // ------------------ Hamburger Menu ------------------
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  } // <--- This closing bracket ends the Hamburger Menu logic.
+
+    
 // ------------------ NEW Q1 OVERRIDE LOGIC START ------------------
+// This function reads the '?start=q1' command sent from concepts.html
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
 
+// Use window.addEventListener('load') to ensure it runs after the page is fully ready.
 window.addEventListener('load', function() {
     const startScreen = getQueryParam('start');
     
+    // If the URL contains ?start=q1
     if (startScreen === 'q1') {
-        // Deactivate ALL form screens
+        // 1. Deactivate ALL form screens
         document.querySelectorAll('.form-screen').forEach(screen => {
             screen.classList.remove('active');
         });
         
-        // Explicitly activate Q1 (instructor-q1)
+        // 2. Explicitly activate Q1 (instructor-q1)
         const q1Screen = document.getElementById('instructor-q1');
         if (q1Screen) {
             q1Screen.classList.add('active');
@@ -1969,13 +1994,9 @@ window.addEventListener('load', function() {
 });
 // ------------------ NEW Q1 OVERRIDE LOGIC END ------------------
 
-}); /* end DOMContentLoaded */
-
-
-}); /* end DOMContentLoaded */
+}); /* end DOMContentLoaded */ // <--- Only ONE final closing line here!
 </script>
-
-
+   
 </body>
 </html>
 
