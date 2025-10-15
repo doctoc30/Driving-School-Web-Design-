@@ -775,19 +775,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-   // ------------------ "I want this concept" Button ------------------
+
+
+    // ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
       
-      // REVISED URL: Sending the command '&start=q1' instead of '&step=4'
+      // REVISED URL: Use relative path and the new command '&start=q1'
       const funnelURL = `../index.html?code=${encodeURIComponent(code)}&start=q1`;
       
       window.location.assign(funnelURL);
     });
   });
-
 
 
 
