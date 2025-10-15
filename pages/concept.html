@@ -775,21 +775,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // This block must be inside the main <script> tag of your concept.html file
-  // ------------------ "I want this concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      
-      // Target the new, dedicated funnel page (concept-funnel.html)
-      // We pass the concept 'code' but no conflicting 'start' or 'step' command.
-      const funnelURL = `concept-funnel.html?code=${encodeURIComponent(code)}`;
-      
-      window.location.assign(funnelURL);
-    });
-  });
+// ------------------ "I want this concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
+    if (!code) return;
 
+    // Redirect to the dedicated funnel page with the concept code
+    const funnelURL = `/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
+
+    // Redirect user
+    window.location.assign(funnelURL);
+  });
+});
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
