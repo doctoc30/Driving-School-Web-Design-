@@ -777,14 +777,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // ------------------ "I want this concept" Button ------------------
+  // ------------------ "I want this concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
       
-      // REVISED URL: Use relative path and the new command '&start=q1'
-      const funnelURL = `../index.html?code=${encodeURIComponent(code)}&start=q1`;
+      // 🔥 FINAL REDIRECTION FIX: Use the ABSOLUTE path to the repository root
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?code=${encodeURIComponent(code)}&start=q1`;
       
       window.location.assign(funnelURL);
     });
