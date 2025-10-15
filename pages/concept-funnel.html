@@ -1835,17 +1835,22 @@ function showRecommendedPlan(planType = 'outright') {
       currentScreen = screenIndex;
       showScreen(stepName);
     } else {
-      showScreen(screens[0].id);
+      // If stepParam is invalid or not found, fall back to Q1
+      window.setPath('instructor');
+      showScreen('instructor-q1');
     }
   } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+    // THIS IS THE MODIFIED BLOCK: Always starts at Q1 for this dedicated page
+    window.setPath('instructor'); 
+    showScreen('instructor-q1');
   }
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
+
+
+ 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
