@@ -1535,9 +1535,7 @@ if (initialActive) {
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
-
-
-
+ 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1853,32 +1851,17 @@ function showRecommendedPlan(planType = 'outright') {
     };
   }
 
-
-
-
-   // ------------------ Initialize Funnel ------------------
+  // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
   // Set up Q19 buttons after DOM is loaded
   setTimeout(setupQ19Buttons, 100);
 
-  const startScreen = getQueryParam('start'); // Check for the Q1 command
-
-  if (startScreen === 'q1') {
-    // 🔥 New Logic: If the command is present, go straight to Q1.
-    if (typeof setPath === 'function') {
-        setPath('instructor'); // Manually set the path since intro buttons are skipped
-    }
-    showScreen('instructor-q1');
-    
-  } else if (codeParam) {
-    // Existing logic for design codes
+  if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
-    
   } else if (stepParam) {
-    // Existing logic for steps
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
@@ -1888,19 +1871,15 @@ function showRecommendedPlan(planType = 'outright') {
       showScreen(screens[0].id);
     }
   } else {
-    // Default logic: start the animation
     if (typewriterEl) typewriterEl.classList.add('active');
     if (colorRiseEl) colorRiseEl.classList.add('active');
     startTypewriterAnimation();
   }
-  
+
   updateWaterProgress();
   updateProgress(currentScreen + 1);
-  // ------------------ End Initialize Funnel ------------------
 
-
-
-   // ------------------ IntersectionObserver for pricing cards ------------------
+  // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
     const cards = document.querySelectorAll('.pricing-card[data-animate]');
     if (!cards || cards.length === 0) return; 
@@ -1959,61 +1938,39 @@ function showRecommendedPlan(planType = 'outright') {
     });
   }
 
+}); /* end DOMContentLoaded */
 
-      // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  } // <--- This closing bracket ends the Hamburger Menu logic.
 
-    
-// ------------------ NEW Q1 OVERRIDE LOGIC START ------------------
-// This function reads the '?start=q1' command sent from concepts.html
-function getQueryParam(param) {
+
+    // 1. Check if the ?start=q1 command is in the URL
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
-
-// Use window.addEventListener('load') to ensure it runs after the page is fully ready.
-window.addEventListener('load', function() {
-    const startScreen = getQueryParam('start');
+    const startScreen = urlParams.get('start');
     
-    // If the URL contains ?start=q1
     if (startScreen === 'q1') {
-        // 1. Deactivate ALL form screens
-        document.querySelectorAll('.form-screen').forEach(screen => {
-            screen.classList.remove('active');
-        });
-        
-        // 2. Explicitly activate Q1 (instructor-q1)
-        const q1Screen = document.getElementById('instructor-q1');
-        if (q1Screen) {
-            q1Screen.classList.add('active');
-        }
-    }
-});
-// ------------------ NEW Q1 OVERRIDE LOGIC END ------------------
+        // 2. Add an instruction that runs after the whole page is loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 3. Immediately hide everything that might be showing by default
+            document.querySelectorAll('.form-screen').forEach(screen => {
+                screen.style.display = 'none';
+            });
+            
+            // 4. Force Q1 to be visible
+            const q1Screen = document.getElementById('instructor-q1');
+            if (q1Screen) {
+                q1Screen.style.display = 'flex';
+            }
 
-}); /* end DOMContentLoaded */ // <--- Only ONE final closing line here!
+            // 5. CRUCIAL: Call setPath('instructor') manually
+            // This assumes your setPath function is globally defined (window.setPath)
+            if (typeof setPath === 'function') {
+                setPath('instructor');
+            }
+        });
+    }
+
 </script>
-   
+
 </body>
 </html>
 
