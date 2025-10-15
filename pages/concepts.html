@@ -774,15 +774,35 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-  // ------------------ "I want this concept" Button ------------------
+
+
+    // ------------------ "I want this concept" Button (Contextual) ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
       if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+
+      const params = new URLSearchParams(window.location.search);
+      const cameFromFunnel = params.get('fromFunnel');
+      
+      let targetCommand;
+      
+      // Determine the correct screen to land on:
+      if (cameFromFunnel === '1') {
+        // Returning from funnel, go to Q4
+        targetCommand = 'step=4';
+      } else {
+        // Starting fresh, go to Q1
+        targetCommand = 'start=q1';
+      }
+
+      // 🔥 FINAL FIX: Use the ABSOLUTE URL with the explicit /index.html path
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?${targetCommand}&code=${encodeURIComponent(code)}`;
+      
       window.location.assign(funnelURL);
     });
   });
+
 
 
   
