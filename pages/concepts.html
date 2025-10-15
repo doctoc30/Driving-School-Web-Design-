@@ -785,17 +785,18 @@ document.addEventListener("DOMContentLoaded", () => {
       
       let targetCommand;
       
+      // Determine the correct screen to land on:
       // If the user came from the index funnel (after answering Q1-Q3), go to Q4.
       if (cameFromFunnel === '1') {
-        targetCommand = '&step=4';
+        targetCommand = 'step=4';
       } else {
         // If the user started directly from the concept page, start the funnel at Q1.
-        targetCommand = '&start=q1';
+        targetCommand = 'start=q1';
       }
 
-      // 🔥 FINAL FIX: Change the base URL to include the trailing slash
-      // This is the most common fix for GitHub Pages 404 errors on the root file.
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/${targetCommand}&code=${encodeURIComponent(code)}`;
+      // 🔥 FINAL FIX: Use the ABSOLUTE URL with the correct trailing slash
+      // This is the most reliable path for GitHub Pages to avoid 404 errors.
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/?${targetCommand}&code=${encodeURIComponent(code)}`;
       
       window.location.assign(funnelURL);
     });
