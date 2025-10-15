@@ -776,7 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // ------------------ "I want this concept" Button (Contextual) ------------------
+  // ------------------ "I want this concept" Button (Contextual) ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
       const code = btn.dataset.code;
@@ -796,13 +796,13 @@ document.addEventListener("DOMContentLoaded", () => {
         targetCommand = 'start=q1';
       }
 
-      // 🔥 FINAL FIX: Use the ABSOLUTE URL with the explicit /index.html path
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design/index.html?${targetCommand}&code=${encodeURIComponent(code)}`;
+      // 🔥 FINAL FIX: Use the simple RELATIVE PATH (../index.html)
+      // This is the most stable method if absolute paths are failing.
+      const funnelURL = `../index.html?${targetCommand}&code=${encodeURIComponent(code)}`;
       
       window.location.assign(funnelURL);
     });
   });
-
 
 
   
