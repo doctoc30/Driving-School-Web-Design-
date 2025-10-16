@@ -775,17 +775,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ------------------ "I want this concept" Button ------------------
-document.querySelectorAll(".want-concept").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const code = btn.dataset.code;
-    if (!code) return;
+if (window.location.pathname.includes("concept.html")) {
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
 
-    // Redirect to the new funnel page (concept-funnel.html)
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
-    window.location.href = funnelURL;
+      const code = btn.dataset.code;
+      if (!code) return;
+
+      // 🔗 Redirect only within NEW funnel pair
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
+      console.log("Redirecting to:", funnelURL);
+      window.location.replace(funnelURL);
+    });
   });
-});
-
+}
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
