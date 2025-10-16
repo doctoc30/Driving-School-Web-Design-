@@ -774,20 +774,18 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-
 // ------------------ "I want this concept" Button ------------------
 document.querySelectorAll(".want-concept").forEach(btn => {
   btn.addEventListener("click", () => {
     const code = btn.dataset.code;
     if (!code) return;
 
-    // Redirect to the dedicated funnel page with the concept code
-    const funnelURL = `/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
-
-    // Redirect user
-    window.location.assign(funnelURL);
+    // Redirect to the new funnel page (concept-funnel.html)
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
+    window.location.href = funnelURL;
   });
 });
+
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
