@@ -771,7 +771,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-// ------------------ "I want this concept" Button ------------------
+  // ------------------ "I want this concept" Button ------------------
 document.querySelectorAll(".want-concept").forEach(btn => {
   btn.addEventListener("click", e => {
     e.preventDefault();
@@ -779,21 +779,11 @@ document.querySelectorAll(".want-concept").forEach(btn => {
     const code = btn.dataset.code;
     if (!code) return;
 
-    const currentPath = window.location.pathname;
-    let funnelURL;
-
-    if (currentPath.includes("concept.html")) {
-      // Revised funnel
-      funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
-    } else {
-      // Legacy funnel
-      funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-    }
-
+    // Always go to concept-funnel.html for the revised funnel
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
     window.location.href = funnelURL;
   });
 });
-
 
   
   // ------------------ Hamburger Menu ------------------
