@@ -774,23 +774,21 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSlider();
 
 
-// ------------------ "I want this concept" Button ------------------
-if (window.location.pathname.includes("concept.html")) {
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
 
-      const code = btn.dataset.code;
-      if (!code) return;
 
-      // 🔗 Redirect only within NEW funnel pair
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
-      console.log("Redirecting to:", funnelURL);
-      window.location.replace(funnelURL);
-    });
+  // ------------------ "I want this concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
+    if (!code) return;
+
+    // ✅ Corrected absolute path for GitHub Pages
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
+    
+    // Redirect to the new funnel page (does NOT affect old funnel)
+    window.location.href = funnelURL;
   });
-}
+});
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector(".hamburger");
