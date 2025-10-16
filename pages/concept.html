@@ -678,7 +678,22 @@ footer {
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+
+  document.addEventListener("DOMContentLoaded", () => {
+  // ⚠️ ADD THIS BLOCK TO PREVENT REDIRECTS FROM INDEX.HTML ⚠️
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('code') || urlParams.has('step') || urlParams.has('fromFunnel')) {
+    // Clear any funnel parameters that might trigger redirects
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, '', cleanUrl);
+  }
+  
+  // Your existing code continues here...
+  const wrapper = document.querySelector(".slider-wrapper");
+  // ... rest of your existing code
+});
+  
+  
   const wrapper = document.querySelector(".slider-wrapper");
   const slides = Array.from(document.querySelectorAll(".slide"));
   const nextBtn = document.querySelector(".arrow.next");
