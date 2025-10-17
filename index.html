@@ -1536,15 +1536,7 @@ if (initialActive) {
   showScreen(initialActive.id);
 }
  
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=1`;
-      window.location.assign(funnelURL);
-    });
-  });
+
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
