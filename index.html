@@ -1629,39 +1629,35 @@ if (initialActive) {
 
 
 
-
-
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  // Gather features chosen earlier
-  const yes = yesFeatures.slice();
-
-  // Tier mapping
+  // ✅ Only include "Yes" features, cascading tiers
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
+    basic: ["booking","mobile","cta","contact","bio"],
     pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
+    premium: ["packages","social","email","content","guide"]
   };
 
+  // Short, clear explanations for each service
   const labels = {
-    booking: "Online booking & payment",
-    mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    social: "Social media integration",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "What to Expect guide"
+    booking: "Students can book lessons and pay instantly online, saving you admin time.",
+    mobile: "Your website will look great and work perfectly on phones and tablets.",
+    cta: "Eye-catching buttons guide students to book lessons or contact you immediately.",
+    contact: "A simple form for students to send inquiries so you never miss a lead.",
+    bio: "Share your story and credentials to build trust with new students.",
+    seo: "Improve your website’s visibility in local Google searches to get found first.",
+    reviews: "Showcase positive testimonials from happy students to boost your reputation.",
+    branding: "Customise your logo, colors, and style to create a professional, memorable brand.",
+    faq: "Answer common questions upfront and guide students through your lessons.",
+    newsletter: "Collect student emails for updates, promotions, and announcements.",
+    packages: "Offer bundled lessons and gift vouchers online, making purchases easier.",
+    social: "Connect your social media accounts to your website to increase engagement.",
+    email: "Gain credibility with a professional email address matching your domain.",
+    content: "Receive expert help for writing text and sourcing or editing images.",
+    guide: "Provide a clear guide for new students so they feel prepared before their first lesson."
   };
 
   const coreDefaults = {
@@ -1675,17 +1671,18 @@ if (initialActive) {
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees = { basic: 199, pro: 299, premium: 499 };
 
-  // Loop through plan cards and update content
+  // Gather only "Yes" features
+  const yes = yesFeatures.slice();
+
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
     const list = card.querySelector(".features-list");
     const priceEl = card.querySelector(".price");
     const payBtn = card.querySelector(".pay-now");
     const note = card.querySelector("small");
-
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ---- Pricing ----
+    // ----- Pricing -----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}/month`;
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
@@ -1696,7 +1693,7 @@ if (initialActive) {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ---- Features ----
+    // ----- Features List -----
     list.innerHTML = "";
 
     // Core Defaults
@@ -1717,44 +1714,26 @@ if (initialActive) {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // Lower-tier features
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+    // ----- Add Yes features, cascading tiers -----
+    const includedTiers = tierOrder.slice(0, tierOrder.indexOf(level) + 1);
+    includedTiers.forEach(tier => {
       const features = yes.filter(f => tiers[tier].includes(f));
       if (!features.length) return;
 
       const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+      heading.textContent = tier.charAt(0).toUpperCase() + tier.slice(1) + " Features";
       heading.style.fontWeight = "700";
       heading.style.marginTop = "20px";
       list.appendChild(heading);
 
       features.forEach(f => {
         const li = document.createElement("li");
-        li.textContent = labels[f];
+        li.innerHTML = `<strong>${f.charAt(0).toUpperCase() + f.slice(1)}</strong>: ${labels[f]}`;
         li.style.marginLeft = "20px";
         li.style.marginBottom = "12px";
         list.appendChild(li);
       });
     });
-
-    // Current-tier YES features
-    const currentFeatures = yes.filter(f => tiers[level].includes(f));
-    if (currentFeatures.length) {
-      const heading = document.createElement("li");
-      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      currentFeatures.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    }
 
     // Fallback
     if (!list.children.length) {
@@ -1763,7 +1742,7 @@ if (initialActive) {
       list.appendChild(li);
     }
 
-    // ---- PayPal ----
+    // ----- PayPal Button -----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1779,7 +1758,7 @@ if (initialActive) {
     };
   });
 
-  // Highlight the recommended plan
+  // Highlight recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
   const recCard = planCards.find(c =>
     yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
@@ -1792,9 +1771,12 @@ if (initialActive) {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 
-  // 👇 Show pricing screen automatically
+  // Show pricing screen
   showScreen('recommended-plan-screen');
 }
+
+
+
  
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
