@@ -1535,7 +1535,25 @@ if (initialActive) {
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
- 
+
+
+
+
+ // ------------------ "I want this concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const code = btn.dataset.code;
+    if (!code) return;
+
+    // Always go to concept-funnel.html for the revised funnel
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept-funnel.html?code=${encodeURIComponent(code)}`;
+    window.location.href = funnelURL;
+  });
+});
+
+  
 
 
   // ------------------ Design Code Handling ------------------
