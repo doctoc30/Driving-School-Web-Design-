@@ -1628,36 +1628,38 @@ if (initialActive) {
   }
 
 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  // ✅ Only include "Yes" features, cascading tiers
+  // Copy Yes features from user selection
+  const yes = yesFeatures.slice();
+
+  // Tier mapping
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio"],
+    basic: ["booking","mobile","cta","contact","bio","social"],
     pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","social","email","content","guide"]
+    premium: ["packages","email","content","guide"]
   };
 
-  // Short, clear explanations for each service
+  // Feature explanations
   const labels = {
-    booking: "Students can book lessons and pay instantly online, saving you admin time.",
-    mobile: "Your website will look great and work perfectly on phones and tablets.",
-    cta: "Eye-catching buttons guide students to book lessons or contact you immediately.",
-    contact: "A simple form for students to send inquiries so you never miss a lead.",
-    bio: "Share your story and credentials to build trust with new students.",
-    seo: "Improve your website’s visibility in local Google searches to get found first.",
-    reviews: "Showcase positive testimonials from happy students to boost your reputation.",
-    branding: "Customise your logo, colors, and style to create a professional, memorable brand.",
-    faq: "Answer common questions upfront and guide students through your lessons.",
-    newsletter: "Collect student emails for updates, promotions, and announcements.",
-    packages: "Offer bundled lessons and gift vouchers online, making purchases easier.",
-    social: "Connect your social media accounts to your website to increase engagement.",
-    email: "Gain credibility with a professional email address matching your domain.",
-    content: "Receive expert help for writing text and sourcing or editing images.",
-    guide: "Provide a clear guide for new students so they feel prepared before their first lesson."
+    booking: "Online booking & payment – Students can book and pay directly on your website.",
+    mobile: "Mobile-friendly design – Your site will look great on any device.",
+    cta: "Strong call-to-action buttons – Encourages students to take action immediately.",
+    contact: "Simple contact form – Easy for students to reach you.",
+    bio: "About / Instructor bio – Showcase your experience and personality.",
+    social: "Social media integration – Connect your Instagram, Facebook, and more.",
+    seo: "Local Google SEO – Improve visibility in local search results.",
+    reviews: "Student reviews – Display testimonials to build trust.",
+    branding: "Branding help (logo & colors) – Consistent, professional look.",
+    faq: "FAQ / Student guide – Answer common questions upfront.",
+    newsletter: "Newsletter signup – Collect emails to keep students engaged.",
+    packages: "Lesson packages & gift vouchers – Sell structured lessons or vouchers online.",
+    email: "Professional email address – Info@yourdomain.com for credibility.",
+    content: "Content creation help – Assistance with text, images, and graphics.",
+    guide: "What to Expect guide – Clear guidance for first-time students."
   };
 
   const coreDefaults = {
@@ -1670,9 +1672,6 @@ function showRecommendedPlan(planType = 'outright') {
   const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees = { basic: 199, pro: 299, premium: 499 };
-
-  // Gather only "Yes" features
-  const yes = yesFeatures.slice();
 
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
@@ -1696,7 +1695,7 @@ function showRecommendedPlan(planType = 'outright') {
     // ----- Features List -----
     list.innerHTML = "";
 
-    // Core Defaults
+    // Core defaults
     coreDefaults[level].forEach(f => {
       const li = document.createElement("li");
       li.textContent = f;
@@ -1714,19 +1713,20 @@ function showRecommendedPlan(planType = 'outright') {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // ----- Add Yes features, cascading tiers -----
-    const includedTiers = tierOrder.slice(0, tierOrder.indexOf(level) + 1);
-    includedTiers.forEach(tier => {
-      const features = yes.filter(f => tiers[tier].includes(f));
-      if (!features.length) return;
+    // Include features from lower tiers (cascade)
+    tierOrder.forEach(tier => {
+      if (tierOrder.indexOf(tier) > tierOrder.indexOf(level)) return; // Only lower or same tiers
+      const tierFeatures = yes.filter(f => tiers[tier].includes(f));
+      if (!tierFeatures.length) return;
 
+      // Heading
       const heading = document.createElement("li");
-      heading.textContent = tier.charAt(0).toUpperCase() + tier.slice(1) + " Features";
+      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
       heading.style.fontWeight = "700";
       heading.style.marginTop = "20px";
       list.appendChild(heading);
 
-      features.forEach(f => {
+      tierFeatures.forEach(f => {
         const li = document.createElement("li");
         li.innerHTML = `<strong>${f.charAt(0).toUpperCase() + f.slice(1)}</strong>: ${labels[f]}`;
         li.style.marginLeft = "20px";
@@ -1742,7 +1742,7 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
-    // ----- PayPal Button -----
+    // ----- PayPal button -----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1765,16 +1765,11 @@ function showRecommendedPlan(planType = 'outright') {
     : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
     : c.dataset.plan === "basic"
   );
-
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
-
-  // Show pricing screen
-  showScreen('recommended-plan-screen');
 }
-
 
 
  
