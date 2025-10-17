@@ -1325,10 +1325,11 @@ html, body {
   </div>
 </div>
 
-<div class="form-screen" id="final-choice">
+
+ <div class="form-screen" id="final-choice">
   <h2>What would you like to do next?</h2>
   <div class="button-row">
-    <button type="button" onclick="window.location.href='https://yourwebsite.com/start'">I want to start my website ASAP</button>
+    <button type="button" onclick="showScreen('recommended-plan-screen')">I want to start my website ASAP</button>
     <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
@@ -1629,13 +1630,16 @@ if (initialActive) {
 
 
 
-function showRecommendedPlan(planType = 'outright') {
+
+ function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
+  // Gather features chosen earlier
   const yes = yesFeatures.slice();
 
+  // Tier mapping
   const tiers = {
     basic: ["booking","mobile","cta","contact","bio","social"],
     pro: ["seo","reviews","branding","faq","newsletter"],
@@ -1671,6 +1675,7 @@ function showRecommendedPlan(planType = 'outright') {
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees = { basic: 199, pro: 299, premium: 499 };
 
+  // Loop through plan cards and update content
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
     const list = card.querySelector(".features-list");
@@ -1680,7 +1685,7 @@ function showRecommendedPlan(planType = 'outright') {
 
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ----- Pricing -----
+    // ---- Pricing ----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}/month`;
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
@@ -1691,10 +1696,10 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ----- Features List -----
+    // ---- Features ----
     list.innerHTML = "";
 
-    // 1️⃣ Core Defaults
+    // Core Defaults
     coreDefaults[level].forEach(f => {
       const li = document.createElement("li");
       li.textContent = f;
@@ -1702,7 +1707,7 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     });
 
-    // Insert gradient divider after core defaults
+    // Divider
     const divider = document.createElement("li");
     divider.className = "gradient-divider";
     divider.style.height = "2px";
@@ -1712,7 +1717,7 @@ function showRecommendedPlan(planType = 'outright') {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // ----- Lower-tier YES features -----
+    // Lower-tier features
     tierOrder.forEach(tier => {
       if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
       const features = yes.filter(f => tiers[tier].includes(f));
@@ -1733,7 +1738,7 @@ function showRecommendedPlan(planType = 'outright') {
       });
     });
 
-    // ----- Current-tier YES features -----
+    // Current-tier YES features
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -1758,7 +1763,7 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
-    // ----- PayPal button -----
+    // ---- PayPal ----
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1774,17 +1779,21 @@ function showRecommendedPlan(planType = 'outright') {
     };
   });
 
-  // Highlight recommended plan
+  // Highlight the recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
   const recCard = planCards.find(c =>
     yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
     : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
     : c.dataset.plan === "basic"
   );
+
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
+
+  // 👇 Show pricing screen automatically
+  showScreen('recommended-plan-screen');
 }
  
   // ------------------ Typewriter Animation ------------------
