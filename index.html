@@ -1104,7 +1104,6 @@ html, body {
 <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
   <ul>
   <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-   <li><a href="/Driving-School-Web-Design-/pages/concept.html">Concept</a></li>
 <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
 <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
 <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
@@ -1386,9 +1385,7 @@ html, body {
 </div>
 </form>
 
-
-
- <script>
+<script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1539,7 +1536,15 @@ if (initialActive) {
   showScreen(initialActive.id);
 }
  
-
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
@@ -1608,15 +1613,13 @@ if (initialActive) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-       window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concept.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
 
-                                               
 
 
-
-   
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1911,6 +1914,7 @@ function showRecommendedPlan(planType = 'outright') {
   })();
 
 
+
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
@@ -1934,11 +1938,9 @@ function showRecommendedPlan(planType = 'outright') {
     });
   }
 
-
-}); /* end DOMContentLoaded */ // <--- This line MUST be the final executable line of your main script!
+}); /* end DOMContentLoaded */
 </script>
+
+
 </body>
 </html>
-
-
-                      
