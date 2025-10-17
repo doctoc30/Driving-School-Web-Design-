@@ -1316,27 +1316,23 @@ html, body {
   </div>
 
 
-   <div class="form-screen" id="instructor-q20">
+<div class="form-screen" id="instructor-q20">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="own-outright" onclick="next()">Own Outright</button>
+    <button type="button" class="monthly-support" onclick="next()">Monthly Support</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
- 
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q20')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<div class="form-screen" id="final-choice">
+  <h2>What would you like to do next?</h2>
+  <div class="button-row">
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/start'">I want to start my website ASAP</button>
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
-
-
-
+</div>
 
  
 <!-- ===================== RECOMMENDED PLAN ===================== -->
