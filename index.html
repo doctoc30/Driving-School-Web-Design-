@@ -1121,6 +1121,7 @@ html, body {
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
+  <!-- Intro Screen -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
@@ -1130,6 +1131,7 @@ html, body {
     </div>
   </div>
 
+  <!-- Q1 -->
   <div class="form-screen" id="instructor-q1">
     <h2>Do you work independently or have multiple instructors?</h2>
     <div class="button-row">
@@ -1138,6 +1140,7 @@ html, body {
     </div>
   </div>
 
+  <!-- Q2 -->
   <div class="form-screen" id="instructor-q2">
     <h2>Do you have a design concept in mind?</h2>
     <p>You can enter a design code, choose from templates, or request a custom design.</p>
@@ -1148,16 +1151,18 @@ html, body {
     </div>
   </div>
 
+  <!-- Design Code Input -->
   <div class="form-screen" id="design-code">
     <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
     </div>
   </div>
 
-   <div class="form-screen" id="instructor-q4">
+  <!-- Q4 -->
+  <div class="form-screen" id="instructor-q4">
     <h2>Are you a solo driving instructor or a driving school?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
@@ -1165,9 +1170,10 @@ html, body {
     </div>
   </div>
 
+  <!-- Basic Features Questions -->
   <div class="form-screen" id="instructor-q5">
     <h2>Do you want students to book & pay online?</h2>
-    <p><strong>(Basic)</strong></p>
+    <p><strong>(Basic)</strong> Allow students to schedule lessons and pay through your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
@@ -1176,7 +1182,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q6">
     <h2>Do you want your site optimized for mobile?</h2>
-    <p><strong>(Basic)</strong></p>
+    <p><strong>(Basic)</strong> Your site will look and work beautifully on all devices.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
@@ -1186,7 +1192,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q7">
     <h2>Do you want strong call-to-action buttons?</h2>
-    <p><strong>(Basic)</strong></p>
+    <p><strong>(Basic)</strong> Clear buttons that guide students to take action.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
@@ -1196,7 +1202,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q8">
     <h2>Do you want a simple contact form?</h2>
-    <p><strong>(Basic)</strong></p>
+    <p><strong>(Basic)</strong> Make it easy for potential students to contact you.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
@@ -1206,7 +1212,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q9">
     <h2>Do you want an About Me / Instructor Bio section?</h2>
-    <p><strong>(Basic)</strong></p>
+    <p><strong>(Basic)</strong> Introduce yourself and build trust with students.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
@@ -1214,9 +1220,10 @@ html, body {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-10">
+  <!-- Pro Features Questions -->
+  <div class="form-screen" id="instructor-q10">
     <h2>Do you want your site to rank on Google locally?</h2>
-    <p><strong>(Pro)</strong></p>
+    <p><strong>(Pro)</strong> Help local students find your services online.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
@@ -1226,7 +1233,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q11">
     <h2>Would you like to display student reviews?</h2>
-    <p><strong>(Pro)</strong></p>
+    <p><strong>(Pro)</strong> Build credibility with testimonials from happy students.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
@@ -1236,7 +1243,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q12">
     <h2>Do you want branding help (logo, colors)?</h2>
-    <p><strong>(Pro)</strong></p>
+    <p><strong>(Pro)</strong> Professional look with cohesive branding.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
@@ -1246,7 +1253,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q13">
     <h2>Do you want a FAQ or student guide section?</h2>
-    <p><strong>(Pro)</strong></p>
+    <p><strong>(Pro)</strong> Answer common questions upfront to save time.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
@@ -1256,7 +1263,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q14">
     <h2>Do you want newsletter signup or mailing list?</h2>
-    <p><strong>(Pro)</strong></p>
+    <p><strong>(Pro)</strong> Collect student emails to send updates or promotions.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
@@ -1264,9 +1271,10 @@ html, body {
     </div>
   </div>
 
+  <!-- Premium Features Questions -->
   <div class="form-screen" id="instructor-q15">
     <h2>Do you want to offer lesson packages or gift vouchers online?</h2>
-    <p><strong>(Premium)</strong></p>
+    <p><strong>(Premium)</strong> Sell multiple lesson bundles or vouchers directly on your site.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
@@ -1276,7 +1284,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q16">
     <h2>Do you want social media integration?</h2>
-    <p><strong>(Premium)</strong></p>
+    <p><strong>(Premium)</strong> Connect your site to Facebook, Instagram, and more.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('social'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('social'); next()">No</button>
@@ -1284,19 +1292,21 @@ html, body {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q17">
-    <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
-    <p><strong>(Premium)</strong></p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('email'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+
+<div class="form-screen" id="instructor-q17">
+  <h2>Would you like a professional email address (info@yourdomain.com)?</h2>
+  <p><strong>(Premium)</strong> Create a professional email for your business.</p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('email'); next()">Yes</button>
+    <button type="button" onclick="recordNoFeature('email'); next()">No</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
+
 
   <div class="form-screen" id="instructor-q18">
     <h2>Do you want help creating content (text/images)?</h2>
-    <p><strong>(Premium)</strong></p>
+    <p><strong>(Premium)</strong> Assistance writing copy and creating visuals for your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('content'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('content'); next()">No</button>
@@ -1306,7 +1316,7 @@ html, body {
 
   <div class="form-screen" id="instructor-q19">
     <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <p><strong>(Premium)</strong></p>
+    <p><strong>(Premium)</strong> Provide students with a step-by-step guide before their first lesson.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('guide'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('guide'); next()">No</button>
@@ -1314,25 +1324,26 @@ html, body {
     </div>
   </div>
 
-
-<div class="form-screen" id="instructor-q20">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright" onclick="next()">Own Outright</button>
-    <button type="button" class="monthly-support" onclick="next()">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Ownership / Plan Choice -->
+  <div class="form-screen" id="instructor-q20">
+    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+    <div class="button-row">
+      <button type="button" class="own-outright">Own Outright</button>
+      <button type="button" class="monthly-support">Monthly Support</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-
- <div class="form-screen" id="final-choice">
-  <h2>What would you like to do next?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('recommended-plan-screen')">I want to start my website ASAP</button>
-    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Final Choice -->
+  <div class="form-screen" id="final-choice">
+    <h2>What would you like to do next?</h2>
+    <div class="button-row">
+      <button type="button" onclick="showScreen('recommended-plan-screen')">I want to start my website ASAP</button>
+      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
+
 
  
 <!-- ===================== RECOMMENDED PLAN ===================== -->
@@ -1627,51 +1638,46 @@ if (initialActive) {
   }
 
 
+
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  // Copy Yes features from user selection
-  const yes = yesFeatures.slice();
-
-  // Tier mapping
+  // Feature tiers and explanations
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
-    pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
+    basic: {
+      booking: "Allow students to book lessons and pay online.",
+      mobile: "Your website will look great on phones and tablets.",
+      cta: "Buttons that stand out and encourage action.",
+      contact: "A clean contact form for easy communication.",
+      bio: "Introduce yourself with a personal bio section."
+    },
+    pro: {
+      seo: "Optimize your website for local Google search.",
+      reviews: "Showcase student feedback to attract new clients.",
+      branding: "Professional look with your logo and colors.",
+      faq: "Provide answers to common student questions.",
+      newsletter: "Collect emails for updates and promotions."
+    },
+    premium: {
+      packages: "Sell lesson bundles or gift vouchers online.",
+      social: "Connect your website to social media platforms.",
+      email: "Professional email address (info@yourdomain.com).",
+      content: "Help creating text and images for your site.",
+      guide: "Provide a guide on what to expect for first lessons."
+    }
   };
 
-  // Feature explanations
-  const labels = {
-    booking: "Online booking & payment – Students can book and pay directly on your website.",
-    mobile: "Mobile-friendly design – Your site will look great on any device.",
-    cta: "Strong call-to-action buttons – Encourages students to take action immediately.",
-    contact: "Simple contact form – Easy for students to reach you.",
-    bio: "About / Instructor bio – Showcase your experience and personality.",
-    social: "Social media integration – Connect your Instagram, Facebook, and more.",
-    seo: "Local Google SEO – Improve visibility in local search results.",
-    reviews: "Student reviews – Display testimonials to build trust.",
-    branding: "Branding help (logo & colors) – Consistent, professional look.",
-    faq: "FAQ / Student guide – Answer common questions upfront.",
-    newsletter: "Newsletter signup – Collect emails to keep students engaged.",
-    packages: "Lesson packages & gift vouchers – Sell structured lessons or vouchers online.",
-    email: "Professional email address – Info@yourdomain.com for credibility.",
-    content: "Content creation help – Assistance with text, images, and graphics.",
-    guide: "What to Expect guide – Clear guidance for first-time students."
-  };
-
-  const coreDefaults = {
-    basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
-
-  const tierOrder = ["basic","pro","premium"];
+  // Prices and setup
   const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees = { basic: 199, pro: 299, premium: 499 };
 
+  // Plan order for cascading
+  const tierOrder = ["basic", "pro", "premium"];
+
+  // Loop through pricing cards
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
     const list = card.querySelector(".features-list");
@@ -1680,7 +1686,7 @@ function showRecommendedPlan(planType = 'outright') {
     const note = card.querySelector("small");
     if (!level || !list || !priceEl || !payBtn) return;
 
-    // ----- Pricing -----
+    // Pricing display
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}/month`;
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
@@ -1691,57 +1697,43 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
     }
 
-    // ----- Features List -----
+    // Clear list
     list.innerHTML = "";
 
-    // Core defaults
-    coreDefaults[level].forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f;
-      li.style.marginBottom = "12px";
-      list.appendChild(li);
-    });
-
-    // Divider
-    const divider = document.createElement("li");
-    divider.className = "gradient-divider";
-    divider.style.height = "2px";
-    divider.style.margin = "25px 0";
-    divider.style.listStyle = "none";
-    divider.style.border = "none";
-    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-    list.appendChild(divider);
-
-    // Include features from lower tiers (cascade)
+    // Add Yes features based on tier cascade
     tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) > tierOrder.indexOf(level)) return; // Only lower or same tiers
-      const tierFeatures = yes.filter(f => tiers[tier].includes(f));
-      if (!tierFeatures.length) return;
+      if (tierOrder.indexOf(tier) > tierOrder.indexOf(level)) return; // stop if tier is higher than card
+      const features = Object.keys(tiers[tier]).filter(f => yesFeatures.includes(f));
+      if (!features.length) return;
 
-      // Heading
+      // Heading for tier
       const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+      heading.textContent = `${tier.charAt(0).toUpperCase() + tier.slice(1)} Features`;
       heading.style.fontWeight = "700";
       heading.style.marginTop = "20px";
       list.appendChild(heading);
 
-      tierFeatures.forEach(f => {
+      // Features with descriptions
+      features.forEach(f => {
         const li = document.createElement("li");
-        li.innerHTML = `<strong>${f.charAt(0).toUpperCase() + f.slice(1)}</strong>: ${labels[f]}`;
+        li.innerHTML = `<strong>${f.charAt(0).toUpperCase() + f.slice(1)}:</strong> ${tiers[tier][f]}`;
         li.style.marginLeft = "20px";
         li.style.marginBottom = "12px";
         list.appendChild(li);
       });
+
+      // Divider
+      const divider = document.createElement("li");
+      divider.className = "gradient-divider";
+      divider.style.height = "2px";
+      divider.style.margin = "15px 0";
+      divider.style.listStyle = "none";
+      divider.style.border = "none";
+      divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+      list.appendChild(divider);
     });
 
-    // Fallback
-    if (!list.children.length) {
-      const li = document.createElement("li");
-      li.textContent = "Standard features included";
-      list.appendChild(li);
-    }
-
-    // ----- PayPal button -----
+    // Pay button click
     payBtn.onclick = () => {
       localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
       localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1760,15 +1752,19 @@ function showRecommendedPlan(planType = 'outright') {
   // Highlight recommended plan
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
   const recCard = planCards.find(c =>
-    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
+    yesFeatures.some(f => Object.keys(tiers.premium).includes(f)) ? c.dataset.plan === "premium"
+    : yesFeatures.some(f => Object.keys(tiers.pro).includes(f)) ? c.dataset.plan === "pro"
     : c.dataset.plan === "basic"
   );
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
+
+  // Show pricing screen automatically
+  showScreen('recommended-plan-screen');
 }
+
 
 
  
