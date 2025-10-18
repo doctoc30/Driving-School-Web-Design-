@@ -1410,8 +1410,6 @@ html, body {
 </div>
 </form>
 
-
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1423,7 +1421,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // ------------------ Progress Bar Functions ------------------
+  // ------------------ Progress Bar ------------------
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
@@ -1455,12 +1453,6 @@ document.addEventListener("DOMContentLoaded", () => {
     screen.style.display = "flex";
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan('outright');
-    } else if (screen.id === "monthly-plan-screen") {
-      showRecommendedPlan('monthly');
-    }
 
     updateWaterProgress();
     updateProgress(currentScreen + 1);
@@ -1500,27 +1492,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('outright');
-    }
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('monthly');
-    }
   }
 
   window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Ownership Buttons (Q19) ------------------
+  // ------------------ Ownership Buttons (Q20) ------------------
   function setupOwnershipButtons() {
-    const q19Screen = document.getElementById('instructor-q19');
-    if (!q19Screen) return;
+    const q20Screen = document.getElementById('instructor-q20'); // Correct ID
+    if (!q20Screen) return;
 
-    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
-    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-    const backBtn = q19Screen.querySelector('.back-button');
+    const ownOutrightBtn = q20Screen.querySelector('button.own-outright');
+    const monthlySupportBtn = q20Screen.querySelector('button.monthly-support');
+    const backBtn = q20Screen.querySelector('.back-button');
 
     if (ownOutrightBtn) {
       ownOutrightBtn.onclick = () => {
@@ -1528,6 +1513,7 @@ document.addEventListener("DOMContentLoaded", () => {
         featureState['buyOutright'] = true;
         syncFeatureState();
         showScreen('recommended-plan-screen');
+        showRecommendedPlan('outright');
       };
     }
 
@@ -1536,106 +1522,12 @@ document.addEventListener("DOMContentLoaded", () => {
         ownershipChoice = 'Monthly Support';
         featureState['monthlySupport'] = true;
         syncFeatureState();
+        showScreen('recommended-plan-screen');
         showRecommendedPlan('monthly');
       };
     }
 
-    if (backBtn) {
-      backBtn.onclick = () => prev();
-    }
-  }
-
-  // ------------------ Initial Setup ------------------
-  hideAllScreens();
-  const initialActive = document.querySelector('.form-screen.active');
-  if (initialActive) {
-    const idx = screens.indexOf(initialActive);
-    if (idx >= 0) currentScreen = idx;
-    showScreen(initialActive.id);
-  }
-
-  // Wait for DOM
-  setTimeout(setupOwnershipButtons, 100);
-
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
-
-  // ------------------ Design Code Handling ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-    showFilteredTemplate(code);
-  };
-
-  function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
-    if (!code) return;
-    hideAllScreens();
-
-    if (stepParam === "4") {
-      const designInput = document.getElementById("designInput");
-      if (designInput) designInput.value = code;
-      showScreen("instructor-q4");
-      return;
-    }
-
-    let templateScreen = document.getElementById('template-results');
-    if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-    }
-
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
-    heading.textContent = `Showing template for code: ${code}`;
-    container.appendChild(heading);
-
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-    if (!foundEl) foundEl = document.getElementById(code);
-
-    if (foundEl) {
-      const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
-      container.appendChild(clone);
-
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
-      contBtn.onclick = () => next();
-      buttonRow.appendChild(contBtn);
-      container.appendChild(buttonRow);
-
-      templateScreen.innerHTML = '';
-      templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-      currentScreen = screens.indexOf(templateScreen);
-      updateWaterProgress();
-      updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+    if (backBtn) backBtn.onclick = () => prev();
   }
 
   // ------------------ Recommended Plan ------------------
@@ -1645,83 +1537,60 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!planCards.length) return;
 
     const tiers = {
-      basic: {
-        booking: "Allow students to book lessons and pay online.",
-        mobile: "Your website will look great on phones and tablets.",
-        cta: "Buttons that stand out and encourage action.",
-        contact: "A clean contact form for easy communication.",
-        bio: "Introduce yourself with a personal bio section."
-      },
-      pro: {
-        seo: "Optimize your website for local Google search.",
-        reviews: "Showcase student feedback to attract new clients.",
-        branding: "Professional look with your logo and colors.",
-        faq: "Provide answers to common student questions.",
-        newsletter: "Collect emails for updates and promotions."
-      },
-      premium: {
-        packages: "Sell lesson bundles or gift vouchers online.",
-        social: "Connect your website to social media platforms.",
-        email: "Professional email address (info@yourdomain.com).",
-        content: "Help creating text and images for your site.",
-        guide: "Provide a guide on what to expect for first lessons."
-      }
+      basic: { booking:"Allow students to book lessons and pay online.", mobile:"Mobile-friendly.", cta:"Action buttons.", contact:"Contact form.", bio:"Bio section." },
+      pro: { seo:"Google SEO.", reviews:"Showcase reviews.", branding:"Professional branding.", faq:"FAQ section.", newsletter:"Email collection." },
+      premium: { packages:"Sell bundles or vouchers.", social:"Social media integration.", email:"Professional email.", content:"Help with text/images.", guide:"Lesson guide." }
     };
 
-    const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
-    const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-    const setupFees = { basic: 199, pro: 299, premium: 499 };
-    const tierOrder = ["basic", "pro", "premium"];
+    const monthlyPrices = { basic:49, pro:79, premium:129 };
+    const outrightPrices = { basic:499, pro:999, premium:1499 };
+    const setupFees = { basic:199, pro:299, premium:499 };
+    const tierOrder = ["basic","pro","premium"];
 
     planCards.forEach(card => {
-      const level = card.dataset.plan.toLowerCase();
+      const level = card.dataset.plan?.toLowerCase();
+      if (!level) return;
       const list = card.querySelector(".features-list");
       const priceEl = card.querySelector(".price");
       const payBtn = card.querySelector(".pay-now");
       const note = card.querySelector("small");
-      if (!level || !list || !priceEl || !payBtn) return;
 
+      if (!list || !priceEl || !payBtn) return;
+
+      // Prices
       if (isMonthly) {
         priceEl.textContent = `£${monthlyPrices[level]}/month`;
         payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-        if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+        if(note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
       } else {
         priceEl.textContent = `£${outrightPrices[level]}`;
         payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
-        if (note) note.textContent = "50% now to secure, 50% on completion";
+        if(note) note.textContent = "50% now to secure, 50% on completion";
       }
 
+      // Features
       list.innerHTML = "";
-
       tierOrder.forEach(tier => {
-        if (tierOrder.indexOf(tier) > tierOrder.indexOf(level)) return;
+        if(tierOrder.indexOf(tier) > tierOrder.indexOf(level)) return;
         const features = Object.keys(tiers[tier]).filter(f => yesFeatures.includes(f));
-        if (!features.length) return;
+        if(!features.length) return;
 
         const heading = document.createElement("li");
-        heading.textContent = `${tier.charAt(0).toUpperCase() + tier.slice(1)} Features`;
-        heading.style.fontWeight = "700";
-        heading.style.marginTop = "20px";
+        heading.textContent = `${tier.charAt(0).toUpperCase()+tier.slice(1)} Features`;
+        heading.style.fontWeight="700";
+        heading.style.marginTop="20px";
         list.appendChild(heading);
 
-        features.forEach(f => {
-          const li = document.createElement("li");
-          li.innerHTML = `<strong>${f.charAt(0).toUpperCase() + f.slice(1)}:</strong> ${tiers[tier][f]}`;
-          li.style.marginLeft = "20px";
-          li.style.marginBottom = "12px";
+        features.forEach(f=>{
+          const li=document.createElement("li");
+          li.innerHTML=`<strong>${f.charAt(0).toUpperCase()+f.slice(1)}:</strong> ${tiers[tier][f]}`;
+          li.style.marginLeft="20px";
+          li.style.marginBottom="12px";
           list.appendChild(li);
         });
-
-        const divider = document.createElement("li");
-        divider.className = "gradient-divider";
-        divider.style.height = "2px";
-        divider.style.margin = "15px 0";
-        divider.style.listStyle = "none";
-        divider.style.border = "none";
-        divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-        list.appendChild(divider);
       });
 
+      // Pay Button
       payBtn.onclick = () => {
         localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
         localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
@@ -1737,23 +1606,9 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
 
-    planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-    const recCard = planCards.find(c =>
-      yesFeatures.some(f => Object.keys(tiers.premium).includes(f)) ? c.dataset.plan === "premium"
-      : yesFeatures.some(f => Object.keys(tiers.pro).includes(f)) ? c.dataset.plan === "pro"
-      : c.dataset.plan === "basic"
-    );
-    if (recCard) {
-      recCard.classList.add("recommended", "in-view");
-      setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-    }
-
     showScreen('recommended-plan-screen');
   }
 
-});
-
- 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -1761,7 +1616,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
     typewriterEl.style.opacity = 1;
-    let lines = [];
+
+    const lines = window.matchMedia("(orientation: landscape)").matches
+      ? ["We build","your website.","You approve,","then pay."]
+      : ["We build","your","website.","You approve,","then pay."];
+
     let currentLine = 0;
     let currentChar = 0;
     let lineEl = null;
@@ -1771,151 +1630,45 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
 
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
     function typeChar() {
-      if (currentLine >= lines.length) {
+      if(currentLine >= lines.length){
         cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
+        setTimeout(()=> showScreen('main-intro-options'), 500);
         return;
       }
       const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
+      if(!lineEl){
+        lineEl=document.createElement('div');
         lineEl.classList.add('typed-line');
         typewriterEl.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
-      if (currentChar < text.length) {
+      if(currentChar<text.length){
         lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
         currentChar++;
         setTimeout(typeChar, typingSpeed);
       } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
+        currentLine++; currentChar=0; lineEl=null;
         setTimeout(typeChar, lineDelay);
       }
     }
-
-    setLinesByOrientation();
     typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
   }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
+  setupOwnershipButtons();
 
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
+  if(typewriterEl) startTypewriterAnimation();
 
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
+  // ------------------ Initial Screen based on URL ------------------
+  if(codeParam) {
     showFilteredTemplate(codeParam);
-  } else if (stepParam) {
+  } else if(stepParam) {
     const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      showScreen(screens[0].id);
-    }
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+    const idx = screens.findIndex(s=>s.id===stepName);
+    if(idx!==-1) showScreen(stepName);
   }
 
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
-        }
-      });
-    }, observerOptions);
-
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
-
-
-
-   // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-}); /* end DOMContentLoaded */
+});
 </script>
- 
-</body>
-</html>
