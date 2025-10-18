@@ -706,19 +706,27 @@
 
 
 
- /* ===== NUCLEAR TYPEWRITER FIX ===== */
+ /* ===== FIX FOR DYNAMICALLY CREATED TYPEWRITER ELEMENTS ===== */
 #typewriter,
 #typewriter *,
-.typewriter-text,
-.typewriter-text *,
-.overlay-text,
-.overlay-text *,
-.typed-line,
-.typed-line * {
+#typewriter .typed-line,
+#typewriter .typed-line *,
+#typewriter .cursor {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 900 !important;
+    font-size: inherit !important;
+    color: white !important;
     text-shadow: 0 0 30px #227090 !important;
 }
+
+/* Specifically target the dynamically created text nodes */
+#typewriter div,
+#typewriter span {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 900 !important;
+}
+
+
 
 </style>
 
