@@ -196,9 +196,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-weight: 900; /* CHANGED: 900 for maximum boldness */
+    font-weight: 900;
     color: white;
-    text-shadow: 0 0 30px #227090; /* Adjusted shadow to complement new color */
+    text-shadow: 0 0 30px #227090;
     z-index: 1;
     text-align: center;
     opacity: 0;
@@ -258,7 +258,7 @@
 .button-row {
     display: flex;
     justify-content: center;
-    gap: 2.5rem; /* Increased spacing */
+    gap: 2.5rem;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 2rem;
@@ -270,18 +270,38 @@ button {
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
-    font-weight: 900; /* CHANGED: 900 for maximum boldness */
+    font-weight: 900;
     cursor: pointer;
     font-size: 1rem;
     box-sizing: border-box;
     transition: background 0.3s ease;
-    min-width: 140px; /* Further ensures button sizing */
+    min-width: 140px;
 }
 
   button:hover {
-    background: #227090; /* Adjusted hover color to complement new color */
+    background: #227090;
     color: white;
   }
+
+ /* ===== CONSISTENT BOLD FONT FOR ALL FORM QUESTIONS ===== */
+.form-screen h2 {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+    line-height: 1.4;
+}
+
+.form-screen p {
+    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+    margin-bottom: 2rem;
+}
+
+.form-screen strong {
+    font-weight: 900 !important;
+}
 
  /* ---------- BASE STYLES ---------- */
 
@@ -318,8 +338,8 @@ input[type="email"] {
   transform: translate(-50%, -50%);
   width: 90%;
   z-index: 1000;
-  font-family: 'Poppins', sans-serif; /* CHANGED: Consistent font family */
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
   text-align: center;
   color: white;
   opacity: 1;
@@ -358,8 +378,8 @@ input[type="email"] {
   transform: translate(-50%, -50%);
   width: 90%;
   z-index: 1000;
-  font-family: 'Poppins', sans-serif; /* CHANGED: Consistent font family */
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
   text-align: center;
   color: white;
   opacity: 1;
@@ -447,14 +467,14 @@ input[type="email"] {
 /* Tablet: Ensure space between buttons */
 @media screen and (min-width: 600px) and (max-width: 1024px) {
   .button-row {
-    gap: 3rem;         /* Increase spacing */
-    flex-wrap: wrap;   /* Allow buttons to wrap to next line if needed */
+    gap: 3rem;
+    flex-wrap: wrap;
     justify-content: center;
   }
 
   .button-row button {
-    min-width: 140px;  /* Prevent buttons from shrinking too much */
-    margin: 0.5rem 1rem; /* Extra spacing around each button */
+    min-width: 140px;
+    margin: 0.5rem 1rem;
   }
 }
 
@@ -507,19 +527,16 @@ input[type="email"] {
   z-index: 1000;
   display: none;
   flex-direction: column;
-  justify-content: center;   /* Center vertically */
-  align-items: center;       /* Center horizontally */
+  justify-content: center;
+  align-items: center;
   overflow-y: auto;
   border-radius: 12px;
 }
 
-/* Show active screen */
 .form-screen.active {
   display: flex;
 }
 
-/* On small-height screens, remove vertical centering
-   so content scrolls naturally */
 @media (max-height: 600px) {
   .form-screen {
     top: 0;
@@ -528,26 +545,6 @@ input[type="email"] {
     justify-content: flex-start;
     padding-top: 4rem;
     min-height: auto;
-  }
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-.form-screen h2 {
-  font-size: 1.8rem;
-  margin-bottom: 3rem;
-  max-width: 500px;
-  line-height: 1.4;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
-}
-
-/* Optional: adjust if very small screens */
-@media (max-height: 600px) {
-  .form-screen {
-    justify-content: flex-start;
-    padding-top: 4rem;
   }
 }
 
@@ -599,7 +596,7 @@ button {
   border-radius: 8px;
   background: white;
   color: #33a7d4;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   margin: 0.5rem;
   cursor: pointer;
 }
@@ -608,7 +605,6 @@ button:hover {
   opacity: 0.9;
 }
 
-/* Optional: group buttons side-by-side */
 .button-group {
   display: flex;
   justify-content: space-between;
@@ -616,14 +612,10 @@ button:hover {
   gap: 1rem;
 }
 
-/* --------------------------------------------
-   6. MOBILE HEIGHT ADJUSTMENTS
---------------------------------------------- */
-
 .button-row {
   display: flex;
-  justify-content: center;  /* Center the buttons */
-  gap: 1rem;                /* Space between buttons */
+  justify-content: center;
+  gap: 1rem;
   margin-top: 2rem;
 }
 
@@ -634,10 +626,10 @@ button:hover {
   border-radius: 8px;
   background: white;
   color: #33a7d4;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   cursor: pointer;
-  width: auto;              /* Make sure buttons size to content */
-  min-width: 100px;         /* Optional: consistent width */
+  width: auto;
+  min-width: 100px;
 }
 
 .button-row button:hover {
@@ -650,11 +642,11 @@ button:hover {
   left: 50%;
   transform: translateX(-50%);
   background: none;
-  color: #ffffff; /* Or use your brand color */
+  color: #ffffff;
   border: none;
   padding: 0;
   font-size: 16px;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   text-decoration: none;
   z-index: 10000;
   box-shadow: none;
@@ -666,22 +658,21 @@ button:hover {
 }
  
 .logo img {
-  height: 40px;   /* fits within your 60px header */
-  width: auto;    /* keeps proportions */
+  height: 40px;
+  width: auto;
   display: block;
 }
 
 #main-intro-options {
-  justify-content: flex-start !important; /* push content to the top */
+  justify-content: flex-start !important;
 }
 
 #main-intro-options h2 {
-  margin-top: 40px; /* push heading down a little if needed */
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  margin-top: 40px;
 }
 
 #main-intro-options .button-row {
-  margin-top: 60px; /* this moves ONLY the 3 buttons further down */
+  margin-top: 60px;
 }
 
  #typewriter { display: none; }
@@ -694,23 +685,21 @@ button:hover {
 /* General funnel screen styling */
 /* ------------------------ */
 .form-screen {
-  display: none;              /* hidden by default */
-  flex-direction: column;     /* stack content vertically */
-  justify-content: center;    /* vertical centering */
-  align-items: center;        /* horizontal centering */
-  min-height: 100vh;          /* full viewport height */
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* Active screen */
 .form-screen.active {
   display: flex;
 }
 
-/* Buttons row styling */
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -723,7 +712,7 @@ button:hover {
 /* First screen adjustment */
 /* ------------------------ */
 #main-intro-options {
-  padding-top: 120px;   /* ⬅️ adjust this number to move down */
+  padding-top: 120px;
 }
 
 /* ------------------------ */
@@ -734,7 +723,7 @@ button:hover {
     padding: 40px;
   }
   #main-intro-options {
-    padding-top: 140px; /* slightly lower on tablet */
+    padding-top: 140px;
   }
 }
 
@@ -746,7 +735,7 @@ button:hover {
     padding: 60px;
   }
   #main-intro-options {
-    padding-top: 160px; /* even lower on desktop */
+    padding-top: 160px;
   }
 }
 
@@ -775,9 +764,9 @@ body header + .form-screen {
 }
 
  #main-intro-options {
-  justify-content: center !important; /* center vertically */
-  min-height: 100vh;                   /* full viewport height */
-  padding-top: 0 !important;           /* remove any extra top spacing */
+  justify-content: center !important;
+  min-height: 100vh;
+  padding-top: 0 !important;
 }
 
 /* ===== FUNNEL SCREEN ===== */
@@ -791,7 +780,7 @@ body header + .form-screen {
   border-radius: 12px;
   padding: 1rem 2rem;
   font-size: 1rem;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   text-align: left;
   cursor: pointer;
   width: 100%;
@@ -806,7 +795,7 @@ body header + .form-screen {
 .btn-subtext {
   display: block;
   font-size: 0.85rem;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   margin-top: 0.3rem;
 }
 
@@ -819,7 +808,6 @@ body header + .form-screen {
 
  /* ===================== MOBILE PORTRAIT & LANDSCAPE VIEW FIX ===================== */
 
-/* Base styles from pricing.html - maintaining consistency */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
   font-family: 'Poppins', sans-serif; 
@@ -828,7 +816,6 @@ body {
   overflow-x: hidden; 
 }
 
-/* Header styling - maintaining original */
 header {
   position: fixed; 
   top: 0; 
@@ -863,7 +850,6 @@ header {
   #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
   .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
 
-  /* Unified Pricing Card */
   .pricing-card {
     background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
     border-radius: 16px;
@@ -893,13 +879,13 @@ header {
     padding: 0.5rem 1rem;
     border-radius: 50px;
     font-size: 0.85rem;
-    font-weight: 900; /* CHANGED: 900 for maximum boldness */
+    font-weight: 900;
   }
 
   .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: 900; /* CHANGED: 900 for maximum boldness */ }
+  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: 900; }
   .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; font-weight: 900; /* CHANGED: 900 for maximum boldness */ }
+  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; font-weight: 900; }
 
   .pricing-card.in-view { opacity: 1; transform: translateY(0); }
   .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
@@ -917,7 +903,6 @@ header {
     .pricing-card { min-height: 90vh; padding: 60px 20px; }
   }
 
-  /* PayPal Button - App-like, Brand Consistent */
   .pay-now {
     display: inline-flex;
     align-items: center;
@@ -928,9 +913,9 @@ header {
     background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
     color: #fff;
     font-size: 1.05rem;
-    font-weight: 900; /* CHANGED: 900 for maximum boldness */
+    font-weight: 900;
     border: none;
-    border-radius: 50px; /* pill shape */
+    border-radius: 50px;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
@@ -948,7 +933,6 @@ header {
     box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
   }
 
-  /* Trust Badge */
   .paypal-badge {
     margin-top: 15px;
     padding: 14px;
@@ -968,7 +952,7 @@ header {
   }
   .paypal-badge p {
     font-size: 0.9rem;
-    font-weight: 900; /* CHANGED: 900 for maximum boldness */
+    font-weight: 900;
     color: #1d1d1d;
     margin: 0;
     display: flex;
@@ -977,15 +961,13 @@ header {
   }
   .lock-icon { font-size: 1.1rem; color: #0070ba; }
 
- /* --- Allow normal page scrolling and full-width content --- */
-html, body {
-  overflow-x: hidden !important;  /* hide horizontal scrollbar */
-  overflow-y: auto !important;    /* allow natural vertical scrolling */
+ html, body {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   width: 100% !important;
   height: auto !important;
 }
 
-/* If pricing section is inside a .form-screen wrapper, unfix it */
 #pricing-section,
 #pricing-section .form-screen,
 #recommended-plan-screen {
@@ -998,19 +980,17 @@ html, body {
   overflow: visible !important;
 }
 
- /* === MOBILE PORTRAIT SCROLL FIX – Only when pricing screen is active === */
+ /* === MOBILE PORTRAIT SCROLL FIX === */
 @media (max-width: 768px) {
-  /* Target the active funnel screen that holds the pricing section */
   #recommended-plan-screen.form-screen.active {
-    display: block !important;      /* use normal block flow */
+    display: block !important;
     min-height: auto !important;
     height: auto !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
-    padding: 80px 20px 20px !important; /* top padding clears fixed header */
+    padding: 80px 20px 20px !important;
   }
 
-  /* Inside that screen, let cards stack and scroll */
   #recommended-plan-screen .pricing-container {
     display: block !important;
     gap: 24px !important;
@@ -1031,20 +1011,137 @@ html, body {
 
   .pricing-card.recommended::before {
     top: 8px;
-    right: -30px; /* adjust to fit mobile width */
+    right: -30px;
     padding: 5px 16px;
     font-size: 0.75rem;
   }
 }
 
 .includes-message {
-  border-top: 1px solid #fff;  /* white line separator */
+  border-top: 1px solid #fff;
   margin: 15px 0;
   padding-top: 10px;
-  font-weight: 900; /* CHANGED: 900 for maximum boldness */
+  font-weight: 900;
   font-size: 0.95rem;
   color: #fff;
-  list-style: none;  /* no bullets */
+  list-style: none;
+}
+
+
+ /* ===== COMPLETE FONT CONSISTENCY ACROSS ALL ELEMENTS ===== */
+
+/* 1. HAMBURGER MENU PAGES */
+nav.menu ul li {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+nav.menu ul li a {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 2. SKYROCKET INTRO ANIMATIONS */
+.overlay-text {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+#typewriter {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.typewriter-text {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 3. FORM QUESTIONS & DESCRIPTIONS */
+.form-screen h2 {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+    line-height: 1.4;
+}
+
+.form-screen p {
+    font-weight: 700 !important;
+    font-family: 'Poppins', sans-serif !important;
+    margin-bottom: 2rem;
+}
+
+.form-screen strong {
+    font-weight: 900 !important;
+}
+
+/* 4. BUTTONS THROUGHOUT */
+button {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.brand-btn {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.pay-now {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 5. PRICING CARDS */
+.pricing-card h3 {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.pricing-card .price {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.pricing-card ul li {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.pricing-card.recommended .badge {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 6. HEADER & LOGO */
+.logo {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 7. TRUST BADGES & FOOTER TEXT */
+.paypal-badge p {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.includes-message {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.skip-link {
+    font-weight: 900 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* 8. DESKTOP MENU (if different from mobile) */
+@media (min-width: 1024px) {
+    nav.menu ul li a {
+        font-weight: 900 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
 }
 </style>
 
