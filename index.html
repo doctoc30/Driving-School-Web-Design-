@@ -1324,15 +1324,20 @@ html, body {
     </div>
   </div>
 
-  <!-- Ownership / Plan Choice -->
-  <div class="form-screen" id="instructor-q20">
-    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <div class="button-row">
-      <button type="button" class="own-outright">Own Outright</button>
-      <button type="button" class="monthly-support">Monthly Support</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+
+
+ <!-- Q19: Ownership Options -->
+<div class="form-screen" id="instructor-q19" style="display: none;">
+  <h2>How would you like to own your website?</h2>
+  <p>Choose whether you want to own your website outright or have ongoing monthly support.</p>
+
+  <div class="button-group">
+    <button type="button" class="own-outright">💰 I want to own outright</button>
+    <button type="button" class="monthly-support">🔁 Monthly support plan</button>
   </div>
+
+  <button type="button" class="back-button">⬅ Back</button>
+</div>
 
   <!-- Final Choice -->
   <div class="form-screen" id="final-choice">
@@ -1413,10 +1418,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------ Basic setup ------------------
   let screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
+
   const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
   const stepParam = params.get("step");
 
-  // ------------------ Progress Bar ------------------
+  // ------------------ Progress Bar Functions ------------------
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
@@ -1454,6 +1461,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (screen.id === "monthly-plan-screen") {
       showRecommendedPlan('monthly');
     }
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1476,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.next = next;
   window.prev = prev;
 
-  // ------------------ State & Features ------------------
+  // ------------------ User Path & Features ------------------
   let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
@@ -1492,7 +1500,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-
+    
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('outright');
     }
@@ -1505,15 +1513,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ FIXED: Ownership Buttons ------------------
+  // ------------------ Ownership Buttons (Q19) ------------------
   function setupOwnershipButtons() {
-    // Finds whichever screen contains those two buttons
-    const screen = document.querySelector('.form-screen .own-outright')?.closest('.form-screen');
-    if (!screen) return;
+    const q19Screen = document.getElementById('instructor-q19');
+    if (!q19Screen) return;
 
-    const ownOutrightBtn = screen.querySelector('.own-outright');
-    const monthlySupportBtn = screen.querySelector('.monthly-support');
-    const backBtn = screen.querySelector('.back-button');
+    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
+    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+    const backBtn = q19Screen.querySelector('.back-button');
 
     if (ownOutrightBtn) {
       ownOutrightBtn.onclick = () => {
@@ -1521,9 +1528,6 @@ document.addEventListener("DOMContentLoaded", () => {
         featureState['buyOutright'] = true;
         syncFeatureState();
         showScreen('recommended-plan-screen');
-        setTimeout(() => {
-          document.getElementById('recommended-plan-screen')?.scrollIntoView({ behavior: 'smooth' });
-        }, 200);
       };
     }
 
@@ -1532,19 +1536,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ownershipChoice = 'Monthly Support';
         featureState['monthlySupport'] = true;
         syncFeatureState();
-        showScreen('recommended-plan-screen');
         showRecommendedPlan('monthly');
-        setTimeout(() => {
-          document.getElementById('recommended-plan-screen')?.scrollIntoView({ behavior: 'smooth' });
-        }, 200);
       };
     }
 
-    if (backBtn) backBtn.onclick = () => prev();
+    if (backBtn) {
+      backBtn.onclick = () => prev();
+    }
   }
 
-  setupOwnershipButtons();
-
+  // ------------------ Initial Setup ------------------
+  hideAllScreens();
   const initialActive = document.querySelector('.form-screen.active');
   if (initialActive) {
     const idx = screens.indexOf(initialActive);
@@ -1552,7 +1554,91 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen(initialActive.id);
   }
 
-  // ------------------ Recommended Plan Logic ------------------
+  // Wait for DOM
+  setTimeout(setupOwnershipButtons, 100);
+
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
+
+  // ------------------ Design Code Handling ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
+    showFilteredTemplate(code);
+  };
+
+  function showFilteredTemplate(rawCode) {
+    const code = String(rawCode || '').trim().toUpperCase();
+    if (!code) return;
+    hideAllScreens();
+
+    if (stepParam === "4") {
+      const designInput = document.getElementById("designInput");
+      if (designInput) designInput.value = code;
+      showScreen("instructor-q4");
+      return;
+    }
+
+    let templateScreen = document.getElementById('template-results');
+    if (!templateScreen) {
+      templateScreen = document.createElement('div');
+      templateScreen.id = 'template-results';
+      templateScreen.classList.add('form-screen');
+      document.getElementById('formWrapper').appendChild(templateScreen);
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+    }
+
+    const container = document.createElement('div');
+    container.className = 'template-container';
+    const heading = document.createElement('h2');
+    heading.textContent = `Showing template for code: ${code}`;
+    container.appendChild(heading);
+
+    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+    if (!foundEl) foundEl = document.getElementById(code);
+
+    if (foundEl) {
+      const clone = foundEl.cloneNode(true);
+      clone.classList.add('template-preview-clone');
+      clone.style.width = '100%';
+      container.appendChild(clone);
+
+      const buttonRow = document.createElement('div');
+      buttonRow.className = 'button-row';
+      const contBtn = document.createElement('button');
+      contBtn.type = 'button';
+      contBtn.textContent = 'Continue';
+      contBtn.onclick = () => next();
+      buttonRow.appendChild(contBtn);
+      container.appendChild(buttonRow);
+
+      templateScreen.innerHTML = '';
+      templateScreen.appendChild(container);
+      templateScreen.classList.add('active');
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+      currentScreen = screens.indexOf(templateScreen);
+      updateWaterProgress();
+      updateProgress(currentScreen + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  }
+
+  // ------------------ Recommended Plan ------------------
   function showRecommendedPlan(planType = 'outright') {
     const isMonthly = planType === 'monthly';
     const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1631,6 +1717,7 @@ document.addEventListener("DOMContentLoaded", () => {
         divider.style.height = "2px";
         divider.style.margin = "15px 0";
         divider.style.listStyle = "none";
+        divider.style.border = "none";
         divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
         list.appendChild(divider);
       });
@@ -1660,6 +1747,8 @@ document.addEventListener("DOMContentLoaded", () => {
       recCard.classList.add("recommended", "in-view");
       setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
     }
+
+    showScreen('recommended-plan-screen');
   }
 
 });
