@@ -9,13 +9,31 @@
 <style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Poppins', sans-serif !important;
   }
+  
+  /* ===== GLOBAL BOLD FONT SETTING ===== */
+  body, h1, h2, h3, h4, h5, h6, p, button, a, span, div, li {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 900 !important;
+  }
+
+  /* Make form inputs normal weight */
+  input, select, textarea {
+    font-weight: normal !important;
+  }
+
+  /* Make paragraph text slightly less bold for readability */
+  p {
+    font-weight: 700 !important;
+  }
+
   body {
-    font-family: 'Poppins', sans-serif;
     background-color: #33a7d4;
     color: white;
     overflow-x: hidden;
   }
+
   header {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -28,13 +46,14 @@
     z-index: 2000;
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
   }
+
   .logo {
-    font-weight: 900;
     font-size: 1.7rem;
     letter-spacing: 2px;
     user-select: none;
     cursor: default;
   }
+
   .hamburger {
     width: 28px;
     height: 22px;
@@ -45,6 +64,7 @@
     justify-content: space-between;
     z-index: 2100;
   }
+
   .hamburger span {
     display: block;
     height: 3.5px;
@@ -52,12 +72,15 @@
     border-radius: 2px;
     transition: all 0.35s ease-in-out;
   }
+
   .hamburger.active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
   }
+
   .hamburger.active span:nth-child(2) {
     opacity: 0;
   }
+
   .hamburger.active span:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
   }
@@ -76,20 +99,23 @@
     padding-left: 4rem;
     z-index: 2050;
   }
+
   nav.menu.open {
     transform: translateX(0);
   }
+
   nav.menu ul {
     list-style: none;
   }
+
   nav.menu ul li {
     margin-bottom: 2.2rem;
     opacity: 0;
     transform: translateX(-40px);
-    font-weight: 900;
     font-size: 3rem;
     letter-spacing: 0.1em;
   }
+
   nav.menu ul li a {
     color: white;
     text-decoration: none;
@@ -97,27 +123,35 @@
     display: inline-block;
     transition: color 0.3s ease;
   }
+
   nav.menu ul li a:hover {
     color: #222;
   }
+
   nav.menu.open ul li {
     animation: slideInFade 0.4s forwards;
   }
+
   nav.menu.open ul li:nth-child(1) {
     animation-delay: 0.15s;
   }
+
   nav.menu.open ul li:nth-child(2) {
     animation-delay: 0.35s;
   }
+
   nav.menu.open ul li:nth-child(3) {
     animation-delay: 0.55s;
   }
+
   nav.menu.open ul li:nth-child(4) {
     animation-delay: 0.75s;
   }
+
   nav.menu.open ul li:nth-child(5) {
     animation-delay: 0.95s;
   }
+
   @keyframes slideInFade {
     to {
       opacity: 1;
@@ -125,11 +159,12 @@
     }
   }
 
-  /* Desktop view - raised breakpoint to 1024px */
+  /* Desktop view */
   @media (min-width: 1024px) {
     .hamburger {
       display: none;
     }
+    
     nav.menu {
       position: static;
       height: auto;
@@ -141,10 +176,12 @@
       justify-content: flex-end;
       align-items: center;
     }
+    
     nav.menu ul {
       display: flex;
       gap: 3rem;
     }
+    
     nav.menu ul li {
       margin: 0;
       opacity: 1 !important;
@@ -152,18 +189,17 @@
       font-size: 1.25rem;
       animation: none !important;
     }
+    
     nav.menu ul li a {
-      font-weight: 900;
       font-size: 1.1rem;
       color: white;
       letter-spacing: 0.15em;
     }
+    
     nav.menu ul li a:hover {
       color: #222;
     }
   }
-
-<title>Splash + Form</title>
 
   html, body {
     margin: 0;
@@ -171,7 +207,6 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    font-family: 'Poppins', sans-serif;
     background: white;
   }
 
@@ -196,7 +231,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-weight: 900;
     color: white;
     text-shadow: 0 0 30px #227090;
     z-index: 1;
@@ -242,7 +276,6 @@
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1rem;
-    font-family: inherit;
   }
 
   select {
@@ -255,598 +288,256 @@
     cursor: text;
   }
 
-.button-row {
+  .button-row {
     display: flex;
     justify-content: center;
     gap: 2.5rem;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 2rem;
-}
+  }
 
-button {
+  button {
     background: white;
     color: #33a7d4;
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
-    font-weight: 900;
     cursor: pointer;
     font-size: 1rem;
     box-sizing: border-box;
     transition: background 0.3s ease;
     min-width: 140px;
-}
+  }
 
   button:hover {
     background: #227090;
     color: white;
   }
 
- /* ===== CONSISTENT BOLD FONT FOR ALL FORM QUESTIONS ===== */
-.form-screen h2 {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
+  /* FORM SCREENS */
+  .form-screen h2 {
     font-size: 1.8rem;
     margin-bottom: 3rem;
     max-width: 500px;
     line-height: 1.4;
-}
+  }
 
-.form-screen p {
-    font-weight: 700 !important;
-    font-family: 'Poppins', sans-serif !important;
+  .form-screen p {
     margin-bottom: 2rem;
-}
-
-.form-screen strong {
-    font-weight: 900 !important;
-}
-
- /* ---------- BASE STYLES ---------- */
-
-nav ul {
-  display: block;
-}
-
-nav ul li {
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li a {
-  padding: 0.5rem 1rem;
-}
-
-select,
-input[type="text"],
-input[type="email"] {
-  width: 60%;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  padding: 1rem;
-}
-
-.overlay-text {
-  font-size: calc(6vw + 0.5rem);
-}
-
-#typewriter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  text-align: center;
-  color: white;
-  opacity: 1;
-  pointer-events: none;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  max-width: 90vw;
-  line-height: 1.3;
-}
-
-#typewriter .typed-line {
-  font-size: inherit;
-  margin: 0.1em 0;
-  white-space: normal;
-}
-
-.cursor {
-  display: inline-block;
-  width: 2px;
-  background: white;
-  animation: blink 1s step-start infinite;
-  vertical-align: bottom;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  50% {
-    background: transparent;
   }
-}
 
-/* ---------- Base Typewriter Styles ---------- */
-#typewriter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  text-align: center;
-  color: white;
-  opacity: 1;
-  pointer-events: none;
-  line-height: 1.3;
-}
-
-.typewriter-text {
-  white-space: normal;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-  line-height: 1.4;
-}
-
-/* ---------- Mobile (Up to 599px) ---------- */
-@media screen and (max-width: 599px) {
   #typewriter {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    z-index: 1000;
+    text-align: center;
+    color: white;
+    opacity: 1;
+    pointer-events: none;
+    font-size: clamp(2.5rem, 6vw, 5rem);
     max-width: 90vw;
+    line-height: 1.3;
+  }
+
+  #typewriter .typed-line {
+    font-size: inherit;
+    margin: 0.1em 0;
+    white-space: normal;
   }
 
   .typewriter-text {
-    font-size: clamp(2rem, 6vw, 3rem);
-    max-width: 90vw;
-  }
-}
-
-/* ---------- Tablet Portrait (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
-  #typewriter {
-    font-size: 6rem !important;
-    max-width: 90vw !important;
+    white-space: normal;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 1.4;
   }
 
-  .typewriter-text {
-    font-size: 3.5rem !important;
-    max-width: 85vw !important;
-  }
-}
+  /* Mobile (Up to 599px) */
+  @media screen and (max-width: 599px) {
+    #typewriter {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      max-width: 90vw;
+    }
 
-/* ---------- Tablet Landscape (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
-  #typewriter {
-    font-size: 5.5rem !important;
-    max-width: 85vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.2rem !important;
-    max-width: 80vw !important;
-  }
-}
-
-/* ---------- Desktop (1025px+) ---------- */
-@media screen and (min-width: 1025px) {
-  #typewriter {
-    font-size: 6.5rem !important;
-    max-width: 75vw !important;
+    .typewriter-text {
+      font-size: clamp(2rem, 6vw, 3rem);
+      max-width: 90vw;
+    }
   }
 
-  .typewriter-text {
-    font-size: 4rem !important;
-    max-width: 60vw !important;
-  }
-}
-
- /* ---------- iPhone Landscape Final Fix ---------- */
-@media screen and (max-width: 812px) and (orientation: landscape) {
-  #typewriter {
-    top: 60% !important;
-    transform: translate(-50%, -60%) !important;
-    font-size: clamp(1.5rem, 4vw, 2.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 90vw !important;
-  }
-
-  .typewriter-text {
-    font-size: clamp(1rem, 3vw, 1.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* Tablet: Ensure space between buttons */
-@media screen and (min-width: 600px) and (max-width: 1024px) {
-  .button-row {
-    gap: 3rem;
-    flex-wrap: wrap;
+  /* FIRST QUESTION SCREEN */
+  #form-start-choice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background: #33a7d4;
+    color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 1s ease;
   }
 
-  .button-row button {
-    min-width: 140px;
-    margin: 0.5rem 1rem;
+  #form-start-choice.show {
+    display: flex;
+    opacity: 1;
   }
-}
 
- /* --------------------------------------------
-   1. FIRST QUESTION SCREEN (#form-start-choice)
---------------------------------------------- */
-#form-start-choice {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  background: #33a7d4;
-  color: white;
-  padding: 2rem;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-#form-start-choice.show {
-  display: flex;
-  opacity: 1;
-}
-
-/* --------------------------------------------
-   2. MULTI-STEP FORM SCREENS (.form-screen)
---------------------------------------------- */
-.form-screen {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  min-height: 60vh;
-  background: #33a7d4;
-  color: white;
-  padding: 2rem;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-  border-radius: 12px;
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-@media (max-height: 600px) {
+  /* FORM SCREENS */
   .form-screen {
-    top: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    min-height: 60vh;
+    background: #33a7d4;
+    color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    border-radius: 12px;
+  }
+
+  .form-screen.active {
+    display: flex;
+  }
+
+  @media (max-height: 600px) {
+    .form-screen {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      justify-content: flex-start;
+      padding-top: 4rem;
+      min-height: auto;
+    }
+  }
+
+  select,
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    appearance: none;
+    background-color: white;
+    color: #333;
+    height: 3.5rem;
+    box-sizing: border-box;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .skip-link {
+    position: fixed;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    justify-content: flex-start;
-    padding-top: 4rem;
-    min-height: auto;
+    background: none;
+    color: #ffffff;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    text-decoration: none;
+    z-index: 10000;
+    box-shadow: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
   }
-}
 
-/* --------------------------------------------
-   3. FORM FIELDS (input, select)
---------------------------------------------- */
-select,
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
-  padding: 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  max-width: 100%;
-  appearance: none;
-  background-color: white;
-  color: #333;
-  height: 3.5rem;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-/* --------------------------------------------
-   4. CONSENT CHECKBOX SECTION
---------------------------------------------- */
-.consent-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-size: 14px;
-  color: white;
-  margin-bottom: 2rem;
-}
-
-.consent-wrapper input[type="checkbox"] {
-  margin-right: 8px;
-}
-
-/* --------------------------------------------
-   5. BUTTONS
---------------------------------------------- */
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: 900;
-  margin: 0.5rem;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 1rem;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.button-row button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: 900;
-  cursor: pointer;
-  width: auto;
-  min-width: 100px;
-}
-
-.button-row button:hover {
-  opacity: 0.9;
-}
-
-.skip-link {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  color: #ffffff;
-  border: none;
-  padding: 0;
-  font-size: 16px;
-  font-weight: 900;
-  text-decoration: none;
-  z-index: 10000;
-  box-shadow: none;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-.skip-link:hover {
-  opacity: 0.8;
-}
- 
-.logo img {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-#main-intro-options {
-  justify-content: flex-start !important;
-}
-
-#main-intro-options h2 {
-  margin-top: 40px;
-}
-
-#main-intro-options .button-row {
-  margin-top: 60px;
-}
-
- #typewriter { display: none; }
-#typewriter.active { display: block; }
-
-.color-rise { display: none; transition: none; }
-.color-rise.active { display: block; transition: background-color 2s ease; }
-
-/* ------------------------ */
-/* General funnel screen styling */
-/* ------------------------ */
-.form-screen {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-/* ------------------------ */
-/* First screen adjustment */
-/* ------------------------ */
-#main-intro-options {
-  padding-top: 120px;
-}
-
-/* ------------------------ */
-/* Tablet / landscape adjustments */
-/* ------------------------ */
-@media (min-width: 768px) {
-  .form-screen {
-    padding: 40px;
+  .skip-link:hover {
+    opacity: 0.8;
   }
+
+  .logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+
   #main-intro-options {
-    padding-top: 140px;
+    justify-content: flex-start !important;
   }
-}
 
-/* ------------------------ */
-/* Desktop adjustments */
-/* ------------------------ */
-@media (min-width: 1024px) {
-  .form-screen {
-    padding: 60px;
+  #main-intro-options h2 {
+    margin-top: 40px;
   }
-  #main-intro-options {
-    padding-top: 160px;
+
+  #main-intro-options .button-row {
+    margin-top: 60px;
   }
-}
 
-/* ------------------------ */
-/* Optional: adjust for fixed header */
-/* ------------------------ */
-body header + .form-screen {
-  padding-top: 80px;
-}
+  #typewriter { display: none; }
+  #typewriter.active { display: block; }
 
- /* Funnel screen global */
-.form-screen {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
+  .color-rise { display: none; transition: none; }
+  .color-rise.active { display: block; transition: background-color 2s ease; }
 
-.form-screen.active {
-  display: flex;
-}
-
- #main-intro-options {
-  justify-content: center !important;
-  min-height: 100vh;
-  padding-top: 0 !important;
-}
-
-/* ===== FUNNEL SCREEN ===== */
-.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
-.form-screen.active { display: flex; }
-
-.brand-btn {
-  background: #fff;
-  color: #33a7d4;
-  border: 2px solid #33a7d4;
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 900;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  margin: 0.5rem 0;
-  transition: all 0.2s ease;
-}
-
-.brand-btn:hover {
-  background: #f0f8ff;
-}
-
-.btn-subtext {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 900;
-  margin-top: 0.3rem;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
- /* ===================== MOBILE PORTRAIT & LANDSCAPE VIEW FIX ===================== */
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-  font-family: 'Poppins', sans-serif; 
-  background-color: #33a7d4; 
-  color: white; 
-  overflow-x: hidden; 
-}
-
-header {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0;
-  height: 60px; 
-  display: flex; 
-  align-items: center;
-  justify-content: space-between; 
-  padding: 0 20px;
-  background-color: #33a7d4; 
-  z-index: 2000;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-}
-
-.logo {
-  font-weight: 900; 
-  font-size: 1.7rem; 
-  letter-spacing: 2px;
-  user-select: none; 
-  cursor: default;
-}
- 
-/* iPhone landscape fix */
-@media (orientation: landscape) and (max-device-width: 812px) {
-  footer {
-    padding-left: max(env(safe-area-inset-left), 20px);
-    padding-right: max(env(safe-area-inset-right), 20px);
+  .brand-btn {
+    background: #fff;
+    color: #33a7d4;
+    border: 2px solid #33a7d4;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    margin: 0.5rem 0;
+    transition: all 0.2s ease;
   }
-}
- 
+
+  .brand-btn:hover {
+    background: #f0f8ff;
+  }
+
+  .btn-subtext {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  /* PRICING STYLES */
   #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
   .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
 
@@ -865,6 +556,7 @@ header {
     position: relative;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   }
+
   .pricing-card:hover {
     transform: translateY(-10px) scale(1.03);
     box-shadow: 0 20px 40px rgba(0,0,0,0.35);
@@ -879,13 +571,12 @@ header {
     padding: 0.5rem 1rem;
     border-radius: 50px;
     font-size: 0.85rem;
-    font-weight: 900;
   }
 
-  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: 900; }
+  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; }
   .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; font-weight: 900; }
+  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
 
   .pricing-card.in-view { opacity: 1; transform: translateY(0); }
   .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
@@ -899,6 +590,7 @@ header {
     .pricing-container { flex-direction: row; gap: 20px; }
     .pricing-card { min-height: 65vh; }
   }
+
   @media (max-width: 768px) {
     .pricing-card { min-height: 90vh; padding: 60px 20px; }
   }
@@ -913,7 +605,6 @@ header {
     background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
     color: #fff;
     font-size: 1.05rem;
-    font-weight: 900;
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -928,6 +619,7 @@ header {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
   }
+
   .pay-now:active {
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
@@ -945,204 +637,72 @@ header {
     width: 100%;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   }
+
   .paypal-badge img {
     max-width: 140px;
     height: auto;
     margin-bottom: 8px;
   }
+
   .paypal-badge p {
     font-size: 0.9rem;
-    font-weight: 900;
     color: #1d1d1d;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 6px;
   }
+
   .lock-icon { font-size: 1.1rem; color: #0070ba; }
 
- html, body {
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  width: 100% !important;
-  height: auto !important;
-}
-
-#pricing-section,
-#pricing-section .form-screen,
-#recommended-plan-screen {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  overflow: visible !important;
-}
-
- /* === MOBILE PORTRAIT SCROLL FIX === */
-@media (max-width: 768px) {
-  #recommended-plan-screen.form-screen.active {
-    display: block !important;
-    min-height: auto !important;
+  html, body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    width: 100% !important;
     height: auto !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
-    padding: 80px 20px 20px !important;
   }
 
-  #recommended-plan-screen .pricing-container {
-    display: block !important;
-    gap: 24px !important;
+  #pricing-section,
+  #pricing-section .form-screen,
+  #recommended-plan-screen {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
   }
 
-  #recommended-plan-screen .pricing-card {
-    min-height: auto !important;
-    margin-bottom: 24px;
-  }
-}
-
- /* Mobile Portrait Adjustments */
-@media (max-width: 768px) {
-  .pricing-card.recommended {
-    border: 2px solid #ff9900;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  }
-
-  .pricing-card.recommended::before {
-    top: 8px;
-    right: -30px;
-    padding: 5px 16px;
-    font-size: 0.75rem;
-  }
-}
-
-.includes-message {
-  border-top: 1px solid #fff;
-  margin: 15px 0;
-  padding-top: 10px;
-  font-weight: 900;
-  font-size: 0.95rem;
-  color: #fff;
-  list-style: none;
-}
-
-
- /* ===== COMPLETE FONT CONSISTENCY ACROSS ALL ELEMENTS ===== */
-
-/* 1. HAMBURGER MENU PAGES */
-nav.menu ul li {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-nav.menu ul li a {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 2. SKYROCKET INTRO ANIMATIONS */
-.overlay-text {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-#typewriter {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.typewriter-text {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 3. FORM QUESTIONS & DESCRIPTIONS */
-.form-screen h2 {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 1.8rem;
-    margin-bottom: 3rem;
-    max-width: 500px;
-    line-height: 1.4;
-}
-
-.form-screen p {
-    font-weight: 700 !important;
-    font-family: 'Poppins', sans-serif !important;
-    margin-bottom: 2rem;
-}
-
-.form-screen strong {
-    font-weight: 900 !important;
-}
-
-/* 4. BUTTONS THROUGHOUT */
-button {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.brand-btn {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.pay-now {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 5. PRICING CARDS */
-.pricing-card h3 {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.pricing-card .price {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.pricing-card ul li {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.pricing-card.recommended .badge {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 6. HEADER & LOGO */
-.logo {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 7. TRUST BADGES & FOOTER TEXT */
-.paypal-badge p {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.includes-message {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-.skip-link {
-    font-weight: 900 !important;
-    font-family: 'Poppins', sans-serif !important;
-}
-
-/* 8. DESKTOP MENU (if different from mobile) */
-@media (min-width: 1024px) {
-    nav.menu ul li a {
-        font-weight: 900 !important;
-        font-family: 'Poppins', sans-serif !important;
+  @media (max-width: 768px) {
+    #recommended-plan-screen.form-screen.active {
+      display: block !important;
+      min-height: auto !important;
+      height: auto !important;
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      padding: 80px 20px 20px !important;
     }
-}
+
+    #recommended-plan-screen .pricing-container {
+      display: block !important;
+      gap: 24px !important;
+    }
+
+    #recommended-plan-screen .pricing-card {
+      min-height: auto !important;
+      margin-bottom: 24px;
+    }
+  }
+
+  .includes-message {
+    border-top: 1px solid #fff;
+    margin: 15px 0;
+    padding-top: 10px;
+    font-size: 0.95rem;
+    color: #fff;
+    list-style: none;
+  }
 </style>
 
 </head>
