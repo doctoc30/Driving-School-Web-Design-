@@ -1210,6 +1210,62 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   }
   nav.menu ul li a:hover { color: #222; }
 }
+
+
+
+/* 🌊 Water Fill Progress Bar */
+#water-progress-container {
+  width: 80%;
+  margin: 30px auto 0;
+  display: none;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+#water-progress {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3) inset;
+}
+
+#water-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(173, 255, 255, 0.8), rgba(64, 224, 208, 0.8));
+  border-radius: 40px;
+  transform: translateY(100%);
+  animation: waveMove 4s linear infinite;
+  filter: blur(0.5px);
+}
+
+#water-progress-text {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #dfffff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+@keyframes waveMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
  
 </style>
 
@@ -1453,65 +1509,72 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 
- 
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-  <div class="pricing-container">
-
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
+ <!-- Water Fill Progress Bar -->
+<div id="water-progress-container">
+  <div id="water-progress">
+    <div id="water-wave"></div>
+    <span id="water-progress-text">0%</span>
+  </div>
 </div>
-
-<!-- Pro Plan -->
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
 
 </div>
 </form>
+ 
+<!-- ===================== RECOMMENDED PLAN ===================== -->
+<div class="form-screen" id="recommended-plan-screen">
+  <h2>Your Recommended Plan</h2>
+
+  <div class="pricing-container">
+
+<!-- Basic Plan -->
+<div class="pricing-card" data-plan="basic" data-animate>
+  <h3>Basic</h3>
+  <p class="price">£499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 10</li>
+    <li style="margin-bottom: 12px;">Revisions - 10</li>
+    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
+
+<!-- Pro Plan -->
+<div class="pricing-card" data-plan="pro" data-animate>
+  <div class="badge">Recommended</div>
+  <h3>Pro</h3>
+  <p class="price">£999</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 20</li>
+    <li style="margin-bottom: 12px;">Revisions - 20</li>
+    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £999 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
+
+<!-- Premium Plan -->
+<div class="pricing-card" data-plan="premium" data-animate>
+  <h3>Premium</h3>
+  <p class="price">£1499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 30</li>
+    <li style="margin-bottom: 12px;">Revisions - 30</li>
+    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £1499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
+
 
  
 <!-- ===================== RECOMMENDED PLAN ===================== -->
@@ -1569,6 +1632,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <small>50% now to secure, 50% on completion</small>
 </div>
 
+   
 
 </div>
 </form>
@@ -1644,6 +1708,33 @@ document.addEventListener("DOMContentLoaded", () => {
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
+
+
+ // 🌊 Water Progress Animation
+const waterContainer = document.getElementById("water-progress-container");
+const waterWave = document.getElementById("water-wave");
+const waterText = document.getElementById("water-progress-text");
+
+function updateWaterProgress() {
+  const totalScreens = screens.length;
+  const startAt = 4; // Q5 index (0-based)
+  const endScreens = ["recommended-plan-screen", "monthly-plan-screen"];
+
+  if (!waterContainer || !waterWave || !waterText) return;
+
+  // Show only after Q5
+  if (currentScreen >= startAt && !endScreens.includes(screens[currentScreen].id)) {
+    waterContainer.style.display = "block";
+
+    const progress = ((currentScreen - startAt + 1) / (totalScreens - startAt - 2)) * 100;
+    const limitedProgress = Math.min(Math.max(progress, 0), 100);
+
+    waterWave.style.transform = `translateY(${100 - limitedProgress}%)`;
+    waterText.textContent = `${Math.round(limitedProgress)}%`;
+  } else {
+    waterContainer.style.display = "none";
+  }
+}
 
   // ------------------ User Path & Features ------------------
   let userPath = "";
