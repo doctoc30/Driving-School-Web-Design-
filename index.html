@@ -1305,9 +1305,9 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <!-- ===== EXISTING INTRO ===== -->
+  <!-- ===== Q1-Q4 EXISTING ===== -->
   <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
+    <h2>Welcome G! What do you need help with today?</h2>
     <div class="button-row">
       <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
       <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
@@ -1315,13 +1315,13 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     </div>
   </div>
 
-  <!-- ===== Q1-Q4 EXISTING ===== -->
   <div class="form-screen" id="instructor-q1">
     <h2>Do you currently have a website?</h2>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Existing Website'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Existing Website'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q2">
@@ -1332,6 +1332,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
       <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
       <button type="button" onclick="next()">Custom design</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="design-code">
@@ -1341,6 +1342,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q4">
@@ -1349,200 +1351,230 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
       <button type="button" onclick="recordFeature('Solo Instructor'); next()">Solo Instructor</button>
       <button type="button" onclick="recordFeature('Driving School'); next()">Driving School</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
-  <!-- ===================== BASIC PLAN QUESTIONS (Q5-Q14) ===================== -->
+  <!-- ===================== BASIC PLAN Q5–Q14 ===================== -->
   <div class="form-screen" id="instructor-q5">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want your website to look great on all devices?</h2>
-    <p>Students can view your site easily on phones, tablets, and computers.</p>
+    <h2>Do you want your website to be mobile-friendly and look great on all devices?</h2>
+    <p>Ensure your website works smoothly on phones, tablets, and computers so students can always reach you.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Mobile-Friendly Design'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Mobile-Friendly Design'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q6">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want a contact form so students can reach you easily?</h2>
-    <p>This allows prospective students to get in touch without emailing directly.</p>
+    <h2>Do you want a Contact Form on your website?</h2>
+    <p>Make it easy for students to reach out or ask questions directly from your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Contact Form'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Contact Form'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q7">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Would you like an instructor bio on your site?</h2>
-    <p>Introduce yourself and build trust with potential students.</p>
+    <h2>Do you want an Instructor Bio section?</h2>
+    <p>Introduce yourself and your experience to build trust with new students.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Instructor Bio'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Instructor Bio'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q8">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want social media icons on your website?</h2>
-    <p>Students can easily follow your profiles and contact you.</p>
+    <h2>Do you want Social Media Icons?</h2>
+    <p>Link your Facebook, Instagram, or other platforms so students can follow or contact you easily.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Social Media Icons'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Social Media Icons'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q9">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want online booking and payment on your website?</h2>
-    <p>Students can book lessons and pay directly, saving you time.</p>
+    <h2>Do you want Booking & Online Payment?</h2>
+    <p>Allow students to book lessons and pay online directly on your website for convenience.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Booking & Online Payment'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Booking & Online Payment'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q10">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want clear call-to-action buttons?</h2>
-    <p>Encourage students to book lessons or contact you instantly.</p>
+    <h2>Do you want strong Call-to-Action buttons?</h2>
+    <p>Guide students to book lessons or contact you with clear, eye-catching buttons.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Call-to-Action Buttons'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Call-to-Action Buttons'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q11">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want a clear home page structure?</h2>
-    <p>Make your website easy to navigate and professional-looking.</p>
+    <h2>Do you want a structured Home Page?</h2>
+    <p>Organize key info like services, contact, and booking so students can easily navigate your site.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Home Page Structure'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Home Page Structure'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q12">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want services page setup?</h2>
-    <p>Show all your lesson types and pricing clearly for students.</p>
+    <h2>Do you want a dedicated Services Page?</h2>
+    <p>Show all your lesson options clearly so students know exactly what you offer.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Services Page Setup'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Services Page Setup'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q13">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want a testimonials section?</h2>
-    <p>Showcase happy students to attract new learners.</p>
+    <h2>Do you want a Testimonials Section?</h2>
+    <p>Display feedback from happy students to build trust with new visitors.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Testimonials Section'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Testimonials Section'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
   <div class="form-screen" id="instructor-q14">
     <h3 class="plan-label">Basic Plan</h3>
-    <h2>Do you want Google Map integration?</h2>
-    <p>Make it easy for students to find your location.</p>
+    <h2>Do you want Google Map Integration?</h2>
+    <p>Help students find your location easily with an embedded interactive map.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Google Map Integration'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Google Map Integration'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
-  <!-- ===================== PRO PLAN QUESTIONS (Q15-Q24) ===================== -->
+  <!-- ===================== PRO PLAN Q15–Q24 ===================== -->
+  <!-- Q15: Local SEO -->
   <div class="form-screen" id="instructor-q15">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want local SEO optimization to attract more students nearby?</h2>
-    <p>Your driving school will appear higher in Google search results for your area.</p>
+    <h2>Do you want Local Google SEO optimization?</h2>
+    <p>Help your website appear in local searches so students in your area can find you.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Local SEO Optimization'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Local SEO Optimization'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q16: Student Reviews -->
   <div class="form-screen" id="instructor-q16">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want student reviews on your website?</h2>
-    <p>Showcase positive experiences and build trust with potential students.</p>
+    <h2>Do you want a Student Reviews section?</h2>
+    <p>Showcase positive feedback from past students to build trust and credibility.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Student Reviews'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Student Reviews'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q17: Branding & Logo -->
   <div class="form-screen" id="instructor-q17">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want branding & logo assistance?</h2>
-    <p>Create a professional and recognizable identity for your school.</p>
+    <h2>Do you want Branding help (logo & colors)?</h2>
+    <p>Create a professional look that reflects your style and stands out from competitors.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Branding & Logo'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Branding & Logo'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q18: FAQ / Student Guide -->
   <div class="form-screen" id="instructor-q18">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want an FAQ / student guide section?</h2>
-    <p>Answer common questions and guide students through your services.</p>
+    <h2>Do you want an FAQ or Student Guide?</h2>
+    <p>Help students understand your lessons, policies, and what to expect before booking.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('FAQ / Student Guide'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('FAQ / Student Guide'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q19: Newsletter Signup -->
   <div class="form-screen" id="instructor-q19">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want a newsletter signup section?</h2>
-    <p>Keep students informed and engage them with updates.</p>
+    <h2>Do you want a Newsletter Signup form?</h2>
+    <p>Keep students updated with your latest lessons, promotions, or tips via email.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Newsletter Signup'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Newsletter Signup'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q20: Photo Gallery -->
   <div class="form-screen" id="instructor-q20">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want a photo gallery?</h2>
-    <p>Showcase driving lessons, events, and student achievements visually.</p>
+    <h2>Do you want a Photo Gallery?</h2>
+    <p>Showcase your driving school, instructors, or events visually to impress visitors.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Photo Gallery'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Photo Gallery'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q21: Blog / Updates Section -->
   <div class="form-screen" id="instructor-q21">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want a blog / updates section?</h2>
-    <p>Share helpful tips, news, and announcements with your students.</p>
+    <h2>Do you want a Blog or Updates Section?</h2>
+    <p>Share tips, news, or stories to keep students engaged and improve your SEO.</p>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('Blog / Updates Section'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('Blog / Updates Section'); next()">No</button>
+      <button type="button" onclick="recordFeature('Blog / Updates'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Blog / Updates'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q22: Multi-page Navigation -->
   <div class="form-screen" id="instructor-q22">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want multi-page navigation for better structure?</h2>
-    <p>Make your site easier to browse with multiple linked pages.</p>
+    <h2>Do you want Multi-page Navigation?</h2>
+    <p>Help students find all important pages easily with a clear menu structure.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Multi-page Navigation'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Multi-page Navigation'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q23: Lesson Pricing Table -->
   <div class="form-screen" id="instructor-q23">
     <h3 class="plan-label">Pro Plan</h3>
-    <h2>Do you want a lesson pricing table?</h2>
-    <p>Present all lesson options and prices clearly for students.</p>
+    <h2>Do you want a Lesson Pricing Table?</h2>
+    <p>Display your lesson packages and prices clearly so students can easily choose.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Lesson Pricing Table'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Lesson Pricing Table'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q24: Google Analytics Setup -->
   <div class="form-screen" id="instructor-q24">
     <h3 class="plan-label">Pro Plan</h3>
     <h2>Do you want Google Analytics setup?</h2>
@@ -1551,89 +1583,108 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
       <button type="button" onclick="recordFeature('Google Analytics Setup'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Google Analytics Setup'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
-  <!-- ===================== PREMIUM PLAN QUESTIONS (Q25-Q29) ===================== -->
+  <!-- ===================== PREMIUM PLAN Q25–Q32 ===================== -->
+  <!-- Q25: Lesson Packages -->
   <div class="form-screen" id="instructor-q25">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want online lesson packages available for students?</h2>
-    <p>Students can purchase bundles or gift vouchers directly from your site.</p>
+    <h2>Do you want Lesson Packages & Gift Vouchers?</h2>
+    <p>Offer structured packages and gift options to boost student bookings.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Lesson Packages'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Lesson Packages'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q26: Professional Email -->
   <div class="form-screen" id="instructor-q26">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want a professional email for your domain?</h2>
-    <p>Have an email like info@yourdomain.com to look more professional.</p>
+    <h2>Do you want a Professional Email?</h2>
+    <p>Get a branded email address to look professional and trustworthy to students.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Professional Email'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Professional Email'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q27: Content Creation Help -->
   <div class="form-screen" id="instructor-q27">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want help with content creation (text & images)?</h2>
-    <p>We can assist in writing copy and providing images that engage students.</p>
+    <h2>Do you want help with Content Creation?</h2>
+    <p>Get guidance on writing text, adding images, and videos that engage students.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Content Creation Help'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Content Creation Help'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q28: “What to Expect” Guide -->
   <div class="form-screen" id="instructor-q28">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want a “What to Expect” guide for first lessons?</h2>
-    <p>Help new students understand the process, reducing confusion and calls.</p>
+    <h2>Do you want a “What to Expect” Guide?</h2>
+    <p>Provide students with a clear idea of lessons, procedures, and policies for smoother onboarding.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('What to Expect Guide'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('What to Expect Guide'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q29: Downloadable PDFs -->
   <div class="form-screen" id="instructor-q29">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want downloadable PDFs for students (Terms, Checklists)?</h2>
-    <p>Provide helpful documents for students to download directly from your site.</p>
+    <h2>Do you want Downloadable PDFs (e.g., Terms, Checklists)?</h2>
+    <p>Provide useful resources for students to download directly from your website.</p>
     <div class="button-row">
       <button type="button" onclick="recordFeature('Downloadable PDFs'); next()">Yes</button>
       <button type="button" onclick="recordNoFeature('Downloadable PDFs'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
-  <div class="form-screen" id="instructor-q30">
-    <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want a video embed section?</h2>
-    <p>Share driving tutorials, student experiences, or promotional videos.</p>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('Video Embed Section'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('Video Embed Section'); next()">No</button>
-    </div>
+<!-- Q30: Video Embed Section -->
+<div class="form-screen" id="instructor-q30">
+  <h3 class="plan-label">Premium Plan</h3>
+  <h2>Do you want a Video Embed Section?</h2>
+  <p>Show videos of lessons, testimonials, or promotions to engage students visually.</p>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('Video Embed Section'); next()">Yes</button>
+    <button type="button" onclick="recordNoFeature('Video Embed Section'); next()">No</button>
+    <button type="button" onclick="prev()">Back</button>
   </div>
+</div>
 
+  <!-- Q31: Online Booking Automation -->
   <div class="form-screen" id="instructor-q31">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want a student portal (optional login area)?</h2>
-    <p>Students can track their lessons, download materials, and manage bookings.</p>
+    <h2>Do you want fully Automated Online Booking?</h2>
+    <p>Students can book lessons directly without contacting you manually, saving you time and reducing errors.</p>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('Student Portal'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('Student Portal'); next()">No</button>
+      <button type="button" onclick="recordFeature('Automated Online Booking'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Automated Online Booking'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+  <!-- Q32: Priority Support -->
   <div class="form-screen" id="instructor-q32">
     <h3 class="plan-label">Premium Plan</h3>
-    <h2>Do you want custom icons & visual enhancements?</h2>
-    <p>Add unique visuals that make your website stand out and look professional.</p>
+    <h2>Do you want Priority Support?</h2>
+    <p>Get faster responses and troubleshooting for any website issues, ensuring your site runs smoothly.</p>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('Custom Icons & Visual Enhancements'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('Custom Icons & Visual Enhancements'); next()">No</button>
+      <button type="button" onclick="recordFeature('Priority Support'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Priority Support'); next()">No</button>
     </div>
+    <div class="button-row"><button type="button" onclick="prev()">Back</button></div>
   </div>
 
+
+
 <!-- ===================== RECOMMENDED PLAN ===================== -->
 <div class="form-screen" id="recommended-plan-screen">
   <h2>Your Recommended Plan</h2>
@@ -1688,69 +1739,13 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </button>
   <small>50% now to secure, 50% on completion</small>
 </div>
-
-
- 
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-  <div class="pricing-container">
-
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Pro Plan -->
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-   
-
+  
 </div>
 </form>
 
+
+
+ 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
@@ -2012,64 +2007,30 @@ if (initialActive) {
 
 
 
-
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   if (!planCards.length) return;
 
-  const yes = yesFeatures.slice(); // Features the user selected
+  const yes = yesFeatures.slice(); // Yes answers
+  const no = noFeatures.slice();   // No answers
 
-  // --- Tiered feature keys ---
+  // ----- Define tiers and feature mapping -----
   const tiers = {
-    basic: ["mobile", "contact", "bio", "social", "booking", "cta", "homeStructure", "servicesPage", "testimonials", "googleMap"],
-    pro: ["seo", "reviews", "branding", "faq", "newsletter", "photoGallery", "blog", "multiPageNav", "lessonPricing", "googleAnalytics"],
-    premium: ["lessonPackages", "professionalEmail", "contentHelp", "whatToExpect", "downloadablePDFs", "videoEmbed", "studentPortal", "customIcons"]
+    basic: ["Mobile-Friendly Design","Contact Form","Instructor Bio","Social Media Icons","Booking & Online Payment","Call-to-Action Buttons","Home Page Structure","Services Page Setup","Testimonials Section","Google Map Integration"],
+    pro: ["Local SEO Optimization","Student Reviews","Branding & Logo","FAQ / Student Guide","Newsletter Signup","Photo Gallery","Blog / Updates Section","Multi-page Navigation","Lesson Pricing Table","Google Analytics Setup"],
+    premium: ["Lesson Packages","Professional Email","Content Creation Help","What to Expect Guide","Downloadable PDFs","Video Embed Section","Student Portal"]
   };
 
-  // --- Labels for display ---
-  const labels = {
-    mobile: "Mobile-friendly design",
-    contact: "Simple contact form",
-    bio: "Instructor bio / About page",
-    social: "Social media integration",
-    booking: "Online booking & payment",
-    cta: "Call-to-action buttons",
-    homeStructure: "Home page structure",
-    servicesPage: "Services page setup",
-    testimonials: "Student testimonials section",
-    googleMap: "Google Map integration",
-    seo: "Local SEO optimization",
-    reviews: "Student reviews section",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide section",
-    newsletter: "Newsletter signup",
-    photoGallery: "Photo gallery section",
-    blog: "Blog / updates section",
-    multiPageNav: "Multi-page navigation",
-    lessonPricing: "Lesson pricing table",
-    googleAnalytics: "Google Analytics setup",
-    lessonPackages: "Lesson packages & gift vouchers",
-    professionalEmail: "Professional email (info@yourdomain.com)",
-    contentHelp: "Content creation help (text & images)",
-    whatToExpect: "‘What to Expect’ guide for new students",
-    downloadablePDFs: "Downloadable PDFs (e.g., terms, checklists)",
-    videoEmbed: "Video embed section",
-    studentPortal: "Student portal (optional login area)",
-    customIcons: "Custom icons & visual enhancements"
-  };
-
-  // --- Core defaults per plan ---
   const coreDefaults = {
-    basic: ["Pages - 5", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 10", "Revisions - 15", "Delivery - 20 Days"],
-    premium: ["Pages - 20", "Revisions - 25", "Delivery - 30 Days"]
+    basic: ["5 Pages","10 Revisions Per Page","15 Days"],
+    pro: ["10 Pages","15 Revisions Per Page","20 Days"],
+    premium: ["20 Pages","25 Revisions Per Page","30 Days"]
   };
 
-  const tierOrder = ["basic", "pro", "premium"];
+  const tierOrder = ["basic","pro","premium"];
   const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
   const outrightPrices = { basic: 750, pro: 1500, premium: 2500 };
-  const setupFees = { basic: 199, pro: 299, premium: 499 };
 
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
@@ -2077,14 +2038,13 @@ if (initialActive) {
     const priceEl = card.querySelector(".price");
     const payBtn = card.querySelector(".pay-now");
     const note = card.querySelector("small");
-
     if (!level || !list || !priceEl || !payBtn) return;
 
     // ----- Pricing -----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}/month`;
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+      if (note) note.textContent = `£0 setup + £${monthlyPrices[level]}/month`;
     } else {
       priceEl.textContent = `£${outrightPrices[level]}`;
       payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
@@ -2094,7 +2054,7 @@ if (initialActive) {
     // ----- Features List -----
     list.innerHTML = "";
 
-    // 1️⃣ Core Defaults
+    // Core defaults
     coreDefaults[level].forEach(f => {
       const li = document.createElement("li");
       li.textContent = f;
@@ -2102,7 +2062,7 @@ if (initialActive) {
       list.appendChild(li);
     });
 
-    // 2️⃣ Gradient Divider
+    // Divider after core defaults
     const divider = document.createElement("li");
     divider.className = "gradient-divider";
     divider.style.height = "2px";
@@ -2112,28 +2072,7 @@ if (initialActive) {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // 3️⃣ Lower-tier YES features
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
-      const features = yes.filter(f => tiers[tier].includes(f));
-      if (!features.length) return;
-
-      const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      features.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    });
-
-    // 4️⃣ Current-tier YES features
+    // Features for this tier
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -2144,18 +2083,11 @@ if (initialActive) {
 
       currentFeatures.forEach(f => {
         const li = document.createElement("li");
-        li.textContent = labels[f];
+        li.textContent = f;
         li.style.marginLeft = "20px";
         li.style.marginBottom = "12px";
         list.appendChild(li);
       });
-    }
-
-    // Fallback
-    if (!list.children.length) {
-      const li = document.createElement("li");
-      li.textContent = "Standard features included";
-      list.appendChild(li);
     }
 
     // ----- PayPal button -----
@@ -2174,7 +2106,7 @@ if (initialActive) {
     };
   });
 
-  // Highlight recommended plan
+  // ----- Highlight recommended plan based on yesFeatures -----
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
   const recCard = planCards.find(c =>
     yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
@@ -2186,6 +2118,10 @@ if (initialActive) {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
+
+
+ 
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
