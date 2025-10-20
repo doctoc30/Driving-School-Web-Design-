@@ -1669,25 +1669,45 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     </div>
   </div>
 
-
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
-
-  <div class="form-screen" id="instructor">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+<!-- ✅ FINAL CHOICE SCREEN -->
+<div class="form-screen" id="final-choice">
+  <h2>What would you like to do next?</h2>
   <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
+    <!-- Goes to ownership choice screen before showing pricing -->
+    <button type="button" onclick="showScreen('ownership-choice')">
+      I want to start my website ASAP
+    </button>
+
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">
+      I need more info
+    </button>
+
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
+
+<!-- ✅ OWNERSHIP CHOICE SCREEN -->
+<div class="form-screen" id="ownership-choice">
+  <h2>Do you want to own the website outright, or prefer monthly support (including hosting & maintenance)?</h2>
+  <div class="button-row">
+    <button 
+      type="button" 
+      class="own-outright" 
+      onclick="showScreen('recommended-plan-screen'); showRecommendedPlan('outright');">
+      Own Outright
+    </button>
+
+    <button 
+      type="button" 
+      class="monthly-support" 
+      onclick="showScreen('recommended-plan-screen'); showRecommendedPlan('monthly');">
+      Monthly Support
+    </button>
+
+    <button type="button" class="back-button" onclick="showScreen('final-choice')">Back</button>
+  </div>
+</div>
 
  
 <!-- ===================== RECOMMENDED PLAN ===================== -->
