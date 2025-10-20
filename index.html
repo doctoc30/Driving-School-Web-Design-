@@ -1750,7 +1750,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </form>
 
  
-
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
@@ -1854,7 +1853,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
-
 
 
 
@@ -1983,150 +1981,6 @@ if (initialActive) {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-
-
-
-// ===================== ShowRecommend - JS =====================
-let yesFeatures = []; // user-selected features
-
-function recordFeature(feature) {
-  if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-  next();
-}
-
-function recordNoFeature(feature) {
-  // Optional: could track skipped features
-  next();
-}
-
-function next() {
-  const current = document.querySelector(".form-screen.active");
-  if (!current) return;
-  let nextScreen = current.nextElementSibling;
-  while (nextScreen && !nextScreen.classList.contains("form-screen")) {
-    nextScreen = nextScreen.nextElementSibling;
-  }
-  if (nextScreen) showScreen(nextScreen.id);
-  else showRecommendedPlan();
-}
-
-function prev() {
-  const current = document.querySelector(".form-screen.active");
-  if (!current) return;
-  let prevScreen = current.previousElementSibling;
-  while (prevScreen && !prevScreen.classList.contains("form-screen")) {
-    prevScreen = prevScreen.previousElementSibling;
-  }
-  if (prevScreen) showScreen(prevScreen.id);
-}
-
-function showScreen(id) {
-  document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
-  const screen = document.getElementById(id);
-  if (screen) screen.classList.add("active");
-}
-
-function showRecommendedPlan() {
-  const tiers = {
-    basic: [
-      "Mobile-Friendly Design",
-      "Contact Form",
-      "Instructor Bio",
-      "Social Media Icons",
-      "Booking & Online Payment",
-      "Call-to-Action Buttons",
-      "Home Page Structure",
-      "Services Page Setup",
-      "Testimonials Section",
-      "Google Map Integration"
-    ],
-    pro: [
-      "Local SEO Optimization",
-      "Student Reviews",
-      "Branding & Logo",
-      "FAQ / Student Guide",
-      "Newsletter Signup",
-      "Photo Gallery",
-      "Blog / Updates",
-      "Multi-page Navigation",
-      "Lesson Pricing Table",
-      "Google Analytics Setup"
-    ],
-    premium: [
-      "Lesson Packages",
-      "Professional Email",
-      "Content Creation Help",
-      "What to Expect Guide",
-      "Downloadable PDFs",
-      "Video Embed Section",
-      "Automated Online Booking",
-    ]
-  };
-
-  const coreDefaults = {
-    basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
-
-  const prices = { basic: 750, pro: 1500, premium: 2500 };
-
-  const planCards = Array.from(document.querySelectorAll("#recommended-plan-screen .pricing-card"));
-
-  // Determine recommended plan
-  let recommended = "basic";
-  if (yesFeatures.some(f => tiers.premium.includes(f))) recommended = "premium";
-  else if (yesFeatures.some(f => tiers.pro.includes(f))) recommended = "pro";
-
-  planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const payBtn = card.querySelector(".pay-now");
-    const note = card.querySelector("small");
-
-    if (!level || !list || !priceEl || !payBtn) return;
-
-    // Update price
-    priceEl.textContent = `£${prices[level]}`;
-    payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${prices[level]} via PayPal`;
-    if (note) note.textContent = "50% now to secure, 50% on completion";
-
-    // Build features list including lower tiers
-    list.innerHTML = "";
-    const includedTiers = level === "premium" ? ["basic","pro","premium"] : level === "pro" ? ["basic","pro"] : ["basic"];
-    includedTiers.forEach(t => {
-      coreDefaults[t].forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = f;
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-
-      tiers[t].forEach(f => {
-        if (yesFeatures.includes(f)) {
-          const li = document.createElement("li");
-          li.textContent = f;
-          li.style.marginBottom = "12px";
-          list.appendChild(li);
-        }
-      });
-    });
-  });
-
-  // Highlight recommended
-  planCards.forEach(card => card.classList.remove("recommended"));
-  const recCard = planCards.find(c => c.dataset.plan.toLowerCase() === recommended);
-  if (recCard) recCard.classList.add("recommended");
-
-  // Fill hidden inputs for form submission
-  document.getElementById("hiddenPlan").value = recommended;
-  document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
-  document.getElementById("hiddenPaymentLink").value = `Pay £${prices[recommended]} via PayPal`;
-
-  showScreen("recommended-plan-screen");
-}
- 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
@@ -2155,6 +2009,7 @@ function showRecommendedPlan() {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          // 👇 Ensure we always move to welcome screen after animation
           setTimeout(() => showScreen('main-intro-options'), 2000);
         }, 500);
         return;
@@ -2180,28 +2035,15 @@ function showRecommendedPlan() {
 
     setLinesByOrientation();
     typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
   }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
+
+  // ✅ FIX: Always show welcome screen if no parameters
+  if (!codeParam && !stepParam) {
+    showScreen('main-intro-options');
+  }
 
   // Set up Q19 buttons after DOM is loaded
   setTimeout(setupQ19Buttons, 100);
@@ -2228,43 +2070,7 @@ function showRecommendedPlan() {
   updateWaterProgress();
   updateProgress(currentScreen + 1);
 
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
-        }
-      });
-    }, observerOptions);
-
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
-
-
-
-   // ------------------ Hamburger Menu ------------------
+  // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
@@ -2289,6 +2095,5 @@ function showRecommendedPlan() {
 
 }); /* end DOMContentLoaded */
 </script>
-
 </body>
 </html>
