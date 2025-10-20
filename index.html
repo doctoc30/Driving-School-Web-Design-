@@ -1772,40 +1772,13 @@ New
 
 
 <script>
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------ Intro Animation ------------------
-  const introAnimation = document.getElementById("skyrocket-intro");
-  const formWrapper = document.getElementById("formWrapper");
-
-  function startIntroAnimation() {
-    if (!introAnimation) {
-      showFirstFunnelScreen();
-      return;
-    }
-    introAnimation.classList.add("play"); // triggers CSS animation
-    setTimeout(() => {
-      introAnimation.style.display = "none";
-      showFirstFunnelScreen();
-    }, 3500); // adjust duration of intro animation in ms
-  }
-
-  function showFirstFunnelScreen() {
-    const firstScreen = document.querySelector(".form-screen.active") || document.querySelector(".form-screen");
-    if (firstScreen) firstScreen.style.display = "flex";
-    currentScreen = 0;
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-  }
-
-  startIntroAnimation();
-
   // ------------------ Basic setup ------------------
-  let screens = Array.from(document.querySelectorAll(".form-screen"));
+  const screens = Array.from(document.querySelectorAll(".form-screen"));
   let currentScreen = 0;
   const yesFeatures = new Set();
-  let highestPlan = "basic"; // default
+  let highestPlan = "basic"; 
   let ownershipChoice = "";
 
   const tiers = {
@@ -1825,10 +1798,9 @@ document.addEventListener("DOMContentLoaded", () => {
       'Automated Online Booking'
     ]
   };
-
   const tierOrder = ["basic","pro","premium"];
 
-  // ------------------ Navigation ------------------
+  // ------------------ Screen Navigation ------------------
   function hideAllScreens() { screens.forEach(s => s.style.display = "none"); }
 
   function showScreen(id) {
@@ -1854,6 +1826,26 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScreen--;
       showScreen(screens[currentScreen].id);
     }
+  }
+
+  window.next = next;
+  window.prev = prev;
+  window.showScreen = showScreen;
+
+  // ------------------ Progress Bar ------------------
+  function updateWaterProgress() { 
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
+  }
+
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
   }
 
   // ------------------ Feature Recording ------------------
@@ -1885,7 +1877,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hiddenPayment) hiddenPayment.value = generatePaymentLink(ownershipChoice);
   }
 
-  // ------------------ Ownership Choice ------------------
+  function generatePaymentLink(choice) {
+    if (choice === 'monthly') return `https://payment.com/${highestPlan}-monthly`;
+    return `https://payment.com/${highestPlan}-outright`;
+  }
+
+  // ------------------ Ownership / Recommended Plan ------------------
   window.showRecommendedPlan = (choice = 'outright') => {
     ownershipChoice = choice;
     updateHiddenFields();
@@ -1900,7 +1897,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const level = card.dataset.plan.toLowerCase();
       const priceEl = card.querySelector(".price");
       const payBtn = card.querySelector(".pay-now");
-
       if (!level || !priceEl || !payBtn) return;
 
       if (choice === 'monthly') {
@@ -1915,50 +1911,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  function generatePaymentLink(choice) {
-    if (choice === 'monthly') return `https://payment.com/${highestPlan}-monthly`;
-    return `https://payment.com/${highestPlan}-outright`;
-  }
-
-  // ------------------ Expose globally ------------------
-  window.next = next;
-  window.prev = prev;
-  window.showScreen = showScreen;
-  window.setPath = (path) => {}; // optional
-});
- 
-  // ------------------ Typewriter Animation ------------------
+  // ------------------ Intro Animation / Typewriter ------------------
   const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
+  function startIntroSequence() {
+    if (!typewriterEl) {
+      showScreen('main-intro-options');
+      return;
+    }
 
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
+    let lines = window.matchMedia("(orientation: landscape)").matches
+      ? ["We build", "your website.", "You approve,", "then pay."]
+      : ["We build", "your", "website.", "You approve,", "then pay."];
+
+    let currentLine = 0, currentChar = 0, lineEl = null;
+    const typingSpeed = 100, lineDelay = 500;
     const cursor = document.createElement('span');
     cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
 
     function typeChar() {
       if (currentLine >= lines.length) {
         cursor.remove();
         setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
+          typewriterEl.parentElement.style.display = 'none';
+          showScreen('main-intro-options');
         }, 500);
         return;
       }
+
       const text = lines[currentLine];
       if (!lineEl) {
         lineEl = document.createElement('div');
@@ -1966,6 +1946,7 @@ document.addEventListener("DOMContentLoaded", () => {
         typewriterEl.appendChild(lineEl);
         lineEl.appendChild(cursor);
       }
+
       if (currentChar < text.length) {
         lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
         currentChar++;
@@ -1978,27 +1959,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    setLinesByOrientation();
     typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
   }
 
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
+  hideAllScreens();
+  startIntroSequence();
+
+});
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
