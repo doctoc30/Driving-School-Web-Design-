@@ -2173,73 +2173,62 @@ document.addEventListener("DOMContentLoaded", () => {
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
-  function startTypewriterSequence() {
-    // Display typed lines then show main-intro-options
-    if (!typewriterEl) {
-      // fallback: just show first funnel screen
-      showScreen('main-intro-options');
+function startTypewriterSequence() {
+  const typewriterEl = document.getElementById('typewriter');
+  const funnelFirstScreenId = 'instructor-q1'; // your first question screen ID
+  const typingSpeed = 90;
+  const lineDelay = 450;
+
+  if (!typewriterEl) {
+    showScreen(funnelFirstScreenId);
+    return;
+  }
+
+  typewriterEl.style.display = 'block'; 
+  const lines = window.matchMedia("(orientation: landscape)").matches
+    ? ["We build", "your website.", "You approve,", "then pay."]
+    : ["We build", "your", "website.", "You approve,", "then pay."];
+
+  let currentLine = 0, currentChar = 0, lineEl = null;
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  typewriterEl.appendChild(cursor);
+
+  function typeChar() {
+    if (currentLine >= lines.length) {
+      cursor.remove();
+      setTimeout(() => {
+        typewriterEl.style.display = 'none';
+        showScreen(funnelFirstScreenId);
+      }, 600);
       return;
     }
 
-    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-    const lines = isLandscape
-      ? ["We build", "your website.", "You approve,", "then pay."]
-      : ["We build", "your", "website.", "You approve,", "then pay."];
-
-    let currentLine = 0, currentChar = 0, lineEl = null;
-    const typingSpeed = 90;
-    const lineDelay = 450;
-    const cursor = document.createElement('span');
-    cursor.className = 'cursor';
-    typewriterEl.appendChild(cursor);
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        // done typing
-        cursor.remove();
-        setTimeout(() => {
-          // animate away (if you have CSS) and show funnel
-          if (typewriterEl.parentElement) typewriterEl.parentElement.style.display = 'none';
-          showScreen('main-intro-options');
-        }, 600);
-        return;
-      }
-
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.className = 'typed-line';
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
+    const text = lines[currentLine];
+    if (!lineEl) {
+      lineEl = document.createElement('div');
+      lineEl.className = 'typed-line';
+      typewriterEl.appendChild(lineEl);
+      lineEl.appendChild(cursor);
     }
 
-    typeChar();
-    // re-run when orientation changes
-    window.addEventListener('resize', debounce(() => {
-      // do nothing if already gone
-    }, 300));
+    if (currentChar < text.length) {
+      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+      currentChar++;
+      setTimeout(typeChar, typingSpeed);
+    } else {
+      currentLine++;
+      currentChar = 0;
+      lineEl = null;
+      setTimeout(typeChar, lineDelay);
+    }
   }
 
-  function debounce(fn, wait) {
-    let t;
-    return function(...args) {
-      clearTimeout(t);
-      t = setTimeout(()=> fn.apply(this, args), wait);
-    };
-  }
+  typeChar();
+}
 
+
+ 
   // ------------------ Info popup helper (optional) ------------------
   window.showInfo = function(key) {
     const text = labels[key] || key;
