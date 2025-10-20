@@ -1769,8 +1769,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 </form>
 
- 
-<script>
+ <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1781,7 +1780,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  
+
   // Progress Bar Functions
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
@@ -1789,7 +1788,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-  
+
   function updateProgress(currentStep) {
     const progressBar = document.querySelector('.progress-bar');
     const progressLabel = document.querySelector('.progress-label');
@@ -1858,7 +1857,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    
+
     // Update both plan screens if active
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('outright');
@@ -1866,7 +1865,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
       showRecommendedPlan('monthly');
     }
-    
+
     console.log("Current YES Features:", yesFeatures);
   }
 
@@ -1874,52 +1873,37 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
+  // ------------------ Q19 Buttons ------------------
+  function setupQ19Buttons() {
+    const q19Screen = document.getElementById('instructor-q19');
+    if (!q19Screen) return;
 
+    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
+    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+    const backBtn = q19Screen.querySelector('.back-button');
 
- // ------------------ Q19 Buttons - FIXED ------------------
-function setupQ19Buttons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
+    if (ownOutrightBtn) {
+      ownOutrightBtn.onclick = () => {
+        ownershipChoice = 'Owned Outright';
+        recordFeature('buyOutright');
+        showScreen('recommended-plan-screen');
+      };
+    }
 
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-  const backBtn          = q19Screen.querySelector('.back-button');
+    if (monthlySupportBtn) {
+      monthlySupportBtn.onclick = () => {
+        ownershipChoice = 'Monthly Support';
+        recordFeature('monthlySupport');
+        showScreen('recommended-plan-screen');
+        showRecommendedPlan('monthly');
+      };
+    }
 
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      ownershipChoice = 'Owned Outright';
-      featureState['buyOutright'] = true;
-      syncFeatureState();
-      showScreen('recommended-plan-screen');
-    };
+    if (backBtn) {
+      backBtn.onclick = () => prev();
+    }
   }
 
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      ownershipChoice = 'Monthly Support';
-      featureState['monthlySupport'] = true;
-      syncFeatureState();
-      // ✅ use the existing pricing screen in monthly mode
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
-    };
-  }
-
-  if (backBtn) {
-    backBtn.onclick = () => prev();
-  }
-}
-
-
-// ensure Q19 buttons are wired and the funnel initial screen is set
-setupQ19Buttons();
-const initialActive = document.querySelector('.form-screen.active');
-if (initialActive) {
-  const idx = screens.indexOf(initialActive);
-  if (idx >= 0) currentScreen = idx;
-  showScreen(initialActive.id);
-}
- 
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -2029,7 +2013,6 @@ if (initialActive) {
         cursor.remove();
         setTimeout(() => {
           typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          // 👇 Ensure we always move to welcome screen after animation
           setTimeout(() => showScreen('main-intro-options'), 2000);
         }, 500);
         return;
@@ -2057,16 +2040,122 @@ if (initialActive) {
     typeChar();
   }
 
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // ------------------ Recommended Plan Logic ------------------
+  function showRecommendedPlan(mode = 'outright') {
+    const tiers = {
+      basic: [
+        "Mobile-Friendly Design",
+        "Contact Form",
+        "Instructor Bio",
+        "Social Media Icons",
+        "Booking & Online Payment",
+        "Call-to-Action Buttons",
+        "Home Page Structure",
+        "Services Page Setup",
+        "Testimonials Section",
+        "Google Map Integration"
+      ],
+      pro: [
+        "Local SEO Optimization",
+        "Student Reviews",
+        "Branding & Logo",
+        "FAQ / Student Guide",
+        "Newsletter Signup",
+        "Photo Gallery",
+        "Blog / Updates",
+        "Multi-page Navigation",
+        "Lesson Pricing Table",
+        "Google Analytics Setup"
+      ],
+      premium: [
+        "Lesson Packages",
+        "Professional Email",
+        "Content Creation Help",
+        "What to Expect Guide",
+        "Downloadable PDFs",
+        "Video Embed Section",
+        "Automated Online Booking",
+      ]
+    };
+
+    const coreDefaults = {
+      basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
+      pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
+      premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
+    };
+
+    const prices = { basic: 750, pro: 1500, premium: 2500 };
+
+    const planCards = Array.from(document.querySelectorAll("#recommended-plan-screen .pricing-card"));
+
+    // Determine recommended plan
+    let recommended = "basic";
+    if (yesFeatures.some(f => tiers.premium.includes(f))) recommended = "premium";
+    else if (yesFeatures.some(f => tiers.pro.includes(f))) recommended = "pro";
+
+    planCards.forEach(card => {
+      const level = card.dataset.plan.toLowerCase();
+      const list = card.querySelector(".features-list");
+      const priceEl = card.querySelector(".price");
+      const payBtn = card.querySelector(".pay-now");
+      const note = card.querySelector("small");
+
+      if (!level || !list || !priceEl || !payBtn) return;
+
+      priceEl.textContent = `£${prices[level]}`;
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${prices[level]} via PayPal`;
+      if (note) note.textContent = "50% now to secure, 50% on completion";
+
+      list.innerHTML = "";
+      const includedTiers = level === "premium" ? ["basic","pro","premium"] : level === "pro" ? ["basic","pro"] : ["basic"];
+      includedTiers.forEach(t => {
+        coreDefaults[t].forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = f;
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
+
+        tiers[t].forEach(f => {
+          if (yesFeatures.includes(f)) {
+            const li = document.createElement("li");
+            li.textContent = f;
+            li.style.marginBottom = "12px";
+            list.appendChild(li);
+          }
+        });
+      });
+    });
+
+    planCards.forEach(card => card.classList.remove("recommended"));
+    const recCard = planCards.find(c => c.dataset.plan.toLowerCase() === recommended);
+    if (recCard) recCard.classList.add("recommended");
+
+    // Fill hidden inputs
+    const hiddenPlan = document.getElementById("hiddenPlan");
+    if (hiddenPlan) hiddenPlan.value = recommended;
+
+    const hiddenFeatures = document.getElementById("hiddenFeatures");
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
+
+    const hiddenPaymentLink = document.getElementById("hiddenPaymentLink");
+    if (hiddenPaymentLink) hiddenPaymentLink.value = `Pay £${prices[recommended]} via PayPal`;
+
+    showScreen("recommended-plan-screen");
+  }
+
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
 
-  // ✅ FIX: Always show welcome screen if no parameters
-  if (!codeParam && !stepParam) {
-    showScreen('main-intro-options');
-  }
-
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
+  setupQ19Buttons();
 
   if (codeParam) {
     const inputEl = document.getElementById("designInput");
@@ -2082,13 +2171,20 @@ if (initialActive) {
       showScreen(screens[0].id);
     }
   } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+    if (typewriterEl) {
+      typewriterEl.classList.add('active');
+      if (colorRiseEl) colorRiseEl.classList.add('active');
+      startTypewriterAnimation();
+    } else {
+      showScreen('main-intro-options');
+    }
   }
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+
+});
+
 
   // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
