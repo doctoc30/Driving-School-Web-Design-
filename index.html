@@ -1259,6 +1259,24 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     </div>
   </div>
 
+New
+
+
+<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
+  <input type="hidden" id="hiddenPlan" name="Selected Plan">
+  <input type="hidden" id="hiddenFeatures" name="Selected Features">
+  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
+
+  <!-- ===================== INTRO ===================== -->
+  <div class="form-screen active" id="main-intro-options">
+    <h2>Welcome! What do you need help with today?</h2>
+    <div class="button-row">
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+    </div>
+  </div>
+
   <div class="form-screen" id="instructor-q1">
     <h2>Do you currently have a website?</h2>
     <div class="button-row">
@@ -1670,144 +1688,88 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 
 
+  <!-- ===================== FINAL CHOICE ===================== -->
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+      <!-- ✅ Updated to go to ownership choice -->
+      <button type="button" onclick="showScreen('ownership-choice')">I want to start my website ASAP</button>
+
+      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">
+        I need more info
+      </button>
+
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q19">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- ===================== OWNERSHIP CHOICE (NEW) ===================== -->
+  <div class="form-screen" id="ownership-choice">
+    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+    <div class="button-row">
+      <button type="button" class="own-outright" onclick="showScreen('recommended-plan-screen'); showRecommendedPlan('outright')">Own Outright</button>
+      <button type="button" class="monthly-support" onclick="showScreen('recommended-plan-screen'); showRecommendedPlan('monthly')">Monthly Support</button>
+      <button type="button" class="back-button" onclick="showScreen('final-choice')">Back</button>
+    </div>
   </div>
-</div>
 
+  <!-- ===================== RECOMMENDED PLAN ===================== -->
+  <div class="form-screen" id="recommended-plan-screen">
+    <h2>Your Recommended Plan</h2>
 
- 
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
+    <div class="pricing-container">
+      <!-- Basic Plan -->
+      <div class="pricing-card" data-plan="basic" data-animate>
+        <h3>Basic</h3>
+        <p class="price">£499</p>
+        <ul class="features-list">
+          <li>Pages - 10</li>
+          <li>Revisions - 10</li>
+          <li>Delivery - 15 Days</li>
+        </ul>
+        <button class="pay-now">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £499 via PayPal
+        </button>
+        <small>50% now to secure, 50% on completion</small>
+      </div>
 
-  <div class="pricing-container">
+      <!-- Pro Plan -->
+      <div class="pricing-card" data-plan="pro" data-animate>
+        <div class="badge">Recommended</div>
+        <h3>Pro</h3>
+        <p class="price">£999</p>
+        <ul class="features-list">
+          <li>Pages - 20</li>
+          <li>Revisions - 20</li>
+          <li>Delivery - 20 Days</li>
+        </ul>
+        <button class="pay-now">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £999 via PayPal
+        </button>
+        <small>50% now to secure, 50% on completion</small>
+      </div>
 
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Pro Plan -->
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-
-</div>
+      <!-- Premium Plan -->
+      <div class="pricing-card" data-plan="premium" data-animate>
+        <h3>Premium</h3>
+        <p class="price">£1499</p>
+        <ul class="features-list">
+          <li>Pages - 30</li>
+          <li>Revisions - 30</li>
+          <li>Delivery - 30 Days</li>
+        </ul>
+        <button class="pay-now">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+          Pay £1499 via PayPal
+        </button>
+        <small>50% now to secure, 50% on completion</small>
+      </div>
+    </div>
+  </div>
 </form>
 
- 
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-  <div class="pricing-container">
-
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Pro Plan -->
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-
-</div>
-</form>
 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
@@ -1914,6 +1876,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
 
+ 
 
 
  // ------------------ Q19 Buttons - FIXED ------------------
