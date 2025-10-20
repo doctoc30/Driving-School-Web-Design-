@@ -1561,16 +1561,18 @@ html, body {
 
  
 
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<!-- Step: Final choice -->
+<div class="form-screen" id="final-choice">
+  <h2>What would you like to do next?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('ownership-choice')">I want to start my website ASAP</button>
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q19">
+<!-- Step: Ownership question (formerly q19) -->
+<div class="form-screen" id="ownership-choice">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
