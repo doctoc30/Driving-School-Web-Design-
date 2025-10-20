@@ -1210,82 +1210,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   }
   nav.menu ul li a:hover { color: #222; }
 }
-
-
-
- /* ===== Form Screen Animations ===== */
-.form-screen {
-  display: none;
-  opacity: 0;
-  transform: translateX(50px);
-  transition: all 0.4s ease;
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-.form-screen.active {
-  display: block;
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ===== Button Styles ===== */
-.button-row button {
-  padding: 12px 25px;
-  margin: 10px 5px;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #4a90e2, #007aff);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.button-row button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* ===== Back Button ===== */
-.back-button-row button {
-  background: #e0e0e0;
-  color: #333;
-}
-
-/* ===== Info Icon ===== */
-.info-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-left: 8px;
-  background: #007aff;
-  color: #fff;
-  text-align: center;
-  line-height: 20px;
-  border-radius: 50%;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* ===== Tooltip Popup ===== */
-.info-popup {
-  display: none;
-  position: absolute;
-  max-width: 280px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  font-size: 14px;
-  color: #333;
-  z-index: 100;
-}
  
 </style>
 
@@ -1370,414 +1294,382 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     </div>
   </div>
 
- 
 
-<!-- ===================== FORM Q5–Q31 ===================== -->
-
-<!-- ===================== FORM 1 STYLE WITH INFO POPUPS ===================== -->
-
-<!-- Q5 -->
-<div class="form-screen" id="instructor-q5">
-  <h2>
-    Do you want your website to be mobile-friendly and look great on all devices?
-    <span class="info-icon" onclick="showInfo('Mobile-Friendly Design')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- ===================== BASIC PLAN Q5–Q14 ===================== -->
+  <div class="form-screen" id="instructor-q5">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want your website to be mobile-friendly and look great on all devices?</h2>
+    <p>Ensure your website works smoothly on phones, tablets, and computers so students can always reach you.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Mobile-Friendly Design'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Mobile-Friendly Design'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q6 -->
-<div class="form-screen" id="instructor-q6">
-  <h2>
-    Do you want a Contact Form on your website?
-    <span class="info-icon" onclick="showInfo('Contact Form')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('contact'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <div class="form-screen" id="instructor-q6">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want a Contact Form on your website?</h2>
+    <p>Make it easy for students to reach out or ask questions directly from your website.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Contact Form'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Contact Form'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q7 -->
-<div class="form-screen" id="instructor-q7">
-  <h2>
-    Do you want an Instructor Bio section?
-    <span class="info-icon" onclick="showInfo('Instructor Bio')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <div class="form-screen" id="instructor-q7">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want an Instructor Bio section?</h2>
+    <p>Introduce yourself and your experience to build trust with new students.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Instructor Bio'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Instructor Bio'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q8 -->
-<div class="form-screen" id="instructor-q8">
-  <h2>
-    Do you want Social Media Icons?
-    <span class="info-icon" onclick="showInfo('Social Media Icons')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('social'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <div class="form-screen" id="instructor-q8">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want Social Media Icons?</h2>
+    <p>Link your Facebook, Instagram, or other platforms so students can follow or contact you easily.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Social Media Icons'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Social Media Icons'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q9 -->
-<div class="form-screen" id="instructor-q9">
-  <h2>
-    Do you want Booking & Online Payment?
-    <span class="info-icon" onclick="showInfo('Booking & Online Payment')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('booking'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <div class="form-screen" id="instructor-q9">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want Booking & Online Payment?</h2>
+    <p>Allow students to book lessons and pay online directly on your website for convenience.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Booking & Online Payment'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Booking & Online Payment'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q10 -->
-<div class="form-screen" id="instructor-q10">
-  <h2>
-    Do you want strong Call-to-Action buttons?
-    <span class="info-icon" onclick="showInfo('Call-to-Action Buttons')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('cta'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <div class="form-screen" id="instructor-q10">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want strong Call-to-Action buttons?</h2>
+    <p>Guide students to book lessons or contact you with clear, eye-catching buttons.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Call-to-Action Buttons'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Call-to-Action Buttons'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q11 -->
-<div class="form-screen" id="instructor-q11">
-  <h2>
-    Do you want a structured Home Page?
-    <span class="info-icon" onclick="showInfo('Home Page Structure')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('home'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('home'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q11 -->
+  <div class="form-screen" id="instructor-q11">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want a structured Home Page?</h2>
+    <p>Organize key info like services, contact, and booking so students can easily navigate your site.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Home Page Structure'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Home Page Structure'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q12 -->
-<div class="form-screen" id="instructor-q12">
-  <h2>
-    Do you want a dedicated Services Page?
-    <span class="info-icon" onclick="showInfo('Services Page Setup')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('services'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('services'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q12 -->
+  <div class="form-screen" id="instructor-q12">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want a dedicated Services Page?</h2>
+    <p>Show all your lesson options clearly so students know exactly what you offer.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Services Page Setup'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Services Page Setup'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q13 -->
-<div class="form-screen" id="instructor-q13">
-  <h2>
-    Do you want a Testimonials Section?
-    <span class="info-icon" onclick="showInfo('Testimonials Section')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('testimonials'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('testimonials'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q13 -->
+  <div class="form-screen" id="instructor-q13">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want a Testimonials Section?</h2>
+    <p>Display feedback from happy students to build trust with new visitors.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Testimonials Section'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Testimonials Section'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q14 -->
-<div class="form-screen" id="instructor-q14">
-  <h2>
-    Do you want Google Map Integration?
-    <span class="info-icon" onclick="showInfo('Google Map Integration')">i</span>
-  </h2>
-  <p><strong>(Basic)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('map'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('map'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q14 -->
+  <div class="form-screen" id="instructor-q14">
+    <h3 class="plan-label">Basic Plan</h3>
+    <h2>Do you want Google Map Integration?</h2>
+    <p>Help students find your location easily with an embedded interactive map.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Google Map Integration'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Google Map Integration'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q15 -->
-<div class="form-screen" id="instructor-q15">
-  <h2>
-    Do you want Local Google SEO optimization?
-    <span class="info-icon" onclick="showInfo('Local SEO Optimization')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('seo'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q15 -->
+  <div class="form-screen" id="instructor-q15">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want Local Google SEO optimization?</h2>
+    <p>Help your website appear in local searches so students in your area can find you.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Local SEO Optimization'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Local SEO Optimization'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q16 -->
-<div class="form-screen" id="instructor-q16">
-  <h2>
-    Do you want a Student Reviews section?
-    <span class="info-icon" onclick="showInfo('Student Reviews')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q16 -->
+  <div class="form-screen" id="instructor-q16">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want a Student Reviews section?</h2>
+    <p>Showcase positive feedback from past students to build trust and credibility.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Student Reviews'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Student Reviews'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q17 -->
-<div class="form-screen" id="instructor-q17">
-  <h2>
-    Do you want Branding help (logo & colors)?
-    <span class="info-icon" onclick="showInfo('Branding & Logo')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q17 -->
+  <div class="form-screen" id="instructor-q17">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want Branding help (logo & colors)?</h2>
+    <p>Create a professional look that reflects your style and stands out from competitors.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Branding & Logo'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Branding & Logo'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q18 -->
-<div class="form-screen" id="instructor-q18">
-  <h2>
-    Do you want an FAQ or Student Guide?
-    <span class="info-icon" onclick="showInfo('FAQ / Student Guide')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q18 -->
+  <div class="form-screen" id="instructor-q18">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want an FAQ or Student Guide?</h2>
+    <p>Help students understand your lessons, policies, and what to expect before booking.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('FAQ / Student Guide'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('FAQ / Student Guide'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q19 -->
-<div class="form-screen" id="instructor-q19">
-  <h2>
-    Do you want a Newsletter Signup form?
-    <span class="info-icon" onclick="showInfo('Newsletter Signup')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('newsletter'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q19 -->
+  <div class="form-screen" id="instructor-q19">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want a Newsletter Signup form?</h2>
+    <p>Keep students updated with your latest lessons, promotions, or tips via email.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Newsletter Signup'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Newsletter Signup'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q20 -->
-<div class="form-screen" id="instructor-q20">
-  <h2>
-    Do you want a Photo Gallery?
-    <span class="info-icon" onclick="showInfo('Photo Gallery')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('gallery'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('gallery'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q20 -->
+  <div class="form-screen" id="instructor-q20">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want a Photo Gallery?</h2>
+    <p>Showcase your driving school, instructors, or events visually to impress visitors.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Photo Gallery'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Photo Gallery'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q21 -->
-<div class="form-screen" id="instructor-q21">
-  <h2>
-    Do you want a Blog or Updates Section?
-    <span class="info-icon" onclick="showInfo('Blog / Updates')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('blog'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('blog'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q21 -->
+  <div class="form-screen" id="instructor-q21">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want a Blog or Updates Section?</h2>
+    <p>Share tips, news, or stories to keep students engaged and improve your SEO.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Blog / Updates'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Blog / Updates'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q22 -->
-<div class="form-screen" id="instructor-q22">
-  <h2>
-    Do you want Multi-page Navigation?
-    <span class="info-icon" onclick="showInfo('Multi-page Navigation')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('navigation'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('navigation'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q22 -->
+  <div class="form-screen" id="instructor-q22">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want Multi-page Navigation?</h2>
+    <p>Help students find all important pages easily with a clear menu structure.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Multi-page Navigation'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Multi-page Navigation'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q23 -->
-<div class="form-screen" id="instructor-q23">
-  <h2>
-    Do you want a Lesson Pricing Table?
-    <span class="info-icon" onclick="showInfo('Lesson Pricing Table')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('lesson-pricing'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('lesson-pricing'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q23 -->
+  <div class="form-screen" id="instructor-q23">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want a Lesson Pricing Table?</h2>
+    <p>Display your lesson packages and prices clearly so students can easily choose.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Lesson Pricing Table'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Lesson Pricing Table'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q24 -->
-<div class="form-screen" id="instructor-q24">
-  <h2>
-    Do you want Google Analytics setup?
-    <span class="info-icon" onclick="showInfo('Google Analytics Setup')">i</span>
-  </h2>
-  <p><strong>(Pro)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('analytics'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('analytics'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q24 -->
+  <div class="form-screen" id="instructor-q24">
+    <h3 class="plan-label">Pro Plan</h3>
+    <h2>Do you want Google Analytics setup?</h2>
+    <p>Track student visits, understand engagement, and improve your website.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Google Analytics Setup'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Google Analytics Setup'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q25 -->
-<div class="form-screen" id="instructor-q25">
-  <h2>
-    Do you want Lesson Packages & Gift Vouchers?
-    <span class="info-icon" onclick="showInfo('Lesson Packages & Gift Vouchers')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('packages'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- ===================== PREMIUM PLAN Q25–Q32 ===================== -->
+  <!-- Q25 -->
+  <div class="form-screen" id="instructor-q25">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want Lesson Packages & Gift Vouchers?</h2>
+    <p>Offer structured packages and gift options to boost student bookings.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Lesson Packages'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Lesson Packages'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q26 -->
-<div class="form-screen" id="instructor-q26">
-  <h2>
-    Do you want a Professional Email?
-    <span class="info-icon" onclick="showInfo('Professional Email')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('email'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('email'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q26 -->
+  <div class="form-screen" id="instructor-q26">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want a Professional Email?</h2>
+    <p>Get a branded email address to look professional and trustworthy to students.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Professional Email'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Professional Email'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q27 -->
-<div class="form-screen" id="instructor-q27">
-  <h2>
-    Do you want help with Content Creation?
-    <span class="info-icon" onclick="showInfo('Content Creation Help')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('content'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('content'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q27 -->
+  <div class="form-screen" id="instructor-q27">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want help with Content Creation?</h2>
+    <p>Get guidance on writing text, adding images, and videos that engage students.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Content Creation Help'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Content Creation Help'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q28 -->
-<div class="form-screen" id="instructor-q28">
-  <h2>
-    Do you want a “What to Expect” Guide?
-    <span class="info-icon" onclick="showInfo('What to Expect Guide')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('expect-guide'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('expect-guide'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q28 -->
+  <div class="form-screen" id="instructor-q28">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want a “What to Expect” Guide?</h2>
+    <p>Provide students with a clear idea of lessons, procedures, and policies for smoother onboarding.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('What to Expect Guide'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('What to Expect Guide'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q29 -->
-<div class="form-screen" id="instructor-q29">
-  <h2>
-    Do you want Downloadable PDFs (e.g., Terms, Checklists)?
-    <span class="info-icon" onclick="showInfo('Downloadable PDFs')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('pdfs'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('pdfs'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q29 -->
+  <div class="form-screen" id="instructor-q29">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want Downloadable PDFs (e.g., Terms, Checklists)?</h2>
+    <p>Provide useful resources for students to download directly from your website.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Downloadable PDFs'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Downloadable PDFs'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q30 -->
-<div class="form-screen" id="instructor-q30">
-  <h2>
-    Do you want a Video Embed Section?
-    <span class="info-icon" onclick="showInfo('Video Embed Section')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('video'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('video'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q30 -->
+  <div class="form-screen" id="instructor-q30">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want a Video Embed Section?</h2>
+    <p>Show videos of lessons, testimonials, or promotions to engage students visually.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Video Embed Section'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Video Embed Section'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
 
-<!-- Q31 -->
-<div class="form-screen" id="instructor-q31">
-  <h2>
-    Do you want fully Automated Online Booking?
-    <span class="info-icon" onclick="showInfo('Automated Online Booking')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('auto-booking'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('auto-booking'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+  <!-- Q31 -->
+  <div class="form-screen" id="instructor-q31">
+    <h3 class="plan-label">Premium Plan</h3>
+    <h2>Do you want fully Automated Online Booking?</h2>
+    <p>Students can book lessons directly without contacting you manually, saving time and reducing errors.</p>
+    <div class="button-row">
+      <button type="button" onclick="recordFeature('Automated Online Booking'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('Automated Online Booking'); next()">No</button>
+    </div>
+    <div class="button-row back-button-row">
+      <button type="button" onclick="prev()">Back</button>
+    </div>
   </div>
-</div>
-
-<!-- Q32 -->
-<div class="form-screen" id="instructor-q32">
-  <h2>
-    Do you want Advanced Reporting & Insights?
-    <span class="info-icon" onclick="showInfo('Advanced Reporting & Insights')">i</span>
-  </h2>
-  <p><strong>(Premium)</strong></p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('reporting'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('reporting'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<!-- ===================== MODERN INFO POPUP SCRIPT ===================== -->
-<div id="info-popup" class="info-popup">
-  <div class="info-content">
-    <span class="close-popup" onclick="closeInfo()">×</span>
-    <div id="info-text"></div>
-  </div>
-</div>
 
 
- 
   <div class="form-screen" id="final-choice">
     <h2>What would you like to do next?</h2>
     <div class="button-row">
@@ -1797,6 +1689,61 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 
+ 
+<!-- ===================== RECOMMENDED PLAN ===================== -->
+<div class="form-screen" id="recommended-plan-screen">
+  <h2>Your Recommended Plan</h2>
+
+  <div class="pricing-container">
+
+<!-- Basic Plan -->
+<div class="pricing-card" data-plan="basic" data-animate>
+  <h3>Basic</h3>
+  <p class="price">£499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 10</li>
+    <li style="margin-bottom: 12px;">Revisions - 10</li>
+    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
+
+<!-- Pro Plan -->
+<div class="pricing-card" data-plan="pro" data-animate>
+  <div class="badge">Recommended</div>
+  <h3>Pro</h3>
+  <p class="price">£999</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 20</li>
+    <li style="margin-bottom: 12px;">Revisions - 20</li>
+    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £999 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
+
+<!-- Premium Plan -->
+<div class="pricing-card" data-plan="premium" data-animate>
+  <h3>Premium</h3>
+  <p class="price">£1499</p>
+  <ul class="features-list">
+    <li style="margin-bottom: 12px;">Pages - 30</li>
+    <li style="margin-bottom: 12px;">Revisions - 30</li>
+    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
+  </ul>
+  <button class="pay-now">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+    Pay £1499 via PayPal
+  </button>
+  <small>50% now to secure, 50% on completion</small>
+</div>
 
 
 </div>
@@ -1862,10 +1809,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 </form>
 
-
-
- <script>
-/* ---------- CLEANED & CONSOLIDATED FUNNEL JS ---------- */
+<script>
+/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1875,19 +1820,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-
-  // ------------------ Progress Bar ------------------
+  
+  // Progress Bar Functions
   function updateWaterProgress() { 
     const wave = document.getElementById('progress-wave');
     if (!wave) return;
     const progressPercent = ((currentScreen + 1) / screens.length) * 100;
     wave.style.height = progressPercent + '%';
   }
-
-  function updateProgress() {
+  
+  function updateProgress(currentStep) {
     const progressBar = document.querySelector('.progress-bar');
     const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentScreen + 1) / screens.length * 100);
+    const percent = Math.round((currentStep / screens.length) * 100);
     if (progressBar) progressBar.style.width = percent + '%';
     if (progressLabel) progressLabel.textContent = percent + '%';
   }
@@ -1909,80 +1854,131 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") showRecommendedPlan('outright');
-    if (screen.id === "monthly-plan-screen") showRecommendedPlan('monthly');
-
+    if (screen.id === "recommended-plan-screen") {
+      showRecommendedPlan('outright');
+    } else if (screen.id === "monthly-plan-screen") {
+      showRecommendedPlan('monthly');
+    }
     updateWaterProgress();
-    updateProgress();
+    updateProgress(currentScreen + 1);
   }
 
   function next() {
-    if (currentScreen < screens.length - 1) showScreen(screens[currentScreen + 1].id);
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   function prev() {
-    if (currentScreen > 0) showScreen(screens[currentScreen - 1].id);
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
   }
 
   window.showScreen = showScreen;
   window.next = next;
   window.prev = prev;
 
-  // ------------------ Feature Tracking ------------------
-  const featureState = {};
-  let yesFeatures = [];
-  let noFeatures = [];
+  // ------------------ User Path & Features ------------------
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
   let ownershipChoice = "";
+  const featureState = {};
 
   function syncFeatureState() {
-    yesFeatures = [];
-    noFeatures = [];
-    Object.entries(featureState).forEach(([f, isYes]) => isYes ? yesFeatures.push(f) : noFeatures.push(f));
-
+    yesFeatures.length = 0;
+    noFeatures.length = 0;
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) yesFeatures.push(f);
+      else noFeatures.push(f);
+    });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) showRecommendedPlan('outright');
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) showRecommendedPlan('monthly');
+    
+    // Update both plan screens if active
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan('outright');
+    }
+    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
+      showRecommendedPlan('monthly');
+    }
+    
+    console.log("Current YES Features:", yesFeatures);
   }
 
+  window.setPath = (path) => userPath = path;
   window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
-  // ------------------ Q19 Buttons ------------------
-  function setupQ19Buttons() {
-    const q19Screen = document.getElementById('instructor-q19');
-    if (!q19Screen) return;
 
-    const ownOutrightBtn = q19Screen.querySelector('button.own-outright');
-    const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-    const backBtn = q19Screen.querySelector('.back-button');
 
-    if (ownOutrightBtn) ownOutrightBtn.onclick = () => {
+
+ // ------------------ Q19 Buttons - FIXED ------------------
+function setupQ19Buttons() {
+  const q19Screen = document.getElementById('instructor-q19');
+  if (!q19Screen) return;
+
+  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+  const backBtn          = q19Screen.querySelector('.back-button');
+
+  if (ownOutrightBtn) {
+    ownOutrightBtn.onclick = () => {
       ownershipChoice = 'Owned Outright';
       featureState['buyOutright'] = true;
       syncFeatureState();
       showScreen('recommended-plan-screen');
     };
+  }
 
-    if (monthlySupportBtn) monthlySupportBtn.onclick = () => {
+  if (monthlySupportBtn) {
+    monthlySupportBtn.onclick = () => {
       ownershipChoice = 'Monthly Support';
       featureState['monthlySupport'] = true;
       syncFeatureState();
+      // ✅ use the existing pricing screen in monthly mode
       showScreen('recommended-plan-screen');
       showRecommendedPlan('monthly');
     };
-
-    if (backBtn) backBtn.onclick = () => prev();
   }
-  setupQ19Buttons();
+
+  if (backBtn) {
+    backBtn.onclick = () => prev();
+  }
+}
+
+
+// ensure Q19 buttons are wired and the funnel initial screen is set
+setupQ19Buttons();
+const initialActive = document.querySelector('.form-screen.active');
+if (initialActive) {
+  const idx = screens.indexOf(initialActive);
+  if (idx >= 0) currentScreen = idx;
+  showScreen(initialActive.id);
+}
+ 
+  // ------------------ "I Want This Concept" Button ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
     const input = document.getElementById('designInput');
     if (!input) return;
     const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
+    if (!code) {
+      alert("Please enter a design code.");
+      return;
+    }
     showFilteredTemplate(code);
   };
 
@@ -2013,7 +2009,9 @@ document.addEventListener("DOMContentLoaded", () => {
     heading.textContent = `Showing template for code: ${code}`;
     container.appendChild(heading);
 
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`) || document.getElementById(code);
+    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+    if (!foundEl) foundEl = document.getElementById(code);
+
     if (foundEl) {
       const clone = foundEl.cloneNode(true);
       clone.classList.add('template-preview-clone');
@@ -2035,7 +2033,7 @@ document.addEventListener("DOMContentLoaded", () => {
       screens = Array.from(document.querySelectorAll('.form-screen'));
       currentScreen = screens.indexOf(templateScreen);
       updateWaterProgress();
-      updateProgress();
+      updateProgress(currentScreen + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -2043,176 +2041,304 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
+
+
+
+function showRecommendedPlan(planType = 'outright') {
+  const isMonthly = planType === 'monthly';
+  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
+  if (!planCards.length) return;
+
+  const yes = yesFeatures.slice();
+
+  const tiers = {
+    basic: ["booking","mobile","cta","contact","bio","social"],
+    pro: ["seo","reviews","branding","faq","newsletter"],
+    premium: ["packages","email","content","guide"]
+  };
+
+  const labels = {
+    booking: "Online booking & payment",
+    mobile: "Mobile-friendly design",
+    cta: "Strong call-to-action buttons",
+    contact: "Simple contact form",
+    bio: "About / Instructor bio",
+    social: "Social media integration",
+    seo: "Local Google SEO",
+    reviews: "Student reviews",
+    branding: "Branding help (logo & colors)",
+    faq: "FAQ / Student guide",
+    newsletter: "Newsletter signup",
+    packages: "Lesson packages & gift vouchers",
+    email: "Professional email address",
+    content: "Content creation help",
+    guide: "What to Expect guide"
+  };
+
+  const coreDefaults = {
+    basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
+    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
+    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
+  };
+
+  const tierOrder = ["basic","pro","premium"];
+  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
+  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
+  const setupFees = { basic: 199, pro: 299, premium: 499 };
+
+  planCards.forEach(card => {
+    const level = card.dataset.plan.toLowerCase();
+    const list = card.querySelector(".features-list");
+    const priceEl = card.querySelector(".price");
+    const payBtn = card.querySelector(".pay-now");
+    const note = card.querySelector("small");
+
+    if (!level || !list || !priceEl || !payBtn) return;
+
+    // ----- Pricing -----
+    if (isMonthly) {
+      priceEl.textContent = `£${monthlyPrices[level]}/month`;
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
+      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+    } else {
+      priceEl.textContent = `£${outrightPrices[level]}`;
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
+      if (note) note.textContent = "50% now to secure, 50% on completion";
+    }
+
+    // ----- Features List -----
+    list.innerHTML = "";
+
+    // 1️⃣ Core Defaults
+    coreDefaults[level].forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.style.marginBottom = "12px";
+      list.appendChild(li);
     });
+
+    // Insert gradient divider after core defaults
+    const divider = document.createElement("li");
+    divider.className = "gradient-divider";
+    divider.style.height = "2px";
+    divider.style.margin = "25px 0";
+    divider.style.listStyle = "none";
+    divider.style.border = "none";
+    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+    list.appendChild(divider);
+
+    // ----- Lower-tier YES features -----
+    tierOrder.forEach(tier => {
+      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+      const features = yes.filter(f => tiers[tier].includes(f));
+      if (!features.length) return;
+
+      const heading = document.createElement("li");
+      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      features.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    });
+
+    // ----- Current-tier YES features -----
+    const currentFeatures = yes.filter(f => tiers[level].includes(f));
+    if (currentFeatures.length) {
+      const heading = document.createElement("li");
+      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      currentFeatures.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    }
+
+    // Fallback
+    if (!list.children.length) {
+      const li = document.createElement("li");
+      li.textContent = "Standard features included";
+      list.appendChild(li);
+    }
+
+    // ----- PayPal button -----
+    payBtn.onclick = () => {
+      localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
+      localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
+      localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
+      localStorage.setItem("noFeatures", JSON.stringify(noFeatures));
+
+      const paypalLink = isMonthly
+        ? "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_MONTHLY_BUTTON_ID"
+        : "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_OUTRIGHT_BUTTON_ID";
+
+      const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
+      window.location.href = `${paypalLink}&return=${thankYouURL}`;
+    };
   });
 
-  // ------------------ Recommended Plan ------------------
-  function prepareFormSubmission(selectedPlan, planType, paypalLink) {
-    document.getElementById("hiddenPlan").value = selectedPlan;
-    document.getElementById("hiddenFeatures").value = yesFeatures.join(", ");
-    document.getElementById("hiddenPaymentLink").value = paypalLink;
+  // Highlight recommended plan
+  planCards.forEach(card => card.classList.remove("recommended", "in-view"));
+  const recCard = planCards.find(c =>
+    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
+    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
+    : c.dataset.plan === "basic"
+  );
+  if (recCard) {
+    recCard.classList.add("recommended", "in-view");
+    setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
-
-  function getRecommendedTier() {
-    const tiers = {
-      basic: ["booking","mobile","cta","contact","bio","social"],
-      pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
-      premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
-    };
-    if (yesFeatures.some(f => tiers.premium.includes(f))) return "premium";
-    if (yesFeatures.some(f => tiers.pro.includes(f))) return "pro";
-    return "basic";
-  }
-
-  function showRecommendedPlan(planType = 'outright') {
-    const isMonthly = planType === 'monthly';
-    const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-    if (!planCards.length) return;
-
-    const tiers = {
-      basic: ["booking","mobile","cta","contact","bio","social"],
-      pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
-      premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
-    };
-    const labels = {
-      booking:"Online booking & payment", mobile:"Mobile-friendly design", cta:"Strong call-to-action buttons",
-      contact:"Simple contact form", bio:"About / Instructor bio", social:"Social media integration",
-      seo:"Local Google SEO", reviews:"Student reviews", branding:"Branding help (logo & colors)",
-      faq:"FAQ / Student guide", newsletter:"Newsletter signup", packages:"Lesson packages & gift vouchers",
-      email:"Professional email address", content:"Content creation help", guide:"What to Expect guide",
-      gallery:"Photo gallery", blog:"Blog / updates section", navigation:"Multi-page navigation",
-      "lesson-pricing":"Lesson pricing table", analytics:"Google Analytics setup", "expect-guide":"What to Expect guide",
-      pdfs:"Downloadable PDFs", video:"Video embed section", "auto-booking":"Automated online booking",
-      reporting:"Advanced reporting & insights"
-    };
-    const coreDefaults = {
-      basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
-      pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
-      premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
-    };
-    const tierOrder = ["basic","pro","premium"];
-    const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
-    const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-    const setupFees = { basic: 199, pro: 299, premium: 499 };
-
-    planCards.forEach(card => {
-      const level = card.dataset.plan.toLowerCase();
-      const list = card.querySelector(".features-list");
-      const priceEl = card.querySelector(".price");
-      const payBtn = card.querySelector(".pay-now");
-      const note = card.querySelector("small");
-      if (!level || !list || !priceEl || !payBtn) return;
-
-      // Pricing
-      if (isMonthly) {
-        priceEl.textContent = `£${monthlyPrices[level]}/month`;
-        if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
-      } else {
-        priceEl.textContent = `£${outrightPrices[level]}`;
-        if (note) note.textContent = "50% now to secure, 50% on completion";
-      }
-
-      // Features
-      list.innerHTML = "";
-      coreDefaults[level].forEach(f => { const li = document.createElement("li"); li.textContent = f; li.style.marginBottom="12px"; list.appendChild(li); });
-      const divider = document.createElement("li");
-      divider.className="gradient-divider"; divider.style.height="2px"; divider.style.margin="25px 0"; divider.style.listStyle="none";
-      divider.style.border="none"; divider.style.background="linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-      list.appendChild(divider);
-
-      // Current-tier YES features
-      const currentFeatures = yesFeatures.filter(f => tiers[level].includes(f));
-      if (currentFeatures.length) {
-        const heading = document.createElement("li");
-        heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`; heading.style.fontWeight="700"; heading.style.marginTop="20px";
-        list.appendChild(heading);
-        currentFeatures.forEach(f => { const li=document.createElement("li"); li.textContent=labels[f]; li.style.marginLeft="20px"; li.style.marginBottom="12px"; list.appendChild(li); });
-      }
-
-      // PayPal button
-      payBtn.onclick = () => {
-        const paypalLink = isMonthly
-          ? "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_MONTHLY_BUTTON_ID"
-          : "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_OUTRIGHT_BUTTON_ID";
-        prepareFormSubmission(level.charAt(0).toUpperCase()+level.slice(1)+" Plan", planType, paypalLink);
-        const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
-        window.location.href = `${paypalLink}&return=${thankYouURL}`;
-      };
-    });
-
-    // Highlight recommended plan
-    planCards.forEach(c => c.classList.remove("recommended","in-view"));
-    const recCard = planCards.find(c => c.dataset.plan === getRecommendedTier());
-    if (recCard) { recCard.classList.add("recommended","in-view"); setTimeout(()=>recCard.scrollIntoView({behavior:"smooth",block:"center"}),200); }
-  }
-
+}
+ 
   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
   function startTypewriterAnimation() {
     if (!typewriterEl) return;
-    typewriterEl.style.opacity=1;
-    let lines=[],currentLine=0,currentChar=0,lineEl=null;
-    const typingSpeed=100,lineDelay=500;
-    const cursor=document.createElement('span'); cursor.classList.add('cursor'); typewriterEl.appendChild(cursor);
+    typewriterEl.style.opacity = 1;
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
 
     function setLinesByOrientation() {
       lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build","your website.","You approve,","then pay."]
-        : ["We build","your","website.","You approve,","then pay."];
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
     }
 
     function typeChar() {
-      if(currentLine>=lines.length){ cursor.remove(); setTimeout(()=>{typewriterEl.style.animation='rocketRise 2s ease forwards'; setTimeout(()=>showScreen('main-intro-options'),2000);},500); return; }
-      const text=lines[currentLine];
-      if(!lineEl){ lineEl=document.createElement('div'); lineEl.classList.add('typed-line'); typewriterEl.appendChild(lineEl); lineEl.appendChild(cursor); }
-      if(currentChar<text.length){ lineEl.insertBefore(document.createTextNode(text[currentChar]),cursor); currentChar++; setTimeout(typeChar,typingSpeed); } else { currentLine++; currentChar=0; lineEl=null; setTimeout(typeChar,lineDelay); }
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
     }
 
     setLinesByOrientation();
     typeChar();
 
-    window.addEventListener('resize', debounce(()=>{currentLine=0; currentChar=0; lineEl=null; typewriterEl.textContent=''; typewriterEl.appendChild(cursor); setLinesByOrientation(); typeChar();},300));
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
   }
 
-  function debounce(func,wait){ let timeout; return function(...args){ clearTimeout(timeout); timeout=setTimeout(()=>func.apply(this,args),wait); }; }
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
   // ------------------ Initialize Funnel ------------------
   hideAllScreens();
+
+  // Set up Q19 buttons after DOM is loaded
+  setTimeout(setupQ19Buttons, 100);
+
   if (codeParam) {
-    const inputEl=document.getElementById("designInput");
-    if(inputEl) inputEl.value=codeParam;
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
-  } else if(stepParam) {
-    const stepName=`instructor-q${stepParam}`;
-    const screenIndex=screens.findIndex(s=>s.id===stepName);
-    if(screenIndex!==-1){ currentScreen=screenIndex; showScreen(stepName); } else showScreen(screens[0].id);
-  } else { if(typewriterEl) typewriterEl.classList.add('active'); if(colorRiseEl) colorRiseEl.classList.add('active'); startTypewriterAnimation(); }
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
+    } else {
+      showScreen(screens[0].id);
+    }
+  } else {
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
+  }
 
   updateWaterProgress();
-  updateProgress();
+  updateProgress(currentScreen + 1);
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
-    const cards=document.querySelectorAll('.pricing-card[data-animate]');
-    if(!cards || cards.length===0) return;
-    if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in-view')); return; }
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards || cards.length === 0) return; 
 
-    const observerOptions={ root:null, rootMargin:'0px 0px -12% 0px', threshold:[0,0.05,0.15] };
-    const observer=new IntersectionObserver((entries,obs)=>{ entries.forEach(entry=>{ try{ if(entry.isIntersecting||entry.intersectionRatio>0){ entry.target.classList.add('in-view'); obs.unobserve(entry.target); } } catch(e){ try{entry.target.classList.add('in-view');}catch{} try{obs.unobserve(entry.target);}catch{} } }); },observerOptions);
-    Array.from(cards).forEach(card=>observer.observe(card));
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in-view'));
+      return;
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -12% 0px',
+      threshold: [0, 0.05, 0.15]
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        try {
+          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+          if (isVisible) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        } catch (err) {
+          try { entry.target.classList.add('in-view'); } catch(e) {}
+          try { obs.unobserve(entry.target); } catch(e) {}
+        }
+      });
+    }, observerOptions);
+
+    Array.from(cards).forEach(card => observer.observe(card));
   })();
 
-});
-  
+
+
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
