@@ -1646,7 +1646,7 @@ html, body {
 </form>
 
 <script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
+
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1656,22 +1656,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
-  
-  // Progress Bar Functions
-  function updateWaterProgress() { 
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
-  }
-  
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
 
   // ------------------ Screen Navigation ------------------
   function hideAllScreens() {
@@ -1690,11 +1674,10 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan('outright');
-    } else if (screen.id === "monthly-plan-screen") {
-      showRecommendedPlan('monthly');
-    }
+    // Update pricing if showing recommended plan
+    if (screen.id === "recommended-plan-screen") showRecommendedPlan('outright');
+    if (screen.id === "monthly-plan-screen") showRecommendedPlan('monthly');
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1719,402 +1702,223 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ User Path & Features ------------------
   let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
+  let yesFeatures = [];
+  let noFeatures = [];
   let ownershipChoice = "";
   const featureState = {};
 
   function syncFeatureState() {
-    yesFeatures.length = 0;
-    noFeatures.length = 0;
+    yesFeatures = [];
+    noFeatures = [];
     Object.entries(featureState).forEach(([f, isYes]) => {
       if (isYes) yesFeatures.push(f);
       else noFeatures.push(f);
     });
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    
-    // Update both plan screens if active
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('outright');
-    }
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('monthly');
-    }
-    
-    console.log("Current YES Features:", yesFeatures);
   }
 
   window.setPath = (path) => userPath = path;
-  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+  window.recordFeature = (feature) => {
+    featureState[feature] = true;
+    syncFeatureState();
 
-
-
-
- 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
-
-  // ------------------ Design Code Handling ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
+    // After Q32 → show ownership choice
+    const activeScreen = screens[currentScreen];
+    if (activeScreen && activeScreen.id === "instructor-q32") {
+      showScreen("ownership-choice");
     }
-    showFilteredTemplate(code);
+  };
+  window.recordNoFeature = (feature) => {
+    featureState[feature] = false;
+    syncFeatureState();
+
+    const activeScreen = screens[currentScreen];
+    if (activeScreen && activeScreen.id === "instructor-q32") {
+      showScreen("ownership-choice");
+    }
   };
 
-  function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
-    if (!code) return;
-    hideAllScreens();
+  // ---------------------- OWNERSHIP CHOICE ----------------------
+  function setupOwnershipButtons() {
+    const screen = document.getElementById('ownership-choice');
+    if (!screen) return;
 
-    if (stepParam === "4") {
-      const designInput = document.getElementById("designInput");
-      if (designInput) designInput.value = code;
-      showScreen("instructor-q4");
-      return;
+    const ownOutrightBtn = screen.querySelector('.own-outright');
+    const monthlySupportBtn = screen.querySelector('.monthly-support');
+
+    if (ownOutrightBtn) {
+      ownOutrightBtn.onclick = () => {
+        ownershipChoice = 'Own Outright';
+        showScreen('recommended-plan-screen');
+        showRecommendedPlan('outright');
+      };
     }
 
-    let templateScreen = document.getElementById('template-results');
-    if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = Array.from(document.querySelectorAll('.form-screen'));
+    if (monthlySupportBtn) {
+      monthlySupportBtn.onclick = () => {
+        ownershipChoice = 'Monthly Support';
+        showScreen('recommended-plan-screen');
+        showRecommendedPlan('monthly');
+      };
     }
-
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
-    heading.textContent = `Showing template for code: ${code}`;
-    container.appendChild(heading);
-
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-    if (!foundEl) foundEl = document.getElementById(code);
-
-    if (foundEl) {
-      const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
-      container.appendChild(clone);
-
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
-      contBtn.onclick = () => next();
-      buttonRow.appendChild(contBtn);
-      container.appendChild(buttonRow);
-
-      templateScreen.innerHTML = '';
-      templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-      currentScreen = screens.indexOf(templateScreen);
-      updateWaterProgress();
-      updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
   }
 
+  setupOwnershipButtons();
 
+  // ---------------------- RECOMMENDED PLAN ----------------------
+  function showRecommendedPlan(planType = 'outright') {
+    const isMonthly = planType === 'monthly';
+    const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
+    if (!planCards.length) return;
 
+    const yes = yesFeatures.slice();
 
+    const tiers = {
+      basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
+      pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
+      premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
+    };
 
+    const labels = {
+      mobile: "Mobile-friendly design",
+      contact: "Contact Form",
+      bio: "Instructor Bio",
+      social: "Social Media Icons",
+      booking: "Booking & Online Payment",
+      cta: "Call-to-Action Buttons",
+      home: "Structured Home Page",
+      services: "Services Page",
+      testimonials: "Testimonials Section",
+      map: "Google Map Integration",
+      seo: "Local Google SEO",
+      reviews: "Student Reviews",
+      branding: "Branding Help (Logo & Colors)",
+      faq: "FAQ / Student Guide",
+      newsletter: "Newsletter Signup",
+      gallery: "Photo Gallery",
+      blog: "Blog / Updates Section",
+      navigation: "Multi-page Navigation",
+      "lesson-pricing": "Lesson Pricing Table",
+      analytics: "Google Analytics Setup",
+      packages: "Lesson Packages & Gift Vouchers",
+      email: "Professional Email",
+      content: "Content Creation Help",
+      "expect-guide": "“What to Expect” Guide",
+      pdfs: "Downloadable PDFs",
+      video: "Video Embed Section",
+      "auto-booking": "Automated Online Booking",
+      reporting: "Advanced Reporting & Insights"
+    };
 
-// ---------------------- RECOMMENDED PLAN ----------------------
-function showRecommendedPlan(planType = 'outright') {
-  const isMonthly = planType === 'monthly';
-  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-  if (!planCards.length) return;
+    const coreDefaults = {
+      basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
+      pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
+      premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
+    };
 
-  const yes = yesFeatures.slice();
+    const tierOrder = ["basic", "pro", "premium"];
+    const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
+    const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
+    const setupFees = { basic: 199, pro: 299, premium: 499 };
 
-  const tiers = {
-    basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
-    pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
-    premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
-  };
+    planCards.forEach(card => {
+      const level = card.dataset.plan.toLowerCase();
+      const list = card.querySelector(".features-list");
+      const priceEl = card.querySelector(".price");
+      const payBtn = card.querySelector(".pay-now");
+      const note = card.querySelector("small");
+      if (!level || !list || !priceEl || !payBtn) return;
 
-  const labels = {
-    mobile: "Mobile-friendly design",
-    contact: "Contact Form",
-    bio: "Instructor Bio",
-    social: "Social Media Icons",
-    booking: "Booking & Online Payment",
-    cta: "Call-to-Action Buttons",
-    home: "Structured Home Page",
-    services: "Services Page",
-    testimonials: "Testimonials Section",
-    map: "Google Map Integration",
-    seo: "Local Google SEO",
-    reviews: "Student Reviews",
-    branding: "Branding Help (Logo & Colors)",
-    faq: "FAQ / Student Guide",
-    newsletter: "Newsletter Signup",
-    gallery: "Photo Gallery",
-    blog: "Blog / Updates Section",
-    navigation: "Multi-page Navigation",
-    "lesson-pricing": "Lesson Pricing Table",
-    analytics: "Google Analytics Setup",
-    packages: "Lesson Packages & Gift Vouchers",
-    email: "Professional Email",
-    content: "Content Creation Help",
-    "expect-guide": "“What to Expect” Guide",
-    pdfs: "Downloadable PDFs",
-    video: "Video Embed Section",
-    "auto-booking": "Automated Online Booking",
-    reporting: "Advanced Reporting & Insights"
-  };
+      // Pricing
+      if (isMonthly) {
+        priceEl.textContent = `£${monthlyPrices[level]}/month`;
+        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
+        if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+      } else {
+        priceEl.textContent = `£${outrightPrices[level]}`;
+        payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
+        if (note) note.textContent = "50% now to secure, 50% on completion";
+      }
 
-  const coreDefaults = {
-    basic: ["Pages - 10", "Revisions - 10", "Delivery - 15 Days"],
-    pro: ["Pages - 20", "Revisions - 20", "Delivery - 20 Days"],
-    premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
-  };
+      // Features
+      list.innerHTML = "";
+      coreDefaults[level].forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f;
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
 
-  const tierOrder = ["basic", "pro", "premium"];
-  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
-  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees = { basic: 199, pro: 299, premium: 499 };
+      const divider = document.createElement("li");
+      divider.className = "gradient-divider";
+      divider.style.height = "2px";
+      divider.style.margin = "25px 0";
+      divider.style.listStyle = "none";
+      divider.style.border = "none";
+      divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+      list.appendChild(divider);
 
-  planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const payBtn = card.querySelector(".pay-now");
-    const note = card.querySelector("small");
+      tierOrder.forEach(tier => {
+        if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+        const features = yes.filter(f => tiers[tier].includes(f));
+        if (!features.length) return;
+        const heading = document.createElement("li");
+        heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+        heading.style.fontWeight = "700";
+        heading.style.marginTop = "20px";
+        list.appendChild(heading);
+        features.forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = labels[f];
+          li.style.marginLeft = "20px";
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
+      });
 
-    if (!level || !list || !priceEl || !payBtn) return;
+      const currentFeatures = yes.filter(f => tiers[level].includes(f));
+      if (currentFeatures.length) {
+        const heading = document.createElement("li");
+        heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+        heading.style.fontWeight = "700";
+        heading.style.marginTop = "20px";
+        list.appendChild(heading);
+        currentFeatures.forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = labels[f];
+          li.style.marginLeft = "20px";
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
+      }
+    });
+  }
 
-    // ----- Pricing -----
-    if (isMonthly) {
-      priceEl.textContent = `£${monthlyPrices[level]}/month`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) {
+      currentScreen = screenIndex;
+      showScreen(stepName);
     } else {
-      priceEl.textContent = `£${outrightPrices[level]}`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
-      if (note) note.textContent = "50% now to secure, 50% on completion";
+      showScreen(screens[0].id);
     }
-
-    // ----- Features -----
-    list.innerHTML = "";
-
-    // 1️⃣ Core Defaults
-    coreDefaults[level].forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f;
-      li.style.marginBottom = "12px";
-      list.appendChild(li);
-    });
-
-    // Divider
-    const divider = document.createElement("li");
-    divider.className = "gradient-divider";
-    divider.style.height = "2px";
-    divider.style.margin = "25px 0";
-    divider.style.listStyle = "none";
-    divider.style.border = "none";
-    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-    list.appendChild(divider);
-
-    // Include lower-tier yeses
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
-      const features = yes.filter(f => tiers[tier].includes(f));
-      if (!features.length) return;
-
-      const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      features.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    });
-
-    // Current tier yeses
-    const currentFeatures = yes.filter(f => tiers[level].includes(f));
-    if (currentFeatures.length) {
-      const heading = document.createElement("li");
-      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      currentFeatures.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    }
-  });
-
-  // Highlight recommended plan
-  planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const recCard = planCards.find(c =>
-    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
-    : c.dataset.plan === "basic"
-  );
-  if (recCard) {
-    recCard.classList.add("recommended", "in-view");
-    setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-  }
-}
-
-
-
-
-// ---------------------- FEATURE RECORDING ----------------------
-function recordFeature(feature) {
-  if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
-  noFeatures = noFeatures.filter(f => f !== feature);
-
-  // ✅ After Q32 → go to ownership-choice
-  const activeScreen = screens[currentScreen];
-  if (activeScreen && activeScreen.id === "instructor-q32") {
-    showScreen("ownership-choice");
-  }
-}
-
-function recordNoFeature(feature) {
-  if (!noFeatures.includes(feature)) noFeatures.push(feature);
-  yesFeatures = yesFeatures.filter(f => f !== feature);
-
-  // ✅ After Q32 → go to ownership-choice
-  const activeScreen = screens[currentScreen];
-  if (activeScreen && activeScreen.id === "instructor-q32") {
-    showScreen("ownership-choice");
-  }
-}
-
-// ---------------------- OWNERSHIP CHOICE ----------------------
-function setupOwnershipButtons() {
-  const screen = document.getElementById("ownership-choice");
-  if (!screen) return;
-
-  const ownOutrightBtn = screen.querySelector(".own-outright");
-  const monthlySupportBtn = screen.querySelector(".monthly-support");
-
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      ownershipChoice = "Own Outright";
-      // ✅ Move to Recommended Plan screen
-      showScreen("recommended-plan-screen");
-      // ✅ Load outright pricing
-      setTimeout(() => showRecommendedPlan("outright"), 200);
-    };
-  }
-
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      ownershipChoice = "Monthly Support";
-      // ✅ Move to Recommended Plan screen
-      showScreen("recommended-plan-screen");
-      // ✅ Load monthly pricing
-      setTimeout(() => showRecommendedPlan("monthly"), 200);
-    };
-  }
-}
-
-// ✅ Initialize ownership buttons after DOM loads
-document.addEventListener("DOMContentLoaded", setupOwnershipButtons);
-
-// ---------------------- INITIAL FUNNEL SETUP ----------------------
-hideAllScreens();
-
-setTimeout(setupQ19Buttons, 100);
-
-if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
-  const stepName = `instructor-q${stepParam}`;
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
   } else {
     showScreen(screens[0].id);
   }
-} else {
-  if (typewriterEl) typewriterEl.classList.add("active");
-  if (colorRiseEl) colorRiseEl.classList.add("active");
-  startTypewriterAnimation();
-}
 
-updateWaterProgress();
-updateProgress(currentScreen + 1);
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
 
-// ------------------ IntersectionObserver for pricing cards ------------------
-(function initPricingObserver() {
-  const cards = document.querySelectorAll(".pricing-card[data-animate]");
-  if (!cards || cards.length === 0) return;
-
-  if (!("IntersectionObserver" in window)) {
-    cards.forEach(c => c.classList.add("in-view"));
-    return;
-  }
-
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px 0px -12% 0px",
-    threshold: [0, 0.05, 0.15],
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      try {
-        const isVisible =
-          entry.isIntersecting ||
-          (typeof entry.intersectionRatio === "number" && entry.intersectionRatio > 0);
-        if (isVisible) {
-          entry.target.classList.add("in-view");
-          obs.unobserve(entry.target);
-        }
-      } catch (err) {
-        try {
-          entry.target.classList.add("in-view");
-        } catch (e) {}
-        try {
-          obs.unobserve(entry.target);
-        } catch (e) {}
-      }
-    });
-  }, observerOptions);
-
-  Array.from(cards).forEach(card => observer.observe(card));
-})();
-
-
+}); 
 
    // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
