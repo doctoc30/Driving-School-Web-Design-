@@ -1644,8 +1644,8 @@ html, body {
 </div>
 </form>
 
-<script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
+ <script>
+/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION & ALL FEATURES ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1689,11 +1689,13 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScreen = screens.indexOf(screen);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
+    // ✅ FIX 1: Show recommended plan based on ownershipChoice set by the final buttons
     if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan('outright');
-    } else if (screen.id === "monthly-plan-screen") {
-      showRecommendedPlan('monthly');
-    }
+      const planType = ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+      showRecommendedPlan(planType);
+    } 
+    // ❌ Removed outdated 'monthly-plan-screen' logic
+
     updateWaterProgress();
     updateProgress(currentScreen + 1);
   }
@@ -1720,7 +1722,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userPath = "";
   const yesFeatures = [];
   const noFeatures = [];
-  let ownershipChoice = "";
+  let ownershipChoice = ""; // Initialized
   const featureState = {};
 
   function syncFeatureState() {
@@ -1733,12 +1735,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const hiddenFeatures = document.getElementById('hiddenFeatures');
     if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
     
-    // Update both plan screens if active
+    // ✅ FIX 2: Correctly update plan screen if active
     if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('outright');
-    }
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('monthly');
+        const planType = ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+        showRecommendedPlan(planType);
     }
     
     console.log("Current YES Features:", yesFeatures);
@@ -1749,130 +1749,115 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
 
-// ------------------ OWNERSHIP CHOICE BUTTONS - CORRECTED ------------------
+// ------------------ OWNERSHIP CHOICE BUTTONS - CORRECTED (Q32 Follow-up) ------------------
 
 function setupFinalOwnershipButtons() {
+  // Assuming the final buttons are on screen #ownership-choice
   const ownOutrightBtn = document.querySelector('#ownership-choice button.own-outright');
   const monthlySupportBtn = document.querySelector('#ownership-choice button.monthly-support');
 
   if (ownOutrightBtn) {
     ownOutrightBtn.onclick = () => {
-      // 1. Record the choice
       ownershipChoice = 'Owned Outright';
       featureState['buyOutright'] = true;
       syncFeatureState();
-      // 2. Redirect to the plan screen
       showScreen('recommended-plan-screen');
     };
   }
 
   if (monthlySupportBtn) {
     monthlySupportBtn.onclick = () => {
-      // 1. Record the choice
       ownershipChoice = 'Monthly Support';
       featureState['monthlySupport'] = true;
       syncFeatureState();
-      // 2. Redirect to the plan screen
       showScreen('recommended-plan-screen'); 
     };
   }
 }
 
-// Initial setup call for the entire application
-setupFinalOwnershipButtons(); // <-- Call the CORRECTED setup function
-const initialActive = document.querySelector('.form-screen.active');
-if (initialActive) {
-  const idx = screens.indexOf(initialActive);
-  if (idx >= 0) currentScreen = idx;
-  showScreen(initialActive.id);
+// ------------------ "I Want This Concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
+    if (!code) return;
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+    window.location.assign(funnelURL);
+  });
+});
+
+// ------------------ Design Code Handling ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim();
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+  showFilteredTemplate(code);
+};
+
+function showFilteredTemplate(rawCode) {
+  const code = String(rawCode || '').trim().toUpperCase();
+  if (!code) return;
+  hideAllScreens();
+
+  if (stepParam === "4") {
+    const designInput = document.getElementById("designInput");
+    if (designInput) designInput.value = code;
+    showScreen("instructor-q4");
+    return;
+  }
+
+  let templateScreen = document.getElementById('template-results');
+  if (!templateScreen) {
+    templateScreen = document.createElement('div');
+    templateScreen.id = 'template-results';
+    templateScreen.classList.add('form-screen');
+    document.getElementById('formWrapper').appendChild(templateScreen);
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+  }
+
+  const container = document.createElement('div');
+  container.className = 'template-container';
+  const heading = document.createElement('h2');
+  heading.textContent = `Showing template for code: ${code}`;
+  container.appendChild(heading);
+
+  let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+  if (!foundEl) foundEl = document.getElementById(code);
+
+  if (foundEl) {
+    const clone = foundEl.cloneNode(true);
+    clone.classList.add('template-preview-clone');
+    clone.style.width = '100%';
+    container.appendChild(clone);
+
+    const buttonRow = document.createElement('div');
+    buttonRow.className = 'button-row';
+    const contBtn = document.createElement('button');
+    contBtn.type = 'button';
+    contBtn.textContent = 'Continue';
+    contBtn.onclick = () => next();
+    buttonRow.appendChild(contBtn);
+    container.appendChild(buttonRow);
+
+    templateScreen.innerHTML = '';
+    templateScreen.appendChild(container);
+    templateScreen.classList.add('active');
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+    currentScreen = screens.indexOf(templateScreen);
+    updateWaterProgress();
+    updateProgress(currentScreen + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
 }
 
 
-
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
-
-  // ------------------ Design Code Handling ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-    showFilteredTemplate(code);
-  };
-
-  function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
-    if (!code) return;
-    hideAllScreens();
-
-    if (stepParam === "4") {
-      const designInput = document.getElementById("designInput");
-      if (designInput) designInput.value = code;
-      showScreen("instructor-q4");
-      return;
-    }
-
-    let templateScreen = document.getElementById('template-results');
-    if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-    }
-
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
-    heading.textContent = `Showing template for code: ${code}`;
-    container.appendChild(heading);
-
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-    if (!foundEl) foundEl = document.getElementById(code);
-
-    if (foundEl) {
-      const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
-      container.appendChild(clone);
-
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
-      contBtn.onclick = () => next();
-      buttonRow.appendChild(contBtn);
-      container.appendChild(buttonRow);
-
-      templateScreen.innerHTML = '';
-      templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-      currentScreen = screens.indexOf(templateScreen);
-      updateWaterProgress();
-      updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  }
-
-
-
-
+// ------------------ showRecommendedPlan (UPDATED with all 28 new features) ------------------
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1880,28 +1865,52 @@ function showRecommendedPlan(planType = 'outright') {
 
   const yes = yesFeatures.slice();
 
+  // ✅ UPDATED: Tiers now include all 28 new features from Q5-Q32
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
-    pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
+    basic: [
+      "mobile", "contact", "bio", "social", "booking", "cta", "home", "services", "testimonials", "map"
+    ], // Q5-Q14
+    pro: [
+      "seo", "reviews", "branding", "faq", "newsletter", "gallery", "blog", "navigation", "lesson-pricing", "analytics"
+    ], // Q15-Q24
+    premium: [
+      "packages", "email", "content", "expect-guide", "pdfs", "video", "auto-booking", "reporting"
+    ] // Q25-Q32
   };
 
+  // ✅ UPDATED: Labels for all new features
   const labels = {
-    booking: "Online booking & payment",
+    // Basic
     mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
     contact: "Simple contact form",
     bio: "About / Instructor bio",
     social: "Social media integration",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
+    booking: "Online booking & payment",
+    cta: "Strong call-to-action buttons",
+    home: "Structured Home Page",
+    services: "Dedicated Services Page",
+    testimonials: "Testimonials Section",
+    map: "Google Map Integration",
+    // Pro
+    seo: "Local Google SEO optimization",
+    reviews: "Student reviews section",
     branding: "Branding help (logo & colors)",
     faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
+    newsletter: "Newsletter signup form",
+    gallery: "Photo Gallery",
+    blog: "Blog or Updates Section",
+    navigation: "Multi-page Navigation",
+    'lesson-pricing': "Lesson Pricing Table",
+    analytics: "Google Analytics setup",
+    // Premium
     packages: "Lesson packages & gift vouchers",
     email: "Professional email address",
     content: "Content creation help",
-    guide: "What to Expect guide"
+    'expect-guide': "“What to Expect” Guide",
+    pdfs: "Downloadable PDFs (e.g., Terms)",
+    video: "Video Embed Section",
+    'auto-booking': "Fully Automated Online Booking",
+    reporting: "Advanced Reporting & Insights"
   };
 
   const coreDefaults = {
@@ -1956,51 +1965,54 @@ function showRecommendedPlan(planType = 'outright') {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // ----- Lower-tier YES features -----
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
-      const features = yes.filter(f => tiers[tier].includes(f));
-      if (!features.length) return;
+    // --- Add selected features (with better filtering) ---
+    const getFeatureTier = (feature) => {
+        if (tiers.basic.includes(feature)) return 'Basic';
+        if (tiers.pro.includes(feature)) return 'Pro';
+        if (tiers.premium.includes(feature)) return 'Premium';
+        return null;
+    };
 
-      const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      features.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
+    const currentTierIndex = tierOrder.indexOf(level);
+    const tiersToInclude = tierOrder.slice(0, currentTierIndex + 1).map(t => t.charAt(0).toUpperCase() + t.slice(1));
+    
+    const featuresByTier = {};
+    yes.forEach(f => {
+        const tier = getFeatureTier(f);
+        // Only include features from the current tier or lower tiers
+        if (tier && tiersToInclude.includes(tier)) { 
+            if (!featuresByTier[tier]) featuresByTier[tier] = [];
+            featuresByTier[tier].push(f);
+        }
     });
 
-    // ----- Current-tier YES features -----
-    const currentFeatures = yes.filter(f => tiers[level].includes(f));
-    if (currentFeatures.length) {
-      const heading = document.createElement("li");
-      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
+    // Iterate over tiers and display features
+    tiersToInclude.forEach(tier => {
+        const features = featuresByTier[tier];
+        if (features && features.length > 0) {
+            const heading = document.createElement("li");
+            heading.textContent = `${tier} Features`;
+            heading.style.fontWeight = "700";
+            heading.style.marginTop = "20px";
+            list.appendChild(heading);
 
-      currentFeatures.forEach(f => {
+            features.forEach(f => {
+                const li = document.createElement("li");
+                li.textContent = labels[f] || f;
+                li.style.marginLeft = "20px";
+                li.style.marginBottom = "12px";
+                list.appendChild(li);
+            });
+        }
+    });
+    // Fallback check
+    if (list.children.length === coreDefaults[level].length + 1) { 
         const li = document.createElement("li");
-        li.textContent = labels[f];
+        li.textContent = "Standard website features included.";
         li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
         list.appendChild(li);
-      });
     }
 
-    // Fallback
-    if (!list.children.length) {
-      const li = document.createElement("li");
-      li.textContent = "Standard features included";
-      list.appendChild(li);
-    }
 
     // ----- PayPal button -----
     payBtn.onclick = () => {
@@ -2105,28 +2117,42 @@ function showRecommendedPlan(planType = 'outright') {
   }
 
   // ------------------ Initialize Funnel ------------------
+  // ✅ FIX 3: Corrected Initialization Logic to prevent blank screen
   hideAllScreens();
+  setupFinalOwnershipButtons(); // Wire up the final buttons
 
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
+  let startScreenId = 'main-intro-options'; // Default starting screen
 
   if (codeParam) {
     const inputEl = document.getElementById("designInput");
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (stepParam) {
+    // Handling deep links to a specific step
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
+      startScreenId = stepName;
+      showScreen(startScreenId);
     } else {
-      showScreen(screens[0].id);
+      showScreen(startScreenId);
     }
   } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
+    // Normal start: Start the typewriter animation if present
+    const initialActive = document.querySelector('.form-screen.active');
+    
+    if (typewriterEl?.classList.contains('active') || colorRiseEl?.classList.contains('active')) {
+       // Typewriter animation handles the first showScreen() call
+       startTypewriterAnimation();
+    } 
+    // If a screen is manually marked active, use it
+    else if (initialActive) {
+      showScreen(initialActive.id);
+    }
+    // Final fallback
+    else {
+      showScreen(startScreenId);
+    }
   }
 
   updateWaterProgress();
@@ -2167,7 +2193,6 @@ function showRecommendedPlan(planType = 'outright') {
   })();
 
 
-
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
@@ -2193,6 +2218,5 @@ function showRecommendedPlan(planType = 'outright') {
 
 }); /* end DOMContentLoaded */
 </script>
-
 </body>
 </html>
