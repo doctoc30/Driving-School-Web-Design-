@@ -1992,8 +1992,7 @@ function showRecommendedPlan(planType = 'outright') {
 
 
 
-
- // ---------------------- FEATURE RECORDING ----------------------
+// ---------------------- FEATURE RECORDING ----------------------
 function recordFeature(feature) {
   if (!yesFeatures.includes(feature)) yesFeatures.push(feature);
   noFeatures = noFeatures.filter(f => f !== feature);
@@ -2018,31 +2017,106 @@ function recordNoFeature(feature) {
 
 // ---------------------- OWNERSHIP CHOICE ----------------------
 function setupOwnershipButtons() {
-  const screen = document.getElementById('ownership-choice');
+  const screen = document.getElementById("ownership-choice");
   if (!screen) return;
 
-  const ownOutrightBtn = screen.querySelector('.own-outright');
-  const monthlySupportBtn = screen.querySelector('.monthly-support');
+  const ownOutrightBtn = screen.querySelector(".own-outright");
+  const monthlySupportBtn = screen.querySelector(".monthly-support");
 
   if (ownOutrightBtn) {
     ownOutrightBtn.onclick = () => {
-      ownershipChoice = 'Own Outright';
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('outright');
+      ownershipChoice = "Own Outright";
+      // ✅ Move to Recommended Plan screen
+      showScreen("recommended-plan-screen");
+      // ✅ Load outright pricing
+      setTimeout(() => showRecommendedPlan("outright"), 200);
     };
   }
 
   if (monthlySupportBtn) {
     monthlySupportBtn.onclick = () => {
-      ownershipChoice = 'Monthly Support';
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
+      ownershipChoice = "Monthly Support";
+      // ✅ Move to Recommended Plan screen
+      showScreen("recommended-plan-screen");
+      // ✅ Load monthly pricing
+      setTimeout(() => showRecommendedPlan("monthly"), 200);
     };
   }
 }
 
-setupOwnershipButtons();
-  // ------------------ Typewriter Animation ------------------
+// ✅ Initialize ownership buttons after DOM loads
+document.addEventListener("DOMContentLoaded", setupOwnershipButtons);
+
+// ---------------------- INITIAL FUNNEL SETUP ----------------------
+hideAllScreens();
+
+setTimeout(setupQ19Buttons, 100);
+
+if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showFilteredTemplate(codeParam);
+} else if (stepParam) {
+  const stepName = `instructor-q${stepParam}`;
+  const screenIndex = screens.findIndex(s => s.id === stepName);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id);
+  }
+} else {
+  if (typewriterEl) typewriterEl.classList.add("active");
+  if (colorRiseEl) colorRiseEl.classList.add("active");
+  startTypewriterAnimation();
+}
+
+updateWaterProgress();
+updateProgress(currentScreen + 1);
+
+// ------------------ IntersectionObserver for pricing cards ------------------
+(function initPricingObserver() {
+  const cards = document.querySelectorAll(".pricing-card[data-animate]");
+  if (!cards || cards.length === 0) return;
+
+  if (!("IntersectionObserver" in window)) {
+    cards.forEach(c => c.classList.add("in-view"));
+    return;
+  }
+
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px 0px -12% 0px",
+    threshold: [0, 0.05, 0.15],
+  };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      try {
+        const isVisible =
+          entry.isIntersecting ||
+          (typeof entry.intersectionRatio === "number" && entry.intersectionRatio > 0);
+        if (isVisible) {
+          entry.target.classList.add("in-view");
+          obs.unobserve(entry.target);
+        }
+      } catch (err) {
+        try {
+          entry.target.classList.add("in-view");
+        } catch (e) {}
+        try {
+          obs.unobserve(entry.target);
+        } catch (e) {}
+      }
+    });
+  }, observerOptions);
+
+  Array.from(cards).forEach(card => observer.observe(card));
+})();
+
+
+
+   // ------------------ Typewriter Animation ------------------
   const typewriterEl = document.getElementById('typewriter');
   const colorRiseEl = document.querySelector('.color-rise');
 
@@ -2115,70 +2189,7 @@ setupOwnershipButtons();
     };
   }
 
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
-
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      showScreen(screens[0].id);
-    }
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
-      return;
-    }
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
-        }
-      });
-    }, observerOptions);
-
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
-
-
-
+ 
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
