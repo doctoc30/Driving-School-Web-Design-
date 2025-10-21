@@ -1749,52 +1749,46 @@ document.addEventListener("DOMContentLoaded", () => {
   window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
 
+// ------------------ OWNERSHIP CHOICE BUTTONS - CORRECTED ------------------
 
-
- // ------------------ Q19 Buttons - FIXED ------------------
-function setupQ19Buttons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
-
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-  const backBtn          = q19Screen.querySelector('.back-button');
+function setupFinalOwnershipButtons() {
+  const ownOutrightBtn = document.querySelector('#ownership-choice button.own-outright');
+  const monthlySupportBtn = document.querySelector('#ownership-choice button.monthly-support');
 
   if (ownOutrightBtn) {
     ownOutrightBtn.onclick = () => {
+      // 1. Record the choice
       ownershipChoice = 'Owned Outright';
       featureState['buyOutright'] = true;
       syncFeatureState();
+      // 2. Redirect to the plan screen
       showScreen('recommended-plan-screen');
     };
   }
 
   if (monthlySupportBtn) {
     monthlySupportBtn.onclick = () => {
+      // 1. Record the choice
       ownershipChoice = 'Monthly Support';
       featureState['monthlySupport'] = true;
       syncFeatureState();
-      // ✅ use the existing pricing screen in monthly mode
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly');
+      // 2. Redirect to the plan screen
+      showScreen('recommended-plan-screen'); 
     };
-  }
-
-  if (backBtn) {
-    backBtn.onclick = () => prev();
   }
 }
 
-
-// ensure Q19 buttons are wired and the funnel initial screen is set
-setupQ19Buttons();
+// Initial setup call for the entire application
+setupFinalOwnershipButtons(); // <-- Call the CORRECTED setup function
 const initialActive = document.querySelector('.form-screen.active');
 if (initialActive) {
   const idx = screens.indexOf(initialActive);
   if (idx >= 0) currentScreen = idx;
   showScreen(initialActive.id);
 }
- 
+
+
+
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
     btn.addEventListener("click", () => {
