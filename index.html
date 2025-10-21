@@ -1140,24 +1140,28 @@ html, body {
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
-      <button type="button" onclick="next()">Custom design</button>
-    </div>
-  </div>
 
-  <div class="form-screen" id="design-code">
-    <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-    <div class="button-row">
-      <button type="button" onclick="goToConcept()">Continue</button>
-      <button type="button" onclick="next()">Skip</button>
-    </div>
+ <!-- Step: Do you have a design in mind -->
+<div class="form-screen" id="instructor-q2">
+  <h2>Do you have a design concept in mind?</h2>
+  <p>You can enter a design code, choose from templates, or request a custom design.</p>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
+    <button type="button" onclick="showScreen('instructor-q4')">Custom design</button>
   </div>
+</div>
+
+<!-- Step: Enter design code -->
+<div class="form-screen" id="design-code">
+  <h2>Enter your chosen design code</h2>
+  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5">
+  <div class="button-row">
+    <button type="button" onclick="goToConcept()">Continue</button>
+    <button type="button" onclick="showScreen('instructor-q4')">Skip</button>
+  </div>
+</div>
+
 
   <div class="form-screen" id="instructor-q4">
     <h2>Are you a solo driving instructor or a driving school?</h2>
