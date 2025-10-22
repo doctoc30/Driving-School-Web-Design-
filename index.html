@@ -2043,78 +2043,6 @@ function showRecommendedPlan(planType = 'outright') {
   }
 }
  
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
-
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
-
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
 
   // ------------------ Initialize Funnel ------------------
   // ✅ FIX 3: Corrected Initialization Logic to prevent blank screen
@@ -2193,6 +2121,100 @@ function showRecommendedPlan(planType = 'outright') {
   })();
 
 
+
+// ------------------ Typewriter Animation ------------------
+const typewriterEl = document.getElementById('typewriter');
+const colorRiseEl = document.querySelector('.color-rise');
+
+function startTypewriterAnimation() {
+  if (!typewriterEl) return;
+
+  typewriterEl.style.opacity = 1;
+  typewriterEl.innerHTML = ''; // clear any previous lines if re-triggered
+
+  let lines = [];
+  let currentLine = 0;
+  let currentChar = 0;
+  let lineEl = null;
+  const typingSpeed = 100;
+  const lineDelay = 500;
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  typewriterEl.appendChild(cursor);
+
+  function setLinesByOrientation() {
+    // Split differently for mobile vs desktop
+    lines = window.matchMedia("(orientation: landscape)").matches
+      ? ["We build", "your website.", "You approve,", "then pay."]
+      : ["We build", "your", "website.", "You approve,", "then pay."];
+  }
+
+  function typeChar() {
+    if (currentLine >= lines.length) {
+      // Finished typing all lines
+      cursor.remove();
+
+      // ⏳ Wait briefly before triggering rocket animation
+      setTimeout(() => {
+        // Trigger rocket rise animation
+        typewriterEl.classList.add('rocket-animating');
+        typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+
+        // Fade out after the rocket completes
+        setTimeout(() => {
+          typewriterEl.style.opacity = 0;
+          // After fade, start next screen
+          showScreen('main-intro-options');
+        }, 2200);
+      }, 800);
+
+      return;
+    }
+
+    const text = lines[currentLine];
+    if (!lineEl) {
+      lineEl = document.createElement('div');
+      lineEl.classList.add('typed-line');
+      typewriterEl.appendChild(lineEl);
+      lineEl.appendChild(cursor);
+    }
+
+    if (currentChar < text.length) {
+      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+      currentChar++;
+      setTimeout(typeChar, typingSpeed);
+    } else {
+      currentLine++;
+      currentChar = 0;
+      lineEl = null;
+      setTimeout(typeChar, lineDelay);
+    }
+  }
+
+  setLinesByOrientation();
+  typeChar();
+
+  // ✅ On resize, restart animation gracefully (debounced)
+  window.addEventListener('resize', debounce(() => {
+    currentLine = 0;
+    currentChar = 0;
+    lineEl = null;
+    typewriterEl.innerHTML = '';
+    typewriterEl.appendChild(cursor);
+    setLinesByOrientation();
+    typeChar();
+  }, 300));
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+ 
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
