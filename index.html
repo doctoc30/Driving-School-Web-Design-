@@ -1590,8 +1590,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- New question for payment selection after final-choice -->
-<div class="form-screen" id="instructor-q33">
+
+ <div class="form-screen" id="instructor-q33">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
@@ -1599,6 +1599,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
+
+
 
 
 
@@ -1898,43 +1900,17 @@ function showRecommendedPlan(planType = 'outright') {
 
   const yes = yesFeatures.slice();
 
+// ------------------ Funnel State ------------------
+let currentScreen = 0;
+const screens = Array.from(document.querySelectorAll('.form-screen'));
+const featureState = {}; 
+let ownershipChoice = '';
+
+// ------------------ Tier Features ------------------
 const tiers = {
-  basic: [
-    "mobile",
-    "contact",
-    "bio",
-    "social",
-    "booking",
-    "cta",
-    "home",
-    "services",
-    "testimonials",
-    "map"
-  ],
-  pro: [
-    "seo",
-    "reviews",
-    "branding",
-    "faq",
-    "newsletter",
-    "gallery",
-    "blog",
-    "navigation",
-    "pricing",
-    "analytics"
-  ],
-  premium: [
-    "packages",
-    "email",
-    "content",
-    "guide",
-    "pdfs",
-    "video",
-    "gmb",
-    "portal",
-    "icons",
-    "support"
-  ]
+  basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
+  pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","pricing","analytics"],
+  premium: ["packages","email","content","guide","pdfs","video","gmb","portal","icons","support"]
 };
 
 const labels = {
@@ -1949,7 +1925,6 @@ const labels = {
   services: "Services Page Setup",
   testimonials: "Testimonials Section",
   map: "Google Map Integration",
-
   // Pro
   seo: "Local SEO Optimization",
   reviews: "Student Reviews",
@@ -1961,7 +1936,6 @@ const labels = {
   navigation: "Multi-page Navigation",
   pricing: "Lesson Pricing Table",
   analytics: "Google Analytics Setup",
-
   // Premium
   packages: "Lesson Packages",
   email: "Professional Email",
@@ -1975,26 +1949,94 @@ const labels = {
   support: "Priority Support & Maintenance"
 };
 
-const coreDefaults = {
-  basic: ["Pages - 5", "5 Revisions Per Page", "Delivery - 10 Days"],
-  pro: ["Pages - 10", "10 Revisions Per Page", "Delivery - 20 Days"],
-  premium: ["Pages - 20", "15 Revisions Per Page", "Delivery - 30 Days"]
-};
+// ------------------ Helper Functions ------------------
+function syncFeatureState() {
+  const hiddenFeatures = document.getElementById('hiddenFeatures');
+  if (hiddenFeatures) hiddenFeatures.value = JSON.stringify(featureState);
 
-const tierOrder = ["basic", "pro", "premium"];
-const monthlyPrices = { basic: 100, pro: 150, premium: 250 };
-const outrightPrices = { basic: 750, pro: 1500, premium: 2500 };
-const setupFees = { basic: 199, pro: 299, premium: 499 };
+  const hiddenPlan = document.getElementById('hiddenPlan');
+  if (hiddenPlan) hiddenPlan.value = ownershipChoice || '';
+}
 
-  planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const payBtn = card.querySelector(".pay-now");
-    const note = card.querySelector("small");
+function recordFeature(feature) {
+  featureState[feature] = true;
+  syncFeatureState();
+}
 
-    if (!level || !list || !priceEl || !payBtn) return;
+function recordNoFeature(feature) {
+  featureState[feature] = false;
+  syncFeatureState();
+}
 
+function recordOwnership(choice) {
+  if (choice === 'outright') {
+    featureState['buyOutright'] = true;
+    featureState['monthlySupport'] = false;
+  } else if (choice === 'monthly') {
+    featureState['buyOutright'] = false;
+    featureState['monthlySupport'] = true;
+  }
+  syncFeatureState();
+}
+
+// ------------------ Screen Navigation ------------------
+function showScreen(id) {
+  screens.forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+  currentScreen = screens.indexOf(target);
+}
+
+function next() {
+  if (currentScreen < screens.length - 1) {
+    showScreen(screens[currentScreen + 1].id);
+  }
+}
+
+function prev() {
+  if (currentScreen > 0) {
+    showScreen(screens[currentScreen - 1].id);
+  }
+}
+
+// ------------------ Q33 Buttons (Ownership) ------------------
+function setupQ33Buttons() {
+  const q33Screen = document.getElementById('instructor-q33'); 
+  if (!q33Screen) return;
+
+  const ownOutrightBtn   = q33Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q33Screen.querySelector('button.monthly-support');
+  const backBtn          = q33Screen.querySelector('.back-button');
+
+  if (ownOutrightBtn) {
+    ownOutrightBtn.onclick = () => {
+      ownershipChoice = 'Owned Outright';
+      recordOwnership('outright');
+      showScreen('recommended-plan-screen');
+    };
+  }
+
+  if (monthlySupportBtn) {
+    monthlySupportBtn.onclick = () => {
+      ownershipChoice = 'Monthly Support';
+      recordOwnership('monthly');
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly'); // optional monthly display
+    };
+  }
+
+  if (backBtn) {
+    backBtn.onclick = () => prev();
+  }
+}
+
+// ------------------ Initialize ------------------
+document.addEventListener('DOMContentLoaded', () => {
+  setupQ33Buttons();
+
+  const initialActive = document.querySelector('.form-screen.active');
+  if (initialActive) showScreen(initialActive.id);
+});
     // ----- Pricing -----
     if (isMonthly) {
       priceEl.textContent = `£${monthlyPrices[level]}/month`;
