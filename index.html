@@ -1215,58 +1215,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 
 
- /* Info Modal Styles */
-.info-modal {
-  display: none; /* Hidden by default */
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
-  font-family: 'Poppins', sans-serif;
-}
-
-.info-content.branded {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  text-align: left;
-  color: #333;
-}
-
-.info-content.branded h3 {
-  margin-top: 0;
-  font-size: 1.4rem;
-  color: #0b3d91; /* Your brand primary color */
-}
-
-.info-content.branded p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-top: 10px;
-}
-
-.close-info {
-  color: #999;
-  float: right;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.close-info:hover {
-  color: #0b3d91;
-}
-
-
 </style>
 
 
@@ -1356,20 +1304,18 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<div class="form-screen" id="instructor-q4">
+
+ <div class="form-screen" id="instructor-q4">
   <h2>Are you a solo driving instructor or a driving school?</h2>
   <div class="button-row">
-    <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
+      <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
     <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
-<!-- Q5-Q32: All with info icon below question -->
-
 <div class="form-screen" id="instructor-q5">
   <h2>Do you want your website to be mobile-friendly and look great on all devices?</h2>
-  <div class="info-icon" onclick="showInfo('Mobile-Friendly Design')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
@@ -1380,7 +1326,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q6">
   <h2>Do you want a Contact Form on your website?</h2>
-  <div class="info-icon" onclick="showInfo('Contact Form')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
@@ -1391,7 +1336,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q7">
   <h2>Do you want an Instructor Bio section?</h2>
-  <div class="info-icon" onclick="showInfo('Instructor Bio')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
@@ -1402,7 +1346,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q8">
   <h2>Do you want Social Media Icons?</h2>
-  <div class="info-icon" onclick="showInfo('Social Media Icons')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('social'); next()">Yes</button>
@@ -1413,7 +1356,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q9">
   <h2>Do you want Booking & Online Payment?</h2>
-  <div class="info-icon" onclick="showInfo('Booking & Online Payment')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
@@ -1424,7 +1366,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q10">
   <h2>Do you want strong Call-to-Action buttons?</h2>
-  <div class="info-icon" onclick="showInfo('Call-to-Action Buttons')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
@@ -1435,7 +1376,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q11">
   <h2>Do you want a structured Home Page?</h2>
-  <div class="info-icon" onclick="showInfo('Home Page Structure')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('home'); next()">Yes</button>
@@ -1446,7 +1386,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q12">
   <h2>Do you want a dedicated Services Page?</h2>
-  <div class="info-icon" onclick="showInfo('Services Page Setup')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('services'); next()">Yes</button>
@@ -1457,7 +1396,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q13">
   <h2>Do you want a Testimonials Section?</h2>
-  <div class="info-icon" onclick="showInfo('Testimonials Section')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('testimonials'); next()">Yes</button>
@@ -1468,7 +1406,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q14">
   <h2>Do you want Google Map Integration?</h2>
-  <div class="info-icon" onclick="showInfo('Google Map Integration')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('map'); next()">Yes</button>
@@ -1479,7 +1416,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q15">
   <h2>Do you want Local Google SEO optimization?</h2>
-  <div class="info-icon" onclick="showInfo('Local SEO Optimization')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
@@ -1490,7 +1426,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q16">
   <h2>Do you want a Student Reviews section?</h2>
-  <div class="info-icon" onclick="showInfo('Student Reviews')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
@@ -1501,7 +1436,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q17">
   <h2>Do you want Branding help (logo & colors)?</h2>
-  <div class="info-icon" onclick="showInfo('Branding & Logo')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
@@ -1512,7 +1446,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q18">
   <h2>Do you want an FAQ or Student Guide?</h2>
-  <div class="info-icon" onclick="showInfo('FAQ / Student Guide')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
@@ -1523,7 +1456,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q19">
   <h2>Do you want a Newsletter Signup form?</h2>
-  <div class="info-icon" onclick="showInfo('Newsletter Signup')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
@@ -1534,7 +1466,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q20">
   <h2>Do you want a Photo Gallery?</h2>
-  <div class="info-icon" onclick="showInfo('Photo Gallery')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('gallery'); next()">Yes</button>
@@ -1545,7 +1476,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q21">
   <h2>Do you want a Blog or Updates Section?</h2>
-  <div class="info-icon" onclick="showInfo('Blog / Updates')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('blog'); next()">Yes</button>
@@ -1556,7 +1486,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q22">
   <h2>Do you want Multi-page Navigation?</h2>
-  <div class="info-icon" onclick="showInfo('Multi-page Navigation')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('navigation'); next()">Yes</button>
@@ -1567,7 +1496,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q23">
   <h2>Do you want a Lesson Pricing Table?</h2>
-  <div class="info-icon" onclick="showInfo('Lesson Pricing Table')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('lesson-pricing'); next()">Yes</button>
@@ -1578,7 +1506,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q24">
   <h2>Do you want Google Analytics setup?</h2>
-  <div class="info-icon" onclick="showInfo('Google Analytics Setup')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('analytics'); next()">Yes</button>
@@ -1589,7 +1516,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q25">
   <h2>Do you want Lesson Packages & Gift Vouchers?</h2>
-  <div class="info-icon" onclick="showInfo('Lesson Packages & Gift Vouchers')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
@@ -1600,7 +1526,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q26">
   <h2>Do you want a Professional Email?</h2>
-  <div class="info-icon" onclick="showInfo('Professional Email')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('email'); next()">Yes</button>
@@ -1611,7 +1536,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q27">
   <h2>Do you want help with Content Creation?</h2>
-  <div class="info-icon" onclick="showInfo('Content Creation Help')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('content'); next()">Yes</button>
@@ -1622,18 +1546,16 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q28">
   <h2>Do you want a “What to Expect” Guide?</h2>
-  <div class="info-icon" onclick="showInfo('What to Expect Guide')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('expect-guide'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('expect-guide'); next()">No</button>  
-<button type="button" class="back-button" onclick="prev()">Back</button>
+    <button type="button" onclick="recordNoFeature('expect-guide'); next()">No</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
 <div class="form-screen" id="instructor-q29">
   <h2>Do you want Downloadable PDFs (e.g., Terms, Checklists)?</h2>
-  <div class="info-icon" onclick="showInfo('Downloadable PDFs')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('pdfs'); next()">Yes</button>
@@ -1644,7 +1566,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q30">
   <h2>Do you want a Video Embed Section?</h2>
-  <div class="info-icon" onclick="showInfo('Video Embed Section')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('video'); next()">Yes</button>
@@ -1655,7 +1576,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q31">
   <h2>Do you want fully Automated Online Booking?</h2>
-  <div class="info-icon" onclick="showInfo('Automated Online Booking')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('auto-booking'); next()">Yes</button>
@@ -1666,7 +1586,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 <div class="form-screen" id="instructor-q32">
   <h2>Do you want Advanced Reporting & Insights?</h2>
-  <div class="info-icon" onclick="showInfo('Advanced Reporting & Insights')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('reporting'); showScreen('final-choice')">Yes</button>
@@ -1675,7 +1594,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Final Choice Screen -->
 <div class="form-screen" id="final-choice">
   <h2>What would you like to do next?</h2>
   <div class="button-row">
@@ -1685,7 +1603,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Ownership Choice Screen -->
 <div class="form-screen" id="ownership-choice">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
@@ -1696,14 +1613,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 
- <!-- Branded Info Modal -->
-<div id="info-modal" class="info-modal">
-  <div class="info-content branded">
-    <span class="close-info" onclick="closeInfo()">&times;</span>
-    <h3 id="info-title">Feature Title</h3>
-    <p id="info-text">Detailed information about the feature goes here.</p>
-  </div>
-</div>
+
 
 
  
