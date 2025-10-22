@@ -1901,30 +1901,82 @@ function showRecommendedPlan(planType = 'outright') {
   if (!planCards.length) return;
 
   const yes = yesFeatures.slice();
+const tiers = {
+  basic: [
+    "mobile",
+    "contact",
+    "bio",
+    "social",
+    "booking",
+    "cta",
+    "home",
+    "services",
+    "testimonials",
+    "map"
+  ],
+  pro: [
+    "seo",
+    "reviews",
+    "branding",
+    "faq",
+    "newsletter",
+    "gallery",
+    "blog",
+    "navigation",
+    "pricing",
+    "analytics"
+  ],
+  premium: [
+    "packages",
+    "email",
+    "content",
+    "guide",
+    "pdfs",
+    "video",
+    "gmb",
+    "portal",
+    "icons",
+    "support"
+  ]
+};
 
-  const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
-    pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
-  };
+const labels = {
+  // Basic
+  mobile: "Mobile-Friendly Design",
+  contact: "Contact Form",
+  bio: "Instructor Bio",
+  social: "Social Media Icons",
+  booking: "Booking & Online Payment",
+  cta: "Call-to-Action Buttons",
+  home: "Home Page Structure",
+  services: "Services Page Setup",
+  testimonials: "Testimonials Section",
+  map: "Google Map Integration",
 
-  const labels = {
-    booking: "Online booking & payment",
-    mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    social: "Social media integration",
-    seo: "Local Google SEO",
-    reviews: "Student reviews",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "What to Expect guide"
-  };
+  // Pro
+  seo: "Local SEO Optimization",
+  reviews: "Student Reviews",
+  branding: "Branding & Logo",
+  faq: "FAQ / Student Guide",
+  newsletter: "Newsletter Signup",
+  gallery: "Photo Gallery",
+  blog: "Blog / Updates Section",
+  navigation: "Multi-page Navigation",
+  pricing: "Lesson Pricing Table",
+  analytics: "Google Analytics Setup",
+
+  // Premium
+  packages: "Lesson Packages",
+  email: "Professional Email",
+  content: "Content Creation Help",
+  guide: "“What to Expect” Guide",
+  pdfs: "Downloadable PDFs (e.g., Terms, Checklists)",
+  video: "Video Embed Section",
+  gmb: "Google My Business Integration",
+  portal: "Student Portal (Optional Login Area)",
+  icons: "Custom Icons & Visual Enhancements",
+  support: "Priority Support & Maintenance"
+};
 
 
   const coreDefaults = {
