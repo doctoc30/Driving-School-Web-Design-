@@ -1984,95 +1984,99 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
- 
-// ------------------ Typewriter Animation ------------------
 
 
-  const typewriterEl = document.getElementById('typewriter');
+
+
+ // ------------------ Typewriter Animation ------------------
+const typewriterEl = document.getElementById('typewriter');
+
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+function startTypewriterAnimation() {
   if (!typewriterEl) return;
 
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
+  typewriterEl.style.display = 'flex';
+  typewriterEl.classList.add('active');
+
+  let lines = [];
+  let currentLine = 0;
+  let currentChar = 0;
+  let lineEl = null;
+  const typingSpeed = 100;
+  const lineDelay = 500;
+
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  typewriterEl.appendChild(cursor);
+
+  function setLinesByOrientation() {
+    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+    lines = isLandscape
+      ? ["We build", "your website.", "You approve,", "then pay."]
+      : ["We build", "your", "website.", "You approve,", "then pay."];
   }
 
-  function startTypewriterAnimation() {
-    typewriterEl.style.display = 'flex';
-    typewriterEl.classList.add('active');
-    typewriterEl.style.opacity = 1;
+  function typeChar() {
+    if (currentLine >= lines.length) {
+      cursor.remove();
 
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
+      // Add rocket-rise animation safely
+      typewriterEl.classList.add('rocket-rise');
 
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
+      // Fallback in case animationend doesn't fire
+      const proceed = () => {
+        typewriterEl.style.display = 'none';
+        showScreen('main-intro-options');
+        typewriterEl.classList.remove('rocket-rise');
+      };
 
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
+      typewriterEl.addEventListener('animationend', proceed, { once: true });
+      setTimeout(proceed, 3000); // Fallback timer
+      return;
     }
 
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        // Rocket-rise animation
-        typewriterEl.classList.add('rocket-rise');
-        typewriterEl.addEventListener('animationend', () => {
-          typewriterEl.style.display = 'none';
-          showScreen('main-intro-options'); // Show first funnel question
-          typewriterEl.classList.remove('rocket-rise');
-        }, { once: true });
-        return;
-      }
-
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
+    const text = lines[currentLine];
+    if (!lineEl) {
+      lineEl = document.createElement('div');
+      lineEl.classList.add('typed-line');
+      typewriterEl.appendChild(lineEl);
+      lineEl.appendChild(cursor);
     }
 
-    setLinesByOrientation();
-    typeChar();
-
-    // Re-type on resize to handle orientation change
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
+    if (currentChar < text.length) {
+      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+      currentChar++;
+      setTimeout(typeChar, typingSpeed);
+    } else {
+      currentLine++;
       currentChar = 0;
       lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
+      setTimeout(typeChar, lineDelay);
+    }
   }
 
-  startTypewriterAnimation();
+  setLinesByOrientation();
+  typeChar();
 
-});
+  window.addEventListener('resize', debounce(() => {
+    currentLine = 0;
+    currentChar = 0;
+    lineEl = null;
+    typewriterEl.textContent = '';
+    typewriterEl.appendChild(cursor);
+    setLinesByOrientation();
+    typeChar();
+  }, 300));
+}
 
+startTypewriterAnimation();
  // ------------------ Initialize Funnel ------------------
 hideAllScreens();
 setupFinalOwnershipButtons(); // Wire up the final buttons
