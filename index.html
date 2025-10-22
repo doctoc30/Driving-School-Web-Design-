@@ -1579,16 +1579,19 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
-  </div>
 
-  <div class="form-screen" id="instructor-q19">
+ <div class="form-screen" id="final-choice">
+  <h2>What would you like to do next?</h2>
+  <div class="button-row">
+    <!-- Go to the new last question (Q33) or the final choice about payment -->
+    <button type="button" onclick="showScreen('instructor-q33')">I want to start my website ASAP</button>
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
+  </div>
+</div>
+
+<!-- New question for payment selection after final-choice -->
+<div class="form-screen" id="instructor-q33">
   <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
   <div class="button-row">
     <button type="button" class="own-outright">Own Outright</button>
@@ -1596,6 +1599,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
+
 
 
  
