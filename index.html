@@ -1210,7 +1210,77 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   }
   nav.menu ul li a:hover { color: #222; }
 }
+
+
  
+
+
+
+ /* Modal Background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+}
+
+/* Close Button */
+.close {
+  color: #666;
+  float: right;
+  font-size: 26px;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+.close:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+/* Title & Text */
+#infoTitle {
+  font-weight: 600;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  color: #333;
+}
+#infoText ul {
+  margin-left: 20px;
+  padding-left: 0;
+}
+#infoText li {
+  margin-bottom: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes slideUp {
+  from {transform: translateY(25px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+
 </style>
 
 
@@ -2339,6 +2409,283 @@ updateProgress(currentScreen + 1);
       }
     });
   }
+
+
+
+
+ 
+const infoContent = {
+  "Mobile-Friendly Design": `
+    Your site will look perfect on all screen sizes — phones, tablets, laptops, and desktops.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Improves user experience for mobile visitors.</li>
+      <li>Boosts your Google ranking (Google prioritizes mobile-friendly sites).</li>
+      <li>Makes your business look professional and modern.</li>
+    </ul>
+  `,
+  "Contact Form": `
+    A simple form that lets potential students reach you directly from your website.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Easy communication without revealing your personal number.</li>
+      <li>Leads go straight to your email inbox.</li>
+      <li>More inquiries = more students.</li>
+    </ul>
+  `,
+  "Instructor Bio": `
+    A professional section introducing who you are, your experience, and your teaching style.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Builds trust with new visitors.</li>
+      <li>Shows your qualifications and personality.</li>
+      <li>Helps potential students connect with you personally.</li>
+    </ul>
+  `,
+  "Social Media Icons": `
+    Add clickable icons for Facebook, Instagram, and other platforms.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Connects your social pages to your website.</li>
+      <li>Boosts your credibility and engagement.</li>
+      <li>Encourages visitors to follow and share your content.</li>
+    </ul>
+  `,
+  "Booking & Online Payment": `
+    Let students book lessons and pay online in seconds.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Saves time — no back-and-forth messages.</li>
+      <li>Reduces no-shows and cancellations.</li>
+      <li>Creates a seamless, professional experience.</li>
+    </ul>
+  `,
+  "Call-to-Action Buttons": `
+    Strategic buttons (like “Book Now” or “Get Started”) placed in the right spots.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Encourages visitors to take action.</li>
+      <li>Increases conversions and bookings.</li>
+      <li>Makes your website feel guided and confident.</li>
+    </ul>
+  `,
+  "Home Page Structure": `
+    A clear, engaging homepage layout that guides visitors step-by-step.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Gives a strong first impression.</li>
+      <li>Highlights your key selling points.</li>
+      <li>Leads visitors to contact or book you.</li>
+    </ul>
+  `,
+  "Services Page Setup": `
+    A detailed page listing your lesson types, pricing, and special offers.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Makes your services easy to understand.</li>
+      <li>Shows professionalism and transparency.</li>
+      <li>Helps students choose the right package for them.</li>
+    </ul>
+  `,
+  "Testimonials Section": `
+    Show real feedback from your past students.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Builds instant trust with new visitors.</li>
+      <li>Proves your success rate and reliability.</li>
+      <li>Encourages more people to book lessons.</li>
+    </ul>
+  `,
+  "Google Map Integration": `
+    Embed your location with a live Google Map.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Helps students find your school easily.</li>
+      <li>Improves local SEO visibility.</li>
+      <li>Looks professional on your contact page.</li>
+    </ul>
+  `,
+  "Local SEO Optimization": `
+    Get found on Google when students search for driving instructors near them.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Rank higher in local search results.</li>
+      <li>Attract more nearby students organically.</li>
+      <li>Boosts traffic and bookings without ads.</li>
+    </ul>
+  `,
+  "Student Reviews": `
+    A dedicated page for verified student reviews or Google ratings.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Builds strong social proof.</li>
+      <li>Shows that students love your teaching style.</li>
+      <li>Helps potential learners feel confident choosing you.</li>
+    </ul>
+  `,
+  "Branding & Logo": `
+    Complete logo and color palette assistance to match your business identity.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Gives your business a consistent, professional look.</li>
+      <li>Makes you stand out from competitors.</li>
+      <li>Builds long-term brand recognition.</li>
+    </ul>
+  `,
+  "FAQ / Student Guide": `
+    A section answering common questions and preparing students for lessons.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Saves time answering repetitive messages.</li>
+      <li>Builds trust and transparency.</li>
+      <li>Improves student readiness before their first lesson.</li>
+    </ul>
+  `,
+  "Newsletter Signup": `
+    Allow visitors to subscribe for updates or special offers.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Builds your student email list.</li>
+      <li>Keeps followers engaged over time.</li>
+      <li>Perfect for promoting new offers or lesson discounts.</li>
+    </ul>
+  `,
+  "Photo Gallery": `
+    A beautiful gallery showcasing your car, happy students, and pass certificates.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Makes your business more relatable and human.</li>
+      <li>Shows off your success visually.</li>
+      <li>Boosts engagement and trust.</li>
+    </ul>
+  `,
+  "Blog / Updates": `
+    A section where you can post news, updates, or tips for learner drivers.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Improves SEO with regular content.</li>
+      <li>Shows your expertise and keeps your site fresh.</li>
+      <li>Engages visitors beyond just bookings.</li>
+    </ul>
+  `,
+  "Multi-page Navigation": `
+    Organize your site into clear pages (Home, Services, Contact, etc.) with a top menu.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Makes your website easy to explore.</li>
+      <li>Improves user experience and clarity.</li>
+      <li>Helps visitors find exactly what they need quickly.</li>
+    </ul>
+  `,
+  "Lesson Pricing Table": `
+    A clean, transparent table showing lesson costs, packages, and discounts.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Reduces confusion and time spent quoting prices.</li>
+      <li>Shows your professionalism and honesty.</li>
+      <li>Encourages faster decisions and bookings.</li>
+    </ul>
+  `,
+  "Google Analytics Setup": `
+    Track how many people visit your site, what they click, and where they come from.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Measure what’s working and what’s not.</li>
+      <li>Understand your audience better.</li>
+      <li>Make smarter marketing decisions.</li>
+    </ul>
+  `,
+  "Lesson Packages & Gift Vouchers": `
+    Offer bundles or gift vouchers for lessons — perfect for birthdays or holidays.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Attracts new customers through gifting.</li>
+      <li>Encourages bulk lesson purchases.</li>
+      <li>Adds an extra revenue stream for your business.</li>
+    </ul>
+  `,
+  "Professional Email": `
+    A branded email address (e.g., <em>info@yourdrivingschool.co.uk</em>).
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Looks far more professional than Gmail or Hotmail.</li>
+      <li>Builds trust when students contact you.</li>
+      <li>Keeps your personal and business messages separate.</li>
+    </ul>
+  `,
+  "Content Creation Help": `
+    We write persuasive text for your website that highlights your strengths.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Professional wording without stress.</li>
+      <li>Improves SEO with keyword-rich content.</li>
+      <li>Converts visitors into bookings.</li>
+    </ul>
+  `,
+  "What to Expect Guide": `
+    A friendly page explaining what new students can expect from lessons.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Helps calm nervous first-time learners.</li>
+      <li>Sets clear expectations before lessons begin.</li>
+      <li>Enhances your reputation as a caring instructor.</li>
+    </ul>
+  `,
+  "Downloadable PDFs": `
+    Upload downloadable files like terms, lesson checklists, or safety guides.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Gives your students helpful resources.</li>
+      <li>Looks professional and organized.</li>
+      <li>Perfect for driving schools with structured packages.</li>
+    </ul>
+  `,
+  "Video Embed Section": `
+    Add YouTube or Vimeo videos directly to your website.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Lets you showcase lesson clips or testimonials.</li>
+      <li>Builds a personal connection with visitors.</li>
+      <li>Keeps people on your site longer (good for SEO).</li>
+    </ul>
+  `,
+  "Automated Online Booking": `
+    A fully automated booking system with calendar sync, email confirmations, and reminders.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Zero admin — bookings manage themselves.</li>
+      <li>Reduces cancellations with automatic reminders.</li>
+      <li>Gives students flexibility to choose times that suit them.</li>
+    </ul>
+  `,
+  "Advanced Reporting & Insights": `
+    A dashboard showing site performance, booking trends, and visitor behavior.
+    <br><br><strong>Benefits:</strong>
+    <ul>
+      <li>Track how your business is growing online.</li>
+      <li>See which pages and features attract the most visitors.</li>
+      <li>Use real data to make smarter business decisions.</li>
+    </ul>
+  `
+};
+
+function showInfo(title) {
+  const modal = document.getElementById('infoModal');
+  const infoTitle = document.getElementById('infoTitle');
+  const infoText = document.getElementById('infoText');
+  infoTitle.innerText = title;
+  infoText.innerHTML = infoContent[title] || "More information coming soon.";
+  modal.style.display = 'block';
+}
+
+function closeInfo() {
+  document.getElementById('infoModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById('infoModal');
+  if (event.target == modal) modal.style.display = 'none';
+}
 
 }); /* end DOMContentLoaded */
 </script>
