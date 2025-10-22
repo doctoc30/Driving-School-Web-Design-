@@ -1212,74 +1212,60 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 }
 
 
- 
 
 
 
- /* Modal Background */
-.modal {
-  display: none;
+ /* Info Modal Styles */
+.info-modal {
+  display: none; /* Hidden by default */
   position: fixed;
   z-index: 1000;
-  padding-top: 80px;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.5);
-  animation: fadeIn 0.3s ease;
+  background-color: rgba(0,0,0,0.6);
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Modal Content */
-.modal-content {
+.info-content.branded {
   background-color: #fff;
-  margin: auto;
+  margin: 10% auto;
   padding: 25px 30px;
   border-radius: 12px;
   width: 90%;
-  max-width: 480px;
+  max-width: 500px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  animation: slideUp 0.3s ease;
-}
-
-/* Close Button */
-.close {
-  color: #666;
-  float: right;
-  font-size: 26px;
-  font-weight: bold;
-  transition: color 0.2s ease;
-}
-.close:hover {
-  color: #000;
-  cursor: pointer;
-}
-
-/* Title & Text */
-#infoTitle {
-  font-weight: 600;
-  font-size: 1.3em;
-  margin-bottom: 10px;
+  text-align: left;
   color: #333;
 }
-#infoText ul {
-  margin-left: 20px;
-  padding-left: 0;
-}
-#infoText li {
-  margin-bottom: 6px;
+
+.info-content.branded h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #0b3d91; /* Your brand primary color */
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+.info-content.branded p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-top: 10px;
 }
-@keyframes slideUp {
-  from {transform: translateY(25px); opacity: 0;}
-  to {transform: translateY(0); opacity: 1;}
+
+.close-info {
+  color: #999;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
+
+.close-info:hover {
+  color: #0b3d91;
+}
+
 
 </style>
 
@@ -1319,60 +1305,71 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
-  <div class="form-screen active" id="main-intro-options">
-    <h2>Welcome! What do you need help with today?</h2>
-    <div class="button-row">
-      <button type="button" onclick="setPath('new'); next()">New Website</button>
-      <button type="button" onclick="setPath('redesign'); next()">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('maintenance'); next()">Maintenance / Updates</button>
-    </div>
+
+<!-- Info Modal (single reusable modal) -->
+<div id="info-modal">
+  <div class="info-content">
+    <span class="info-close" onclick="closeInfo()">×</span>
+    <h3 id="info-title"></h3>
+    <p id="info-text"></p>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q1">
-    <h2>Do you currently have a website?</h2>
-    <div class="button-row">
-      <button type="button" onclick="recordFeature('existing_site'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('existing_site'); next()">No</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<!-- Funnel Questions -->
+
+<div class="form-screen active" id="main-intro-options">
+  <h2>Welcome! What do you need help with today?</h2>
+  <div class="button-row">
+    <button type="button" onclick="setPath('new'); next()">New Website</button>
+    <button type="button" onclick="setPath('redesign'); next()">Redesign Existing Website</button>
+    <button type="button" onclick="setPath('maintenance'); next()">Maintenance / Updates</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q2">
-    <h2>Do you have a design concept in mind?</h2>
-    <p>You can enter a design code, choose from templates, or request a custom design.</p>
-    <div class="button-row">
-      <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-      <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
-      <button type="button" onclick="next()">Custom design</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<div class="form-screen" id="instructor-q1">
+  <h2>Do you currently have a website?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('existing_site'); next()">Yes</button>
+    <button type="button" onclick="recordNoFeature('existing_site'); next()">No</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
-  <div class="form-screen" id="design-code">
-    <h2>Enter your chosen design code</h2>
-    <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-    <div class="button-row">
-      <button type="button" onclick="goToConcept()">Continue</button>
-      <button type="button" onclick="next()">Skip</button>
-      <button type="button" class="back-button" onclick="showScreen('instructor-q2')">Back</button>
-    </div>
+<div class="form-screen" id="instructor-q2">
+  <h2>Do you have a design concept in mind?</h2>
+  <p>You can enter a design code, choose from templates, or request a custom design.</p>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
+    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
+    <button type="button" onclick="next()">Custom design</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
 
-  <div class="form-screen" id="instructor-q4">
-    <h2>Are you a solo driving instructor or a driving school?</h2>
-    <div class="button-row">
-        <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
-      <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<div class="form-screen" id="design-code">
+  <h2>Enter your chosen design code</h2>
+  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
+  <div class="button-row">
+    <button type="button" onclick="goToConcept()">Continue</button>
+    <button type="button" onclick="next()">Skip</button>
+    <button type="button" class="back-button" onclick="showScreen('instructor-q2')">Back</button>
   </div>
+</div>
 
+<div class="form-screen" id="instructor-q4">
+  <h2>Are you a solo driving instructor or a driving school?</h2>
+  <div class="button-row">
+    <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
+    <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
+  </div>
+</div>
 
- <div class="form-screen" id="instructor-q5">
-  <h2>
-    Do you want your website to be mobile-friendly and look great on all devices?
-    <span class="info-icon" onclick="showInfo('Mobile-Friendly Design')">i</span>
-  </h2>
+<!-- Q5-Q32: All with info icon below question -->
+
+<div class="form-screen" id="instructor-q5">
+  <h2>Do you want your website to be mobile-friendly and look great on all devices?</h2>
+  <div class="info-icon" onclick="showInfo('Mobile-Friendly Design')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
@@ -1382,10 +1379,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q6">
-  <h2>
-    Do you want a Contact Form on your website?
-    <span class="info-icon" onclick="showInfo('Contact Form')">i</span>
-  </h2>
+  <h2>Do you want a Contact Form on your website?</h2>
+  <div class="info-icon" onclick="showInfo('Contact Form')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('contact'); next()">Yes</button>
@@ -1395,10 +1390,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q7">
-  <h2>
-    Do you want an Instructor Bio section?
-    <span class="info-icon" onclick="showInfo('Instructor Bio')">i</span>
-  </h2>
+  <h2>Do you want an Instructor Bio section?</h2>
+  <div class="info-icon" onclick="showInfo('Instructor Bio')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
@@ -1408,10 +1401,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q8">
-  <h2>
-    Do you want Social Media Icons?
-    <span class="info-icon" onclick="showInfo('Social Media Icons')">i</span>
-  </h2>
+  <h2>Do you want Social Media Icons?</h2>
+  <div class="info-icon" onclick="showInfo('Social Media Icons')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('social'); next()">Yes</button>
@@ -1421,10 +1412,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q9">
-  <h2>
-    Do you want Booking & Online Payment?
-    <span class="info-icon" onclick="showInfo('Booking & Online Payment')">i</span>
-  </h2>
+  <h2>Do you want Booking & Online Payment?</h2>
+  <div class="info-icon" onclick="showInfo('Booking & Online Payment')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('booking'); next()">Yes</button>
@@ -1434,10 +1423,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q10">
-  <h2>
-    Do you want strong Call-to-Action buttons?
-    <span class="info-icon" onclick="showInfo('Call-to-Action Buttons')">i</span>
-  </h2>
+  <h2>Do you want strong Call-to-Action buttons?</h2>
+  <div class="info-icon" onclick="showInfo('Call-to-Action Buttons')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('cta'); next()">Yes</button>
@@ -1447,10 +1434,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q11">
-  <h2>
-    Do you want a structured Home Page?
-    <span class="info-icon" onclick="showInfo('Home Page Structure')">i</span>
-  </h2>
+  <h2>Do you want a structured Home Page?</h2>
+  <div class="info-icon" onclick="showInfo('Home Page Structure')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('home'); next()">Yes</button>
@@ -1460,10 +1445,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q12">
-  <h2>
-    Do you want a dedicated Services Page?
-    <span class="info-icon" onclick="showInfo('Services Page Setup')">i</span>
-  </h2>
+  <h2>Do you want a dedicated Services Page?</h2>
+  <div class="info-icon" onclick="showInfo('Services Page Setup')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('services'); next()">Yes</button>
@@ -1473,10 +1456,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q13">
-  <h2>
-    Do you want a Testimonials Section?
-    <span class="info-icon" onclick="showInfo('Testimonials Section')">i</span>
-  </h2>
+  <h2>Do you want a Testimonials Section?</h2>
+  <div class="info-icon" onclick="showInfo('Testimonials Section')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('testimonials'); next()">Yes</button>
@@ -1486,10 +1467,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q14">
-  <h2>
-    Do you want Google Map Integration?
-    <span class="info-icon" onclick="showInfo('Google Map Integration')">i</span>
-  </h2>
+  <h2>Do you want Google Map Integration?</h2>
+  <div class="info-icon" onclick="showInfo('Google Map Integration')">i</div>
   <p><strong>(Basic)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('map'); next()">Yes</button>
@@ -1499,10 +1478,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q15">
-  <h2>
-    Do you want Local Google SEO optimization?
-    <span class="info-icon" onclick="showInfo('Local SEO Optimization')">i</span>
-  </h2>
+  <h2>Do you want Local Google SEO optimization?</h2>
+  <div class="info-icon" onclick="showInfo('Local SEO Optimization')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('seo'); next()">Yes</button>
@@ -1512,10 +1489,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q16">
-  <h2>
-    Do you want a Student Reviews section?
-    <span class="info-icon" onclick="showInfo('Student Reviews')">i</span>
-  </h2>
+  <h2>Do you want a Student Reviews section?</h2>
+  <div class="info-icon" onclick="showInfo('Student Reviews')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
@@ -1525,10 +1500,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q17">
-  <h2>
-    Do you want Branding help (logo & colors)?
-    <span class="info-icon" onclick="showInfo('Branding & Logo')">i</span>
-  </h2>
+  <h2>Do you want Branding help (logo & colors)?</h2>
+  <div class="info-icon" onclick="showInfo('Branding & Logo')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
@@ -1538,10 +1511,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q18">
-  <h2>
-    Do you want an FAQ or Student Guide?
-    <span class="info-icon" onclick="showInfo('FAQ / Student Guide')">i</span>
-  </h2>
+  <h2>Do you want an FAQ or Student Guide?</h2>
+  <div class="info-icon" onclick="showInfo('FAQ / Student Guide')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
@@ -1551,10 +1522,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q19">
-  <h2>
-    Do you want a Newsletter Signup form?
-    <span class="info-icon" onclick="showInfo('Newsletter Signup')">i</span>
-  </h2>
+  <h2>Do you want a Newsletter Signup form?</h2>
+  <div class="info-icon" onclick="showInfo('Newsletter Signup')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('newsletter'); next()">Yes</button>
@@ -1564,10 +1533,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q20">
-  <h2>
-    Do you want a Photo Gallery?
-    <span class="info-icon" onclick="showInfo('Photo Gallery')">i</span>
-  </h2>
+  <h2>Do you want a Photo Gallery?</h2>
+  <div class="info-icon" onclick="showInfo('Photo Gallery')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('gallery'); next()">Yes</button>
@@ -1577,10 +1544,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q21">
-  <h2>
-    Do you want a Blog or Updates Section?
-    <span class="info-icon" onclick="showInfo('Blog / Updates')">i</span>
-  </h2>
+  <h2>Do you want a Blog or Updates Section?</h2>
+  <div class="info-icon" onclick="showInfo('Blog / Updates')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('blog'); next()">Yes</button>
@@ -1590,10 +1555,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q22">
-  <h2>
-    Do you want Multi-page Navigation?
-    <span class="info-icon" onclick="showInfo('Multi-page Navigation')">i</span>
-  </h2>
+  <h2>Do you want Multi-page Navigation?</h2>
+  <div class="info-icon" onclick="showInfo('Multi-page Navigation')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('navigation'); next()">Yes</button>
@@ -1603,10 +1566,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q23">
-  <h2>
-    Do you want a Lesson Pricing Table?
-    <span class="info-icon" onclick="showInfo('Lesson Pricing Table')">i</span>
-  </h2>
+  <h2>Do you want a Lesson Pricing Table?</h2>
+  <div class="info-icon" onclick="showInfo('Lesson Pricing Table')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('lesson-pricing'); next()">Yes</button>
@@ -1616,10 +1577,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q24">
-  <h2>
-    Do you want Google Analytics setup?
-    <span class="info-icon" onclick="showInfo('Google Analytics Setup')">i</span>
-  </h2>
+  <h2>Do you want Google Analytics setup?</h2>
+  <div class="info-icon" onclick="showInfo('Google Analytics Setup')">i</div>
   <p><strong>(Pro)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('analytics'); next()">Yes</button>
@@ -1629,10 +1588,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q25">
-  <h2>
-    Do you want Lesson Packages & Gift Vouchers?
-    <span class="info-icon" onclick="showInfo('Lesson Packages & Gift Vouchers')">i</span>
-  </h2>
+  <h2>Do you want Lesson Packages & Gift Vouchers?</h2>
+  <div class="info-icon" onclick="showInfo('Lesson Packages & Gift Vouchers')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('packages'); next()">Yes</button>
@@ -1642,10 +1599,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q26">
-  <h2>
-    Do you want a Professional Email?
-    <span class="info-icon" onclick="showInfo('Professional Email')">i</span>
-  </h2>
+  <h2>Do you want a Professional Email?</h2>
+  <div class="info-icon" onclick="showInfo('Professional Email')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('email'); next()">Yes</button>
@@ -1655,10 +1610,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q27">
-  <h2>
-    Do you want help with Content Creation?
-    <span class="info-icon" onclick="showInfo('Content Creation Help')">i</span>
-  </h2>
+  <h2>Do you want help with Content Creation?</h2>
+  <div class="info-icon" onclick="showInfo('Content Creation Help')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('content'); next()">Yes</button>
@@ -1668,23 +1621,19 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q28">
-  <h2>
-    Do you want a “What to Expect” Guide?
-    <span class="info-icon" onclick="showInfo('What to Expect Guide')">i</span>
-  </h2>
+  <h2>Do you want a “What to Expect” Guide?</h2>
+  <div class="info-icon" onclick="showInfo('What to Expect Guide')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('expect-guide'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('expect-guide'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
+    <button type="button" onclick="recordNoFeature('expect-guide'); next()">No</button>  
+<button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
 <div class="form-screen" id="instructor-q29">
-  <h2>
-    Do you want Downloadable PDFs (e.g., Terms, Checklists)?
-    <span class="info-icon" onclick="showInfo('Downloadable PDFs')">i</span>
-  </h2>
+  <h2>Do you want Downloadable PDFs (e.g., Terms, Checklists)?</h2>
+  <div class="info-icon" onclick="showInfo('Downloadable PDFs')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('pdfs'); next()">Yes</button>
@@ -1694,10 +1643,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q30">
-  <h2>
-    Do you want a Video Embed Section?
-    <span class="info-icon" onclick="showInfo('Video Embed Section')">i</span>
-  </h2>
+  <h2>Do you want a Video Embed Section?</h2>
+  <div class="info-icon" onclick="showInfo('Video Embed Section')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('video'); next()">Yes</button>
@@ -1707,10 +1654,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q31">
-  <h2>
-    Do you want fully Automated Online Booking?
-    <span class="info-icon" onclick="showInfo('Automated Online Booking')">i</span>
-  </h2>
+  <h2>Do you want fully Automated Online Booking?</h2>
+  <div class="info-icon" onclick="showInfo('Automated Online Booking')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('auto-booking'); next()">Yes</button>
@@ -1720,10 +1665,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 <div class="form-screen" id="instructor-q32">
-  <h2>
-    Do you want Advanced Reporting & Insights?
-    <span class="info-icon" onclick="showInfo('Advanced Reporting & Insights')">i</span>
-  </h2>
+  <h2>Do you want Advanced Reporting & Insights?</h2>
+  <div class="info-icon" onclick="showInfo('Advanced Reporting & Insights')">i</div>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
     <button type="button" onclick="recordFeature('reporting'); showScreen('final-choice')">Yes</button>
@@ -1732,8 +1675,8 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-
- <div class="form-screen" id="final-choice">
+<!-- Final Choice Screen -->
+<div class="form-screen" id="final-choice">
   <h2>What would you like to do next?</h2>
   <div class="button-row">
     <button type="button" onclick="showScreen('ownership-choice')">I want to start my website ASAP</button>
@@ -1742,15 +1685,26 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-
-  <div class="form-screen" id="ownership-choice"> 
-    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-    <div class="button-row">
-      <button type="button" class="own-outright">Own Outright</button>
-      <button type="button" class="monthly-support">Monthly Support</button>
-      <button type="button" class="back-button" onclick="prev()">Back</button>
-    </div>
+<!-- Ownership Choice Screen -->
+<div class="form-screen" id="ownership-choice">
+  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
+  <div class="button-row">
+    <button type="button" class="own-outright">Own Outright</button>
+    <button type="button" class="monthly-support">Monthly Support</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
+</div>
+
+
+ <!-- Branded Info Modal -->
+<div id="info-modal" class="info-modal">
+  <div class="info-content branded">
+    <span class="close-info" onclick="closeInfo()">&times;</span>
+    <h3 id="info-title">Feature Title</h3>
+    <p id="info-text">Detailed information about the feature goes here.</p>
+  </div>
+</div>
+
 
  
 <div class="form-screen" id="recommended-plan-screen">
@@ -2413,280 +2367,168 @@ updateProgress(currentScreen + 1);
 
 
 
- 
-const infoContent = {
-  "Mobile-Friendly Design": `
-    Your site will look perfect on all screen sizes — phones, tablets, laptops, and desktops.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Improves user experience for mobile visitors.</li>
-      <li>Boosts your Google ranking (Google prioritizes mobile-friendly sites).</li>
-      <li>Makes your business look professional and modern.</li>
-    </ul>
-  `,
-  "Contact Form": `
-    A simple form that lets potential students reach you directly from your website.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Easy communication without revealing your personal number.</li>
-      <li>Leads go straight to your email inbox.</li>
-      <li>More inquiries = more students.</li>
-    </ul>
-  `,
-  "Instructor Bio": `
-    A professional section introducing who you are, your experience, and your teaching style.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Builds trust with new visitors.</li>
-      <li>Shows your qualifications and personality.</li>
-      <li>Helps potential students connect with you personally.</li>
-    </ul>
-  `,
-  "Social Media Icons": `
-    Add clickable icons for Facebook, Instagram, and other platforms.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Connects your social pages to your website.</li>
-      <li>Boosts your credibility and engagement.</li>
-      <li>Encourages visitors to follow and share your content.</li>
-    </ul>
-  `,
-  "Booking & Online Payment": `
-    Let students book lessons and pay online in seconds.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Saves time — no back-and-forth messages.</li>
-      <li>Reduces no-shows and cancellations.</li>
-      <li>Creates a seamless, professional experience.</li>
-    </ul>
-  `,
-  "Call-to-Action Buttons": `
-    Strategic buttons (like “Book Now” or “Get Started”) placed in the right spots.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Encourages visitors to take action.</li>
-      <li>Increases conversions and bookings.</li>
-      <li>Makes your website feel guided and confident.</li>
-    </ul>
-  `,
-  "Home Page Structure": `
-    A clear, engaging homepage layout that guides visitors step-by-step.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Gives a strong first impression.</li>
-      <li>Highlights your key selling points.</li>
-      <li>Leads visitors to contact or book you.</li>
-    </ul>
-  `,
-  "Services Page Setup": `
-    A detailed page listing your lesson types, pricing, and special offers.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Makes your services easy to understand.</li>
-      <li>Shows professionalism and transparency.</li>
-      <li>Helps students choose the right package for them.</li>
-    </ul>
-  `,
-  "Testimonials Section": `
-    Show real feedback from your past students.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Builds instant trust with new visitors.</li>
-      <li>Proves your success rate and reliability.</li>
-      <li>Encourages more people to book lessons.</li>
-    </ul>
-  `,
-  "Google Map Integration": `
-    Embed your location with a live Google Map.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Helps students find your school easily.</li>
-      <li>Improves local SEO visibility.</li>
-      <li>Looks professional on your contact page.</li>
-    </ul>
-  `,
-  "Local SEO Optimization": `
-    Get found on Google when students search for driving instructors near them.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Rank higher in local search results.</li>
-      <li>Attract more nearby students organically.</li>
-      <li>Boosts traffic and bookings without ads.</li>
-    </ul>
-  `,
-  "Student Reviews": `
-    A dedicated page for verified student reviews or Google ratings.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Builds strong social proof.</li>
-      <li>Shows that students love your teaching style.</li>
-      <li>Helps potential learners feel confident choosing you.</li>
-    </ul>
-  `,
-  "Branding & Logo": `
-    Complete logo and color palette assistance to match your business identity.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Gives your business a consistent, professional look.</li>
-      <li>Makes you stand out from competitors.</li>
-      <li>Builds long-term brand recognition.</li>
-    </ul>
-  `,
-  "FAQ / Student Guide": `
-    A section answering common questions and preparing students for lessons.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Saves time answering repetitive messages.</li>
-      <li>Builds trust and transparency.</li>
-      <li>Improves student readiness before their first lesson.</li>
-    </ul>
-  `,
-  "Newsletter Signup": `
-    Allow visitors to subscribe for updates or special offers.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Builds your student email list.</li>
-      <li>Keeps followers engaged over time.</li>
-      <li>Perfect for promoting new offers or lesson discounts.</li>
-    </ul>
-  `,
-  "Photo Gallery": `
-    A beautiful gallery showcasing your car, happy students, and pass certificates.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Makes your business more relatable and human.</li>
-      <li>Shows off your success visually.</li>
-      <li>Boosts engagement and trust.</li>
-    </ul>
-  `,
-  "Blog / Updates": `
-    A section where you can post news, updates, or tips for learner drivers.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Improves SEO with regular content.</li>
-      <li>Shows your expertise and keeps your site fresh.</li>
-      <li>Engages visitors beyond just bookings.</li>
-    </ul>
-  `,
-  "Multi-page Navigation": `
-    Organize your site into clear pages (Home, Services, Contact, etc.) with a top menu.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Makes your website easy to explore.</li>
-      <li>Improves user experience and clarity.</li>
-      <li>Helps visitors find exactly what they need quickly.</li>
-    </ul>
-  `,
-  "Lesson Pricing Table": `
-    A clean, transparent table showing lesson costs, packages, and discounts.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Reduces confusion and time spent quoting prices.</li>
-      <li>Shows your professionalism and honesty.</li>
-      <li>Encourages faster decisions and bookings.</li>
-    </ul>
-  `,
-  "Google Analytics Setup": `
-    Track how many people visit your site, what they click, and where they come from.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Measure what’s working and what’s not.</li>
-      <li>Understand your audience better.</li>
-      <li>Make smarter marketing decisions.</li>
-    </ul>
-  `,
-  "Lesson Packages & Gift Vouchers": `
-    Offer bundles or gift vouchers for lessons — perfect for birthdays or holidays.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Attracts new customers through gifting.</li>
-      <li>Encourages bulk lesson purchases.</li>
-      <li>Adds an extra revenue stream for your business.</li>
-    </ul>
-  `,
-  "Professional Email": `
-    A branded email address (e.g., <em>info@yourdrivingschool.co.uk</em>).
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Looks far more professional than Gmail or Hotmail.</li>
-      <li>Builds trust when students contact you.</li>
-      <li>Keeps your personal and business messages separate.</li>
-    </ul>
-  `,
-  "Content Creation Help": `
-    We write persuasive text for your website that highlights your strengths.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Professional wording without stress.</li>
-      <li>Improves SEO with keyword-rich content.</li>
-      <li>Converts visitors into bookings.</li>
-    </ul>
-  `,
-  "What to Expect Guide": `
-    A friendly page explaining what new students can expect from lessons.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Helps calm nervous first-time learners.</li>
-      <li>Sets clear expectations before lessons begin.</li>
-      <li>Enhances your reputation as a caring instructor.</li>
-    </ul>
-  `,
-  "Downloadable PDFs": `
-    Upload downloadable files like terms, lesson checklists, or safety guides.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Gives your students helpful resources.</li>
-      <li>Looks professional and organized.</li>
-      <li>Perfect for driving schools with structured packages.</li>
-    </ul>
-  `,
-  "Video Embed Section": `
-    Add YouTube or Vimeo videos directly to your website.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Lets you showcase lesson clips or testimonials.</li>
-      <li>Builds a personal connection with visitors.</li>
-      <li>Keeps people on your site longer (good for SEO).</li>
-    </ul>
-  `,
-  "Automated Online Booking": `
-    A fully automated booking system with calendar sync, email confirmations, and reminders.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Zero admin — bookings manage themselves.</li>
-      <li>Reduces cancellations with automatic reminders.</li>
-      <li>Gives students flexibility to choose times that suit them.</li>
-    </ul>
-  `,
-  "Advanced Reporting & Insights": `
-    A dashboard showing site performance, booking trends, and visitor behavior.
-    <br><br><strong>Benefits:</strong>
-    <ul>
-      <li>Track how your business is growing online.</li>
-      <li>See which pages and features attract the most visitors.</li>
-      <li>Use real data to make smarter business decisions.</li>
-    </ul>
-  `
-};
+ // Store answers
+const answers = {};
 
+// Navigation functions
+function showScreen(screenId) {
+    document.querySelectorAll('.form-screen').forEach(screen => screen.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    if (screen) screen.classList.add('active');
+}
+
+function next() {
+    const activeScreen = document.querySelector('.form-screen.active');
+    if (!activeScreen) return;
+    const nextScreen = activeScreen.nextElementSibling;
+    if (nextScreen && nextScreen.classList.contains('form-screen')) {
+        showScreen(nextScreen.id);
+    }
+}
+
+function prev() {
+    const activeScreen = document.querySelector('.form-screen.active');
+    if (!activeScreen) return;
+    const prevScreen = activeScreen.previousElementSibling;
+    if (prevScreen && prevScreen.classList.contains('form-screen')) {
+        showScreen(prevScreen.id);
+    }
+}
+
+// Feature recording
+function recordFeature(feature) {
+    answers[feature] = true;
+    console.log('Feature added:', feature);
+}
+
+function recordNoFeature(feature) {
+    answers[feature] = false;
+    console.log('Feature skipped:', feature);
+}
+
+// Example function to handle design code screen
+function goToConcept() {
+    const code = document.getElementById('designInput').value;
+    if (code.trim() !== '') {
+        answers['designCode'] = code.trim();
+        console.log('Design code:', code);
+        // Redirect or show concepts based on code
+        showScreen('final-choice'); // or any next screen
+    } else {
+        alert('Please enter a design code or skip.');
+    }
+}
+
+// Info modal functions
 function showInfo(title) {
-  const modal = document.getElementById('infoModal');
-  const infoTitle = document.getElementById('infoTitle');
-  const infoText = document.getElementById('infoText');
-  infoTitle.innerText = title;
-  infoText.innerHTML = infoContent[title] || "More information coming soon.";
-  modal.style.display = 'block';
+    const infoModal = document.getElementById('info-modal');
+    const infoTitle = document.getElementById('info-title');
+    const infoText = document.getElementById('info-text');
+
+    // Customize info text based on feature
+    const infoData = {
+        'Mobile-Friendly Design': 'Ensures your website looks great on phones and tablets.',
+        'Contact Form': 'Allows students to contact you directly through your website.',
+        'Instructor Bio': 'Showcase your qualifications and experience.',
+        'Social Media Icons': 'Link to your social media profiles.',
+        'Booking & Online Payment': 'Students can book lessons and pay online.',
+        'Call-to-Action Buttons': 'Strong buttons to encourage signups or contact.',
+        'Home Page Structure': 'Organized homepage to guide users effectively.',
+        'Services Page Setup': 'Dedicated page to display all your services.',
+        'Testimonials Section': 'Display student testimonials for credibility.',
+        'Google Map Integration': 'Show your location for easy navigation.',
+        'Local SEO Optimization': 'Improve search visibility for local students.',
+        'Student Reviews': 'Showcase reviews from your students.',
+        'Branding & Logo': 'Professional branding including logo and colors.',
+        'FAQ / Student Guide': 'Answer common questions and provide a guide.',
+        'Newsletter Signup': 'Collect emails for newsletter updates.',
+        'Photo Gallery': 'Display images of your school, cars, or lessons.',
+        'Blog / Updates': 'Share news, tips, and updates with students.',
+        'Multi-page Navigation': 'Easier navigation through multiple pages.',
+        'Lesson Pricing Table': 'Show clear pricing for your lessons.',
+        'Google Analytics Setup': 'Track visitor behavior on your website.',
+        'Lesson Packages & Gift Vouchers': 'Offer special packages and vouchers.',
+        'Professional Email': 'Get a professional email with your domain.',
+        'Content Creation Help': 'Assistance with creating content for your site.',
+        'What to Expect Guide': 'Guide students on what to expect during lessons.',
+        'Downloadable PDFs': 'Provide PDFs like terms or checklists.',
+        'Video Embed Section': 'Embed videos to showcase lessons or testimonials.',
+        'Automated Online Booking': 'Fully automate your lesson bookings online.',
+        'Advanced Reporting & Insights': 'Detailed reports on students and website usage.'
+    };
+
+    infoTitle.textContent = title;
+    infoText.textContent = infoData[title] || 'Info about this feature.';
+    infoModal.style.display = 'block';
 }
 
 function closeInfo() {
-  document.getElementById('infoModal').style.display = 'none';
+    document.getElementById('info-modal').style.display = 'none';
 }
 
+// Close modal if clicked outside content
 window.onclick = function(event) {
-  const modal = document.getElementById('infoModal');
-  if (event.target == modal) modal.style.display = 'none';
+    const modal = document.getElementById('info-modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 }
 
+
+ function showInfo(feature) {
+    const modal = document.getElementById('info-modal');
+    const title = document.getElementById('info-title');
+    const text = document.getElementById('info-text');
+
+    // Define info text for each feature
+    const infoData = {
+        'Mobile-Friendly Design': 'Your website will adapt to any screen size, providing a smooth experience on mobile devices.',
+        'Contact Form': 'Allows your visitors to easily contact you directly through the website.',
+        'Instructor Bio': 'Showcase your experience and qualifications to build trust with potential students.',
+        'Social Media Icons': 'Connect your website to your social profiles for easy engagement.',
+        'Booking & Online Payment': 'Students can book lessons and make payments online conveniently.',
+        'Call-to-Action Buttons': 'Strategically placed buttons to drive conversions and actions.',
+        'Home Page Structure': 'A clear, organized homepage to highlight your services and key info.',
+        'Services Page Setup': 'Dedicated page detailing all your services for potential students.',
+        'Testimonials Section': 'Show student feedback and success stories to enhance credibility.',
+        'Google Map Integration': 'Embed a map to help students locate your driving school easily.',
+        'Local SEO Optimization': 'Improve your visibility in local search results to attract more students.',
+        'Student Reviews': 'Display reviews and ratings from students.',
+        'Branding & Logo': 'Professional logo and color scheme to enhance your brand identity.',
+        'FAQ / Student Guide': 'Provide answers to common questions and a guide for new students.',
+        'Newsletter Signup': 'Enable visitors to subscribe to updates and offers.',
+        'Photo Gallery': 'Showcase your driving school, events, and vehicles with a gallery.',
+        'Blog / Updates': 'Share news, updates, and useful tips with students.',
+        'Multi-page Navigation': 'Easily navigate through multiple pages of your website.',
+        'Lesson Pricing Table': 'Clear pricing table for your lessons and packages.',
+        'Google Analytics Setup': 'Track website traffic and user behavior for better insights.',
+        'Lesson Packages & Gift Vouchers': 'Offer bundles and gift options for students.',
+        'Professional Email': 'Get a branded email address for professional communication.',
+        'Content Creation Help': 'Assistance with creating high-quality website content.',
+        'What to Expect Guide': 'Guide new students through your services and process.',
+        'Downloadable PDFs': 'Provide PDFs like checklists, terms, and resources for download.',
+        'Video Embed Section': 'Embed videos to showcase your lessons or promotional material.',
+        'Automated Online Booking': 'Fully automated booking system for convenience.',
+        'Advanced Reporting & Insights': 'Detailed analytics on student behavior and website performance.'
+    };
+
+    title.textContent = feature;
+    text.textContent = infoData[feature] || 'Information not available.';
+
+    modal.style.display = 'block';
+}
+
+function closeInfo() {
+    document.getElementById('info-modal').style.display = 'none';
+}
+
+// Close modal if clicked outside content
+window.onclick = function(event) {
+  const modal = document.getElementById('info-modal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
 }); /* end DOMContentLoaded */
 </script>
 
