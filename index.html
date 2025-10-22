@@ -1244,7 +1244,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 <div id="typewriter"></div>
 
 
-
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
@@ -1253,17 +1252,18 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+      <button type="button" onclick="setPath('new'); next()">New Website</button>
+      <button type="button" onclick="setPath('redesign'); next()">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('maintenance'); next()">Maintenance / Updates</button>
     </div>
   </div>
 
   <div class="form-screen" id="instructor-q1">
     <h2>Do you currently have a website?</h2>
     <div class="button-row">
-      <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-      <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
+      <button type="button" onclick="recordFeature('existing_site'); next()">Yes</button>
+      <button type="button" onclick="recordNoFeature('existing_site'); next()">No</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
@@ -1274,6 +1274,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
       <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
       <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
       <button type="button" onclick="next()">Custom design</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
@@ -1283,6 +1284,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     <div class="button-row">
       <button type="button" onclick="goToConcept()">Continue</button>
       <button type="button" onclick="next()">Skip</button>
+      <button type="button" class="back-button" onclick="showScreen('instructor-q2')">Back</button>
     </div>
   </div>
 
@@ -1291,12 +1293,12 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     <div class="button-row">
         <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
       <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
+      <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
 
- <!-- Q5 -->
-<div class="form-screen" id="instructor-q5">
+ <div class="form-screen" id="instructor-q5">
   <h2>
     Do you want your website to be mobile-friendly and look great on all devices?
     <span class="info-icon" onclick="showInfo('Mobile-Friendly Design')">i</span>
@@ -1309,7 +1311,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q6 -->
 <div class="form-screen" id="instructor-q6">
   <h2>
     Do you want a Contact Form on your website?
@@ -1323,7 +1324,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q7 -->
 <div class="form-screen" id="instructor-q7">
   <h2>
     Do you want an Instructor Bio section?
@@ -1337,7 +1337,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q8 -->
 <div class="form-screen" id="instructor-q8">
   <h2>
     Do you want Social Media Icons?
@@ -1351,7 +1350,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q9 -->
 <div class="form-screen" id="instructor-q9">
   <h2>
     Do you want Booking & Online Payment?
@@ -1365,7 +1363,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q10 -->
 <div class="form-screen" id="instructor-q10">
   <h2>
     Do you want strong Call-to-Action buttons?
@@ -1379,7 +1376,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q11 -->
 <div class="form-screen" id="instructor-q11">
   <h2>
     Do you want a structured Home Page?
@@ -1393,7 +1389,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q12 -->
 <div class="form-screen" id="instructor-q12">
   <h2>
     Do you want a dedicated Services Page?
@@ -1407,7 +1402,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q13 -->
 <div class="form-screen" id="instructor-q13">
   <h2>
     Do you want a Testimonials Section?
@@ -1421,7 +1415,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q14 -->
 <div class="form-screen" id="instructor-q14">
   <h2>
     Do you want Google Map Integration?
@@ -1435,7 +1428,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q15 -->
 <div class="form-screen" id="instructor-q15">
   <h2>
     Do you want Local Google SEO optimization?
@@ -1449,7 +1441,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q16 -->
 <div class="form-screen" id="instructor-q16">
   <h2>
     Do you want a Student Reviews section?
@@ -1463,7 +1454,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q17 -->
 <div class="form-screen" id="instructor-q17">
   <h2>
     Do you want Branding help (logo & colors)?
@@ -1477,7 +1467,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q18 -->
 <div class="form-screen" id="instructor-q18">
   <h2>
     Do you want an FAQ or Student Guide?
@@ -1491,7 +1480,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q19 -->
 <div class="form-screen" id="instructor-q19">
   <h2>
     Do you want a Newsletter Signup form?
@@ -1505,7 +1493,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q20 -->
 <div class="form-screen" id="instructor-q20">
   <h2>
     Do you want a Photo Gallery?
@@ -1519,7 +1506,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q21 -->
 <div class="form-screen" id="instructor-q21">
   <h2>
     Do you want a Blog or Updates Section?
@@ -1533,7 +1519,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q22 -->
 <div class="form-screen" id="instructor-q22">
   <h2>
     Do you want Multi-page Navigation?
@@ -1547,7 +1532,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q23 -->
 <div class="form-screen" id="instructor-q23">
   <h2>
     Do you want a Lesson Pricing Table?
@@ -1561,7 +1545,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q24 -->
 <div class="form-screen" id="instructor-q24">
   <h2>
     Do you want Google Analytics setup?
@@ -1575,7 +1558,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q25 -->
 <div class="form-screen" id="instructor-q25">
   <h2>
     Do you want Lesson Packages & Gift Vouchers?
@@ -1589,7 +1571,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q26 -->
 <div class="form-screen" id="instructor-q26">
   <h2>
     Do you want a Professional Email?
@@ -1603,7 +1584,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q27 -->
 <div class="form-screen" id="instructor-q27">
   <h2>
     Do you want help with Content Creation?
@@ -1617,7 +1597,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q28 -->
 <div class="form-screen" id="instructor-q28">
   <h2>
     Do you want a “What to Expect” Guide?
@@ -1631,7 +1610,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q29 -->
 <div class="form-screen" id="instructor-q29">
   <h2>
     Do you want Downloadable PDFs (e.g., Terms, Checklists)?
@@ -1645,7 +1623,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q30 -->
 <div class="form-screen" id="instructor-q30">
   <h2>
     Do you want a Video Embed Section?
@@ -1659,7 +1636,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q31 -->
 <div class="form-screen" id="instructor-q31">
   <h2>
     Do you want fully Automated Online Booking?
@@ -1673,7 +1649,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </div>
 </div>
 
-<!-- Q32 -->
 <div class="form-screen" id="instructor-q32">
   <h2>
     Do you want Advanced Reporting & Insights?
@@ -1681,42 +1656,38 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   </h2>
   <p><strong>(Premium)</strong></p>
   <div class="button-row">
-    <button type="button" onclick="recordFeature('reporting'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('reporting'); next()">No</button>
+    <button type="button" onclick="recordFeature('reporting'); showScreen('final-choice')">Yes</button>
+    <button type="button" onclick="recordNoFeature('reporting'); showScreen('final-choice')">No</button>
     <button type="button" class="back-button" onclick="prev()">Back</button>
   </div>
 </div>
 
 
+ <div class="form-screen" id="final-choice">
+  <h2>What would you like to do next?</h2>
+  <div class="button-row">
+    <button type="button" onclick="showScreen('ownership-choice')">I want to start my website ASAP</button>
+    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+    <button type="button" class="back-button" onclick="prev()">Back</button>
+  </div>
+</div>
 
- 
-  <div class="form-screen" id="final-choice">
-    <h2>What would you like to do next?</h2>
+
+  <div class="form-screen" id="ownership-choice"> 
+    <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
     <div class="button-row">
-      <button type="button" onclick="showScreen('instructor-q19')">I want to start my website ASAP</button>
-      <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
+      <button type="button" class="own-outright">Own Outright</button>
+      <button type="button" class="monthly-support">Monthly Support</button>
       <button type="button" class="back-button" onclick="prev()">Back</button>
     </div>
   </div>
 
-  <div class="form-screen" id="instructor-q19">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-
  
-<!-- ===================== RECOMMENDED PLAN ===================== -->
 <div class="form-screen" id="recommended-plan-screen">
   <h2>Your Recommended Plan</h2>
 
   <div class="pricing-container">
 
-<!-- Basic Plan -->
 <div class="pricing-card" data-plan="basic" data-animate>
   <h3>Basic</h3>
   <p class="price">£499</p>
@@ -1732,7 +1703,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <small>50% now to secure, 50% on completion</small>
 </div>
 
-<!-- Pro Plan -->
 <div class="pricing-card" data-plan="pro" data-animate>
   <div class="badge">Recommended</div>
   <h3>Pro</h3>
@@ -1749,7 +1719,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
   <small>50% now to secure, 50% on completion</small>
 </div>
 
-<!-- Premium Plan -->
 <div class="pricing-card" data-plan="premium" data-animate>
   <h3>Premium</h3>
   <p class="price">£1499</p>
@@ -1767,318 +1736,301 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 
 </div>
+</div>
 </form>
+
 
  
-<!-- ===================== RECOMMENDED PLAN ===================== -->
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-  <div class="pricing-container">
-
-<!-- Basic Plan -->
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Pro Plan -->
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£999</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £999 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-<!-- Premium Plan -->
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£1499</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1499 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
-
-
-</div>
-</form>
 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------ Basic setup ------------------
-  let screens = Array.from(document.querySelectorAll(".form-screen"));
-  let currentScreen = 0;
+// ------------------ Basic setup ------------------
+let screens = Array.from(document.querySelectorAll(".form-screen"));
+let currentScreen = 0;
 
-  const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get("code");
-  const stepParam = params.get("step");
+const params = new URLSearchParams(window.location.search);
+const codeParam = params.get("code");
+const stepParam = params.get("step");
+
+// Progress Bar Functions
+function updateWaterProgress() {
+  const wave = document.getElementById('progress-wave');
+  if (!wave) return;
+  const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+  wave.style.height = progressPercent + '%';
+}
+
+function updateProgress(currentStep) {
+  const progressBar = document.querySelector('.progress-bar');
+  const progressLabel = document.querySelector('.progress-label');
+  const percent = Math.round((currentStep / screens.length) * 100);
+  if (progressBar) progressBar.style.width = percent + '%';
+  if (progressLabel) progressLabel.textContent = percent + '%';
+}
+
+// ------------------ Screen Navigation ------------------
+function hideAllScreens() {
+  screens.forEach(screen => {
+    screen.classList.remove("active");
+    screen.style.display = "none";
+  });
+}
+
+function showScreen(id) {
+  const screen = document.getElementById(id);
+  if (!screen) return;
+  hideAllScreens();
+  screen.classList.add("active");
+  screen.style.display = "flex";
+  currentScreen = screens.indexOf(screen);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Handle pricing screen display
+  if (screen.id === "recommended-plan-screen") {
+    // Check if monthly was selected in the ownership step, otherwise default to outright
+    const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+    showRecommendedPlan(planMode);
+  } else if (screen.id === "monthly-plan-screen") { // Retaining this just in case
+    showRecommendedPlan('monthly');
+  }
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
+}
+
+function next() {
+  if (currentScreen < screens.length - 1) {
+    currentScreen++;
+    showScreen(screens[currentScreen].id);
+  }
+}
+
+function prev() {
+  if (currentScreen > 0) {
+    currentScreen--;
+    showScreen(screens[currentScreen].id);
+  }
+}
+
+window.showScreen = showScreen;
+window.next = next;
+window.prev = prev;
+
+// ------------------ User Path & Features ------------------
+let userPath = "";
+const yesFeatures = [];
+const noFeatures = [];
+window.ownershipChoice = ""; // Ensure it's globally accessible for use in showScreen
+const featureState = {};
+
+function syncFeatureState() {
+  yesFeatures.length = 0;
+  noFeatures.length = 0;
+  Object.entries(featureState).forEach(([f, isYes]) => {
+    if (isYes) yesFeatures.push(f);
+    else noFeatures.push(f);
+  });
+  const hiddenFeatures = document.getElementById('hiddenFeatures');
+  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
   
-  // Progress Bar Functions
-  function updateWaterProgress() { 
-    const wave = document.getElementById('progress-wave');
-    if (!wave) return;
-    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-    wave.style.height = progressPercent + '%';
+  // Re-render plan if pricing screen is active
+  if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+     const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+    showRecommendedPlan(planMode);
   }
   
-  function updateProgress(currentStep) {
-    const progressBar = document.querySelector('.progress-bar');
-    const progressLabel = document.querySelector('.progress-label');
-    const percent = Math.round((currentStep / screens.length) * 100);
-    if (progressBar) progressBar.style.width = percent + '%';
-    if (progressLabel) progressLabel.textContent = percent + '%';
-  }
+  console.log("Current YES Features:", yesFeatures);
+}
 
-  // ------------------ Screen Navigation ------------------
-  function hideAllScreens() {
-    screens.forEach(screen => {
-      screen.classList.remove("active");
-      screen.style.display = "none";
-    });
-  }
-
-  function showScreen(id) {
-    const screen = document.getElementById(id);
-    if (!screen) return;
-    hideAllScreens();
-    screen.classList.add("active");
-    screen.style.display = "flex";
-    currentScreen = screens.indexOf(screen);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (screen.id === "recommended-plan-screen") {
-      showRecommendedPlan('outright');
-    } else if (screen.id === "monthly-plan-screen") {
-      showRecommendedPlan('monthly');
-    }
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-  }
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  function prev() {
-    if (currentScreen > 0) {
-      currentScreen--;
-      showScreen(screens[currentScreen].id);
-    }
-  }
-
-  window.showScreen = showScreen;
-  window.next = next;
-  window.prev = prev;
-
-  // ------------------ User Path & Features ------------------
-  let userPath = "";
-  const yesFeatures = [];
-  const noFeatures = [];
-  let ownershipChoice = "";
-  const featureState = {};
-
-  function syncFeatureState() {
-    yesFeatures.length = 0;
-    noFeatures.length = 0;
-    Object.entries(featureState).forEach(([f, isYes]) => {
-      if (isYes) yesFeatures.push(f);
-      else noFeatures.push(f);
-    });
-    const hiddenFeatures = document.getElementById('hiddenFeatures');
-    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-    
-    // Update both plan screens if active
-    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('outright');
-    }
-    if (document.getElementById("monthly-plan-screen")?.classList.contains("active")) {
-      showRecommendedPlan('monthly');
-    }
-    
-    console.log("Current YES Features:", yesFeatures);
-  }
-
-  window.setPath = (path) => userPath = path;
-  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+window.setPath = (path) => userPath = path;
+window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
 
 
+// ------------------ Ownership Button Logic ------------------
 
+/**
+ * Sets up the button handlers for the 'ownership-choice' screen.
+ */
 function setupOwnershipButtons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
+  const ownershipScreen = document.getElementById('ownership-choice'); 
+  
+  if (!ownershipScreen) {
+      return; 
+  }
 
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
+  const ownOutrightBtn   = ownershipScreen.querySelector('button.own-outright');
+  const monthlySupportBtn = ownershipScreen.querySelector('button.monthly-support');
 
   if (ownOutrightBtn) {
     ownOutrightBtn.onclick = () => {
-      // 💡 Store the user's choice (important for the final recommendation)
       window.ownershipChoice = 'Owned Outright';
-      
-      // ✅ Transition to your new final screen after the 32-question funnel
-      showScreen('final-recommendation'); // <<< CRITICAL: Update 'final-recommendation' to your actual screen ID
+      // Show pricing screen in Outright mode (default)
+      showScreen('recommended-plan-screen'); 
     };
   }
 
   if (monthlySupportBtn) {
     monthlySupportBtn.onclick = () => {
-      // 💡 Store the user's choice
       window.ownershipChoice = 'Monthly Support';
       
-      // ✅ Transition to your new final screen after the 32-question funnel
-      showScreen('final-recommendation'); // <<< CRITICAL: Update 'final-recommendation' to your actual screen ID
+      // Show pricing screen and force Monthly view
+      showScreen('recommended-plan-screen');
+      showRecommendedPlan('monthly'); 
     };
   }
 }
 
-// Call the function to set up the new button logic
-setupOwnershipButtons();
+// Call the function to set up the new button logic after the DOM is ready
+setTimeout(setupOwnershipButtons, 500); 
 
-  // ------------------ "I Want This Concept" Button ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
-  });
-
-  // ------------------ Design Code Handling ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) {
-      alert("Please enter a design code.");
-      return;
-    }
-    showFilteredTemplate(code);
-  };
-
-  function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
+// ------------------ "I Want This Concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const code = btn.dataset.code;
     if (!code) return;
-    hideAllScreens();
+    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+    window.location.assign(funnelURL);
+  });
+});
 
-    if (stepParam === "4") {
-      const designInput = document.getElementById("designInput");
-      if (designInput) designInput.value = code;
-      showScreen("instructor-q4");
-      return;
-    }
+// ------------------ Design Code Handling ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim();
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+  showFilteredTemplate(code);
+};
 
-    let templateScreen = document.getElementById('template-results');
-    if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-    }
+function showFilteredTemplate(rawCode) {
+  const code = String(rawCode || '').trim().toUpperCase();
+  if (!code) return;
+  hideAllScreens();
 
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
-    heading.textContent = `Showing template for code: ${code}`;
-    container.appendChild(heading);
-
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-    if (!foundEl) foundEl = document.getElementById(code);
-
-    if (foundEl) {
-      const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
-      container.appendChild(clone);
-
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
-      contBtn.onclick = () => next();
-      buttonRow.appendChild(contBtn);
-      container.appendChild(buttonRow);
-
-      templateScreen.innerHTML = '';
-      templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-      currentScreen = screens.indexOf(templateScreen);
-      updateWaterProgress();
-      updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  // If the user came in via a URL with a code/step, send them to Q4.
+  if (stepParam === "4") {
+    const designInput = document.getElementById("designInput");
+    if (designInput) designInput.value = code;
+    showScreen("instructor-q4");
+    return;
+  }
+  
+  // This section handles dynamically showing a template result within the funnel
+  let templateScreen = document.getElementById('template-results');
+  if (!templateScreen) {
+    templateScreen = document.createElement('div');
+    templateScreen.id = 'template-results';
+    templateScreen.classList.add('form-screen');
+    document.getElementById('formWrapper').appendChild(templateScreen);
+    screens = Array.from(document.querySelectorAll('.form-screen'));
   }
 
+  const container = document.createElement('div');
+  container.className = 'template-container';
+  const heading = document.createElement('h2');
+  heading.textContent = `Showing template for code: ${code}`;
+  container.appendChild(heading);
 
+  let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+  if (!foundEl) foundEl = document.getElementById(code);
+
+  if (foundEl) {
+    const clone = foundEl.cloneNode(true);
+    clone.classList.add('template-preview-clone');
+    clone.style.width = '100%';
+    container.appendChild(clone);
+
+    const buttonRow = document.createElement('div');
+    buttonRow.className = 'button-row';
+    const contBtn = document.createElement('button');
+    contBtn.type = 'button';
+    contBtn.textContent = 'Continue';
+    contBtn.onclick = () => next();
+    buttonRow.appendChild(contBtn);
+    container.appendChild(buttonRow);
+
+    templateScreen.innerHTML = '';
+    templateScreen.appendChild(container);
+    templateScreen.classList.add('active');
+    // Recalculate screens array and current position
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+    currentScreen = screens.indexOf(templateScreen);
+    updateWaterProgress();
+    updateProgress(currentScreen + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  
+  // Fallback if code isn't found locally
+  window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+}
 
 
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-  if (!planCards.length) return;
+  const hiddenPlanEl = document.getElementById('hiddenPlan');
+  
+  if (!planCards.length || !hiddenPlanEl) return;
 
   const yes = yesFeatures.slice();
 
+  // TIER ASSIGNMENTS (Based on Q5-Q32)
   const tiers = {
-    basic: ["booking","mobile","cta","contact","bio","social"],
-    pro: ["seo","reviews","branding","faq","newsletter"],
-    premium: ["packages","email","content","guide"]
+    // Basic Tier (Q5 - Q14)
+    basic: ["mobile", "contact", "bio", "social", "booking", "cta", "home", "services", "testimonials", "map"],
+    
+    // Pro Tier (Q15 - Q24)
+    pro: ["seo", "reviews", "branding", "faq", "newsletter", "gallery", "blog", "navigation", "lesson-pricing", "analytics"],
+    
+    // Premium Tier (Q25 - Q32)
+    premium: ["packages", "email", "content", "expect-guide", "pdfs", "video", "auto-booking", "reporting"]
   };
 
+  // LABELS FOR ALL FEATURES
   const labels = {
-    booking: "Online booking & payment",
+    // Basic
     mobile: "Mobile-friendly design",
-    cta: "Strong call-to-action buttons",
     contact: "Simple contact form",
     bio: "About / Instructor bio",
     social: "Social media integration",
+    booking: "Online booking & payment",
+    cta: "Strong call-to-action buttons",
+    home: "Structured Home Page",
+    services: "Dedicated Services Page",
+    testimonials: "Testimonials Section",
+    map: "Google Map Integration",
+    
+    // Pro
     seo: "Local Google SEO",
-    reviews: "Student reviews",
+    reviews: "Student reviews section",
     branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student guide",
-    newsletter: "Newsletter signup",
-    packages: "Lesson packages & gift vouchers",
-    email: "Professional email address",
-    content: "Content creation help",
-    guide: "What to Expect guide"
+    faq: "FAQ / Student Guide",
+    newsletter: "Newsletter Signup form",
+    gallery: "Photo Gallery",
+    blog: "Blog or Updates Section",
+    navigation: "Multi-page Navigation",
+    "lesson-pricing": "Lesson Pricing Table",
+    analytics: "Google Analytics setup",
+    
+    // Premium
+    packages: "Lesson Packages & Gift Vouchers",
+    email: "Professional Email Address",
+    content: "Content Creation help",
+    "expect-guide": "“What to Expect” Guide",
+    pdfs: "Downloadable PDFs",
+    video: "Video Embed Section",
+    "auto-booking": "Fully Automated Online Booking",
+    reporting: "Advanced Reporting & Insights",
+    // Other tracking features
+    solo: "Solo Instructor",
+    school: "Driving School",
+    existing_site: "Existing Website",
   };
 
   const coreDefaults = {
@@ -2092,25 +2044,52 @@ function showRecommendedPlan(planType = 'outright') {
   const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
   const setupFees = { basic: 199, pro: 299, premium: 499 };
 
+  // Determine RECOMMENDED plan level based on highest tier selected feature
+  const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
+    : yes.some(f => tiers.pro.includes(f)) ? "pro"
+    : "basic";
+    
+  let selectedPlanLevel = highestTier;
+  
+  // Set hidden field to the recommended plan
+  hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
+
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
     const list = card.querySelector(".features-list");
     const priceEl = card.querySelector(".price");
     const payBtn = card.querySelector(".pay-now");
     const note = card.querySelector("small");
+    const badge = card.querySelector(".badge");
 
     if (!level || !list || !priceEl || !payBtn) return;
 
     // ----- Pricing -----
+    let priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
+    let paypalLink = "";
+
     if (isMonthly) {
-      priceEl.textContent = `£${monthlyPrices[level]}/month`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Start Monthly Plan`;
-      if (note) note.textContent = `£${setupFees[level]} setup + £${monthlyPrices[level]}/month`;
+      priceEl.textContent = `£${priceValue}/month`;
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
+      if (note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
+      paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`;
     } else {
-      priceEl.textContent = `£${outrightPrices[level]}`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"> Pay £${outrightPrices[level]} via PayPal`;
+      priceEl.textContent = `£${priceValue}`;
+      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${priceValue} via PayPal`;
       if (note) note.textContent = "50% now to secure, 50% on completion";
+      paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
     }
+    
+    // ----- Recommendation Badge -----
+    if (badge) {
+        if (level === selectedPlanLevel) {
+            badge.style.display = 'block';
+            badge.textContent = 'Recommended';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
 
     // ----- Features List -----
     list.innerHTML = "";
@@ -2133,7 +2112,9 @@ function showRecommendedPlan(planType = 'outright') {
     divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
     list.appendChild(divider);
 
-    // ----- Lower-tier YES features -----
+    // ----- Relevant YES features -----
+    
+    // Features from lower tiers
     tierOrder.forEach(tier => {
       if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
       const features = yes.filter(f => tiers[tier].includes(f));
@@ -2154,7 +2135,7 @@ function showRecommendedPlan(planType = 'outright') {
       });
     });
 
-    // ----- Current-tier YES features -----
+    // Features from the current tier
     const currentFeatures = yes.filter(f => tiers[level].includes(f));
     if (currentFeatures.length) {
       const heading = document.createElement("li");
@@ -2179,169 +2160,160 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(li);
     }
 
-    // ----- PayPal button -----
+    // ----- PayPal button action -----
     payBtn.onclick = () => {
-      localStorage.setItem("selectedPlan", level.charAt(0).toUpperCase() + level.slice(1) + " Plan");
-      localStorage.setItem("planType", isMonthly ? "Monthly" : "Outright");
-      localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
-      localStorage.setItem("noFeatures", JSON.stringify(noFeatures));
+      const hiddenPaymentLink = document.getElementById('hiddenPaymentLink');
+      if (hiddenPaymentLink) hiddenPaymentLink.value = paypalLink;
+      
+      // Submit the form to collect the data before redirecting to PayPal
+      document.getElementById('formWrapper').submit(); 
 
-      const paypalLink = isMonthly
-        ? "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_MONTHLY_BUTTON_ID"
-        : "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_OUTRIGHT_BUTTON_ID";
-
-      const thankYouURL = encodeURIComponent("https://yourdomain.com/thank-you.html");
-      window.location.href = `${paypalLink}&return=${thankYouURL}`;
+      // Redirect *after* form submission (or consider setting a direct redirect)
+      // window.location.href = paypalLink;
     };
   });
 
-  // Highlight recommended plan
+  // Highlight recommended plan and scroll to it
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
-  const recCard = planCards.find(c =>
-    yes.some(f => tiers.premium.includes(f)) ? c.dataset.plan === "premium"
-    : yes.some(f => tiers.pro.includes(f)) ? c.dataset.plan === "pro"
-    : c.dataset.plan === "basic"
-  );
+  const recCard = planCards.find(c => c.dataset.plan === selectedPlanLevel);
   if (recCard) {
     recCard.classList.add("recommended", "in-view");
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
  
-  // ------------------ Typewriter Animation ------------------
-  const typewriterEl = document.getElementById('typewriter');
-  const colorRiseEl = document.querySelector('.color-rise');
+// ------------------ Typewriter Animation ------------------
+const typewriterEl = document.getElementById('typewriter');
+const colorRiseEl = document.querySelector('.color-rise');
 
-  function startTypewriterAnimation() {
-    if (!typewriterEl) return;
-    typewriterEl.style.opacity = 1;
-    let lines = [];
-    let currentLine = 0;
-    let currentChar = 0;
-    let lineEl = null;
-    const typingSpeed = 100;
-    const lineDelay = 500;
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    typewriterEl.appendChild(cursor);
+function startTypewriterAnimation() {
+  if (!typewriterEl) return;
+  typewriterEl.style.opacity = 1;
+  let lines = [];
+  let currentLine = 0;
+  let currentChar = 0;
+  let lineEl = null;
+  const typingSpeed = 100;
+  const lineDelay = 500;
+  const cursor = document.createElement('span');
+  cursor.classList.add('cursor');
+  typewriterEl.appendChild(cursor);
 
-    function setLinesByOrientation() {
-      lines = window.matchMedia("(orientation: landscape)").matches
-        ? ["We build", "your website.", "You approve,", "then pay."]
-        : ["We build", "your", "website.", "You approve,", "then pay."];
-    }
-
-    function typeChar() {
-      if (currentLine >= lines.length) {
-        cursor.remove();
-        setTimeout(() => {
-          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-          setTimeout(() => showScreen('main-intro-options'), 2000);
-        }, 500);
-        return;
-      }
-      const text = lines[currentLine];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        lineEl.classList.add('typed-line');
-        typewriterEl.appendChild(lineEl);
-        lineEl.appendChild(cursor);
-      }
-      if (currentChar < text.length) {
-        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-        currentChar++;
-        setTimeout(typeChar, typingSpeed);
-      } else {
-        currentLine++;
-        currentChar = 0;
-        lineEl = null;
-        setTimeout(typeChar, lineDelay);
-      }
-    }
-
-    setLinesByOrientation();
-    typeChar();
-
-    window.addEventListener('resize', debounce(() => {
-      currentLine = 0;
-      currentChar = 0;
-      lineEl = null;
-      typewriterEl.textContent = '';
-      typewriterEl.appendChild(cursor);
-      setLinesByOrientation();
-      typeChar();
-    }, 300));
+  function setLinesByOrientation() {
+    lines = window.matchMedia("(orientation: landscape)").matches
+      ? ["We build", "your website.", "You approve,", "then pay."]
+      : ["We build", "your", "website.", "You approve,", "then pay."];
   }
 
-  function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  // ------------------ Initialize Funnel ------------------
-  hideAllScreens();
-
-  // Set up Q19 buttons after DOM is loaded
-  setTimeout(setupQ19Buttons, 100);
-
-  if (codeParam) {
-    const inputEl = document.getElementById("designInput");
-    if (inputEl) inputEl.value = codeParam;
-    showFilteredTemplate(codeParam);
-  } else if (stepParam) {
-    const stepName = `instructor-q${stepParam}`;
-    const screenIndex = screens.findIndex(s => s.id === stepName);
-    if (screenIndex !== -1) {
-      currentScreen = screenIndex;
-      showScreen(stepName);
-    } else {
-      showScreen(screens[0].id);
-    }
-  } else {
-    if (typewriterEl) typewriterEl.classList.add('active');
-    if (colorRiseEl) colorRiseEl.classList.add('active');
-    startTypewriterAnimation();
-  }
-
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-
-  // ------------------ IntersectionObserver for pricing cards ------------------
-  (function initPricingObserver(){
-    const cards = document.querySelectorAll('.pricing-card[data-animate]');
-    if (!cards || cards.length === 0) return; 
-
-    if (!('IntersectionObserver' in window)) {
-      cards.forEach(c => c.classList.add('in-view'));
+  function typeChar() {
+    if (currentLine >= lines.length) {
+      cursor.remove();
+      setTimeout(() => {
+        typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+        setTimeout(() => showScreen('main-intro-options'), 2000);
+      }, 500);
       return;
     }
+    const text = lines[currentLine];
+    if (!lineEl) {
+      lineEl = document.createElement('div');
+      lineEl.classList.add('typed-line');
+      typewriterEl.appendChild(lineEl);
+      lineEl.appendChild(cursor);
+    }
+    if (currentChar < text.length) {
+      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+      currentChar++;
+      setTimeout(typeChar, typingSpeed);
+    } else {
+      currentLine++;
+      currentChar = 0;
+      lineEl = null;
+      setTimeout(typeChar, lineDelay);
+    }
+  }
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -12% 0px',
-      threshold: [0, 0.05, 0.15]
-    };
+  setLinesByOrientation();
+  typeChar();
 
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        try {
-          const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-          if (isVisible) {
-            entry.target.classList.add('in-view');
-            obs.unobserve(entry.target);
-          }
-        } catch (err) {
-          try { entry.target.classList.add('in-view'); } catch(e) {}
-          try { obs.unobserve(entry.target); } catch(e) {}
+  window.addEventListener('resize', debounce(() => {
+    currentLine = 0;
+    currentChar = 0;
+    lineEl = null;
+    typewriterEl.textContent = '';
+    typewriterEl.appendChild(cursor);
+    setLinesByOrientation();
+    typeChar();
+  }, 300));
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// ------------------ Initialize Funnel ------------------
+hideAllScreens();
+
+if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showFilteredTemplate(codeParam);
+} else if (stepParam) {
+  const stepName = `instructor-q${stepParam}`;
+  const screenIndex = screens.findIndex(s => s.id === stepName);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id);
+  }
+} else {
+  // Only start typewriter animation if no URL parameters are present
+  if (typewriterEl) typewriterEl.classList.add('active');
+  if (colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
+}
+
+updateWaterProgress();
+updateProgress(currentScreen + 1);
+
+// ------------------ IntersectionObserver for pricing cards ------------------
+(function initPricingObserver(){
+  const cards = document.querySelectorAll('.pricing-card[data-animate]');
+  if (!cards || cards.length === 0) return; 
+
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(c => c.classList.add('in-view'));
+    return;
+  }
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -12% 0px',
+    threshold: [0, 0.05, 0.15]
+  };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      try {
+        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+        if (isVisible) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
         }
-      });
-    }, observerOptions);
+      } catch (err) {
+        try { entry.target.classList.add('in-view'); } catch(e) {}
+        try { obs.unobserve(entry.target); } catch(e) {}
+      }
+    });
+  }, observerOptions);
 
-    Array.from(cards).forEach(card => observer.observe(card));
-  })();
+  Array.from(cards).forEach(card => observer.observe(card));
+})();
 
 
 
