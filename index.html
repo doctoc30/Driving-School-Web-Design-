@@ -1771,14 +1771,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
- // ------------------ Q19 Buttons - FIXED ------------------
-function setupQ19Buttons() {
-  const q19Screen = document.getElementById('instructor-q19');
-  if (!q19Screen) return;
+// ------------------ Q33 Buttons - FIXED ------------------
+function setupQ33Buttons() {
+  const q33Screen = document.getElementById('instructor-q33'); // updated ID
+  if (!q33Screen) return;
 
-  const ownOutrightBtn   = q19Screen.querySelector('button.own-outright');
-  const monthlySupportBtn = q19Screen.querySelector('button.monthly-support');
-  const backBtn          = q19Screen.querySelector('.back-button');
+  const ownOutrightBtn   = q33Screen.querySelector('button.own-outright');
+  const monthlySupportBtn = q33Screen.querySelector('button.monthly-support');
+  const backBtn          = q33Screen.querySelector('.back-button');
 
   if (ownOutrightBtn) {
     ownOutrightBtn.onclick = () => {
@@ -1794,7 +1794,6 @@ function setupQ19Buttons() {
       ownershipChoice = 'Monthly Support';
       featureState['monthlySupport'] = true;
       syncFeatureState();
-      // ✅ use the existing pricing screen in monthly mode
       showScreen('recommended-plan-screen');
       showRecommendedPlan('monthly');
     };
@@ -1805,15 +1804,8 @@ function setupQ19Buttons() {
   }
 }
 
-
-// ensure Q19 buttons are wired and the funnel initial screen is set
-setupQ19Buttons();
-const initialActive = document.querySelector('.form-screen.active');
-if (initialActive) {
-  const idx = screens.indexOf(initialActive);
-  if (idx >= 0) currentScreen = idx;
-  showScreen(initialActive.id);
-}
+// call setup after DOM is ready
+setupQ33Buttons();
  
   // ------------------ "I Want This Concept" Button ------------------
   document.querySelectorAll(".want-concept").forEach(btn => {
