@@ -1231,57 +1231,91 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
     color: #0056b3;
 }
 
-/* Style for the Modal/Overlay */
+
+ /* --- INFO MODAL STYLING FOR BRAND ALIGNMENT --- */
+
+/* Modal Backdrop */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Must be above all other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* Semi-transparent dark overlay to focus attention */
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding-top: 50px; 
 }
 
+/* Modal Content Container - The actual box */
 .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 80%; /* Could be more or less, depending on screen size */
-  max-width: 500px;
-  position: relative;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+    background-color: #fefefe; /* Use your brand's neutral color, or white */
+    margin: 5% auto; /* 5% from the top and centered */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%; /* Responsive width for mobile */
+    max-width: 500px; /* Max width for desktop */
+    border-radius: 12px; /* Matches the rounded look of your buttons */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Clear shadow */
+    position: relative;
+    /* Brand-specific styling: Use the background color from your blue page */
+    background-color: #2e6096; /* A slightly darker shade of your page blue, or your exact blue */
+    color: white; /* Ensure all text inside is white */
 }
 
-/* Modal Animation */
-@keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
+/* Modal Title */
+#modal-title {
+    color: #ffffff; /* White title */
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Subtle white underline */
+    padding-bottom: 10px;
 }
 
+/* Modal Body/Text */
+#modal-body {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    /* Optional: Style for the **Benefit:** text from the JS */
+    white-space: pre-line; /* Essential for displaying \n\n line breaks */
+}
+
+/* Bold text inside the body (e.g., **Benefit:**) */
+#modal-body strong {
+    color: #ffc107; /* Use an accent color, like a bright yellow, for key benefits */
+    font-weight: 700;
+    display: block; /* Forces the benefit title onto its own line */
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+/* Close Button (X) */
 .close-button {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: white; /* White to stand out on the blue background */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute; /* Position relative to the container */
+    top: 10px;
+    right: 15px;
 }
 
 .close-button:hover,
 .close-button:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+    color: #ffc107; /* Accent color on hover */
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.modal h3 {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
+/* Mobile Responsiveness for Modal */
+@media (max-width: 600px) {
+    .modal-content {
+        margin: 20% auto; /* Adjust margin for smaller screens */
+        padding: 20px;
+    }
 }
-
 
 
  
@@ -1829,6 +1863,132 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION AND INFO MODAL LOGIC ---------- */
 document.addEventListener("DOMContentLoaded", () => {
+
+
+
+ // ... (start of your existing <script> tag)
+
+// ----------------------------------------------------
+// --- INFO MODAL LOGIC ---
+// ----------------------------------------------------
+
+// --- 1. FEATURE DETAILS DATA (The answers for the pop-ups) ---
+const featureDetails = {
+    'Mobile-Friendly Design': {
+        title: 'Mobile-Friendly Design (Responsive)',
+        body: 'Ensures your website automatically adjusts and looks perfect on phones, tablets, and desktop computers. \n\n**Benefit:** This is **critical for modern SEO**, improves user experience, and prevents potential students from leaving due to a poor display on their phone.'
+    },
+    'Contact Form': {
+        title: 'Contact Form',
+        body: 'A dedicated form that allows potential students to easily send you an enquiry directly from your website, capturing their name, email, and message. \n\n**Benefit:** Provides a **professional, 24/7 lead capture tool**, ensuring you never miss an interested student, even when you are teaching.'
+    },
+    'Instructor Bio': {
+        title: 'Instructor Bio Section',
+        body: 'A dedicated section where you can introduce yourself, showcase your experience, qualifications, and personal approach. \n\n**Benefit:** **Builds instant trust and rapport** with prospective students and parents, making them more likely to book with a familiar face.'
+    },
+    'Social Media Icons': {
+        title: 'Social Media Icons',
+        body: 'Cleanly designed icons that link directly to your social media profiles (Facebook, Instagram, TikTok, etc.). \n\n**Benefit:** **Boosts your online presence** and drives traffic to platforms where you can engage with students and run local marketing campaigns.'
+    },
+    'Booking & Online Payment': {
+        title: 'Booking & Online Payment (Basic)',
+        body: 'Integration of a simple booking enquiry system and a link to a payment processor (like PayPal) for manual lesson payment. \n\n**Benefit:** Makes the transaction process **easier and faster for the student**, helping you secure the booking and improve cash flow.'
+    },
+    'Call-to-Action Buttons': {
+        title: 'Strong Call-to-Action Buttons',
+        body: 'Prominently placed buttons (e.g., "Book Now", "Call Us Today") that guide your visitors to take the next step. \n\n**Benefit:** **Increases conversion rates** by clearly telling visitors what action you want them to take, turning interest into bookings.'
+    },
+    'Home Page Structure': {
+        title: 'Structured Home Page',
+        body: 'A professionally laid out homepage that clearly communicates your services, location, and key benefits within the first few seconds of a visit. \n\n**Benefit:** **Reduces bounce rate** (people leaving quickly) and quickly answers the most important questions a potential student has.'
+    },
+    'Services Page Setup': {
+        title: 'Dedicated Services Page',
+        body: 'A separate page clearly listing and describing all the lesson types, courses, and packages you offer. \n\n**Benefit:** **Improves SEO** for specific keywords and allows students to easily compare options, leading to better-informed bookings.'
+    },
+    'Testimonials Section': {
+        title: 'Testimonials Section',
+        body: 'A dedicated area to display positive feedback and quotes from your past students to build social proof. \n\n**Benefit:** **Boosts credibility and trust**—students are much more likely to book based on other peoples\' successful experiences.'
+    },
+    'Google Map Integration': {
+        title: 'Google Map Integration',
+        body: 'An embedded, interactive map showing your service area or meeting point. \n\n**Benefit:** Makes it immediately clear that you **serve the student’s local area**, reducing confusion and irrelevant enquiries.'
+    },
+    'Local SEO Optimization': {
+        title: 'Local Google SEO Optimization',
+        body: 'Optimization of your website\'s code, content, and structure to rank higher in Google searches for your local area (e.g., "driving lessons in [Your Town]"). \n\n**Benefit:** **Drives highly targeted, organic traffic** (students actively looking to book nearby) straight to your business for free.'
+    },
+    'Student Reviews': {
+        title: 'Student Reviews (Advanced)',
+        body: 'A dedicated page or section to display a larger volume of detailed reviews, potentially including star ratings and photos. \n\n**Benefit:** Leverages social proof at an advanced level, providing **in-depth reassurance** to students considering a commitment to lessons.'
+    },
+    'Branding & Logo': {
+        title: 'Branding Help (Logo & Colors)',
+        body: 'Assistance with developing a simple, professional logo and a consistent color palette and font scheme for your brand. \n\n**Benefit:** Makes your business **look more established and trustworthy** than competitors, attracting premium students and improving recognition.'
+    },
+    'FAQ / Student Guide': {
+        title: 'FAQ or Student Guide',
+        body: 'A dedicated section for frequently asked questions, helping new students understand the process and lesson policies. \n\n**Benefit:** **Saves you time** by significantly reducing the number of repetitive administrative calls and emails.'
+    },
+    'Newsletter Signup': {
+        title: 'Newsletter Signup Form',
+        body: 'A form integrated with an email marketing service (like Mailchimp or ConvertKit) to capture emails. \n\n**Benefit:** Allows you to **market future promotions and updates** directly to interested leads who weren\'t ready to book immediately.'
+    },
+    'Photo Gallery': {
+        title: 'Photo Gallery',
+        body: 'A modern, dedicated section or page for showcasing photos of your vehicle(s), passed students, or high-quality driving images. \n\n**Benefit:** **Visually engages visitors** and helps differentiate your service from text-heavy competitors.'
+    },
+    'Blog / Updates': {
+        title: 'Blog or Updates Section',
+        body: 'A section designed to publish articles, news, or driving tips. \n\n**Benefit:** **Massively boosts your SEO** by generating fresh, relevant content, positioning you as an authority in your local area.'
+    },
+    'Multi-page Navigation': {
+        title: 'Multi-page Navigation',
+        body: 'A complete, clearly labeled navigation system (menu) to allow users to easily browse through multiple pages on your site. \n\n**Benefit:** **Improves site flow and discoverability** of information, which is essential for larger driving schools with multiple offerings.'
+    },
+    'Lesson Pricing Table': {
+        title: 'Lesson Pricing Table',
+        body: 'A clearly designed, easy-to-read table to present your different lesson prices and packages side-by-side. \n\n**Benefit:** **Increases package sales** by making it simple for students to compare value and choose a higher-tier option.'
+    },
+    'Google Analytics Setup': {
+        title: 'Google Analytics Setup',
+        body: 'Installation and basic configuration of Google Analytics to allow you to track website traffic, user behavior, and conversion goals. \n\n**Benefit:** Gives you **actionable insights** into how people find you and what marketing efforts are actually bringing in paying students.'
+    },
+    'Lesson Packages & Gift Vouchers': {
+        title: 'Lesson Packages & Gift Vouchers',
+        body: 'Design and implementation of attractive features to promote and sell pre-set lesson packages and digital gift vouchers. \n\n**Benefit:** **Increases revenue per student** and drives high-value bookings with minimal effort.'
+    },
+    'Professional Email': {
+        title: 'Professional Email (@yourdomain.com)',
+        body: 'Setup of a professional email address (e.g., info@yourdrivingschool.com) integrated with your domain. \n\n**Benefit:** **Elevates your professional image** and ensures important business communications don’t end up in spam folders.'
+    },
+    'Content Creation Help': {
+        title: 'Content Creation Help',
+        body: 'Professional copywriting assistance to craft engaging, persuasive, and SEO-friendly text for your key pages. \n\n**Benefit:** **Saves you hours of writing time** and ensures the messaging on your website is compelling enough to convert visitors into bookings.'
+    },
+    'What to Expect Guide': {
+        title: '“What to Expect” Guide',
+        body: 'Detailed, step-by-step guides for students, covering everything from the first lesson to passing the test. \n\n**Benefit:** **Reduces anxiety** for new students and parents, making them feel more prepared and increasing booking confidence.'
+    },
+    'Downloadable PDFs': {
+        title: 'Downloadable PDFs (e.g., Terms, Checklists)',
+        body: 'Sections for easily downloading important documents like terms and conditions, price lists, or pre-test checklists. \n\n**Benefit:** **Ensures legal clarity** and provides valuable, branded resources that students can easily access offline.'
+    },
+    'Video Embed Section': {
+        title: 'Video Embed Section',
+        body: 'Designated areas for embedding promotional videos or driving tip videos from YouTube or other services. \n\n**Benefit:** **Boosts visitor engagement time** (great for SEO) and allows you to communicate complex concepts in a visually engaging way.'
+    },
+    'Automated Online Booking': {
+        title: 'Fully Automated Online Booking',
+        body: 'Integration with a dedicated scheduling platform (like Acuity Scheduling or others) that allows students to view your real-time availability, book, and pay all at once. \n\n**Benefit:** Provides a **seamless, modern experience**, eliminates double bookings, and allows you to take bookings 24/7 with zero administrative work.'
+    },
+    'Advanced Reporting & Insights': {
+        title: 'Advanced Reporting & Insights',
+        body: 'Setting up custom reports in Google Analytics or other tools to give you deeper understanding of where your students are coming from and what pages are performing best. \n\n**Benefit:** Allows you to **make data-driven business decisions**, optimizing your marketing spend and maximizing student acquisition.'
+    }
+};
+
+// ... (rest of your existing script tag)
 
 // ------------------ Basic setup ------------------
 let screens = Array.from(document.querySelectorAll(".form-screen"));
