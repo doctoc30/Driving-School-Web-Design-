@@ -1655,8 +1655,11 @@ html, body {
 </div>
 </form>
 
- <script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION & ALL FEATURES ---------- */
+
+ 
+<script>
+
+ /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION & ALL FEATURES ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------ Basic setup ------------------
@@ -1666,6 +1669,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const codeParam = params.get("code");
   const stepParam = params.get("step");
+
+  // ✅ FIX: Define the animation elements here so they are available for the
+  // initialization check later in the script.
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
   
   // Progress Bar Functions
   function updateWaterProgress() { 
@@ -2080,6 +2088,7 @@ function showRecommendedPlan(planType = 'outright') {
     // Normal start: Start the typewriter animation if present
     const initialActive = document.querySelector('.form-screen.active');
     
+    // This check now correctly uses the defined variables:
     if (typewriterEl?.classList.contains('active') || colorRiseEl?.classList.contains('active')) {
        // Typewriter animation handles the first showScreen() call
        startTypewriterAnimation();
@@ -2133,9 +2142,6 @@ function showRecommendedPlan(planType = 'outright') {
 
 
 // ------------------ Typewriter Animation ------------------
-const typewriterEl = document.getElementById('typewriter');
-const colorRiseEl = document.querySelector('.color-rise');
-
 function startTypewriterAnimation() {
   if (!typewriterEl) return;
 
@@ -2164,10 +2170,12 @@ function startTypewriterAnimation() {
     if (currentLine >= lines.length) {
       cursor.remove();
 
-      // ✅ Smooth transition after typing finishes
+      // ✅ Skyrocket/Fade transition after typing finishes
       setTimeout(() => {
         typewriterEl.classList.add('launching');
         typewriterEl.style.animation = 'rocketRise 2s ease forwards, fadeOut 2.2s ease forwards';
+        // Note: The 'color-rise' element is assumed to be styled by CSS to move with 'typewriterEl' 
+        // or has its own CSS animation triggered by a parent class/state.
         setTimeout(() => showScreen('main-intro-options'), 2300);
       }, 500);
 
@@ -2216,6 +2224,9 @@ function debounce(func, wait) {
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
+});
+
+
    // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
