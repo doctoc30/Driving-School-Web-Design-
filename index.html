@@ -1901,6 +1901,7 @@ function showRecommendedPlan(planType = 'outright') {
   if (!planCards.length) return;
 
   const yes = yesFeatures.slice();
+
 const tiers = {
   basic: [
     "mobile",
@@ -1978,17 +1979,16 @@ const labels = {
   support: "Priority Support & Maintenance"
 };
 
+const coreDefaults = {
+  basic: ["Pages - 5", "5 Revisions Per Page", "Delivery - 10 Days"],
+  pro: ["Pages - 10", "10 Revisions Per Page", "Delivery - 20 Days"],
+  premium: ["Pages - 20", "15 Revisions Per Page", "Delivery - 30 Days"]
+};
 
-  const coreDefaults = {
-    basic: ["Pages - 5", "5 Revisions Per Page ", "Delivery - 10 Days"],
-    pro: ["Pages - 10", "10 Revisions Per Page", "Delivery - 20 Days"]
-    premium: ["Pages - 20", "15 Revisions Per Page", "Delivery - 30 Days"]
-  };
-
-  const tierOrder = ["basic","pro","premium"];
-  const monthlyPrices = { basic: 100, pro: 150, premium: 250 };
-  const outrightPrices = { basic: 750, pro: 1,500, premium: 2,500 };
-  const setupFees = { basic: 199, pro: 299, premium: 499 };
+const tierOrder = ["basic", "pro", "premium"];
+const monthlyPrices = { basic: 100, pro: 150, premium: 250 };
+const outrightPrices = { basic: 750, pro: 1500, premium: 2500 };
+const setupFees = { basic: 199, pro: 299, premium: 499 };
 
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
