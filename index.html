@@ -979,52 +979,7 @@ html, body {
 
 
 
- #typewriter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-  background: transparent; /* Remove solid black unless you want it */
-  color: #fff; /* Ensure text is visible */
-  z-index: 9999;
-}
-#typewriter .typed-line {
-  font-size: 4vw;
-  font-weight: bold;
-  line-height: 1.2;
-  opacity: 1; /* Make sure it's not hidden */
-}
-#typewriter .cursor {
-  display: inline-block;
-  width: 2px;
-  background: #fff;
-  margin-left: 2px;
-  animation: blink 1s step-start infinite;
-}
 
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-@keyframes rocketRise {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100px); opacity: 0; }
-}
-#typewriter.rocket-rise {
-  animation: rocketRise 2s ease forwards;
-}
-
-@media (max-width: 480px) {
-  #typewriter .typed-line { font-size: 6vw; }
-}
 
 </style>
 
