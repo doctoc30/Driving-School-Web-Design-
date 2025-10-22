@@ -1116,24 +1116,25 @@ html, body {
  
 </header> 
 
-<div class="color-rise"></div>
 <div id="typewriter"></div>
-
-
+<div class="color-rise"></div>
 
 <form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
   <input type="hidden" id="hiddenPlan" name="Selected Plan">
   <input type="hidden" id="hiddenFeatures" name="Selected Features">
   <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
 
+  <!-- Main Intro Screen -->
   <div class="form-screen active" id="main-intro-options">
     <h2>Welcome! What do you need help with today?</h2>
     <div class="button-row">
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">New Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Redesign Existing Website</button>
-      <button type="button" onclick="setPath('instructor'); showScreen('instructor-q1')">Maintenance / Updates</button>
+      <!-- Use next() instead of showScreen() to keep currentScreen synced -->
+      <button type="button" onclick="setPath('instructor'); next()">New Website</button>
+      <button type="button" onclick="setPath('instructor'); next()">Redesign Existing Website</button>
+      <button type="button" onclick="setPath('instructor'); next()">Maintenance / Updates</button>
     </div>
   </div>
+
 
   <div class="form-screen" id="instructor-q1">
     <h2>Do you currently have a website?</h2>
