@@ -1085,182 +1085,61 @@ html, body {
 }
 
 
-  
- /* ---------- BASE STYLES ---------- */
-
-nav ul {
-  display: block;
-}
-
-nav ul li {
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li a {
-  padding: 0.5rem 1rem;
-}
-
-select,
-input[type="text"],
-input[type="email"] {
-  width: 60%;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  padding: 1rem;
-}
-
-.overlay-text {
-  font-size: calc(6vw + 0.5rem);
-}
-
+  /* ---------- Typewriter Container ---------- */
 #typewriter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Arial Black', Arial, sans-serif;
-  font-weight: 600;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   text-align: center;
-  color: white;
-  opacity: 1;
-  pointer-events: none;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  max-width: 90vw;
-  line-height: 1.3;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #000;   /* Optional background during intro */
+  color: #fff;
+  z-index: 9999;
 }
 
+/* Individual lines */
 #typewriter .typed-line {
-  font-size: inherit;
-  margin: 0.1em 0;
-  white-space: normal;
+  font-size: 4vw;       /* Responsive font size */
+  line-height: 1.2;
+  font-weight: bold;
 }
 
-.cursor {
+/* Cursor effect */
+#typewriter .cursor {
   display: inline-block;
   width: 2px;
-  background: white;
-  animation: blink 1s step-start infinite;
-  vertical-align: bottom;
+  background: #fff;
   margin-left: 2px;
+  animation: blink 1s step-start infinite;
 }
 
 @keyframes blink {
-  50% {
-    background: transparent;
-  }
+  50% { opacity: 0; }
 }
 
-/* ---------- Base Typewriter Styles ---------- */
-#typewriter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Arial Black', Arial, sans-serif;
-  font-weight: 600;
-  text-align: center;
-  color: white;
-  opacity: 1;
-  pointer-events: none;
-  line-height: 1.3;
+/* Rocket rise animation */
+@keyframes rocketRise {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100px); opacity: 0; }
 }
 
-.typewriter-text {
-  white-space: normal;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
-  line-height: 1.4;
+#typewriter.rocket-rise {
+  animation: rocketRise 2s ease forwards;
 }
 
-/* ---------- Mobile (Up to 599px) ---------- */
-@media screen and (max-width: 599px) {
-  #typewriter {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    max-width: 90vw;
-  }
-
-  .typewriter-text {
-    font-size: clamp(2rem, 6vw, 3rem);
-    max-width: 90vw;
+/* Small mobile screens */
+@media (max-width: 480px) {
+  #typewriter .typed-line {
+    font-size: 6vw;
   }
 }
-
-/* ---------- Tablet Portrait (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
-  #typewriter {
-    font-size: 6rem !important;
-    max-width: 90vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.5rem !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* ---------- Tablet Landscape (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
-  #typewriter {
-    font-size: 5.5rem !important;
-    max-width: 85vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.2rem !important;
-    max-width: 80vw !important;
-  }
-}
-
-/* ---------- Desktop (1025px+) ---------- */
-@media screen and (min-width: 1025px) {
-  #typewriter {
-    font-size: 6.5rem !important;
-    max-width: 75vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 4rem !important;
-    max-width: 60vw !important;
-  }
-}
-
- /* ---------- iPhone Landscape Final Fix ---------- */
-@media screen and (max-width: 812px) and (orientation: landscape) {
-  #typewriter {
-    top: 60% !important;
-    transform: translate(-50%, -60%) !important;
-    font-size: clamp(1.5rem, 4vw, 2.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 90vw !important;
-  }
-
-  .typewriter-text {
-    font-size: clamp(1rem, 3vw, 1.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* Tablet: Ensure space between buttons */
-@media screen and (min-width: 600px) and (max-width: 1024px) {
-  .button-row {
-    gap: 3rem;         /* Increase spacing */
-    flex-wrap: wrap;   /* Allow buttons to wrap to next line if needed */
-    justify-content: center;
-  }
-
-  .button-row button {
-    min-width: 140px;  /* Prevent buttons from shrinking too much */
-    margin: 0.5rem 1rem; /* Extra spacing around each button */
-  }
-}
-
 </style>
 
 
@@ -2293,6 +2172,92 @@ function showRecommendedPlan(planType = 'outright') {
     };
   }
 
+
+ document.addEventListener('DOMContentLoaded', () => {
+
+  const typewriterEl = document.getElementById('typewriter');
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+
+    typewriterEl.style.display = 'flex';
+    typewriterEl.classList.add('active');
+
+    let lines = [];
+    let currentLine = 0;
+    let currentChar = 0;
+    let lineEl = null;
+    const typingSpeed = 100;
+    const lineDelay = 500;
+
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        // Rocket-rise animation
+        typewriterEl.classList.add('rocket-rise');
+        typewriterEl.addEventListener('animationend', () => {
+          typewriterEl.style.display = 'none';
+          showScreen('main-intro-options'); // Transition to first funnel question
+          typewriterEl.classList.remove('rocket-rise');
+        }, { once: true });
+        return;
+      }
+
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
+    setLinesByOrientation();
+    typeChar();
+
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0;
+      currentChar = 0;
+      lineEl = null;
+      typewriterEl.textContent = '';
+      typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
+
+  startTypewriterAnimation();
+
+});
 
  // ------------------ Initialize Funnel ------------------
 hideAllScreens();
