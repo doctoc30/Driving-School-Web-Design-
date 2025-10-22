@@ -2061,9 +2061,9 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
- 
 
-  // ------------------ Initialize Funnel ------------------
+
+ // ------------------ Initialize Funnel ------------------
   // ✅ FIX 3: Corrected Initialization Logic to prevent blank screen
   hideAllScreens();
   setupFinalOwnershipButtons(); // Wire up the final buttons
@@ -2075,7 +2075,7 @@ function showRecommendedPlan(planType = 'outright') {
     if (inputEl) inputEl.value = codeParam;
     showFilteredTemplate(codeParam);
   } else if (stepParam) {
-    // Handling deep links to a specific step
+    // Handling deep links to a specific step, skip typewriter
     const stepName = `instructor-q${stepParam}`;
     const screenIndex = screens.findIndex(s => s.id === stepName);
     if (screenIndex !== -1) {
@@ -2085,19 +2085,13 @@ function showRecommendedPlan(planType = 'outright') {
       showScreen(startScreenId);
     }
   } else {
-    // Normal start: Start the typewriter animation if present
-    const initialActive = document.querySelector('.form-screen.active');
-    
-    // This check now correctly uses the defined variables:
-    if (typewriterEl?.classList.contains('active') || colorRiseEl?.classList.contains('active')) {
-       // Typewriter animation handles the first showScreen() call
+    // 🎯 REVISED NORMAL START LOGIC 🎯
+    // If the typewriter element exists, start the animation.
+    // The animation will call showScreen('main-intro-options') after it finishes.
+    if (typewriterEl) {
        startTypewriterAnimation();
     } 
-    // If a screen is manually marked active, use it
-    else if (initialActive) {
-      showScreen(initialActive.id);
-    }
-    // Final fallback
+    // If the typewriter element does NOT exist, show the first screen immediately.
     else {
       showScreen(startScreenId);
     }
@@ -2105,6 +2099,8 @@ function showRecommendedPlan(planType = 'outright') {
 
   updateWaterProgress();
   updateProgress(currentScreen + 1);
+
+
 
   // ------------------ IntersectionObserver for pricing cards ------------------
   (function initPricingObserver(){
