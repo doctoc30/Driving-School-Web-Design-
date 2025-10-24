@@ -1970,9 +1970,9 @@ function showRecommendedPlan(planType = 'outright') {
   };
 
   const tierOrder = ["basic","pro","premium"];
-  const monthlyPrices = { basic: 49, pro: 79, premium: 129 };
-  const outrightPrices = { basic: 499, pro: 999, premium: 1499 };
-  const setupFees = { basic: 199, pro: 299, premium: 499 };
+  const monthlyPrices = { basic: 70, pro: 100, premium: 150 };
+  const outrightPrices = { basic: 750, pro: 1500, premium: 2500 };
+  const setupFees = { basic: 100, pro: 200, premium: 300 };
 
   // Determine RECOMMENDED plan level based on highest tier selected feature
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
