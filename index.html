@@ -2009,8 +2009,15 @@ function showRecommendedPlan(planType = 'outright') {
       if (note) note.textContent = "50% now to secure, 50% on completion";
       paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
     }
+
+
+
+
+   <!-- PayPal SDK (Sandbox) -->
+<script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
     
-    // ----- Recommendation Badge -----
+ 
+ // ----- Recommendation Badge -----
     if (badge) {
         if (level === selectedPlanLevel) {
             badge.style.display = 'block';
