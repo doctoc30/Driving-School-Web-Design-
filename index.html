@@ -1901,7 +1901,8 @@ function showFilteredTemplate(rawCode) {
 }
 
 
-function showRecommendedPlan(planType = 'outright') {
+
+ function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
@@ -1910,57 +1911,24 @@ function showRecommendedPlan(planType = 'outright') {
 
   const yes = yesFeatures.slice();
 
-  // TIER ASSIGNMENTS (Based on Q5-Q32)
   const tiers = {
-    // Basic Tier (Q5 - Q14)
     basic: ["mobile", "contact", "bio", "social", "booking", "cta", "home", "services", "testimonials", "map"],
-    
-    // Pro Tier (Q15 - Q24)
     pro: ["seo", "reviews", "branding", "faq", "newsletter", "gallery", "blog", "navigation", "lesson-pricing", "analytics"],
-    
-    // Premium Tier (Q25 - Q32)
     premium: ["packages", "email", "content", "expect-guide", "pdfs", "video", "auto-booking", "reporting"]
   };
 
-  // LABELS FOR ALL FEATURES
   const labels = {
-    // Basic
-    mobile: "Mobile-friendly design",
-    contact: "Simple contact form",
-    bio: "About / Instructor bio",
-    social: "Social media integration",
-    booking: "Online booking & payment",
-    cta: "Strong call-to-action buttons",
-    home: "Structured Home Page",
-    services: "Dedicated Services Page",
-    testimonials: "Testimonials Section",
-    map: "Google Map Integration",
-    
-    // Pro
-    seo: "Local Google SEO",
-    reviews: "Student reviews section",
-    branding: "Branding help (logo & colors)",
-    faq: "FAQ / Student Guide",
-    newsletter: "Newsletter Signup form",
-    gallery: "Photo Gallery",
-    blog: "Blog or Updates Section",
-    navigation: "Multi-page Navigation",
-    "lesson-pricing": "Lesson Pricing Table",
-    analytics: "Google Analytics setup",
-    
-    // Premium
-    packages: "Lesson Packages & Gift Vouchers",
-    email: "Professional Email Address",
-    content: "Content Creation help",
-    "expect-guide": "“What to Expect” Guide",
-    pdfs: "Downloadable PDFs",
-    video: "Video Embed Section",
-    "auto-booking": "Fully Automated Online Booking",
-    reporting: "Advanced Reporting & Insights",
-    // Other tracking features
-    solo: "Solo Instructor",
-    school: "Driving School",
-    existing_site: "Existing Website",
+    mobile: "Mobile-friendly design", contact: "Simple contact form", bio: "About / Instructor bio",
+    social: "Social media integration", booking: "Online booking & payment", cta: "Strong call-to-action buttons",
+    home: "Structured Home Page", services: "Dedicated Services Page", testimonials: "Testimonials Section",
+    map: "Google Map Integration", seo: "Local Google SEO", reviews: "Student reviews section",
+    branding: "Branding help (logo & colors)", faq: "FAQ / Student Guide", newsletter: "Newsletter Signup form",
+    gallery: "Photo Gallery", blog: "Blog or Updates Section", navigation: "Multi-page Navigation",
+    "lesson-pricing": "Lesson Pricing Table", analytics: "Google Analytics setup",
+    packages: "Lesson Packages & Gift Vouchers", email: "Professional Email Address",
+    content: "Content Creation help", "expect-guide": "“What to Expect” Guide",
+    pdfs: "Downloadable PDFs", video: "Video Embed Section", "auto-booking": "Fully Automated Online Booking",
+    reporting: "Advanced Reporting & Insights", solo: "Solo Instructor", school: "Driving School", existing_site: "Existing Website"
   };
 
   const coreDefaults = {
@@ -1969,49 +1937,139 @@ function showRecommendedPlan(planType = 'outright') {
     premium: ["Pages - 30", "Revisions - 30", "Delivery - 30 Days"]
   };
 
-  const tierOrder = ["basic","pro","premium"];
+  const tierOrder = ["basic", "pro", "premium"];
   const monthlyPrices = { basic: 70, pro: 100, premium: 150 };
   const outrightPrices = { basic: 750, pro: 1500, premium: 2500 };
   const setupFees = { basic: 100, pro: 200, premium: 300 };
 
-  // Determine RECOMMENDED plan level based on highest tier selected feature
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
     : yes.some(f => tiers.pro.includes(f)) ? "pro"
     : "basic";
-    
-  let selectedPlanLevel = highestTier;
   
-  // Set hidden field to the recommended plan
+  const selectedPlanLevel = highestTier;
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
   planCards.forEach(card => {
     const level = card.dataset.plan.toLowerCase();
     const list = card.querySelector(".features-list");
     const priceEl = card.querySelector(".price");
-    const payBtn = card.querySelector(".pay-now");
     const note = card.querySelector("small");
     const badge = card.querySelector(".badge");
+    const payContainer = card.querySelector(".pay-now-container"); // new container for PayPal button
 
-    if (!level || !list || !priceEl || !payBtn) return;
+    if (!level || !list || !priceEl || !payContainer) return;
 
-    // ----- Pricing -----
-    let priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
-    let paypalLink = "";
+    const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
 
+    // ----- Pricing display -----
     if (isMonthly) {
       priceEl.textContent = `£${priceValue}/month`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Start Monthly Plan`;
       if (note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
-      paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`;
     } else {
       priceEl.textContent = `£${priceValue}`;
-      payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> Pay £${priceValue} via PayPal`;
       if (note) note.textContent = "50% now to secure, 50% on completion";
-      paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
     }
 
+    // ----- Badge -----
+    if (badge) {
+      badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
+      if (level === selectedPlanLevel) badge.textContent = 'Recommended';
+    }
 
+    // ----- Features -----
+    list.innerHTML = "";
+    coreDefaults[level].forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.style.marginBottom = "12px";
+      list.appendChild(li);
+    });
 
+    const divider = document.createElement("li");
+    divider.className = "gradient-divider";
+    divider.style.height = "2px";
+    divider.style.margin = "25px 0";
+    divider.style.listStyle = "none";
+    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+    list.appendChild(divider);
+
+    tierOrder.forEach(tier => {
+      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+      const features = yes.filter(f => tiers[tier].includes(f));
+      if (!features.length) return;
+
+      const heading = document.createElement("li");
+      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      features.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    });
+
+    const currentFeatures = yes.filter(f => tiers[level].includes(f));
+    if (currentFeatures.length) {
+      const heading = document.createElement("li");
+      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+      heading.style.fontWeight = "700";
+      heading.style.marginTop = "20px";
+      list.appendChild(heading);
+
+      currentFeatures.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = labels[f];
+        li.style.marginLeft = "20px";
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+    }
+
+    // ----- Render PayPal button -----
+    payContainer.innerHTML = ""; // clear old button if rerendering
+
+    paypal.Buttons({
+      style: {
+        color: 'gold',
+        shape: 'pill',
+        label: 'pay',
+        height: 40
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+            amount: { value: priceValue.toString(), currency_code: 'GBP' }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
+          // Optionally submit the form after payment:
+          // document.getElementById('formWrapper').submit();
+        });
+      },
+      onError: function(err) {
+        console.error('PayPal Error:', err);
+        alert('Something went wrong with PayPal checkout.');
+      }
+    }).render(payContainer);
+  });
+
+  // Highlight recommended plan and scroll
+  planCards.forEach(card => card.classList.remove("recommended", "in-view"));
+  const recCard = planCards.find(c => c.dataset.plan === selectedPlanLevel);
+  if (recCard) {
+    recCard.classList.add("recommended", "in-view");
+    setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+  }
+}
 
 
  
