@@ -1902,11 +1902,13 @@ function showFilteredTemplate(rawCode) {
 
 
 
+
+
+
  function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
-  
   if (!planCards.length || !hiddenPlanEl) return;
 
   const yes = yesFeatures.slice();
@@ -1945,121 +1947,208 @@ function showFilteredTemplate(rawCode) {
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
     : yes.some(f => tiers.pro.includes(f)) ? "pro"
     : "basic";
-  
+
   const selectedPlanLevel = highestTier;
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
+  // Helper: ensure PayPal SDK is loaded, call cb when ready
+  function ensurePayPalSdk(cb) {
+    if (window.paypal) {
+      return cb();
+    }
+    // Only insert once
+    if (document.getElementById('paypal-sdk-loader')) {
+      // If already added but not ready yet, poll until available
+      const poll = setInterval(() => {
+        if (window.paypal) {
+          clearInterval(poll);
+          cb();
+        }
+      }, 150);
+      // stop polling after 8s
+      setTimeout(() => clearInterval(poll), 8000);
+      return;
+    }
+    const s = document.createElement('script');
+    s.id = 'paypal-sdk-loader';
+    // Use your client-id (sandbox or live) and currency; keep the same query you already used
+    s.src = 'https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
+    s.onload = () => cb();
+    s.onerror = () => {
+      console.error('Failed to load PayPal SDK');
+      cb(new Error('paypal-sdk-load-failed'));
+    };
+    document.head.appendChild(s);
+  }
+
   planCards.forEach(card => {
-    const level = card.dataset.plan.toLowerCase();
-    const list = card.querySelector(".features-list");
-    const priceEl = card.querySelector(".price");
-    const note = card.querySelector("small");
-    const badge = card.querySelector(".badge");
-    const payContainer = card.querySelector(".pay-now-container"); // new container for PayPal button
+    try {
+      const level = card.dataset.plan ? card.dataset.plan.toLowerCase() : null;
+      const list = card.querySelector(".features-list");
+      const priceEl = card.querySelector(".price");
+      const note = card.querySelector("small");
+      const badge = card.querySelector(".badge");
+      const payContainer = card.querySelector(".pay-now-container"); // preferred place for SDK button
+      const payBtn = card.querySelector(".pay-now"); // fallback button (existing markup)
 
-    if (!level || !list || !priceEl || !payContainer) return;
+      if (!level || !list || !priceEl) return;
 
-    const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
+      const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
 
-    // ----- Pricing display -----
-    if (isMonthly) {
-      priceEl.textContent = `£${priceValue}/month`;
-      if (note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
-    } else {
-      priceEl.textContent = `£${priceValue}`;
-      if (note) note.textContent = "50% now to secure, 50% on completion";
-    }
-
-    // ----- Badge -----
-    if (badge) {
-      badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
-      if (level === selectedPlanLevel) badge.textContent = 'Recommended';
-    }
-
-    // ----- Features -----
-    list.innerHTML = "";
-    coreDefaults[level].forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f;
-      li.style.marginBottom = "12px";
-      list.appendChild(li);
-    });
-
-    const divider = document.createElement("li");
-    divider.className = "gradient-divider";
-    divider.style.height = "2px";
-    divider.style.margin = "25px 0";
-    divider.style.listStyle = "none";
-    divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-    list.appendChild(divider);
-
-    tierOrder.forEach(tier => {
-      if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
-      const features = yes.filter(f => tiers[tier].includes(f));
-      if (!features.length) return;
-
-      const heading = document.createElement("li");
-      heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      features.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    });
-
-    const currentFeatures = yes.filter(f => tiers[level].includes(f));
-    if (currentFeatures.length) {
-      const heading = document.createElement("li");
-      heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-      heading.style.fontWeight = "700";
-      heading.style.marginTop = "20px";
-      list.appendChild(heading);
-
-      currentFeatures.forEach(f => {
-        const li = document.createElement("li");
-        li.textContent = labels[f];
-        li.style.marginLeft = "20px";
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-    }
-
-    // ----- Render PayPal button -----
-    payContainer.innerHTML = ""; // clear old button if rerendering
-
-    paypal.Buttons({
-      style: {
-        color: 'gold',
-        shape: 'pill',
-        label: 'pay',
-        height: 40
-      },
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
-            amount: { value: priceValue.toString(), currency_code: 'GBP' }
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
-          // Optionally submit the form after payment:
-          // document.getElementById('formWrapper').submit();
-        });
-      },
-      onError: function(err) {
-        console.error('PayPal Error:', err);
-        alert('Something went wrong with PayPal checkout.');
+      // pricing display
+      if (isMonthly) {
+        priceEl.textContent = `£${priceValue}/month`;
+        if (note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
+      } else {
+        priceEl.textContent = `£${priceValue}`;
+        if (note) note.textContent = "50% now to secure, 50% on completion";
       }
-    }).render(payContainer);
+
+      // badge
+      if (badge) {
+        badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
+        if (level === selectedPlanLevel) badge.textContent = 'Recommended';
+      }
+
+      // features
+      list.innerHTML = "";
+      coreDefaults[level].forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f;
+        li.style.marginBottom = "12px";
+        list.appendChild(li);
+      });
+      const divider = document.createElement("li");
+      divider.className = "gradient-divider";
+      divider.style.height = "2px";
+      divider.style.margin = "25px 0";
+      divider.style.listStyle = "none";
+      divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+      list.appendChild(divider);
+
+      tierOrder.forEach(tier => {
+        if (tierOrder.indexOf(tier) >= tierOrder.indexOf(level)) return;
+        const features = yes.filter(f => tiers[tier].includes(f));
+        if (!features.length) return;
+        const heading = document.createElement("li");
+        heading.textContent = `Included from ${tier.charAt(0).toUpperCase() + tier.slice(1)}`;
+        heading.style.fontWeight = "700";
+        heading.style.marginTop = "20px";
+        list.appendChild(heading);
+        features.forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = labels[f];
+          li.style.marginLeft = "20px";
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
+      });
+
+      const currentFeatures = yes.filter(f => tiers[level].includes(f));
+      if (currentFeatures.length) {
+        const heading = document.createElement("li");
+        heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+        heading.style.fontWeight = "700";
+        heading.style.marginTop = "20px";
+        list.appendChild(heading);
+        currentFeatures.forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = labels[f];
+          li.style.marginLeft = "20px";
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
+      }
+
+      // Build a fallback PayPal link so we can still redirect if SDK isn't used
+      const paypalLink = isMonthly
+        ? `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`
+        : `https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
+
+      // Clear old container if present
+      if (payContainer) payContainer.innerHTML = '';
+
+      // Function to attach SDK button (safe)
+      function attachSdkButton() {
+        try {
+          if (!window.paypal) throw new Error('paypal-not-ready');
+          // Render into DOM element or selector — prefer DOM element
+          paypal.Buttons({
+            style: {
+              shape: 'pill',
+              label: 'pay',
+              height: 40
+            },
+            createOrder: function(data, actions) {
+              return actions.order.create({
+                purchase_units: [{
+                  description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+                  amount: { value: priceValue.toString(), currency_code: 'GBP' }
+                }]
+              });
+            },
+            onApprove: function(data, actions) {
+              return actions.order.capture().then(function(details) {
+                alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
+                // If you want to submit your funnel form AFTER successful payment:
+                // document.getElementById('formWrapper').submit();
+              });
+            },
+            onError: function(err) {
+              console.error('PayPal SDK error', err);
+              // As a last resort, fallback to redirect or form submit
+              if (payBtn) {
+                payBtn.onclick = () => {
+                  const hiddenPaymentLink = document.getElementById('hiddenPaymentLink');
+                  if (hiddenPaymentLink) hiddenPaymentLink.value = paypalLink;
+                  document.getElementById('formWrapper').submit();
+                };
+              }
+            }
+          }).render(payContainer || '');
+        } catch (err) {
+          console.warn('Could not render PayPal buttons (will fallback).', err);
+          // fallback: attach to payBtn if exists
+          if (payBtn) {
+            payBtn.onclick = () => {
+              const hiddenPaymentLink = document.getElementById('hiddenPaymentLink');
+              if (hiddenPaymentLink) hiddenPaymentLink.value = paypalLink;
+              document.getElementById('formWrapper').submit();
+            };
+          }
+        }
+      }
+
+      // Decide: if payContainer present, attempt to render SDK; otherwise fall back immediately
+      if (payContainer) {
+        ensurePayPalSdk((err) => {
+          if (err) {
+            // failed to load SDK -> fallback to simple redirect/submit on existing button if available
+            if (payBtn) {
+              payBtn.onclick = () => {
+                const hiddenPaymentLink = document.getElementById('hiddenPaymentLink');
+                if (hiddenPaymentLink) hiddenPaymentLink.value = paypalLink;
+                document.getElementById('formWrapper').submit();
+              };
+            }
+            return;
+          }
+          attachSdkButton();
+        });
+      } else {
+        // no payContainer: keep existing .pay-now button behavior (safe)
+        if (payBtn) {
+          payBtn.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"> ${isMonthly ? 'Start Monthly Plan' : 'Pay £' + priceValue + ' via PayPal'}`;
+          payBtn.onclick = () => {
+            const hiddenPaymentLink = document.getElementById('hiddenPaymentLink');
+            if (hiddenPaymentLink) hiddenPaymentLink.value = paypalLink;
+            document.getElementById('formWrapper').submit();
+          };
+        }
+      }
+    } catch (err) {
+      console.error('Error building plan card:', err);
+    }
   });
 
   // Highlight recommended plan and scroll
