@@ -1684,7 +1684,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 
  
-<script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=JHLN9CLCGVYUJH5P&currency=GBP"></script>
 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
@@ -1917,172 +1917,142 @@ function showFilteredTemplate(rawCode) {
 
 
 
-function showRecommendedPlan(planType = 'outright') {
-  const isMonthly = planType === 'monthly';
-  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-  const hiddenPlanEl = document.getElementById('hiddenPlan');
-  if (!planCards.length || !hiddenPlanEl) return;
 
-  const yes = yesFeatures.slice(); // make sure your yesFeatures array is up-to-date
 
-  const tiers = {
-    basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
-    pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
-    premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
-  };
 
-  const labels = {
-    mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
-    social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
-    home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
-    map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section",
-    branding:"Branding help (logo & colors)", faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form",
-    gallery:"Photo Gallery", blog:"Blog or Updates Section", navigation:"Multi-page Navigation",
-    "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
-    packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address",
-    content:"Content Creation help", "expect-guide":"“What to Expect” Guide",
-    pdfs:"Downloadable PDFs", video:"Video Embed Section", "auto-booking":"Fully Automated Online Booking",
-    reporting:"Advanced Reporting & Insights"
-  };
+ function showRecommendedPlan(planType = 'outright') {
+    const isMonthly = planType === 'monthly';
+    const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
+    const hiddenPlanEl = document.getElementById('hiddenPlan');
+    if (!planCards.length || !hiddenPlanEl) return;
 
-  const coreDefaults = {
-    basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
-    pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
-    premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
-  };
+    const yes = yesFeatures.slice(); // keep track of YES features
 
-  const monthlyPrices = { basic:70, pro:100, premium:150 };
-  const outrightPrices = { basic:750, pro:1500, premium:2500 };
-  const setupFees = { basic:100, pro:200, premium:300 };
+    const tiers = {
+        basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
+        pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
+        premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
+    };
 
-  const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
-                    : yes.some(f => tiers.pro.includes(f)) ? "pro"
-                    : "basic";
+    const labels = {
+        mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
+        social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
+        home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
+        map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section",
+        branding:"Branding help (logo & colors)", faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form",
+        gallery:"Photo Gallery", blog:"Blog or Updates Section", navigation:"Multi-page Navigation",
+        "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
+        packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address",
+        content:"Content Creation help", "expect-guide":"“What to Expect” Guide", pdfs:"Downloadable PDFs",
+        video:"Video Embed Section", "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
+    };
 
-  const selectedPlanLevel = highestTier;
-  hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
+    const coreDefaults = {
+        basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
+        pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
+        premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
+    };
 
-  function ensurePayPalSdk(cb){
-    if(window.paypal) return cb();
-    if(document.getElementById('paypal-sdk-loader')){
-      const poll = setInterval(()=>{
-        if(window.paypal){ clearInterval(poll); cb(); }
-      },150);
-      setTimeout(()=>clearInterval(poll),8000);
-      return;
-    }
-    const s = document.createElement('script');
-    s.id='paypal-sdk-loader';
-    s.src='https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
-    s.onload = ()=>cb();
-    s.onerror = ()=>cb(new Error('paypal-sdk-load-failed'));
-    document.head.appendChild(s);
-  }
+    const monthlyPrices = { basic:70, pro:100, premium:150 };
+    const outrightPrices = { basic:750, pro:1500, premium:2500 };
+    const setupFees = { basic:100, pro:200, premium:300 };
 
-  planCards.forEach(card=>{
-    try{
-      const level = card.dataset.plan?.toLowerCase();
-      if(!level) return;
-      const list = card.querySelector(".features-list");
-      const priceEl = card.querySelector(".price");
-      const note = card.querySelector("small");
-      const badge = card.querySelector(".badge");
-      const payContainer = card.querySelector(".pay-now-container");
-      const payBtn = card.querySelector(".pay-now");
-      if(!list || !priceEl) return;
+    // Determine highest tier based on selected features
+    const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
+                        : yes.some(f => tiers.pro.includes(f)) ? "pro"
+                        : "basic";
 
-      const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
-      if(isMonthly){
-        priceEl.textContent = `£${priceValue}/month`;
-        if(note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
-      }else{
-        priceEl.textContent = `£${priceValue}`;
-        if(note) note.textContent = "50% now to secure, 50% on completion";
-      }
+    const selectedPlanLevel = highestTier;
+    hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
-      if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
+    planCards.forEach(card => {
+        try {
+            const level = card.dataset.plan?.toLowerCase();
+            if (!level) return;
 
-      list.innerHTML="";
-      coreDefaults[level].forEach(f=>{
-        const li=document.createElement("li");
-        li.textContent=f;
-        li.style.marginBottom="12px";
-        list.appendChild(li);
-      });
+            const list = card.querySelector(".features-list");
+            const priceEl = card.querySelector(".price");
+            const note = card.querySelector("small");
+            const badge = card.querySelector(".badge");
+            const payContainer = card.querySelector(".pay-now-container");
+            const payBtn = card.querySelector(".pay-now");
 
-      const divider=document.createElement("li");
-      divider.className="gradient-divider";
-      divider.style.height="2px";
-      divider.style.margin="25px 0";
-      divider.style.listStyle="none";
-      divider.style.background="linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-      list.appendChild(divider);
+            if (!list || !priceEl) return;
 
-      const currentFeatures = yes.filter(f=>tiers[level].includes(f));
-      if(currentFeatures.length){
-        const heading=document.createElement("li");
-        heading.textContent=`${level.charAt(0).toUpperCase()+level.slice(1)} Features`;
-        heading.style.fontWeight="700";
-        heading.style.marginTop="20px";
-        list.appendChild(heading);
-        currentFeatures.forEach(f=>{
-          const li=document.createElement("li");
-          li.textContent=labels[f];
-          li.style.marginLeft="20px";
-          li.style.marginBottom="12px";
-          list.appendChild(li);
-        });
-      }
-
-      const paypalLink = isMonthly
-        ? `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`
-        : `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
-
-      if(payContainer) payContainer.innerHTML='';
-
-      function attachSdkButton(){
-        try{
-          if(!window.paypal) throw new Error('paypal-not-ready');
-          paypal.Buttons({
-            style:{shape:'rect',color:'gold',label:'paypal',layout:'vertical'},
-            createOrder:(data,actions)=>{
-              return actions.order.create({
-                purchase_units:[{description:`${level.charAt(0).toUpperCase()+level.slice(1)} Website Plan (${planType})`, amount:{value:priceValue.toString(), currency_code:'GBP'}}]
-              });
-            },
-            onApprove:(data,actions)=>{
-              return actions.order.capture().then(details=>{
-                alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
-              });
-            },
-            onError:(err)=>{
-              console.error('PayPal error', err);
-              if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
+            // Set plan price
+            const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
+            if (isMonthly) {
+                priceEl.textContent = `£${priceValue}/month`;
+                if(note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
+            } else {
+                priceEl.textContent = `£${priceValue}`;
+                if(note) note.textContent = "50% now to secure, 50% on completion";
             }
-          }).render(payContainer);
-        }catch(err){
-          if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
-        }
-      }
 
-      if(payContainer) ensurePayPalSdk(err=>{
-        if(err){
-          if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
-          return;
-        }
-        attachSdkButton();
-      });
+            // Show badge for recommended plan
+            if (badge) badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
 
-    }catch(err){ console.error(err); }
-  });
+            // Populate features list
+            list.innerHTML = "";
+            coreDefaults[level].forEach(f => {
+                const li = document.createElement("li");
+                li.textContent = f;
+                li.style.marginBottom = "12px";
+                list.appendChild(li);
+            });
 
-  planCards.forEach(card=>card.classList.remove("recommended","in-view"));
-  const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
-  if(recCard){ recCard.classList.add("recommended","in-view"); setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200); }
+            // Add tier-specific features
+            const currentFeatures = yes.filter(f => tiers[level].includes(f));
+            if (currentFeatures.length) {
+                const heading = document.createElement("li");
+                heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+                heading.style.fontWeight = "700";
+                heading.style.marginTop = "20px";
+                list.appendChild(heading);
+                currentFeatures.forEach(f => {
+                    const li = document.createElement("li");
+                    li.textContent = labels[f];
+                    li.style.marginLeft = "20px";
+                    li.style.marginBottom = "12px";
+                    list.appendChild(li);
+                });
+            }
+
+            // ------------------ Render PayPal Button ------------------
+            if (payContainer) {
+                payContainer.innerHTML = ''; // clear old button
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+                                amount: { value: priceValue.toString(), currency_code: 'GBP' }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(() => {
+                            window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
+                        });
+                    },
+                    onError: (err) => {
+                        console.error('PayPal error', err);
+                        if (payBtn) payBtn.onclick = () => alert("Payment failed. Please try again.");
+                    }
+                }).render(payContainer);
+            }
+
+        } catch(err) { console.error(err); }
+    });
+
+    // Highlight recommended plan card
+    planCards.forEach(card => card.classList.remove("recommended","in-view"));
+    const recCard = planCards.find(c => c.dataset.plan === selectedPlanLevel);
+    if(recCard) {
+        recCard.classList.add("recommended","in-view");
+        setTimeout(() => recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
+    }
 }
-
-
-
 
   
 // ------------------ Typewriter Animation ------------------
@@ -2249,7 +2219,32 @@ updateProgress(currentScreen + 1);
 
 
 
-    
+    if (payContainer) {
+    // Clear any existing buttons
+    payContainer.innerHTML = '';
+
+    // Render PayPal button
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+                    amount: { value: priceValue.toString(), currency_code: 'GBP' }
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(() => {
+                // Redirect to thank-you page after successful payment
+                window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
+            });
+        },
+        onError: (err) => {
+            console.error('PayPal error', err);
+            if (payBtn) payBtn.onclick = () => alert("Payment failed. Please try again.");
+        }
+    }).render(payContainer);
+}
 
 }); /* end DOMContentLoaded */
 </script>
