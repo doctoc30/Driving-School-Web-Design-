@@ -1912,7 +1912,6 @@ function showFilteredTemplate(rawCode) {
 
 
 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1985,17 +1984,11 @@ function showRecommendedPlan(planType = 'outright') {
       const badge = card.querySelector(".badge");
       const payContainer = card.querySelector(".pay-now-container");
       const payBtn = card.querySelector(".pay-now");
-      if(!list || !priceEl) return;
+      if(!list || !priceEl || !payContainer) return;
 
       const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
-      if(isMonthly){
-        priceEl.textContent = `£${priceValue}/month`;
-        if(note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
-      }else{
-        priceEl.textContent = `£${priceValue}`;
-        if(note) note.textContent = "50% now to secure, 50% on completion";
-      }
-
+      priceEl.textContent = isMonthly ? `£${priceValue}/month` : `£${priceValue}`;
+      if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
       if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
 
       list.innerHTML="";
@@ -2030,10 +2023,6 @@ function showRecommendedPlan(planType = 'outright') {
         });
       }
 
-      const paypalLink = isMonthly
-        ? `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`
-        : `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
-
       if(payContainer) payContainer.innerHTML='';
 
       function attachSdkButton(){
@@ -2048,7 +2037,8 @@ function showRecommendedPlan(planType = 'outright') {
             },
             onApprove:(data,actions)=>{
               return actions.order.capture().then(details=>{
-                alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
+                // ✅ Redirect to thank you page
+                window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
             onError:(err)=>{
@@ -2076,7 +2066,6 @@ function showRecommendedPlan(planType = 'outright') {
   const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
   if(recCard){ recCard.classList.add("recommended","in-view"); setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200); }
 }
-
 
 
 
