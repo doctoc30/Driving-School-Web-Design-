@@ -1840,6 +1840,7 @@ document.querySelectorAll(".want-concept").forEach(btn => {
   });
 });
 
+
 // ------------------ Design Code Handling (Manual Entry) ------------------
 window.goToConcept = () => {
   const input = document.getElementById('designInput');
@@ -1869,66 +1870,8 @@ window.goToConcept = () => {
   showScreen("instructor-q4");
 };
 
-  // ------------------ Design Code Handling ------------------
-  window.goToConcept = () => {
-    const input = document.getElementById('designInput');
-    if (!input) return;
-    const code = input.value.trim();
-    if (!code) { alert("Please enter a design code."); return; }
-    showFilteredTemplate(code);
-  };
+ 
 
-  function showFilteredTemplate(rawCode) {
-    const code = String(rawCode || '').trim().toUpperCase();
-    if (!code) return;
-    hideAllScreens();
-
-    let templateScreen = document.getElementById('template-results');
-    if (!templateScreen) {
-      templateScreen = document.createElement('div');
-      templateScreen.id = 'template-results';
-      templateScreen.classList.add('form-screen');
-      document.getElementById('formWrapper').appendChild(templateScreen);
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-    }
-
-    const container = document.createElement('div');
-    container.className = 'template-container';
-    const heading = document.createElement('h2');
-    heading.textContent = `Showing template for code: ${code}`;
-    container.appendChild(heading);
-
-    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-    if (!foundEl) foundEl = document.getElementById(code);
-
-    if (foundEl) {
-      const clone = foundEl.cloneNode(true);
-      clone.classList.add('template-preview-clone');
-      clone.style.width = '100%';
-      container.appendChild(clone);
-
-      const buttonRow = document.createElement('div');
-      buttonRow.className = 'button-row';
-      const contBtn = document.createElement('button');
-      contBtn.type = 'button';
-      contBtn.textContent = 'Continue';
-      contBtn.onclick = () => next();
-      buttonRow.appendChild(contBtn);
-      container.appendChild(buttonRow);
-
-      templateScreen.innerHTML = '';
-      templateScreen.appendChild(container);
-      templateScreen.classList.add('active');
-      screens = Array.from(document.querySelectorAll('.form-screen'));
-      currentScreen = screens.indexOf(templateScreen);
-      updateWaterProgress();
-      updateProgress(currentScreen + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-  }
 
   // ------------------ Recommended Plan ------------------
   function showRecommendedPlan(planType = 'outright') {
