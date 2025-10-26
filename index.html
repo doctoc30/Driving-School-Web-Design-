@@ -1307,6 +1307,7 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
  <div class="form-screen" id="instructor-q4">
   <h2>Are you a solo driving instructor or a driving school?</h2>
+  <p id="selected-concept-message" style="font-size: 16px; margin-bottom: 15px; color: #555;"></p>
   <div class="button-row">
       <button type="button" onclick="recordFeature('solo'); next()">Solo Instructor</button>
     <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
@@ -1810,15 +1811,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setTimeout(setupOwnershipButtons, 500);
 
-  // ------------------ "I Want This Concept" ------------------
-  document.querySelectorAll(".want-concept").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.code;
-      if (!code) return;
-      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-      window.location.assign(funnelURL);
-    });
+
+ // ------------------ "I Want This Concept" Button ------------------
+document.querySelectorAll(".want-concept").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const code = btn.dataset.code;
+    if (!code) return;
+
+    // Store selected code in hidden field or variable
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = code;
+
+    // Log for debugging
+    console.log(`Selected concept code: ${code}`);
+
+    // Display confirmation message on the next screen
+    const msg = document.getElementById("selected-concept-message");
+    if (msg) {
+      msg.textContent = `You selected Concept Code: ${code}`;
+      msg.style.opacity = "0";
+      msg.style.transition = "opacity 0.6s ease";
+      setTimeout(() => { msg.style.opacity = "1"; }, 100);
+    }
+
+    // Move straight to question 4
+    showScreen("instructor-q4");
   });
+});
+
+// ------------------ Design Code Handling (Manual Entry) ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim().toUpperCase();
+  if (!code) {
+    alert("Please enter a design code.");
+    return;
+  }
+
+  // Save code globally
+  const hiddenCode = document.getElementById("designInput");
+  if (hiddenCode) hiddenCode.value = code;
+
+  console.log(`Manual code entered: ${code}`);
+
+  // Display confirmation message on the next screen
+  const msg = document.getElementById("selected-concept-message");
+  if (msg) {
+    msg.textContent = `You selected Concept Code: ${code}`;
+    msg.style.opacity = "0";
+    msg.style.transition = "opacity 0.6s ease";
+    setTimeout(() => { msg.style.opacity = "1"; }, 100);
+  }
+
+  // Move straight to question 4 (skip reload)
+  showScreen("instructor-q4");
+};
 
   // ------------------ Design Code Handling ------------------
   window.goToConcept = () => {
