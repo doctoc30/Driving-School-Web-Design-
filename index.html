@@ -2107,6 +2107,72 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
+
+ 
+// ------------------ Initialize Funnel ------------------
+hideAllScreens();
+
+if (codeParam) {
+  const inputEl = document.getElementById("designInput");
+  if (inputEl) inputEl.value = codeParam;
+  showFilteredTemplate(codeParam);
+} else if (stepParam) {
+  const stepName = `instructor-q${stepParam}`;
+  const screenIndex = screens.findIndex(s => s.id === stepName);
+  if (screenIndex !== -1) {
+    currentScreen = screenIndex;
+    showScreen(stepName);
+  } else {
+    showScreen(screens[0].id);
+  }
+} else {
+  // Only start typewriter animation if no URL parameters are present
+  if (typewriterEl) typewriterEl.classList.add('active');
+  if (colorRiseEl) colorRiseEl.classList.add('active');
+  startTypewriterAnimation();
+}
+
+updateWaterProgress();
+updateProgress(currentScreen + 1);
+
+// ------------------ IntersectionObserver for pricing cards ------------------
+(function initPricingObserver(){
+  const cards = document.querySelectorAll('.pricing-card[data-animate]');
+  if (!cards || cards.length === 0) return; 
+
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(c => c.classList.add('in-view'));
+    return;
+  }
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -12% 0px',
+    threshold: [0, 0.05, 0.15]
+  };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      try {
+        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
+        if (isVisible) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      } catch (err) {
+        try { entry.target.classList.add('in-view'); } catch(e) {}
+        try { obs.unobserve(entry.target); } catch(e) {}
+      }
+    });
+  }, observerOptions);
+
+  Array.from(cards).forEach(card => observer.observe(card));
+})();
+
+
+
+
+ 
 // ------------------ Typewriter Animation ------------------
 const typewriterEl = document.getElementById('typewriter');
 const colorRiseEl = document.querySelector('.color-rise');
@@ -2179,67 +2245,6 @@ function debounce(func, wait) {
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
-
-// ------------------ Initialize Funnel ------------------
-hideAllScreens();
-
-if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
-  const stepName = `instructor-q${stepParam}`;
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
-  } else {
-    showScreen(screens[0].id);
-  }
-} else {
-  // Only start typewriter animation if no URL parameters are present
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
-}
-
-updateWaterProgress();
-updateProgress(currentScreen + 1);
-
-// ------------------ IntersectionObserver for pricing cards ------------------
-(function initPricingObserver(){
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  if (!cards || cards.length === 0) return; 
-
-  if (!('IntersectionObserver' in window)) {
-    cards.forEach(c => c.classList.add('in-view'));
-    return;
-  }
-
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -12% 0px',
-    threshold: [0, 0.05, 0.15]
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      try {
-        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-        if (isVisible) {
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
-        }
-      } catch (err) {
-        try { entry.target.classList.add('in-view'); } catch(e) {}
-        try { obs.unobserve(entry.target); } catch(e) {}
-      }
-    });
-  }, observerOptions);
-
-  Array.from(cards).forEach(card => observer.observe(card));
-})();
-
 
 
    // ------------------ Hamburger Menu ------------------
