@@ -1616,52 +1616,54 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 <div class="form-screen" id="recommended-plan-screen">
   <h2>Your Recommended Plan</h2>
 
-  <div class="pricing-container">
+<div class="pricing-container">
 
-<div class="pricing-card" data-plan="basic" data-animate>
-  <h3>Basic</h3>
-  <p class="price">£750</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 10</li>
-    <li style="margin-bottom: 12px;">Revisions - 10</li>
-    <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £750 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
+  <div class="pricing-card" data-plan="basic" data-animate>
+    <h3>Basic</h3>
+    <p class="price">£750</p>
+    <ul class="features-list">
+      <li style="margin-bottom: 12px;">Pages - 10</li>
+      <li style="margin-bottom: 12px;">Revisions - 10</li>
+      <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
+    </ul>
 
-<div class="pricing-card" data-plan="pro" data-animate>
-  <div class="badge">Recommended</div>
-  <h3>Pro</h3>
-  <p class="price">£1,500</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 20</li>
-    <li style="margin-bottom: 12px;">Revisions - 20</li>
-    <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £1,500 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
-</div>
+    <!-- PayPal button container -->
+    <div class="pay-now-container"></div>
 
-<div class="pricing-card" data-plan="premium" data-animate>
-  <h3>Premium</h3>
-  <p class="price">£2,500</p>
-  <ul class="features-list">
-    <li style="margin-bottom: 12px;">Pages - 30</li>
-    <li style="margin-bottom: 12px;">Revisions - 30</li>
-    <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-  </ul>
-  <button class="pay-now">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    Pay £2,500 via PayPal
-  </button>
-  <small>50% now to secure, 50% on completion</small>
+    <small>50% now to secure, 50% on completion</small>
+  </div>
+
+  <div class="pricing-card" data-plan="pro" data-animate>
+    <div class="badge">Recommended</div>
+    <h3>Pro</h3>
+    <p class="price">£1,500</p>
+    <ul class="features-list">
+      <li style="margin-bottom: 12px;">Pages - 20</li>
+      <li style="margin-bottom: 12px;">Revisions - 20</li>
+      <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
+    </ul>
+
+    <!-- PayPal button container -->
+    <div class="pay-now-container"></div>
+
+    <small>50% now to secure, 50% on completion</small>
+  </div>
+
+  <div class="pricing-card" data-plan="premium" data-animate>
+    <h3>Premium</h3>
+    <p class="price">£2,500</p>
+    <ul class="features-list">
+      <li style="margin-bottom: 12px;">Pages - 30</li>
+      <li style="margin-bottom: 12px;">Revisions - 30</li>
+      <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
+    </ul>
+
+    <!-- PayPal button container -->
+    <div class="pay-now-container"></div>
+
+    <small>50% now to secure, 50% on completion</small>
+  </div>
+
 </div>
 
 
@@ -1903,7 +1905,6 @@ function showFilteredTemplate(rawCode) {
 
 
 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
@@ -1952,10 +1953,7 @@ function showRecommendedPlan(planType = 'outright') {
 
   // Load PayPal SDK if needed
   function ensurePayPalSdk(cb) {
-    if (window.paypal) {
-      console.log("✅ PayPal SDK already loaded");
-      return cb();
-    }
+    if (window.paypal) return cb();
     if (document.getElementById('paypal-sdk-loader')) {
       const poll = setInterval(() => {
         if (window.paypal) {
@@ -1969,14 +1967,8 @@ function showRecommendedPlan(planType = 'outright') {
     const s = document.createElement('script');
     s.id = 'paypal-sdk-loader';
     s.src = 'https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
-    s.onload = () => {
-      console.log("✅ PayPal SDK script loaded dynamically");
-      cb();
-    };
-    s.onerror = () => {
-      console.error('❌ Failed to load PayPal SDK');
-      cb(new Error('paypal-sdk-load-failed'));
-    };
+    s.onload = () => cb();
+    s.onerror = () => cb(new Error('paypal-sdk-load-failed'));
     document.head.appendChild(s);
   }
 
@@ -1993,7 +1985,6 @@ function showRecommendedPlan(planType = 'outright') {
       if (!level || !list || !priceEl) return;
       const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
 
-      // Update price
       if (isMonthly) {
         priceEl.textContent = `£${priceValue}/month`;
         if (note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
@@ -2002,13 +1993,11 @@ function showRecommendedPlan(planType = 'outright') {
         if (note) note.textContent = "50% now to secure, 50% on completion";
       }
 
-      // Recommended badge
       if (badge) {
         badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
         if (level === selectedPlanLevel) badge.textContent = 'Recommended';
       }
 
-      // Build features
       list.innerHTML = "";
       coreDefaults[level].forEach(f => {
         const li = document.createElement("li");
@@ -2041,37 +2030,28 @@ function showRecommendedPlan(planType = 'outright') {
         });
       }
 
-      // PayPal fallback link
       const paypalLink = isMonthly
         ? `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_MONTHLY_ID`
         : `https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_${level.toUpperCase()}_OUTRIGHT_ID`;
 
-      // Clear old container
       if (payContainer) payContainer.innerHTML = '';
 
-      // Attach PayPal SDK button
       function attachSdkButton() {
         try {
           if (!window.paypal) throw new Error('paypal-not-ready');
           paypal.Buttons({
-            style: {
-              shape: 'rect',
-              color: 'gold',
-              label: 'paypal',
-              layout: 'vertical'
-            },
-            createOrder: (data, actions) => {
-              return actions.order.create({
-                purchase_units: [{
-                  description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
-                  amount: { value: priceValue.toString(), currency_code: 'GBP' }
-                }]
-              });
-            },
+            style: { shape: 'rect', color: 'gold', label: 'paypal', layout: 'vertical' },
+            createOrder: (data, actions) => actions.order.create({
+              purchase_units: [{
+                description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+                amount: { value: priceValue.toString(), currency_code: 'GBP' }
+              }]
+            }),
             onApprove: (data, actions) => {
               return actions.order.capture().then(details => {
                 alert(`✅ Thank you, ${details.payer.name.given_name}! Your payment for the ${level} plan was successful.`);
-                // Optionally: document.getElementById('formWrapper').submit();
+                const form = document.getElementById('formWrapper');
+                if (form) form.submit();
               });
             },
             onError: (err) => {
@@ -2119,7 +2099,6 @@ function showRecommendedPlan(planType = 'outright') {
     }
   });
 
-  // Highlight recommended plan and scroll
   planCards.forEach(card => card.classList.remove("recommended", "in-view"));
   const recCard = planCards.find(c => c.dataset.plan === selectedPlanLevel);
   if (recCard) {
@@ -2127,7 +2106,6 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(() => recCard.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
   }
 }
- 
 // ------------------ Typewriter Animation ------------------
 const typewriterEl = document.getElementById('typewriter');
 const colorRiseEl = document.querySelector('.color-rise');
