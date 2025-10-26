@@ -1812,7 +1812,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(setupOwnershipButtons, 500);
 
 
- // ------------------ "I Want This Concept" Button ------------------
+// ------------------ "I Want This Concept" Button ------------------
 document.querySelectorAll(".want-concept").forEach(btn => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -1826,19 +1826,73 @@ document.querySelectorAll(".want-concept").forEach(btn => {
     // Log for debugging
     console.log(`Selected concept code: ${code}`);
 
-    // Display confirmation message on the next screen
-    const msg = document.getElementById("selected-concept-message");
-    if (msg) {
-      msg.textContent = `You selected Concept Code: ${code}`;
-      msg.style.opacity = "0";
-      msg.style.transition = "opacity 0.6s ease";
-      setTimeout(() => { msg.style.opacity = "1"; }, 100);
-    }
-
-    // Move straight to question 4
-    showScreen("instructor-q4");
+    // Show template preview inside funnel
+    showFilteredTemplate(code);
   });
 });
+
+// ------------------ Design Code Handling (Show Template Preview) ------------------
+window.goToConcept = () => {
+  const input = document.getElementById('designInput');
+  if (!input) return;
+  const code = input.value.trim().toUpperCase();
+  if (!code) { alert("Please enter a design code."); return; }
+
+  showFilteredTemplate(code);
+};
+
+function showFilteredTemplate(rawCode) {
+  const code = String(rawCode || '').trim().toUpperCase();
+  if (!code) return;
+  hideAllScreens();
+
+  let templateScreen = document.getElementById('template-results');
+  if (!templateScreen) {
+    templateScreen = document.createElement('div');
+    templateScreen.id = 'template-results';
+    templateScreen.classList.add('form-screen');
+    document.getElementById('formWrapper').appendChild(templateScreen);
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+  }
+
+  const container = document.createElement('div');
+  container.className = 'template-container';
+  const heading = document.createElement('h2');
+  heading.textContent = `Showing template for code: ${code}`;
+  container.appendChild(heading);
+
+  let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+  if (!foundEl) foundEl = document.getElementById(code);
+
+  if (foundEl) {
+    const clone = foundEl.cloneNode(true);
+    clone.classList.add('template-preview-clone');
+    clone.style.width = '100%';
+    container.appendChild(clone);
+
+    const buttonRow = document.createElement('div');
+    buttonRow.className = 'button-row';
+    const contBtn = document.createElement('button');
+    contBtn.type = 'button';
+    contBtn.textContent = 'Continue';
+    contBtn.onclick = () => showScreen("instructor-q4");
+    buttonRow.appendChild(contBtn);
+    container.appendChild(buttonRow);
+
+    templateScreen.innerHTML = '';
+    templateScreen.appendChild(container);
+    templateScreen.classList.add('active');
+    screens = Array.from(document.querySelectorAll('.form-screen'));
+    currentScreen = screens.indexOf(templateScreen);
+    updateWaterProgress();
+    updateProgress(currentScreen + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // fallback if code not found
+  window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+}
 
 
 // ------------------ Design Code Handling (Manual Entry) ------------------
