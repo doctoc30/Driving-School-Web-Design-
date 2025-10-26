@@ -1683,518 +1683,429 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </form>
 
 
- 
-<script src="https://www.paypal.com/sdk/js?client-id=JHLN9CLCGVYUJH5P&currency=GBP"></script>
-
-<script>
+ <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
 document.addEventListener("DOMContentLoaded", () => {
 
-// ------------------ Basic setup ------------------
-let screens = Array.from(document.querySelectorAll(".form-screen"));
-let currentScreen = 0;
+  // ------------------ Basic setup ------------------
+  let screens = Array.from(document.querySelectorAll(".form-screen"));
+  let currentScreen = 0;
 
-const params = new URLSearchParams(window.location.search);
-const codeParam = params.get("code");
-const stepParam = params.get("step");
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get("code");
+  const stepParam = params.get("step");
 
-// Progress Bar Functions
-function updateWaterProgress() {
-  const wave = document.getElementById('progress-wave');
-  if (!wave) return;
-  const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-  wave.style.height = progressPercent + '%';
-}
-
-function updateProgress(currentStep) {
-  const progressBar = document.querySelector('.progress-bar');
-  const progressLabel = document.querySelector('.progress-label');
-  const percent = Math.round((currentStep / screens.length) * 100);
-  if (progressBar) progressBar.style.width = percent + '%';
-  if (progressLabel) progressLabel.textContent = percent + '%';
-}
-
-// ------------------ Screen Navigation ------------------
-function hideAllScreens() {
-  screens.forEach(screen => {
-    screen.classList.remove("active");
-    screen.style.display = "none";
-  });
-}
-
-function showScreen(id) {
-  const screen = document.getElementById(id);
-  if (!screen) return;
-  hideAllScreens();
-  screen.classList.add("active");
-  screen.style.display = "flex";
-  currentScreen = screens.indexOf(screen);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Handle pricing screen display
-  if (screen.id === "recommended-plan-screen") {
-    // Check if monthly was selected in the ownership step, otherwise default to outright
-    const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
-    showRecommendedPlan(planMode);
-  } else if (screen.id === "monthly-plan-screen") { // Retaining this just in case
-    showRecommendedPlan('monthly');
-  }
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-}
-
-function next() {
-  if (currentScreen < screens.length - 1) {
-    currentScreen++;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-function prev() {
-  if (currentScreen > 0) {
-    currentScreen--;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-window.showScreen = showScreen;
-window.next = next;
-window.prev = prev;
-
-// ------------------ User Path & Features ------------------
-let userPath = "";
-const yesFeatures = [];
-const noFeatures = [];
-window.ownershipChoice = ""; // Ensure it's globally accessible for use in showScreen
-const featureState = {};
-
-function syncFeatureState() {
-  yesFeatures.length = 0;
-  noFeatures.length = 0;
-  Object.entries(featureState).forEach(([f, isYes]) => {
-    if (isYes) yesFeatures.push(f);
-    else noFeatures.push(f);
-  });
-  const hiddenFeatures = document.getElementById('hiddenFeatures');
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  
-  // Re-render plan if pricing screen is active
-  if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-     const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
-    showRecommendedPlan(planMode);
-  }
-  
-  console.log("Current YES Features:", yesFeatures);
-}
-
-window.setPath = (path) => userPath = path;
-window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
-
-
-// ------------------ Ownership Button Logic ------------------
-
-/**
- * Sets up the button handlers for the 'ownership-choice' screen.
- */
-function setupOwnershipButtons() {
-  const ownershipScreen = document.getElementById('ownership-choice'); 
-  
-  if (!ownershipScreen) {
-      return; 
+  // ------------------ Progress Bar ------------------
+  function updateWaterProgress() {
+    const wave = document.getElementById('progress-wave');
+    if (!wave) return;
+    const progressPercent = ((currentScreen + 1) / screens.length) * 100;
+    wave.style.height = progressPercent + '%';
   }
 
-  const ownOutrightBtn   = ownershipScreen.querySelector('button.own-outright');
-  const monthlySupportBtn = ownershipScreen.querySelector('button.monthly-support');
-
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      window.ownershipChoice = 'Owned Outright';
-      // Show pricing screen in Outright mode (default)
-      showScreen('recommended-plan-screen'); 
-    };
+  function updateProgress(currentStep) {
+    const progressBar = document.querySelector('.progress-bar');
+    const progressLabel = document.querySelector('.progress-label');
+    const percent = Math.round((currentStep / screens.length) * 100);
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressLabel) progressLabel.textContent = percent + '%';
   }
 
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      window.ownershipChoice = 'Monthly Support';
-      
-      // Show pricing screen and force Monthly view
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly'); 
-    };
-  }
-}
-
-// Call the function to set up the new button logic after the DOM is ready
-setTimeout(setupOwnershipButtons, 500); 
-
-// ------------------ "I Want This Concept" Button ------------------
-document.querySelectorAll(".want-concept").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const code = btn.dataset.code;
-    if (!code) return;
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-    window.location.assign(funnelURL);
-  });
-});
-
-// ------------------ Design Code Handling ------------------
-window.goToConcept = () => {
-  const input = document.getElementById('designInput');
-  if (!input) return;
-  const code = input.value.trim();
-  if (!code) {
-    alert("Please enter a design code.");
-    return;
-  }
-  showFilteredTemplate(code);
-};
-
-function showFilteredTemplate(rawCode) {
-  const code = String(rawCode || '').trim().toUpperCase();
-  if (!code) return;
-  hideAllScreens();
-
-  // If the user came in via a URL with a code/step, send them to Q4.
-  if (stepParam === "4") {
-    const designInput = document.getElementById("designInput");
-    if (designInput) designInput.value = code;
-    showScreen("instructor-q4");
-    return;
-  }
-  
-  // This section handles dynamically showing a template result within the funnel
-  let templateScreen = document.getElementById('template-results');
-  if (!templateScreen) {
-    templateScreen = document.createElement('div');
-    templateScreen.id = 'template-results';
-    templateScreen.classList.add('form-screen');
-    document.getElementById('formWrapper').appendChild(templateScreen);
-    screens = Array.from(document.querySelectorAll('.form-screen'));
+  // ------------------ Screen Navigation ------------------
+  function hideAllScreens() {
+    screens.forEach(screen => {
+      screen.classList.remove("active");
+      screen.style.display = "none";
+    });
   }
 
-  const container = document.createElement('div');
-  container.className = 'template-container';
-  const heading = document.createElement('h2');
-  heading.textContent = `Showing template for code: ${code}`;
-  container.appendChild(heading);
+  function showScreen(id) {
+    const screen = document.getElementById(id);
+    if (!screen) return;
+    hideAllScreens();
+    screen.classList.add("active");
+    screen.style.display = "flex";
+    currentScreen = screens.indexOf(screen);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-  if (!foundEl) foundEl = document.getElementById(code);
+    // Show recommended plan if on pricing screen
+    if (screen.id === "recommended-plan-screen") {
+      const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+      showRecommendedPlan(planMode);
+    } else if (screen.id === "monthly-plan-screen") {
+      showRecommendedPlan('monthly');
+    }
 
-  if (foundEl) {
-    const clone = foundEl.cloneNode(true);
-    clone.classList.add('template-preview-clone');
-    clone.style.width = '100%';
-    container.appendChild(clone);
-
-    const buttonRow = document.createElement('div');
-    buttonRow.className = 'button-row';
-    const contBtn = document.createElement('button');
-    contBtn.type = 'button';
-    contBtn.textContent = 'Continue';
-    contBtn.onclick = () => next();
-    buttonRow.appendChild(contBtn);
-    container.appendChild(buttonRow);
-
-    templateScreen.innerHTML = '';
-    templateScreen.appendChild(container);
-    templateScreen.classList.add('active');
-    // Recalculate screens array and current position
-    screens = Array.from(document.querySelectorAll('.form-screen'));
-    currentScreen = screens.indexOf(templateScreen);
     updateWaterProgress();
     updateProgress(currentScreen + 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
   }
-  
-  // Fallback if code isn't found locally
-  window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-}
 
+  function next() {
+    if (currentScreen < screens.length - 1) {
+      currentScreen++;
+      showScreen(screens[currentScreen].id);
+    }
+  }
 
+  function prev() {
+    if (currentScreen > 0) {
+      currentScreen--;
+      showScreen(screens[currentScreen].id);
+    }
+  }
 
+  window.showScreen = showScreen;
+  window.next = next;
+  window.prev = prev;
 
+  // ------------------ User Features ------------------
+  let userPath = "";
+  const yesFeatures = [];
+  const noFeatures = [];
+  window.ownershipChoice = "";
+  const featureState = {};
 
+  function syncFeatureState() {
+    yesFeatures.length = 0;
+    noFeatures.length = 0;
+    Object.entries(featureState).forEach(([f, isYes]) => {
+      if (isYes) yesFeatures.push(f);
+      else noFeatures.push(f);
+    });
+    const hiddenFeatures = document.getElementById('hiddenFeatures');
+    if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
 
+    if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
+      const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
+      showRecommendedPlan(planMode);
+    }
+  }
 
- function showRecommendedPlan(planType = 'outright') {
+  window.setPath = (path) => userPath = path;
+  window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
+  window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
+
+  // ------------------ Ownership Buttons ------------------
+  function setupOwnershipButtons() {
+    const ownershipScreen = document.getElementById('ownership-choice'); 
+    if (!ownershipScreen) return;
+
+    const ownOutrightBtn   = ownershipScreen.querySelector('button.own-outright');
+    const monthlySupportBtn = ownershipScreen.querySelector('button.monthly-support');
+
+    if (ownOutrightBtn) {
+      ownOutrightBtn.onclick = () => {
+        window.ownershipChoice = 'Owned Outright';
+        showScreen('recommended-plan-screen'); 
+      };
+    }
+
+    if (monthlySupportBtn) {
+      monthlySupportBtn.onclick = () => {
+        window.ownershipChoice = 'Monthly Support';
+        showScreen('recommended-plan-screen');
+        showRecommendedPlan('monthly'); 
+      };
+    }
+  }
+  setTimeout(setupOwnershipButtons, 500);
+
+  // ------------------ "I Want This Concept" ------------------
+  document.querySelectorAll(".want-concept").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.code;
+      if (!code) return;
+      const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
+      window.location.assign(funnelURL);
+    });
+  });
+
+  // ------------------ Design Code Handling ------------------
+  window.goToConcept = () => {
+    const input = document.getElementById('designInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code) { alert("Please enter a design code."); return; }
+    showFilteredTemplate(code);
+  };
+
+  function showFilteredTemplate(rawCode) {
+    const code = String(rawCode || '').trim().toUpperCase();
+    if (!code) return;
+    hideAllScreens();
+
+    let templateScreen = document.getElementById('template-results');
+    if (!templateScreen) {
+      templateScreen = document.createElement('div');
+      templateScreen.id = 'template-results';
+      templateScreen.classList.add('form-screen');
+      document.getElementById('formWrapper').appendChild(templateScreen);
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+    }
+
+    const container = document.createElement('div');
+    container.className = 'template-container';
+    const heading = document.createElement('h2');
+    heading.textContent = `Showing template for code: ${code}`;
+    container.appendChild(heading);
+
+    let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
+    if (!foundEl) foundEl = document.getElementById(code);
+
+    if (foundEl) {
+      const clone = foundEl.cloneNode(true);
+      clone.classList.add('template-preview-clone');
+      clone.style.width = '100%';
+      container.appendChild(clone);
+
+      const buttonRow = document.createElement('div');
+      buttonRow.className = 'button-row';
+      const contBtn = document.createElement('button');
+      contBtn.type = 'button';
+      contBtn.textContent = 'Continue';
+      contBtn.onclick = () => next();
+      buttonRow.appendChild(contBtn);
+      container.appendChild(buttonRow);
+
+      templateScreen.innerHTML = '';
+      templateScreen.appendChild(container);
+      templateScreen.classList.add('active');
+      screens = Array.from(document.querySelectorAll('.form-screen'));
+      currentScreen = screens.indexOf(templateScreen);
+      updateWaterProgress();
+      updateProgress(currentScreen + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
+  }
+
+  // ------------------ Recommended Plan ------------------
+  function showRecommendedPlan(planType = 'outright') {
     const isMonthly = planType === 'monthly';
     const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
     const hiddenPlanEl = document.getElementById('hiddenPlan');
     if (!planCards.length || !hiddenPlanEl) return;
 
-    const yes = yesFeatures.slice(); // keep track of YES features
+    const yes = yesFeatures.slice();
 
     const tiers = {
-        basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
-        pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
-        premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
+      basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
+      pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
+      premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
     };
 
     const labels = {
-        mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
-        social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
-        home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
-        map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section",
-        branding:"Branding help (logo & colors)", faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form",
-        gallery:"Photo Gallery", blog:"Blog or Updates Section", navigation:"Multi-page Navigation",
-        "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
-        packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address",
-        content:"Content Creation help", "expect-guide":"“What to Expect” Guide", pdfs:"Downloadable PDFs",
-        video:"Video Embed Section", "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
+      mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
+      social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
+      home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
+      map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section",
+      branding:"Branding help (logo & colors)", faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form",
+      gallery:"Photo Gallery", blog:"Blog or Updates Section", navigation:"Multi-page Navigation",
+      "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
+      packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address",
+      content:"Content Creation help", "expect-guide":"“What to Expect” Guide", pdfs:"Downloadable PDFs",
+      video:"Video Embed Section", "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
     };
 
     const coreDefaults = {
-        basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
-        pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
-        premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
+      basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
+      pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
+      premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
     };
 
     const monthlyPrices = { basic:70, pro:100, premium:150 };
     const outrightPrices = { basic:750, pro:1500, premium:2500 };
     const setupFees = { basic:100, pro:200, premium:300 };
 
-    // Determine highest tier based on selected features
     const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
-                        : yes.some(f => tiers.pro.includes(f)) ? "pro"
-                        : "basic";
+                      : yes.some(f => tiers.pro.includes(f)) ? "pro"
+                      : "basic";
 
     const selectedPlanLevel = highestTier;
     hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
     planCards.forEach(card => {
-        try {
-            const level = card.dataset.plan?.toLowerCase();
-            if (!level) return;
+      try {
+        const level = card.dataset.plan?.toLowerCase();
+        if (!level) return;
 
-            const list = card.querySelector(".features-list");
-            const priceEl = card.querySelector(".price");
-            const note = card.querySelector("small");
-            const badge = card.querySelector(".badge");
-            const payContainer = card.querySelector(".pay-now-container");
-            const payBtn = card.querySelector(".pay-now");
+        const list = card.querySelector(".features-list");
+        const priceEl = card.querySelector(".price");
+        const note = card.querySelector("small");
+        const badge = card.querySelector(".badge");
+        const payContainer = card.querySelector(".pay-now-container");
 
-            if (!list || !priceEl) return;
+        if (!list || !priceEl) return;
 
-            // Set plan price
-            const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
-            if (isMonthly) {
-                priceEl.textContent = `£${priceValue}/month`;
-                if(note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
-            } else {
-                priceEl.textContent = `£${priceValue}`;
-                if(note) note.textContent = "50% now to secure, 50% on completion";
-            }
+        const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
+        if (isMonthly) {
+          priceEl.textContent = `£${priceValue}/month`;
+          if(note) note.textContent = `£${setupFees[level]} setup + £${priceValue}/month`;
+        } else {
+          priceEl.textContent = `£${priceValue}`;
+          if(note) note.textContent = "50% now to secure, 50% on completion";
+        }
 
-            // Show badge for recommended plan
-            if (badge) badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
+        if (badge) badge.style.display = (level === selectedPlanLevel) ? 'block' : 'none';
 
-            // Populate features list
-            list.innerHTML = "";
-            coreDefaults[level].forEach(f => {
-                const li = document.createElement("li");
-                li.textContent = f;
-                li.style.marginBottom = "12px";
-                list.appendChild(li);
-            });
+        list.innerHTML = "";
+        coreDefaults[level].forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = f;
+          li.style.marginBottom = "12px";
+          list.appendChild(li);
+        });
 
-            // Add tier-specific features
-            const currentFeatures = yes.filter(f => tiers[level].includes(f));
-            if (currentFeatures.length) {
-                const heading = document.createElement("li");
-                heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
-                heading.style.fontWeight = "700";
-                heading.style.marginTop = "20px";
-                list.appendChild(heading);
-                currentFeatures.forEach(f => {
-                    const li = document.createElement("li");
-                    li.textContent = labels[f];
-                    li.style.marginLeft = "20px";
-                    li.style.marginBottom = "12px";
-                    list.appendChild(li);
+        const currentFeatures = yes.filter(f => tiers[level].includes(f));
+        if (currentFeatures.length) {
+          const heading = document.createElement("li");
+          heading.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Features`;
+          heading.style.fontWeight = "700";
+          heading.style.marginTop = "20px";
+          list.appendChild(heading);
+          currentFeatures.forEach(f => {
+            const li = document.createElement("li");
+            li.textContent = labels[f];
+            li.style.marginLeft = "20px";
+            li.style.marginBottom = "12px";
+            list.appendChild(li);
+          });
+        }
+
+        if (payContainer) {
+          payContainer.innerHTML = '';
+          loadPayPalSdk(PAYPAL_CLIENT_ID, () => {
+            paypal.Buttons({
+              createOrder: (data, actions) => {
+                return actions.order.create({
+                  purchase_units: [{
+                    description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
+                    amount: { value: priceValue.toString(), currency_code: 'GBP' }
+                  }]
                 });
-            }
+              },
+              onApprove: (data, actions) => {
+                return actions.order.capture().then(() => {
+                  window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
+                });
+              },
+              onError: (err) => { console.error(err); }
+            }).render(payContainer);
+          });
+        }
 
-            // ------------------ Render PayPal Button ------------------
-            if (payContainer) {
-                payContainer.innerHTML = ''; // clear old button
-                paypal.Buttons({
-                    createOrder: (data, actions) => {
-                        return actions.order.create({
-                            purchase_units: [{
-                                description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
-                                amount: { value: priceValue.toString(), currency_code: 'GBP' }
-                            }]
-                        });
-                    },
-                    onApprove: (data, actions) => {
-                        return actions.order.capture().then(() => {
-                            window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
-                        });
-                    },
-                    onError: (err) => {
-                        console.error('PayPal error', err);
-                        if (payBtn) payBtn.onclick = () => alert("Payment failed. Please try again.");
-                    }
-                }).render(payContainer);
-            }
-
-        } catch(err) { console.error(err); }
+      } catch(err) { console.error(err); }
     });
 
-    // Highlight recommended plan card
     planCards.forEach(card => card.classList.remove("recommended","in-view"));
     const recCard = planCards.find(c => c.dataset.plan === selectedPlanLevel);
-    if(recCard) {
-        recCard.classList.add("recommended","in-view");
-        setTimeout(() => recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
-    }
-}
-
-  
-// ------------------ Typewriter Animation ------------------
-const typewriterEl = document.getElementById('typewriter');
-const colorRiseEl = document.querySelector('.color-rise');
-
-function startTypewriterAnimation() {
-  if (!typewriterEl) return;
-  typewriterEl.style.opacity = 1;
-  let lines = [];
-  let currentLine = 0;
-  let currentChar = 0;
-  let lineEl = null;
-  const typingSpeed = 100;
-  const lineDelay = 500;
-  const cursor = document.createElement('span');
-  cursor.classList.add('cursor');
-  typewriterEl.appendChild(cursor);
-
-  function setLinesByOrientation() {
-    lines = window.matchMedia("(orientation: landscape)").matches
-      ? ["We build", "your website.", "You approve,", "then pay."]
-      : ["We build", "your", "website.", "You approve,", "then pay."];
+    if(recCard) recCard.classList.add("recommended","in-view");
   }
 
-  function typeChar() {
-    if (currentLine >= lines.length) {
-      cursor.remove();
-      setTimeout(() => {
-        typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-        setTimeout(() => showScreen('main-intro-options'), 2000);
-      }, 500);
-      return;
-    }
-    const text = lines[currentLine];
-    if (!lineEl) {
-      lineEl = document.createElement('div');
-      lineEl.classList.add('typed-line');
-      typewriterEl.appendChild(lineEl);
-      lineEl.appendChild(cursor);
-    }
-    if (currentChar < text.length) {
-      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-      currentChar++;
-      setTimeout(typeChar, typingSpeed);
-    } else {
-      currentLine++;
-      currentChar = 0;
-      lineEl = null;
-      setTimeout(typeChar, lineDelay);
-    }
+  // ------------------ Load PayPal SDK ------------------
+  function loadPayPalSdk(clientId, callback) {
+    if(window.paypal) return callback();
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP`;
+    script.onload = callback;
+    script.onerror = () => console.error("PayPal SDK failed to load");
+    document.head.appendChild(script);
   }
 
-  setLinesByOrientation();
-  typeChar();
+  // ------------------ Typewriter Animation ------------------
+  const typewriterEl = document.getElementById('typewriter');
+  const colorRiseEl = document.querySelector('.color-rise');
 
-  window.addEventListener('resize', debounce(() => {
-    currentLine = 0;
-    currentChar = 0;
-    lineEl = null;
-    typewriterEl.textContent = '';
+  function startTypewriterAnimation() {
+    if (!typewriterEl) return;
+    typewriterEl.style.opacity = 1;
+    let lines = [], currentLine = 0, currentChar = 0, lineEl = null;
+    const typingSpeed = 100, lineDelay = 500;
+    const cursor = document.createElement('span'); cursor.classList.add('cursor');
     typewriterEl.appendChild(cursor);
+
+    function setLinesByOrientation() {
+      lines = window.matchMedia("(orientation: landscape)").matches
+        ? ["We build", "your website.", "You approve,", "then pay."]
+        : ["We build", "your", "website.", "You approve,", "then pay."];
+    }
+
+    function typeChar() {
+      if (currentLine >= lines.length) {
+        cursor.remove();
+        setTimeout(() => {
+          typewriterEl.style.animation = 'rocketRise 2s ease forwards';
+          setTimeout(() => showScreen('main-intro-options'), 2000);
+        }, 500);
+        return;
+      }
+      const text = lines[currentLine];
+      if (!lineEl) {
+        lineEl = document.createElement('div');
+        lineEl.classList.add('typed-line');
+        typewriterEl.appendChild(lineEl);
+        lineEl.appendChild(cursor);
+      }
+      if (currentChar < text.length) {
+        lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
+        currentChar++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        currentLine++;
+        currentChar = 0;
+        lineEl = null;
+        setTimeout(typeChar, lineDelay);
+      }
+    }
+
     setLinesByOrientation();
     typeChar();
-  }, 300));
-}
+    window.addEventListener('resize', debounce(() => {
+      currentLine = 0; currentChar = 0; lineEl = null; typewriterEl.textContent = ''; typewriterEl.appendChild(cursor);
+      setLinesByOrientation();
+      typeChar();
+    }, 300));
+  }
 
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
- 
-// ------------------ Initialize Funnel ------------------
-hideAllScreens();
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); };
+  }
 
-if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
-  const stepName = `instructor-q${stepParam}`;
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
+  // ------------------ Initialize Funnel ------------------
+  hideAllScreens();
+  if (codeParam) {
+    const inputEl = document.getElementById("designInput");
+    if (inputEl) inputEl.value = codeParam;
+    showFilteredTemplate(codeParam);
+  } else if (stepParam) {
+    const stepName = `instructor-q${stepParam}`;
+    const screenIndex = screens.findIndex(s => s.id === stepName);
+    if (screenIndex !== -1) { currentScreen = screenIndex; showScreen(stepName); }
+    else showScreen(screens[0].id);
   } else {
-    showScreen(screens[0].id);
-  }
-} else {
-  // Only start typewriter animation if no URL parameters are present
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
-}
-
-updateWaterProgress();
-updateProgress(currentScreen + 1);
-
-// ------------------ IntersectionObserver for pricing cards ------------------
-(function initPricingObserver(){
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  if (!cards || cards.length === 0) return; 
-
-  if (!('IntersectionObserver' in window)) {
-    cards.forEach(c => c.classList.add('in-view'));
-    return;
+    if (typewriterEl) typewriterEl.classList.add('active');
+    if (colorRiseEl) colorRiseEl.classList.add('active');
+    startTypewriterAnimation();
   }
 
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -12% 0px',
-    threshold: [0, 0.05, 0.15]
-  };
+  updateWaterProgress();
+  updateProgress(currentScreen + 1);
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      try {
-        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-        if (isVisible) {
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
-        }
-      } catch (err) {
-        try { entry.target.classList.add('in-view'); } catch(e) {}
-        try { obs.unobserve(entry.target); } catch(e) {}
-      }
-    });
-  }, observerOptions);
+  // ------------------ IntersectionObserver for pricing cards ------------------
+  (function initPricingObserver(){
+    const cards = document.querySelectorAll('.pricing-card[data-animate]');
+    if (!cards.length) return;
+    if (!('IntersectionObserver' in window)) { cards.forEach(c => c.classList.add('in-view')); return; }
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in-view'); obs.unobserve(entry.target); }});
+    }, { root:null, rootMargin:'0px 0px -12% 0px', threshold:[0,0.05,0.15]});
+    cards.forEach(c => observer.observe(c));
+  })();
 
-  Array.from(cards).forEach(card => observer.observe(card));
-})();
-
-
-
-
-
-
-
-   // ------------------ Hamburger Menu ------------------
+  // ------------------ Hamburger Menu ------------------
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
   if (hamburger && menu) {
@@ -2213,40 +2124,25 @@ updateProgress(currentScreen + 1);
         hamburger.setAttribute('aria-expanded', false);
         menu.setAttribute('aria-hidden', true);
         document.body.style.overflow = '';
-      }
+           }
     });
   }
 
+  // ------------------ PayPal Client ID ------------------
+  const PAYPAL_CLIENT_ID = "JHLN9CLCGVYUJH5P"; // Sandbox
+  // const PAYPAL_CLIENT_ID = "YOUR_LIVE_CLIENT_ID"; // Uncomment when going live
 
+  // ------------------ Load PayPal SDK Function ------------------
+  function loadPayPalSdk(clientId, callback) {
+    if (window.paypal) return callback();
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP`;
+    script.onload = callback;
+    script.onerror = () => console.error("PayPal SDK failed to load");
+    document.head.appendChild(script);
+  }
 
-    if (payContainer) {
-    // Clear any existing buttons
-    payContainer.innerHTML = '';
-
-    // Render PayPal button
-    paypal.Buttons({
-        createOrder: (data, actions) => {
-            return actions.order.create({
-                purchase_units: [{
-                    description: `${level.charAt(0).toUpperCase() + level.slice(1)} Website Plan (${planType})`,
-                    amount: { value: priceValue.toString(), currency_code: 'GBP' }
-                }]
-            });
-        },
-        onApprove: (data, actions) => {
-            return actions.order.capture().then(() => {
-                // Redirect to thank-you page after successful payment
-                window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
-            });
-        },
-        onError: (err) => {
-            console.error('PayPal error', err);
-            if (payBtn) payBtn.onclick = () => alert("Payment failed. Please try again.");
-        }
-    }).render(payContainer);
-}
-
-}); /* end DOMContentLoaded */
+}); // End DOMContentLoaded
 </script>
 
 
