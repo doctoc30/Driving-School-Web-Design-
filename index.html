@@ -1910,13 +1910,16 @@ function showFilteredTemplate(rawCode) {
 
 
 
+
+
+
  function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
 
-  const yes = yesFeatures.slice(); // up-to-date yesFeatures
+  const yes = yesFeatures.slice(); // make sure your yesFeatures array is up-to-date
 
   const tiers = {
     basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
@@ -2005,28 +2008,10 @@ function showFilteredTemplate(rawCode) {
       divider.style.background="linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
       list.appendChild(divider);
 
-      // Current features for this tier
-      const currentFeatures = yes.filter(f=>tiers[level].includes(f));
-      if(currentFeatures.length){
-        const heading=document.createElement("li");
-        heading.textContent=`${level.charAt(0).toUpperCase()+level.slice(1)} Features`;
-        heading.style.fontWeight="700";
-        heading.style.marginTop="20px";
-        list.appendChild(heading);
-        currentFeatures.forEach(f=>{
-          const li=document.createElement("li");
-          li.textContent=labels[f];
-          li.style.marginLeft="20px";
-          li.style.marginBottom="12px";
-          list.appendChild(li);
-        });
-      }
-
-      // ---------- Include lower tier features if selected ----------
-      const lowerTiers = Object.keys(tiers).filter(t=>{
-        const order = ["basic","pro","premium"];
-        return order.indexOf(t)<order.indexOf(level);
-      });
+      // --- Include features from lower tiers dynamically ---
+      const lowerTiers = [];
+      if(level==="premium"){ lowerTiers.push("pro","basic"); }
+      if(level==="pro"){ lowerTiers.push("basic"); }
 
       lowerTiers.forEach(t=>{
         const inherited = yes.filter(f=>tiers[t].includes(f));
@@ -2036,7 +2021,9 @@ function showFilteredTemplate(rawCode) {
           wrap.style.borderRadius="8px";
           wrap.style.padding="12px 16px";
           wrap.style.marginTop="25px";
-          wrap.style.borderLeft="4px solid #FFD700"; // brand accent
+
+          const highlightColor = badge ? badge.style.backgroundColor || "#FFD700" : "#FFD700";
+          wrap.style.borderLeft = `4px solid ${highlightColor}`;
 
           const title=document.createElement("div");
           title.textContent=`Includes from ${t.charAt(0).toUpperCase()+t.slice(1)} Plan`;
@@ -2058,11 +2045,27 @@ function showFilteredTemplate(rawCode) {
             li.style.marginBottom="10px";
             wrap.appendChild(li);
           });
+
           list.appendChild(wrap);
         }
       });
 
-      // ---------- PayPal Buttons ----------
+      const currentFeatures = yes.filter(f=>tiers[level].includes(f));
+      if(currentFeatures.length){
+        const heading=document.createElement("li");
+        heading.textContent=`${level.charAt(0).toUpperCase()+level.slice(1)} Features`;
+        heading.style.fontWeight="700";
+        heading.style.marginTop="20px";
+        list.appendChild(heading);
+        currentFeatures.forEach(f=>{
+          const li=document.createElement("li");
+          li.textContent=labels[f];
+          li.style.marginLeft="20px";
+          li.style.marginBottom="12px";
+          list.appendChild(li);
+        });
+      }
+
       if(payContainer) payContainer.innerHTML='';
 
       function attachSdkButton(){
@@ -2077,7 +2080,6 @@ function showFilteredTemplate(rawCode) {
             },
             onApprove:(data,actions)=>{
               return actions.order.capture().then(details=>{
-                // ✅ Redirect to thank you page
                 window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
@@ -2102,13 +2104,10 @@ function showFilteredTemplate(rawCode) {
     }catch(err){ console.error(err); }
   });
 
-  // Highlight recommended card
   planCards.forEach(card=>card.classList.remove("recommended","in-view"));
   const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
   if(recCard){ recCard.classList.add("recommended","in-view"); setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200); }
 }
-
-
   
 // ------------------ Typewriter Animation ------------------
 const typewriterEl = document.getElementById('typewriter');
