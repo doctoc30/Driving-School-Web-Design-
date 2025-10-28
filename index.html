@@ -2064,11 +2064,23 @@ function showRecommendedPlan(planType = 'outright') {
                 purchase_units:[{description:`${level.charAt(0).toUpperCase()+level.slice(1)} Website Plan (${planType})`, amount:{value:priceValue.toString(), currency_code:'GBP'}}]
               });
             },
-            onApprove:(data,actions)=>{
-              return actions.order.capture().then(()=>{
-                window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
-              });
-            },
+         onApprove:(data, actions)=>{
+  return actions.order.capture().then(()=>{
+    try {
+      // ✅ Save all key data for thank-you page
+      localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
+      localStorage.setItem("planType", planType);
+      localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
+
+      console.log("✅ Saved order data to localStorage");
+    } catch (err) {
+      console.error("⚠️ Failed to save order details:", err);
+    }
+
+    // ✅ Redirect to thank-you page after saving
+    window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
+  });
+},
             onError:(err)=>{
               console.error('PayPal error', err);
               if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
