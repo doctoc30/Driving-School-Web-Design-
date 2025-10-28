@@ -362,78 +362,111 @@
 
 
 
+<script>
+// ✅ Load saved user data from index funnel
+let selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
+let planType = localStorage.getItem("planType") || "Owned Outright";
+let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
+// ✅ Make ownership type display naturally
+let displayType = planType;
+if (displayType.toLowerCase().includes("monthly")) displayType = "Monthly Plan";
+if (displayType.toLowerCase().includes("out")) displayType = "Buy Outright";
 
- <script>
-  // ✅ Load saved data from localStorage (set in index funnel)
-  const selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
-  const planType = localStorage.getItem("ownershipChoice") || "Outright";
-  const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
+// ✅ Feature Labels (aligned with index.js funnel)
+const featureLabels = {
+  mobile: "Mobile-friendly design",
+  contact: "Simple contact form",
+  bio: "About / Instructor bio",
+  social: "Social media integration",
+  booking: "Online booking & payment",
+  cta: "Strong call-to-action buttons",
+  home: "Structured Home Page",
+  services: "Dedicated Services Page",
+  testimonials: "Testimonials Section",
+  map: "Google Map Integration",
+  seo: "Local Google SEO",
+  reviews: "Student reviews section",
+  branding: "Branding help (logo & colors)",
+  faq: "FAQ / Student Guide",
+  newsletter: "Newsletter Signup form",
+  gallery: "Photo Gallery",
+  blog: "Blog or Updates Section",
+  navigation: "Multi-page Navigation",
+  "lesson-pricing": "Lesson Pricing Table",
+  analytics: "Google Analytics setup",
+  packages: "Lesson Packages & Gift Vouchers",
+  email: "Professional Email Address",
+  content: "Content Creation help",
+  "expect-guide": "“What to Expect” Guide",
+  pdfs: "Downloadable PDFs",
+  video: "Video Embed Section",
+  "auto-booking": "Fully Automated Online Booking",
+  reporting: "Advanced Reporting & Insights"
+};
 
-  // ✅ Feature labels matching index.js
-  const featureLabels = {
-    mobile:"Mobile-friendly design",
-    contact:"Simple contact form",
-    bio:"About / Instructor bio",
-    social:"Social media integration",
-    booking:"Online booking & payment",
-    cta:"Strong call-to-action buttons",
-    home:"Structured Home Page",
-    services:"Dedicated Services Page",
-    testimonials:"Testimonials Section",
-    map:"Google Map Integration",
-    seo:"Local Google SEO",
-    reviews:"Student reviews section",
-    branding:"Branding help (logo & colors)",
-    faq:"FAQ / Student Guide",
-    newsletter:"Newsletter Signup form",
-    gallery:"Photo Gallery",
-    blog:"Blog or Updates Section",
-    navigation:"Multi-page Navigation",
-    "lesson-pricing":"Lesson Pricing Table",
-    analytics:"Google Analytics setup",
-    packages:"Lesson Packages & Gift Vouchers",
-    email:"Professional Email Address",
-    content:"Content Creation help",
-    "expect-guide":"“What to Expect” Guide",
-    pdfs:"Downloadable PDFs",
-    video:"Video Embed Section",
-    "auto-booking":"Fully Automated Online Booking",
-    reporting:"Advanced Reporting & Insights"
-  };
+// ✅ Populate Thank You Screen
+function showThankYouScreen() {
+  hideAllScreens();
+  const screen = document.getElementById("thank-you-screen");
+  screen.classList.add("active");
 
-  // ✅ Populate Thank You Screen
-  function showThankYouScreen() {
-    const container = document.getElementById("thank-you-features");
-    container.innerHTML = "";
+  // Plan heading
+  const planLabel = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+  document.getElementById("plan-name").textContent = `${planLabel} Website (${displayType})`;
 
-    // Title
-    document.getElementById("plan-name").textContent = `${selectedPlan} Website (${planType})`;
+  const container = document.getElementById("thank-you-features");
+  container.innerHTML = "";
 
-    // Add all yesFeatures in order
-    yesFeatures.forEach(f => {
-      if (featureLabels[f]) {
-        const div = document.createElement("div");
-        div.className = "feature-card";
-        div.textContent = featureLabels[f];
-        container.appendChild(div);
-      }
+  if (yesFeatures.length === 0) {
+    const none = document.createElement("p");
+    none.textContent = "No additional services selected.";
+    none.style.opacity = "0.8";
+    container.appendChild(none);
+  } else {
+    yesFeatures.forEach(key => {
+      if (featureLabels[key]) createFeature(featureLabels[key], container);
     });
   }
 
-  // ✅ Continue button
-  document.getElementById("continue-funnel").onclick = () => {
-    // Save everything needed for the order page
-    localStorage.setItem("selectedPlanLevel", selectedPlan);
-    localStorage.setItem("ownershipChoice", planType);
-    localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    // Redirect to order page
-    window.location.href = "order.html";
-  };
+function createFeature(text, container) {
+  const div = document.createElement("div");
+  div.className = "feature-card";
+  div.textContent = text;
+  container.appendChild(div);
+}
 
-  // ✅ Initialize
-  showThankYouScreen();
+function addDivider(container) {
+  const hr = document.createElement("hr");
+  hr.className = "brand-divider";
+  container.appendChild(hr);
+}
+
+// ✅ Navigation core
+let screens = [];
+let currentScreen = 0;
+
+function hideAllScreens() {
+  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
+}
+
+document.getElementById("continue-funnel").onclick = () => next();
+
+function next() {
+  if (currentScreen < screens.length - 1) {
+    hideAllScreens();
+    currentScreen++;
+    screens[currentScreen].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// ✅ Initialize
+showThankYouScreen();
 </script>
+
 </body>
 </html>
