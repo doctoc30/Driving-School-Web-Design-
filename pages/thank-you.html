@@ -364,118 +364,73 @@
 
 
 
-  <script>
-  // ✅ Load saved user data from index.html
-  let selectedPlan = localStorage.getItem("selectedPlanLevel") || localStorage.getItem("selectedPlan") || "Premium";
-  let planType = localStorage.getItem("planType") || localStorage.getItem("ownershipChoice") || "Outright";
-  let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
+ <script>
+  // ✅ Load saved data from localStorage (set in index funnel)
+  const selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
+  const planType = localStorage.getItem("ownershipChoice") || "Outright";
+  const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
-  // ✅ Feature Labels
+  // ✅ Feature labels matching index.js
   const featureLabels = {
-    booking: "Booking & Payment System",
-    mobile: "Mobile-Friendly Site",
-    cta: "Call-to-Action Buttons",
-    contact: "Contact Form",
-    bio: "About / Instructor Bio",
-    social: "Social Media Integration",
-    seo: "SEO Optimization",
-    reviews: "Student Reviews Display",
-    branding: "Branding Help (Logo / Colors)",
-    faq: "FAQ / Student Guide",
-    newsletter: "Newsletter Signup",
-    packages: "Lesson Packages / Gift Vouchers",
-    email: "Professional Email Address",
-    content: "Content Files (Text / Images)",
-    guide: "“What to Expect” Guide",
-    buyOutright: "Buy Outright Option"
+    mobile:"Mobile-friendly design",
+    contact:"Simple contact form",
+    bio:"About / Instructor bio",
+    social:"Social media integration",
+    booking:"Online booking & payment",
+    cta:"Strong call-to-action buttons",
+    home:"Structured Home Page",
+    services:"Dedicated Services Page",
+    testimonials:"Testimonials Section",
+    map:"Google Map Integration",
+    seo:"Local Google SEO",
+    reviews:"Student reviews section",
+    branding:"Branding help (logo & colors)",
+    faq:"FAQ / Student Guide",
+    newsletter:"Newsletter Signup form",
+    gallery:"Photo Gallery",
+    blog:"Blog or Updates Section",
+    navigation:"Multi-page Navigation",
+    "lesson-pricing":"Lesson Pricing Table",
+    analytics:"Google Analytics setup",
+    packages:"Lesson Packages & Gift Vouchers",
+    email:"Professional Email Address",
+    content:"Content Creation help",
+    "expect-guide":"“What to Expect” Guide",
+    pdfs:"Downloadable PDFs",
+    video:"Video Embed Section",
+    "auto-booking":"Fully Automated Online Booking",
+    reporting:"Advanced Reporting & Insights"
   };
 
-  // ✅ Plan tiers for base layout
-  const planBaseFeatures = {
-    base: ["Pages", "Revisions", "Delivery"],
-    basic: ["Booking lessons & online payment", "Strong Call-to-Action Buttons", "About / Instructor Bio"],
-    pro: ["Student Reviews", "FAQ / Student Guide", "Newsletter Signup"],
-    premium: [
-      "Lesson Packages / Gift Vouchers",
-      "Social Media Integration",
-      "Professional Email Address",
-      "Content Files (Text / Images)",
-      "“What to Expect” Guide",
-      "Mobile-Friendly Site",
-      "SEO Optimization"
-    ]
-  };
-
-  // ✅ Align + Populate Thank You Screen
+  // ✅ Populate Thank You Screen
   function showThankYouScreen() {
-    hideAllScreens();
-    const screen = document.getElementById("thank-you-screen");
-    screen.classList.add("active");
-
-    // Title setup
-    const planLabel = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
-    document.getElementById("plan-name").textContent = `${planLabel} Website (${planType})`;
-
     const container = document.getElementById("thank-you-features");
     container.innerHTML = "";
 
-    // --- Base features ---
-    planBaseFeatures.base.forEach(f => createFeature(f, container));
-    addDivider(container);
+    // Title
+    document.getElementById("plan-name").textContent = `${selectedPlan} Website (${planType})`;
 
-    // --- Conditional tiers ---
-    if (["basic", "pro", "premium"].includes(selectedPlan.toLowerCase())) {
-      planBaseFeatures.basic.forEach(f => createFeature(f, container));
-      addDivider(container);
-    }
-    if (["pro", "premium"].includes(selectedPlan.toLowerCase())) {
-      planBaseFeatures.pro.forEach(f => createFeature(f, container));
-      addDivider(container);
-    }
-    if (selectedPlan.toLowerCase() === "premium") {
-      planBaseFeatures.premium.forEach(f => createFeature(f, container));
-      addDivider(container);
-    }
-
-    // --- Selected extra features ---
-    yesFeatures.forEach(key => {
-      if (featureLabels[key]) createFeature(featureLabels[key], container);
+    // Add all yesFeatures in order
+    yesFeatures.forEach(f => {
+      if (featureLabels[f]) {
+        const div = document.createElement("div");
+        div.className = "feature-card";
+        div.textContent = featureLabels[f];
+        container.appendChild(div);
+      }
     });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function createFeature(text, container) {
-    const div = document.createElement("div");
-    div.className = "feature-card";
-    div.textContent = text;
-    container.appendChild(div);
-  }
+  // ✅ Continue button
+  document.getElementById("continue-funnel").onclick = () => {
+    // Save everything needed for the order page
+    localStorage.setItem("selectedPlanLevel", selectedPlan);
+    localStorage.setItem("ownershipChoice", planType);
+    localStorage.setItem("yesFeatures", JSON.stringify(yesFeatures));
 
-  function addDivider(container) {
-    const hr = document.createElement("hr");
-    hr.className = "brand-divider";
-    container.appendChild(hr);
-  }
-
-  // ✅ Navigation
-  let screens = [];
-  let currentScreen = 0;
-
-  function hideAllScreens() {
-    document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-  }
-
-  document.getElementById("continue-funnel").onclick = () => next();
-
-  function next() {
-    if (currentScreen < screens.length - 1) {
-      hideAllScreens();
-      currentScreen++;
-      screens[currentScreen].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
+    // Redirect to order page
+    window.location.href = "order.html";
+  };
 
   // ✅ Initialize
   showThankYouScreen();
