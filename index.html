@@ -1908,20 +1908,21 @@ function showFilteredTemplate(rawCode) {
 }
 
 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
 
-  const yes = yesFeatures.slice(); // make sure your yesFeatures array is up-to-date
+  const yes = yesFeatures.slice();
 
   const tiers = {
     basic: ["mobile","contact","bio","social","booking","cta","home","services","testimonials","map"],
     pro: ["seo","reviews","branding","faq","newsletter","gallery","blog","navigation","lesson-pricing","analytics"],
     premium: ["packages","email","content","expect-guide","pdfs","video","auto-booking","reporting"]
   };
+
+  const tierOrder = ["basic","pro","premium"];
 
   const labels = {
     mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
@@ -1957,9 +1958,7 @@ function showRecommendedPlan(planType = 'outright') {
   function ensurePayPalSdk(cb){
     if(window.paypal) return cb();
     if(document.getElementById('paypal-sdk-loader')){
-      const poll = setInterval(()=>{
-        if(window.paypal){ clearInterval(poll); cb(); }
-      },150);
+      const poll = setInterval(()=>{ if(window.paypal){ clearInterval(poll); cb(); } },150);
       setTimeout(()=>clearInterval(poll),8000);
       return;
     }
@@ -1975,6 +1974,7 @@ function showRecommendedPlan(planType = 'outright') {
     try{
       const level = card.dataset.plan?.toLowerCase();
       if(!level) return;
+
       const list = card.querySelector(".features-list");
       const priceEl = card.querySelector(".price");
       const note = card.querySelector("small");
@@ -1988,40 +1988,72 @@ function showRecommendedPlan(planType = 'outright') {
       if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
       if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
 
-      list.innerHTML="";
+      // --- Build features list ---
+      list.innerHTML = "";
       coreDefaults[level].forEach(f=>{
-        const li=document.createElement("li");
-        li.textContent=f;
-        li.style.marginBottom="12px";
+        const li = document.createElement("li");
+        li.textContent = f;
+        li.style.marginBottom = "12px";
         list.appendChild(li);
       });
 
-      const divider=document.createElement("li");
-      divider.className="gradient-divider";
-      divider.style.height="2px";
-      divider.style.margin="25px 0";
-      divider.style.listStyle="none";
-      divider.style.background="linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
+      const divider = document.createElement("li");
+      divider.className = "gradient-divider";
+      divider.style.height = "2px";
+      divider.style.margin = "25px 0";
+      divider.style.listStyle = "none";
+      divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
       list.appendChild(divider);
 
-      const currentFeatures = yes.filter(f=>tiers[level].includes(f));
-      if(currentFeatures.length){
-        const heading=document.createElement("li");
-        heading.textContent=`${level.charAt(0).toUpperCase()+level.slice(1)} Features`;
-        heading.style.fontWeight="700";
-        heading.style.marginTop="20px";
-        list.appendChild(heading);
-        currentFeatures.forEach(f=>{
-          const li=document.createElement("li");
-          li.textContent=labels[f];
-          li.style.marginLeft="20px";
-          li.style.marginBottom="12px";
-          list.appendChild(li);
+      // Gather features from current and lower tiers
+      const currentIndex = tierOrder.indexOf(level);
+      for (let i = 0; i <= currentIndex; i++) {
+        const tierName = tierOrder[i];
+        const tierFeatures = yes.filter(f => tiers[tierName].includes(f));
+        if (!tierFeatures.length) continue;
+
+        // Container block for each tier group
+        const sectionDiv = document.createElement("div");
+        sectionDiv.style.border = "1px solid rgba(255,255,255,0.3)";
+        sectionDiv.style.borderRadius = "8px";
+        sectionDiv.style.padding = "15px 20px";
+        sectionDiv.style.marginTop = "25px";
+        sectionDiv.style.background = "rgba(255,255,255,0.05)";
+        sectionDiv.style.backdropFilter = "blur(4px)";
+        sectionDiv.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.1)";
+
+        // Heading
+        const heading = document.createElement("div");
+        heading.textContent = (tierName === level)
+          ? `${level.charAt(0).toUpperCase() + level.slice(1)} Features`
+          : `Includes from ${tierName.charAt(0).toUpperCase() + tierName.slice(1)}`;
+        heading.style.fontWeight = "700";
+        heading.style.marginBottom = "10px";
+        heading.style.fontSize = "16px";
+        heading.style.color = "#fff";
+        heading.style.borderBottom = "1px solid rgba(255,255,255,0.2)";
+        heading.style.paddingBottom = "6px";
+        sectionDiv.appendChild(heading);
+
+        // Features
+        const ul = document.createElement("ul");
+        ul.style.margin = "10px 0 0 10px";
+        tierFeatures.forEach(f => {
+          const li = document.createElement("li");
+          li.textContent = labels[f];
+          li.style.marginBottom = "8px";
+          ul.appendChild(li);
         });
+        sectionDiv.appendChild(ul);
+
+        const wrapperLi = document.createElement("li");
+        wrapperLi.style.listStyle = "none";
+        wrapperLi.appendChild(sectionDiv);
+        list.appendChild(wrapperLi);
       }
 
+      // --- PayPal integration ---
       if(payContainer) payContainer.innerHTML='';
-
       function attachSdkButton(){
         try{
           if(!window.paypal) throw new Error('paypal-not-ready');
@@ -2033,8 +2065,7 @@ function showRecommendedPlan(planType = 'outright') {
               });
             },
             onApprove:(data,actions)=>{
-              return actions.order.capture().then(details=>{
-                // ✅ Redirect to thank you page
+              return actions.order.capture().then(()=>{
                 window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
@@ -2059,11 +2090,14 @@ function showRecommendedPlan(planType = 'outright') {
     }catch(err){ console.error(err); }
   });
 
+  // Highlight selected card
   planCards.forEach(card=>card.classList.remove("recommended","in-view"));
   const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
-  if(recCard){ recCard.classList.add("recommended","in-view"); setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200); }
+  if(recCard){
+    recCard.classList.add("recommended","in-view");
+    setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
+  }
 }
-
 
 
   
