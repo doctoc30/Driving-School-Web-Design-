@@ -1,472 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thank You & Client Funnel</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thank You - Order Summary</title>
+<style>
+/* ===== GENERAL STYLES ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins', sans-serif; background-color:#33a7d4; color:white; overflow-x:hidden; }
+main { margin-top:80px; padding:20px; max-width:700px; margin-left:auto; margin-right:auto; background: rgba(255,255,255,0.05); border-radius:8px; text-align:left; }
+h1,h2 { margin-bottom:12px; }
+h1 { font-size:1.8rem; text-align:center; }
+ul { list-style:none; padding-left:0; }
+ul li { padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.2); }
+label { display:block; margin-top:10px; font-weight:bold; }
+input[type="text"], input[type="email"], input[type="file"], select { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:none; }
+button { margin-top:20px; background:white; color:#33a7d4; font-weight:bold; padding:10px 20px; border:none; border-radius:6px; cursor:pointer; }
+button:hover { background:#fffacd; }
+button:disabled { background:rgba(255,255,255,0.4); cursor:not-allowed; }
+.section { margin-top:20px; }
+.consent { font-size:0.9rem; margin-top:10px; }
+.consent input { margin-right:6px; }
 
-  <style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #33a7d4;
-    color: white;
-    overflow-x: hidden;
-  }
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background-color: #33a7d4;
-    z-index: 2000;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-  }
-  .logo {
-    font-weight: 900;
-    font-size: 1.7rem;
-    letter-spacing: 2px;
-    user-select: none;
-    cursor: default;
-  }
-  .hamburger {
-    width: 28px;
-    height: 22px;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 2100;
-  }
-  .hamburger span {
-    display: block;
-    height: 3.5px;
-    background: white;
-    border-radius: 2px;
-    transition: all 0.35s ease-in-out;
-  }
-  .hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-  }
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-  }
+/* ===== HEADER ===== */
+header { position:fixed; top:0; left:0; right:0; height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background-color:#33a7d4; z-index:2000; box-shadow:0 2px 8px rgb(0 0 0 / 0.15);}
+.logo { font-weight:900; font-size:1.7rem; letter-spacing:2px; user-select:none; cursor:default; }
 
-  nav.menu {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #33a7d4;
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 4rem;
-    z-index: 2050;
-  }
-  nav.menu.open { transform: translateX(0); }
-  nav.menu ul { list-style: none; }
-  nav.menu ul li {
-    margin-bottom: 2.2rem;
-    opacity: 0;
-    transform: translateX(-40px);
-    font-weight: 900;
-    font-size: 3rem;
-    letter-spacing: 0.1em;
-  }
-  nav.menu ul li a {
-    color: white;
-    text-decoration: none;
-    user-select: none;
-    display: inline-block;
-    transition: color 0.3s ease;
-  }
-  nav.menu ul li a:hover { color: #222; }
-  nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
-  nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
-  nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
-  nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
-  nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
-  nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
-  @keyframes slideInFade {
-    to { opacity: 1; transform: translateX(0); }
-  }
+/* ===== HAMBURGER ===== */
+.hamburger { width:28px; height:22px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; z-index:2100; }
+.hamburger span { display:block; height:3.5px; background:white; border-radius:2px; transition:all 0.35s ease-in-out; }
+.hamburger.active span:nth-child(1){ transform:translateY(9px) rotate(45deg);}
+.hamburger.active span:nth-child(2){ opacity:0;}
+.hamburger.active span:nth-child(3){ transform:translateY(-9px) rotate(-45deg);}
 
-  @media (min-width: 1024px) {
-    .hamburger { display: none; }
-    nav.menu {
-      position: static;
-      height: auto;
-      width: auto;
-      background: transparent;
-      transform: none !important;
-      padding-left: 0;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    nav.menu ul { display: flex; gap: 3rem; }
-    nav.menu ul li {
-      margin: 0;
-      opacity: 1 !important;
-      transform: none !important;
-      font-size: 1.25rem;
-      animation: none !important;
-    }
-    nav.menu ul li a {
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: white;
-      letter-spacing: 0.15em;
-    }
-    nav.menu ul li a:hover { color: #222; }
-  }
+/* ===== MOBILE MENU ===== */
+nav.menu { position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:#33a7d4; transform:translateX(-100%); transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); display:flex; flex-direction:column; justify-content:center; padding-left:4rem; z-index:2050;}
+nav.menu.open { transform:translateX(0);}
+nav.menu ul { list-style:none; }
+nav.menu ul li { margin-bottom:2.2rem; opacity:0; transform:translateX(-40px); font-weight:900; font-size:3rem; letter-spacing:0.1em; }
+nav.menu ul li a { color:white; text-decoration:none; display:inline-block; transition:color 0.3s ease; }
+nav.menu ul li a:hover { color:#222; }
+nav.menu.open ul li { animation:slideInFade 0.4s forwards; }
+nav.menu.open ul li:nth-child(1){ animation-delay:0.15s;}
+nav.menu.open ul li:nth-child(2){ animation-delay:0.35s;}
+nav.menu.open ul li:nth-child(3){ animation-delay:0.55s;}
+nav.menu.open ul li:nth-child(4){ animation-delay:0.75s;}
+nav.menu.open ul li:nth-child(5){ animation-delay:0.95s;}
+@keyframes slideInFade { to{ opacity:1; transform:translateX(0); } }
 
-  /* 1. FIRST QUESTION SCREEN */
-  #form-start-choice {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    background: #33a7d4;
-    color: white;
-    padding: 2rem;
-    box-sizing: border-box;
-    text-align: center;
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    opacity: 0;
-    transition: opacity 1s ease;
-  }
-  #form-start-choice.show { display: flex; opacity: 1; }
+/* ===== DESKTOP MENU ===== */
+@media(min-width:1024px){
+.hamburger{display:none;}
+nav.menu{position:static; height:auto; width:auto; background:transparent; transform:none !important; padding-left:0; flex-direction:row; justify-content:flex-end; align-items:center;}
+nav.menu ul{display:flex; gap:3rem;}
+nav.menu ul li{margin:0; opacity:1 !important; transform:none !important; font-size:1.4rem; animation:none !important;}
+nav.menu ul li a{font-weight:900; font-size:1.2rem; color:white; letter-spacing:0.15em; text-decoration:none;}
+nav.menu ul li a:hover{color:#222;}
+}
 
-  /* 2. MULTI-STEP FORM SCREENS */
-  .form-screen {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    min-height: 60vh;
-    background: #33a7d4;
-    color: white;
-    padding: 2rem;
-    box-sizing: border-box;
-    text-align: center;
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    border-radius: 12px;
-  }
-  .form-screen.active { display: flex; }
-  @media (max-height: 600px) {
-    .form-screen {
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      justify-content: flex-start;
-      padding-top: 4rem;
-      min-height: auto;
-    }
-  }
+/* ===== SOCIAL ICONS ===== */
+.social-icons { max-width:400px; width:100%; margin:0 auto; justify-content:center; align-items:center; display:flex !important; flex-wrap:nowrap; padding:0; }
+.social-icons a { width:60px; height:60px; font-size:40px; color:#fff; display:flex; justify-content:center; align-items:center; animation:coin-spin 6s linear infinite; transform-style:preserve-3d; perspective:1000px; margin:0; }
+.social-icons img { width:48px; height:48px; filter:brightness(0) invert(1); transition: transform 0.4s ease; }
+.social-icons a:not(:last-child){ margin-right:40px;}
+@keyframes coin-spin{0%{transform:rotateY(0deg);}100%{transform:rotateY(360deg);}}
 
-  .form-screen h2 {
-    font-size: 1.8rem;
-    margin-bottom: 3rem;
-    max-width: 500px;
-    line-height: 1.4;
-  }
-
-  /* 3. FORM FIELDS */
-  select,
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"] {
-    padding: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    width: 100%;
-    max-width: 100%;
-    appearance: none;
-    background-color: white;
-    color: #333;
-    height: 3.5rem;
-    box-sizing: border-box;
-    font-family: inherit;
-  }
-
-  /* 4. CONSENT CHECKBOX */
-  .consent-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 14px;
-    color: white;
-    margin-bottom: 2rem;
-  }
-  .consent-wrapper input[type="checkbox"] { margin-right: 8px; }
-
-  /* 5. BUTTONS */
-  button {
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    background: white;
-    color: #33a7d4;
-    font-weight: bold;
-    margin: 0.5rem;
-    cursor: pointer;
-  }
-  button:hover { opacity: 0.9; }
-
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  .button-row button {
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    background: white;
-    color: #33a7d4;
-    font-weight: bold;
-    cursor: pointer;
-    width: auto;
-    min-width: 100px;
-  }
-
-  .skip-link {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: none;
-    color: #ffffff;
-    border: none;
-    padding: 0;
-    font-size: 16px;
-    font-weight: normal;
-    text-decoration: none;
-    z-index: 10000;
-    box-shadow: none;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-  }
-  .skip-link:hover { opacity: 0.8; }
-
-  .logo img { height: 40px; width: auto; display: block; }
-
-  #main-intro-options {
-    justify-content: center !important;
-    min-height: 100vh;
-    padding-top: 0 !important;
-  }
-
-  .brand-btn {
-    background: #fff;
-    color: #33a7d4;
-    border: 2px solid #33a7d4;
-    border-radius: 12px;
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: left;
-    cursor: pointer;
-    width: 100%;
-    margin: 0.5rem 0;
-    transition: all 0.2s ease;
-  }
-  .brand-btn:hover { background: #f0f8ff; }
-
-  .btn-subtext {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: normal;
-    margin-top: 0.3rem;
-  }
-
-  /* Scroll adjustments */
-  html, body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .includes-message {
-    border-top: 1px solid #fff;
-    margin: 15px 0;
-    padding-top: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: #fff;
-    list-style: none;
-  }
+/* FOOTER */
+.footer-inner{display:flex; justify-content:center; align-items:center; text-align:center; width:100%; color:rgba(255,255,255,0.6); font-size:0.95rem; padding-top:10px;}
+@media (orientation: landscape) and (max-device-width:812px){
+footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(safe-area-inset-right),20px);}
+}
 </style>
-  
 </head>
 <body>
 
+<header>
+  <div class="logo">D S W D</div>
+  <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+  <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
+    <ul>
+      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- ✅ THANK YOU PAGE -->
-<div id="thank-you-screen" class="form-screen active">
-  <h2 class="thank-title">Thank You for Your Order!</h2>
+<main>
+  <h1>Thank You for Your Order!</h1>
+  
+  <div class="section">
+    <h2>Plan Summary</h2>
+    <p id="plan-summary">Premium Website (Monthly Plan)</p>
+  </div>
 
-  <div class="pricing-container">
-    <div class="pricing-card recommended in-view" id="summary-card">
-      <h3 id="plan-name">Your Plan</h3>
-      <div id="thank-you-features" class="features-container"></div>
+  <div class="section">
+    <h2>Selected Features</h2>
+    <ul id="feature-list"></ul>
+  </div>
+
+  <div class="section">
+    <h2>Core Website Info</h2>
+    <label for="business-name">Business Name</label>
+    <input type="text" id="business-name" placeholder="Enter your business name">
+    
+    <label for="phone">Phone Number</label>
+    <input type="text" id="phone" placeholder="Enter your phone number">
+    
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="Enter your email">
+    
+    <label for="address">Business Address</label>
+    <input type="text" id="address" placeholder="Enter your business address">
+    
+    <label for="logo">Upload Logo</label>
+    <input type="file" id="logo" accept="image/*">
+    
+    <label for="brand-colors">Brand Colors</label>
+    <input type="text" id="brand-colors" placeholder="Hex codes or color names">
+  </div>
+
+  <div class="section">
+    <h2>Consent</h2>
+    <div class="consent">
+      <input type="checkbox" id="gdpr-consent"> I consent to the processing of my personal data in accordance with GDPR/UK law.
+    </div>
+    <div class="consent">
+      <input type="checkbox" id="tos-consent"> I have read and agree to the <a href="/terms.html" target="_blank" style="color:white; text-decoration:underline;">Terms of Service</a> and <a href="/privacy.html" target="_blank" style="color:white; text-decoration:underline;">Privacy Policy</a>.
     </div>
   </div>
 
-  <button class="brand-btn" id="continue-funnel">Continue</button>
+  <div class="section">
+    <p>Next: Click continue to provide text, images, and content placement for your website.</p>
+    <button id="continue-btn" disabled>Continue</button>
+  </div>
+</main>
+
+<div class="social-icons" aria-label="Social media links">
+  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+  </a>
+  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+  </a>
+  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+  </a>
 </div>
 
-<!-- Dynamic Data Step Container -->
-<div id="dynamic-step-container"></div>
+<div class="footer-inner" data-aos="fade-up">
+  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+</div>
 
-
-
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-// ✅ Load saved user data from index funnel
+// Initialize AOS
+AOS.init();
+
+// Hamburger menu
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.querySelector('.hamburger');
+  const menu = document.querySelector('nav.menu');
+  function toggleMenu() {
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', false);
+      menu.setAttribute('aria-hidden', true);
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+// Load saved data from funnel
 let selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
 let planType = localStorage.getItem("planType") || "Owned Outright";
 let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
+let displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
+document.getElementById("plan-summary").textContent = `${selectedPlan} Website (${displayType})`;
 
-// ✅ Make ownership type display naturally
-let displayType = planType;
-if (displayType.toLowerCase().includes("monthly")) displayType = "Monthly Plan";
-if (displayType.toLowerCase().includes("out")) displayType = "Buy Outright";
-
-// ✅ Feature Labels (aligned with index.js funnel)
+// Feature labels
 const featureLabels = {
-  mobile: "Mobile-friendly design",
-  contact: "Simple contact form",
-  bio: "About / Instructor bio",
-  social: "Social media integration",
-  booking: "Online booking & payment",
-  cta: "Strong call-to-action buttons",
-  home: "Structured Home Page",
-  services: "Dedicated Services Page",
-  testimonials: "Testimonials Section",
-  map: "Google Map Integration",
-  seo: "Local Google SEO",
-  reviews: "Student reviews section",
-  branding: "Branding help (logo & colors)",
-  faq: "FAQ / Student Guide",
-  newsletter: "Newsletter Signup form",
-  gallery: "Photo Gallery",
-  blog: "Blog or Updates Section",
-  navigation: "Multi-page Navigation",
-  "lesson-pricing": "Lesson Pricing Table",
-  analytics: "Google Analytics setup",
-  packages: "Lesson Packages & Gift Vouchers",
-  email: "Professional Email Address",
-  content: "Content Creation help",
-  "expect-guide": "“What to Expect” Guide",
-  pdfs: "Downloadable PDFs",
-  video: "Video Embed Section",
-  "auto-booking": "Fully Automated Online Booking",
-  reporting: "Advanced Reporting & Insights"
+  mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
+  social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
+  home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
+  map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section", branding:"Branding help (logo & colors)",
+  faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form", gallery:"Photo Gallery", blog:"Blog or Updates Section",
+  navigation:"Multi-page Navigation", "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
+  packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address", content:"Content Creation help",
+  "expect-guide":"“What to Expect” Guide", pdfs:"Downloadable PDFs", video:"Video Embed Section",
+  "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
 };
 
-// ✅ Populate Thank You Screen
-function showThankYouScreen() {
-  hideAllScreens();
-  const screen = document.getElementById("thank-you-screen");
-  screen.classList.add("active");
-
-  // Plan heading
-  const planLabel = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
-  document.getElementById("plan-name").textContent = `${planLabel} Website (${displayType})`;
-
-  const container = document.getElementById("thank-you-features");
-  container.innerHTML = "";
-
-  if (yesFeatures.length === 0) {
-    const none = document.createElement("p");
-    none.textContent = "No additional services selected.";
-    none.style.opacity = "0.8";
-    container.appendChild(none);
-  } else {
-    yesFeatures.forEach(key => {
-      if (featureLabels[key]) createFeature(featureLabels[key], container);
-    });
-  }
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// Populate feature list
+const container = document.getElementById("feature-list");
+if(yesFeatures.length===0){ 
+  const li=document.createElement("li"); 
+  li.textContent="No additional services selected."; 
+  container.appendChild(li); 
+} else { 
+  yesFeatures.forEach(key => { 
+    if(featureLabels[key]){ 
+      const li = document.createElement("li"); 
+      li.textContent = featureLabels[key]; 
+      container.appendChild(li); 
+    } 
+  }); 
 }
 
-function createFeature(text, container) {
-  const div = document.createElement("div");
-  div.className = "feature-card";
-  div.textContent = text;
-  container.appendChild(div);
+// Enable continue button only when both consents are checked
+const gdpr = document.getElementById("gdpr-consent");
+const tos = document.getElementById("tos-consent");
+const continueBtn = document.getElementById("continue-btn");
+
+function checkConsent() {
+  continueBtn.disabled = !(gdpr.checked && tos.checked);
 }
 
-function addDivider(container) {
-  const hr = document.createElement("hr");
-  hr.className = "brand-divider";
-  container.appendChild(hr);
-}
+gdpr.addEventListener("change", checkConsent);
+tos.addEventListener("change", checkConsent);
 
-// ✅ Navigation core
-let screens = [];
-let currentScreen = 0;
+// Continue button redirects to order form
+continueBtn.addEventListener("click", () => {
+  // Optional: save collected info to localStorage or send to backend
+  localStorage.setItem("businessName", document.getElementById("business-name").value);
+  localStorage.setItem("businessPhone", document.getElementById("phone").value);
+  localStorage.setItem("businessEmail", document.getElementById("email").value);
+  localStorage.setItem("businessAddress", document.getElementById("address").value);
+  // Logo and brand colors can also be handled here if needed
 
-function hideAllScreens() {
-  document.querySelectorAll('.form-screen').forEach(s => s.classList.remove('active'));
-}
-
-document.getElementById("continue-funnel").onclick = () => next();
-
-function next() {
-  if (currentScreen < screens.length - 1) {
-    hideAllScreens();
-    currentScreen++;
-    screens[currentScreen].classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-// ✅ Initialize
-showThankYouScreen();
+  window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
+});
 </script>
-
 </body>
 </html>
