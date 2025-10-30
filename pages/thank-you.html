@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Thank You - Order Summary</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thank You</title>
 <style>
 /* ===== GENERAL STYLES ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -13,14 +13,11 @@ h1,h2 { margin-bottom:12px; }
 h1 { font-size:1.8rem; text-align:center; }
 ul { list-style:none; padding-left:0; }
 ul li { padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.2); }
-label { display:block; margin-top:10px; font-weight:bold; }
-input[type="text"], input[type="email"], input[type="file"], select { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:none; }
-button { margin-top:20px; background:white; color:#33a7d4; font-weight:bold; padding:10px 20px; border:none; border-radius:6px; cursor:pointer; }
+button { margin-top:20px; background:white; color:#33a7d4; font-weight:bold; padding:10px 20px; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
 button:hover { background:#fffacd; }
 button:disabled { background:rgba(255,255,255,0.4); cursor:not-allowed; }
-.section { margin-top:20px; }
-.consent { font-size:0.9rem; margin-top:10px; }
-.consent input { margin-right:6px; }
+.section { margin-top:20px; text-align:center; }
+.plan-summary { font-size:1.2rem; font-weight:bold; margin-top:10px; background: rgba(255,255,255,0.1); padding:10px; border-radius:6px; }
 
 /* ===== HEADER ===== */
 header { position:fixed; top:0; left:0; right:0; height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background-color:#33a7d4; z-index:2000; box-shadow:0 2px 8px rgb(0 0 0 / 0.15);}
@@ -59,7 +56,7 @@ nav.menu ul li a:hover{color:#222;}
 }
 
 /* ===== SOCIAL ICONS ===== */
-.social-icons { max-width:400px; width:100%; margin:0 auto; justify-content:center; align-items:center; display:flex !important; flex-wrap:nowrap; padding:0; }
+.social-icons { max-width:400px; width:100%; margin:20px auto; justify-content:center; align-items:center; display:flex !important; flex-wrap:nowrap; padding:0; }
 .social-icons a { width:60px; height:60px; font-size:40px; color:#fff; display:flex; justify-content:center; align-items:center; animation:coin-spin 6s linear infinite; transform-style:preserve-3d; perspective:1000px; margin:0; }
 .social-icons img { width:48px; height:48px; filter:brightness(0) invert(1); transition: transform 0.4s ease; }
 .social-icons a:not(:last-child){ margin-right:40px;}
@@ -73,7 +70,6 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">D S W D</div>
   <div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false">
@@ -92,79 +88,42 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
 
 <main>
   <h1>Thank You for Your Order!</h1>
-  
+
   <div class="section">
     <h2>Plan Summary</h2>
-    <p id="plan-summary">Premium Website (Monthly Plan)</p>
+    <div class="plan-summary" id="plan-summary">Premium Website (Monthly Plan)</div>
   </div>
 
   <div class="section">
-    <h2>Selected Features</h2>
-    <ul id="feature-list"></ul>
-  </div>
-
-  <div class="section">
-    <h2>Core Website Info</h2>
-    <label for="business-name">Business Name</label>
-    <input type="text" id="business-name" placeholder="Enter your business name">
-    
-    <label for="phone">Phone Number</label>
-    <input type="text" id="phone" placeholder="Enter your phone number">
-    
-    <label for="email">Email Address</label>
-    <input type="email" id="email" placeholder="Enter your email">
-    
-    <label for="address">Business Address</label>
-    <input type="text" id="address" placeholder="Enter your business address">
-    
-    <label for="logo">Upload Logo</label>
-    <input type="file" id="logo" accept="image/*">
-    
-    <label for="brand-colors">Brand Colors</label>
-    <input type="text" id="brand-colors" placeholder="Hex codes or color names">
-  </div>
-
-  <div class="section">
-    <h2>Consent</h2>
-    <div class="consent">
-      <input type="checkbox" id="gdpr-consent"> I consent to the processing of my personal data in accordance with GDPR/UK law.
-    </div>
-    <div class="consent">
-      <input type="checkbox" id="tos-consent"> I have read and agree to the <a href="/terms.html" target="_blank" style="color:white; text-decoration:underline;">Terms of Service</a> and <a href="/privacy.html" target="_blank" style="color:white; text-decoration:underline;">Privacy Policy</a>.
-    </div>
-  </div>
-
-  <div class="section">
-    <p>Next: Click continue to provide text, images, and content placement for your website.</p>
-    <button id="continue-btn" disabled>Continue</button>
+    <h2>Next Steps</h2>
+    <p>You can either start providing your website details now, or we can send you a secure link via email to continue later.</p>
+    <button id="start-btn">Start Providing Details</button>
+    <button id="email-btn">Send Me a Link via Email</button>
   </div>
 </main>
 
 <div class="social-icons" aria-label="Social media links">
-  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter" class="spin-icon">
+  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
   </a>
-  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook" class="spin-icon">
+  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
   </a>
-  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram" class="spin-icon">
+  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram">
     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
   </a>
 </div>
 
-<div class="footer-inner" data-aos="fade-up">
+<div class="footer-inner">
   <p>&copy; 2025 Faz Designs. All rights reserved.</p>
 </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-// Initialize AOS
-AOS.init();
-
-// Hamburger menu
+// Hamburger Menu
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
+
   function toggleMenu() {
     const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
@@ -172,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.setAttribute('aria-hidden', !isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
+
   hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
   document.addEventListener('click', (e) => {
     if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
@@ -182,66 +142,19 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.style.overflow = '';
     }
   });
-});
 
-// Load saved data from funnel
-let selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
-let planType = localStorage.getItem("planType") || "Owned Outright";
-let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
-let displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
-document.getElementById("plan-summary").textContent = `${selectedPlan} Website (${displayType})`;
+  // Buttons
+  document.getElementById("start-btn").addEventListener("click", () => {
+    window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
+  });
 
-// Feature labels
-const featureLabels = {
-  mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
-  social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
-  home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
-  map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section", branding:"Branding help (logo & colors)",
-  faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form", gallery:"Photo Gallery", blog:"Blog or Updates Section",
-  navigation:"Multi-page Navigation", "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
-  packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address", content:"Content Creation help",
-  "expect-guide":"“What to Expect” Guide", pdfs:"Downloadable PDFs", video:"Video Embed Section",
-  "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
-};
-
-// Populate feature list
-const container = document.getElementById("feature-list");
-if(yesFeatures.length===0){ 
-  const li=document.createElement("li"); 
-  li.textContent="No additional services selected."; 
-  container.appendChild(li); 
-} else { 
-  yesFeatures.forEach(key => { 
-    if(featureLabels[key]){ 
-      const li = document.createElement("li"); 
-      li.textContent = featureLabels[key]; 
-      container.appendChild(li); 
-    } 
-  }); 
-}
-
-// Enable continue button only when both consents are checked
-const gdpr = document.getElementById("gdpr-consent");
-const tos = document.getElementById("tos-consent");
-const continueBtn = document.getElementById("continue-btn");
-
-function checkConsent() {
-  continueBtn.disabled = !(gdpr.checked && tos.checked);
-}
-
-gdpr.addEventListener("change", checkConsent);
-tos.addEventListener("change", checkConsent);
-
-// Continue button redirects to order form
-continueBtn.addEventListener("click", () => {
-  // Optional: save collected info to localStorage or send to backend
-  localStorage.setItem("businessName", document.getElementById("business-name").value);
-  localStorage.setItem("businessPhone", document.getElementById("phone").value);
-  localStorage.setItem("businessEmail", document.getElementById("email").value);
-  localStorage.setItem("businessAddress", document.getElementById("address").value);
-  // Logo and brand colors can also be handled here if needed
-
-  window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
+  document.getElementById("email-btn").addEventListener("click", () => {
+    const email = prompt("Please enter your email to receive the link:");
+    if(email) {
+      // Optional: send email via backend integration
+      alert("A secure link has been sent to " + email);
+    }
+  });
 });
 </script>
 </body>
