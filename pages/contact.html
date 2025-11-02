@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peter's Gutter Cleaning Services - Professional Gutter Maintenance</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HGS Gutter Maintenance - Premium Gutter Services</title>
 
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
 
-
+<!-- AOS CSS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-
-
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
-
-/* Global Styles and Reset */
 :root {
-    --primary-color: #007bff; /* A professional blue */
-    --secondary-color: #28a745; /* A clean green for accents */
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
     --dark-color: #343a40;
     --light-color: #f8f9fa;
     --text-color: #495057;
@@ -24,627 +22,272 @@
     --body-font: 'Roboto', sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* Reset */
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family: var(--body-font); line-height:1.6; color: var(--text-color); background: #fff; scroll-behavior: smooth;}
+a { text-decoration:none; color: var(--primary-color);}
+a:hover { color: var(--secondary-color);}
+.container { max-width: 1200px; margin:0 auto; padding:0 20px; }
 
-body {
-    font-family: var(--body-font);
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: #fff;
-}
+/* Header */
+header { position: fixed; top:0; left:0; width:100%; background: #fff; z-index: 1000; padding: 15px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+header .container { display:flex; justify-content: space-between; align-items: center;}
+.logo { font-family: var(--heading-font); font-weight:700; font-size:1.5rem; color: var(--dark-color);}
+nav ul { display:flex; list-style:none; }
+nav ul li { margin-left:25px; }
+nav ul li a { font-weight:500; position: relative; }
+nav ul li a::after { content:''; position:absolute; width:0; height:2px; bottom:-5px; left:0; background: var(--secondary-color); transition: width 0.3s; }
+nav ul li a:hover::after { width:100%; }
+.phone-number { font-weight:700; color: var(--secondary-color); font-size:1.1rem;}
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-h1, h2, h3 {
-    font-family: var(--heading-font);
-    color: var(--dark-color);
-    margin-bottom: 15px;
-}
-
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-
-a {
-    text-decoration: none;
-    color: var(--primary-color);
-}
-
-a:hover {
-    color: var(--secondary-color);
-}
+/* Hero */
+.hero { position: relative; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.hero video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+.hero-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index:2;}
+.hero-content { position:relative; z-index:3; text-align:center; color:#fff; max-width:800px; }
+.hero-content h1 { font-size:3rem; margin-bottom:20px; line-height:1.2; }
+.hero-content p { font-size:1.2rem; margin-bottom:30px; }
+.hero-cta .btn { margin-right:15px; }
 
 /* Buttons */
-.btn {
-    display: inline-block;
-    padding: 10px 25px;
-    border-radius: 5px;
-    font-weight: 700;
-    transition: background-color 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-right: 10px;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: 2px solid var(--primary-color);
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-/* Header and Navigation */
-header {
-    background: #fff;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--light-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--dark-color);
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-nav ul li {
-    margin-left: 25px;
-}
-
-nav ul li a {
-    color: var(--dark-color);
-    font-weight: 500;
-    padding: 5px 0;
-    position: relative;
-}
-
-nav ul li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background-color: var(--secondary-color);
-    transition: width 0.3s ease;
-}
-
-nav ul li a:hover::after {
-    width: 100%;
-}
-
-.phone-number {
-    font-weight: 700;
-    color: var(--secondary-color);
-    font-size: 1.1rem;
-}
+.btn { display:inline-block; padding:12px 30px; border-radius:8px; font-weight:700; text-transform:uppercase; transition: all 0.3s; letter-spacing:1px; }
+.btn-primary { background: var(--primary-color); color:#fff; border:2px solid var(--primary-color);}
+.btn-primary:hover { background:#0056b3; border-color:#0056b3;}
+.btn-secondary { background:transparent; color:var(--primary-color); border:2px solid var(--primary-color);}
+.btn-secondary:hover { background: var(--primary-color); color:#fff;}
 
 /* Sections */
-section {
-    padding: 80px 0;
-}
+section { padding:100px 0; }
+section h2 { font-family: var(--heading-font); font-size:2.5rem; margin-bottom:20px; }
+.section-subtitle { font-size:1.2rem; color:#6c757d; margin-bottom:50px; text-align:center; }
 
-.section-subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 40px;
-    text-align: center;
-}
+/* Services */
+.service-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:30px; }
+.service-card { background:#fff; border-radius:20px; padding:40px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.1); transition: transform 0.5s, box-shadow 0.5s; }
+.service-card:hover { transform: translateY(-15px); box-shadow:0 30px 60px rgba(0,0,0,0.2);}
+.service-icon { font-size:50px; margin-bottom:20px; color:var(--primary-color); }
 
-/* Hero Section */
-.hero {
-    background: var(--light-color);
-    padding: 100px 0;
-}
+/* About */
+.about-us p { max-width:800px; margin:0 auto; font-size:1.15rem; line-height:1.8; text-align:center; }
 
-.hero .container {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-}
+/* Testimonials */
+.testimonials { background: var(--primary-color); color:#fff; text-align:center; }
+.testimonial-slider { display:flex; gap:30px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:20px;}
+.testimonial-card { flex:0 0 300px; background:rgba(255,255,255,0.1); padding:30px; border-radius:20px; scroll-snap-align:start; box-shadow:0 20px 40px rgba(0,0,0,0.1); transition: transform 0.3s;}
+.testimonial-card:hover { transform:scale(1.05);}
+.quote { font-style:italic; font-size:1.2rem; margin-bottom:15px;}
+.author { font-weight:700; text-transform:uppercase; }
 
-.hero-content {
-    flex: 1;
-}
+/* FAQ */
+.faq-item { max-width:800px; margin:0 auto 20px; text-align:left; border-bottom:1px solid #eee; padding-bottom:15px;}
+.faq-question { color: var(--primary-color); cursor:pointer; margin-bottom:5px; font-weight:600;}
+.faq-answer { display:none; padding-top:10px; }
 
-.hero-content h1 {
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
-
-.hero-content p {
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-}
-
-.hero-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-placeholder {
-    width: 100%;
-    max-width: 500px;
-    height: 300px;
-    background-color: #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--dark-color);
-    font-weight: 700;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-/* Services Section */
-.services {
-    text-align: center;
-}
-
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.service-card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    text-align: left;
-    transition: transform 0.3s ease;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-.service-card h3 {
-    color: var(--secondary-color);
-    margin-bottom: 10px;
-}
-
-/* About Us Section */
-.about-us {
-    background: var(--light-color);
-    text-align: center;
-}
-
-.about-us p {
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 1.1rem;
-}
-
-/* Testimonials Section */
-.testimonials {
-    background: var(--primary-color);
-    color: #fff;
-    text-align: center;
-}
-
-.testimonials h2 {
-    color: #fff;
-}
-
-.testimonial-card {
-    max-width: 700px;
-    margin: 40px auto 0;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-}
-
-.quote {
-    font-style: italic;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-}
-
-.author {
-    font-weight: 700;
-    font-size: 1rem;
-    text-transform: uppercase;
-}
-
-/* FAQ Section */
-.faq {
-    text-align: center;
-}
-
-.faq-item {
-    max-width: 800px;
-    margin: 0 auto 20px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
-}
-
-.faq-question {
-    color: var(--primary-color);
-    cursor: pointer;
-    margin-bottom: 5px;
-}
-
-.faq-answer {
-    display: none; /* Controlled by JavaScript */
-    padding-top: 10px;
-}
-
-/* Contact Section */
-.contact {
-    background: var(--light-color);
-}
-
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 40px;
-}
-
-#contact-form {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 700;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: var(--body-font);
-    font-size: 1rem;
-}
-
-.location-info h3 {
-    color: var(--dark-color);
-    margin-bottom: 20px;
-}
-
-.location-info p {
-    margin-bottom: 10px;
-}
-
-.map-placeholder {
-    width: 100%;
-    height: 250px;
-    background-color: #ccc;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--dark-color);
-    font-weight: 700;
-    border-radius: 8px;
-}
+/* Contact */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:40px; }
+#contact-form { background:#fff; padding:30px; border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+.form-group { margin-bottom:20px; }
+.form-group label { display:block; margin-bottom:5px; font-weight:700; }
+.form-group input, .form-group textarea { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:1rem; font-family: var(--body-font); }
+#form-message { margin-top:10px; font-weight:600; }
 
 /* Footer */
-footer {
-    background: var(--dark-color);
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    font-size: 0.9rem;
-}
+footer { background: var(--dark-color); color:#fff; text-align:center; padding:30px 0; font-size:0.9rem; }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-    .hero .container {
-        flex-direction: column;
-        text-align: center;
-    }
+/* Scrollbar */
+.testimonial-slider::-webkit-scrollbar { height:8px;}
+.testimonial-slider::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius:4px; }
 
-    .hero-image {
-        margin-top: 40px;
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .location-info {
-        margin-top: 40px;
-    }
-}
-
-@media (max-width: 768px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.75rem; }
-    h3 { font-size: 1.3rem; }
-
-    header .container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav ul {
-        margin-top: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    nav ul li {
-        margin: 5px 10px;
-    }
-
-    .contact-info {
-        margin-top: 10px;
-    }
-
-    .btn {
-        display: block;
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-}
-
+/* Responsive */
+@media(max-width:768px){ .hero-content h1{ font-size:2rem;} nav ul { flex-wrap:wrap; justify-content:center;} nav ul li{ margin:5px 10px;} .contact-grid{ grid-template-columns:1fr;} .btn{width:100%; margin-bottom:10px;}}
 </style>
-
 
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">HGS Gutter Maintenance</div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="contact-info">
-                <a href="tel:07799396445" class="phone-number">07799 396445</a>
-            </div>
+
+<header>
+  <div class="container">
+    <div class="logo">HGS Gutter Maintenance</div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="tel:07799396445" class="phone-number">07799 396445</a>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content" data-aos="fade-up">
+      <h1>Protect Your Home with Premium Gutter Services</h1>
+      <p>Expert cleaning, repair, and installation in Harpenden & St Albans. Fast, reliable, fully insured.</p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-primary">View Services</a>
+        <a href="#contact" class="btn btn-secondary">Get Free Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2 data-aos="fade-right">Our Services</h2>
+      <p class="section-subtitle" data-aos="fade-left">Starting from just £49</p>
+      <div class="service-grid">
+        <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+          <div class="service-icon">🧹</div>
+          <h3>Gutter Cleaning</h3>
+          <p>Prevent water damage with thorough cleaning.</p>
         </div>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Welcome to Peter's Gutter Cleaning Services</h1>
-                    <p>We specialise in providing top-notch gutter maintenance and repair services to ensure your home is safe from water damage. With our expert team based in Harpenden and St Albans, we guarantee quality service and customer satisfaction.</p>
-                    <a href="#services" class="btn btn-primary">View Our Services</a>
-                    <a href="#contact" class="btn btn-secondary">Get a Free Quote</a>
-                </div>
-                <div class="hero-image">
-                    <!-- Placeholder for the image/video from the original site -->
-                    <div class="image-placeholder">
-                        <p>Professional Gutter Cleaning in Action</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services">
-            <div class="container">
-                <h2>Our Services</h2>
-                <p class="section-subtitle">Gutter cleaning services are available starting from **£49**</p>
-                
-                <div class="service-grid">
-                    <div class="service-card">
-                        <h3>Gutter Cleaning</h3>
-                        <p>Ensure your gutters are clear and functional with our thorough cleaning service, preventing blockages and water damage.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Gutter Repair</h3>
-                        <p>Address leaks and damages promptly with our expert repair service, maintaining your gutter system's efficiency and longevity.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Gutter Installation</h3>
-                        <p>Secure your home with our quality gutter installation, tailored to meet your needs and protect against water damage.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Us Section -->
-        <section id="about" class="about-us">
-            <div class="container">
-                <h2>About Us</h2>
-                <p>Peter's Gutter cleaning service is a dedicated family-run business located in Harpenden & St Albans. With years of experience, we specialise in providing comprehensive gutter maintenance and repair services to protect your home from water-related issues. Our team is committed to delivering high-quality workmanship and excellent customer service. We understand the importance of maintaining a reliable gutter system, which is why we offer a range of services including cleaning, repair, and installation. Our mission is to ensure your home remains safe and dry, regardless of the weather. Trust us to keep your gutters in top condition!</p>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="testimonials">
-            <div class="container">
-                <h2>What Our Customers Say</h2>
-                <div class="testimonial-card">
-                    <p class="quote">“Fantastic service! Our gutters were thoroughly cleaned and repaired, preventing future water damage. Highly recommend this reliable team.”</p>
-                    <p class="author">- Chantelle Williams</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section id="faq" class="faq">
-            <div class="container">
-                <h2>Frequently Asked Questions</h2>
-                <div class="faq-item">
-                    <h3 class="faq-question">Why is regular gutter cleaning important?</h3>
-                    <p class="faq-answer">Regular gutter cleaning is crucial to prevent blockages that can lead to water overflow and damage to your home’s foundation and structure.</p>
-                </div>
-                <div class="faq-item">
-                    <h3 class="faq-question">How often should I have my gutters repaired?</h3>
-                    <p class="faq-answer">Gutters should be inspected and repaired as soon as any damage or leaks are noticed to prevent further deterioration and costly repairs.</p>
-                </div>
-                <div class="faq-item">
-                    <h3 class="faq-question">What materials are best for gutter installation?</h3>
-                    <p class="faq-answer">The best materials for gutter installation depend on your home’s design, budget, and specific needs, with options like aluminium, copper, and vinyl available.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2>Contact Us</h2>
-                <p class="section-subtitle">Contact us today to schedule your gutter maintenance service or for a free consultation.</p>
-                
-                <div class="contact-grid">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name">Name *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email address *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit form</button>
-                        <p id="form-message" style="display: none; margin-top: 10px;"></p>
-                    </form>
-
-                    <div class="location-info">
-                        <h3>Location & Contact Details</h3>
-                        <p><strong>Peter's Gutter cleaning service</strong></p>
-                        <p>Rivers Lodge, West Common way, Harpenden</p>
-                        <p>AL5 2JD</p>
-                        <p>Phone: <a href="tel:07799396445">07799 396445</a></p>
-                        <!-- Map Placeholder -->
-                        <div class="map-placeholder">
-                            <p>Map of Harpenden Location</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 HGS Gutter Maintenance. All rights reserved.</p>
+        <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="service-icon">🔧</div>
+          <h3>Gutter Repair</h3>
+          <p>Quick and durable repairs to keep your home safe.</p>
         </div>
-    </footer>
+        <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="service-icon">🏠</div>
+          <h3>Gutter Installation</h3>
+          <p>Premium installations designed to last.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- About -->
+  <section id="about" class="about-us" data-aos="fade-up">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>Peter's Gutter Cleaning Service is a dedicated family-run business located in Harpenden & St Albans. With years of experience, we specialize in comprehensive gutter maintenance and repair services. Our mission is to ensure your home remains safe and dry. Trust us to keep your gutters in top condition!</p>
+    </div>
+  </section>
 
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <h2 data-aos="fade-right">What Our Customers Say</h2>
+      <div class="testimonial-slider" data-aos="fade-up" data-aos-duration="1500">
+        <div class="testimonial-card">
+          <p class="quote">“Fantastic service! Our gutters were thoroughly cleaned and repaired. Highly recommend.”</p>
+          <p class="author">- Chantelle Williams</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="quote">“Professional team, quick response, and excellent results!”</p>
+          <p class="author">- Mark Stevens</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2 data-aos="fade-right">FAQ</h2
+                                             <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="faq-question">Why is regular gutter cleaning important?</h3>
+        <p class="faq-answer">Regular gutter cleaning prevents blockages, water overflow, and potential damage to your home's foundation.</p>
+      </div>
+      <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="faq-question">How often should gutters be repaired?</h3>
+        <p class="faq-answer">Inspect and repair gutters as soon as damage or leaks appear to avoid costly future repairs.</p>
+      </div>
+      <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+        <h3 class="faq-question">Which materials are best for gutter installation?</h3>
+        <p class="faq-answer">Material depends on home design and budget. Popular options include aluminum, copper, and vinyl.</p>
+      </div>
+    </div>
+  </section>
 
-    <script>
+  <!-- Contact -->
+  <section id="contact" class="contact" data-aos="fade-up">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p class="section-subtitle">Schedule your gutter maintenance service or get a free consultation today.</p>
+      <div class="contact-grid">
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Form</button>
+          <p id="form-message" style="display:none; margin-top:10px;"></p>
+        </form>
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Smooth Scrolling for Navigation Links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+        <div class="location-info" data-aos="fade-left">
+          <h3>Location & Contact Details</h3>
+          <p><strong>Peter's Gutter Cleaning Service</strong></p>
+          <p>Rivers Lodge, West Common Way, Harpenden</p>
+          <p>AL5 2JD</p>
+          <p>Phone: <a href="tel:07799396445">07799 396445</a></p>
+          <div class="map-placeholder">
+            <p>Map of Harpenden Location</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer data-aos="fade-up">
+  <div class="container">
+    <p>&copy; 2025 HGS Gutter Maintenance. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  // Initialize AOS
+  AOS.init({ once: true, duration: 1000 });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
     });
+  });
 
-    // 2. FAQ Toggle Functionality
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-            // Toggle visibility of the answer
-            if (answer.style.display === 'block') {
-                answer.style.display = 'none';
-            } else {
-                // Optional: Close all other open answers
-                // document.querySelectorAll('.faq-answer').forEach(ans => ans.style.display = 'none');
-                answer.style.display = 'block';
-            }
-        });
+  // FAQ toggle
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const answer = q.nextElementSibling;
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
     });
+  });
 
-    // 3. Simple Contact Form Submission Handler (Client-side only)
-    const contactForm = document.getElementById('contact-form');
-    const formMessage = document.getElementById('form-message');
+  // Contact form simulation
+  const contactForm = document.getElementById('contact-form');
+  const formMessage = document.getElementById('form-message');
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // In a real application, you would send this data to a server using fetch() or XMLHttpRequest
-            // For this example, we'll just simulate a successful submission.
-            
-            const name = document.getElementById('name').value;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                formMessage.textContent = `Thank you, ${name}! Your message has been received. We will be in touch shortly.`;
-                formMessage.style.display = 'block';
-                formMessage.style.color = 'green';
-                contactForm.reset(); // Clear the form
-                
-                // Hide message after a few seconds
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
-                
-            }, 500);
-        });
-    }
-});
-
- </script>
-
+  contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    formMessage.textContent = `Thank you, ${name}! Your message has been received. We will be in touch shortly.`;
+    formMessage.style.color = 'green';
+    formMessage.style.display = 'block';
+    contactForm.reset();
+    setTimeout(() => { formMessage.style.display = 'none'; }, 5000);
+  });
+</script>
 
 </body>
 </html>
