@@ -901,127 +901,136 @@ body {
         </div>
     </nav>
 
+
+
+
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2 class="hero-title" data-scroll>Discover Luxury Living</h2>
-            <p class="hero-subtitle" data-scroll>Explore our curated collection of premium properties</p>
-            <button class="hero-cta" data-scroll>Explore Properties</button>
+<section class="hero">
+    <div class="hero-content">
+        <h2 class="hero-title" data-scroll>Discover Luxury Living</h2>
+        <p class="hero-subtitle" data-scroll>Explore our curated collection of premium properties</p>
+        <button class="hero-cta" data-scroll>Explore Properties</button>
+    </div>
+    <div class="hero-background">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+    </div>
+</section>
+
+<!-- Properties Section -->
+<section class="properties" id="properties">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-scroll>Featured Properties</h2>
+            <p class="section-subtitle" data-scroll>Handpicked luxury homes for discerning buyers</p>
         </div>
-        <div class="hero-background">
-            <div class="gradient-blob blob-1"></div>
-            <div class="gradient-blob blob-2"></div>
+
+        <!-- Property Filters -->
+        <div class="property-filters" style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
+            <input type="text" id="search-properties" placeholder="Search by title or location" style="padding:0.5rem; width:50%; border-radius:4px; border:1px solid #ccc;">
+            <select id="sort-properties" style="padding:0.5rem; border-radius:4px; border:1px solid #ccc;">
+                <option value="">Sort By</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="beds-desc">Bedrooms: High to Low</option>
+            </select>
         </div>
-    </section>
 
-    <!-- Properties Section -->
-    <section class="properties" id="properties">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-scroll>Featured Properties</h2>
-                <p class="section-subtitle" data-scroll>Handpicked luxury homes for discerning buyers</p>
-            </div>
-
-            <div class="properties-grid">
-                <!-- Properties will be dynamically inserted here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-scroll>Our Services</h2>
-                <p class="section-subtitle" data-scroll>Comprehensive real estate solutions</p>
-            </div>
-
-            <div class="services-grid">
-                <!-- Services will be dynamically inserted here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-scroll>Client Testimonials</h2>
-                <p class="section-subtitle" data-scroll>What our satisfied clients say</p>
-            </div>
-
-            <div class="testimonials-carousel">
-                <!-- Testimonials will be dynamically inserted here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title" data-scroll>Ready to Find Your Dream Home?</h2>
-                <p class="cta-text" data-scroll>Let our expert team guide you through the process</p>
-                <button class="cta-button" id="contact" data-scroll>Get Started Today</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Luxe Properties</h3>
-                    <p>Premium real estate agency specializing in luxury properties.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#properties">Properties</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: info@luxeproperties.com</p>
-                    <p>Phone: +1 (555) 123-4567</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-icon">Instagram</a>
-                        <a href="#" class="social-icon">Facebook</a>
-                        <a href="#" class="social-icon">LinkedIn</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Luxe Properties. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Property Modal -->
-    <div class="modal" id="propertyModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <!-- Property details will be inserted here -->
-            </div>
+        <div class="properties-grid">
+            <!-- Properties will be dynamically inserted here -->
         </div>
     </div>
+</section>
 
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-scroll>Our Services</h2>
+            <p class="section-subtitle" data-scroll>Comprehensive real estate solutions</p>
+        </div>
 
-    
+        <div class="services-grid">
+            <!-- Services will be dynamically inserted here -->
+        </div>
+    </div>
+</section>
 
-<script>
+<!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-scroll>Client Testimonials</h2>
+            <p class="section-subtitle" data-scroll>What our satisfied clients say</p>
+        </div>
 
-    / ===========================
+        <div class="testimonials-carousel">
+            <!-- Testimonials will be dynamically inserted here -->
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title" data-scroll>Ready to Find Your Dream Home?</h2>
+            <p class="cta-text" data-scroll>Let our expert team guide you through the process</p>
+            <button class="cta-button hero-cta" id="contact" data-scroll>Get Started Today</button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Luxe Properties</h3>
+                <p>Premium real estate agency specializing in luxury properties.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@luxeproperties.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-icon">Instagram</a>
+                    <a href="#" class="social-icon">Facebook</a>
+                    <a href="#" class="social-icon">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Luxe Properties. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Property Modal -->
+<div class="modal" id="propertyModal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-body">
+            <!-- Property details will be inserted here -->
+        </div>
+    </div>
+</div>
+
+    <script>
+// ===========================
 // APP DATA (Inline JSON with 20 properties)
 // ===========================
-
 let appData = {
     "properties": [
         { "id":"L1","title":"Modern Family Home","price":"£450,000","location":"London, UK","beds":3,"baths":2,"sqft":120,"image":"https://via.placeholder.com/400x300?text=Property+1","description":"A beautiful modern family home with garden and parking.","features":["Garden","Garage","Modern Kitchen"] },
@@ -1056,34 +1065,47 @@ let appData = {
     ]
 };
 
+// ===========================
+// DOM ELEMENTS
+// ===========================
+const propertiesGrid = document.querySelector('.properties-grid');
+const servicesGrid = document.querySelector('.services-grid');
+const testimonialCarousel = document.querySelector('.testimonials-carousel');
+const sortSelect = document.getElementById('sort-properties');
 
 // ===========================
 // INITIALIZATION
 // ===========================
-
 document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
+    renderProperties(appData.properties);
+    renderServices();
+    renderTestimonials();
+    setupScrollAnimations();
+    setupEventListeners();
 });
 
 // ===========================
 // RENDER FUNCTIONS
 // ===========================
-
-function initializeApp() {
-    renderProperties();
-    renderServices();
-    renderTestimonials();
-    setupScrollAnimations();
-    setupEventListeners();
-}
-
-function renderProperties() {
-    const propertiesGrid = document.querySelector('.properties-grid');
+function renderProperties(list) {
     propertiesGrid.innerHTML = '';
+    if (!list.length) {
+        propertiesGrid.innerHTML = '<p>No listings found.</p>';
+        return;
+    }
 
-    appData.properties.forEach(property => {
-        propertiesGrid.appendChild(createPropertyCard(property));
-    });
+    // Sort
+    const sorted = [...list];
+    const sortValue = sortSelect ? sortSelect.value : '';
+    if (sortValue === 'price-asc') {
+        sorted.sort((a, b) => parseInt(a.price.replace(/[£,]/g,'')) - parseInt(b.price.replace(/[£,]/g,'')));
+    } else if (sortValue === 'price-desc') {
+        sorted.sort((a, b) => parseInt(b.price.replace(/[£,]/g,'')) - parseInt(a.price.replace(/[£,]/g,'')));
+    } else if (sortValue === 'beds-desc') {
+        sorted.sort((a, b) => b.beds - a.beds);
+    }
+
+    sorted.forEach(property => propertiesGrid.appendChild(createPropertyCard(property)));
 }
 
 function createPropertyCard(property) {
@@ -1106,15 +1128,12 @@ function createPropertyCard(property) {
             </div>
         </div>
     `;
-
     card.addEventListener('click', () => openPropertyModal(property));
     return card;
 }
 
 function renderServices() {
-    const servicesGrid = document.querySelector('.services-grid');
     servicesGrid.innerHTML = '';
-
     appData.services.forEach(service => {
         const card = document.createElement('div');
         card.className = 'service-card';
@@ -1128,9 +1147,7 @@ function renderServices() {
 }
 
 function renderTestimonials() {
-    const testimonialCarousel = document.querySelector('.testimonials-carousel');
     testimonialCarousel.innerHTML = '';
-
     appData.testimonials.forEach(testimonial => {
         const card = document.createElement('div');
         card.className = 'testimonial-card';
@@ -1151,11 +1168,9 @@ function renderTestimonials() {
 // ===========================
 // MODAL FUNCTIONS
 // ===========================
-
 function openPropertyModal(property) {
     const modal = document.getElementById('propertyModal');
     const modalBody = modal.querySelector('.modal-body');
-
     modalBody.innerHTML = `
         <img src="${property.image}" alt="${property.title}" class="modal-image">
         <h2 class="modal-title">${property.title}</h2>
@@ -1187,7 +1202,6 @@ function closePropertyModal() {
 // ===========================
 // SCROLL ANIMATIONS
 // ===========================
-
 function setupScrollAnimations() {
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -1205,7 +1219,6 @@ function setupScrollAnimations() {
 // ===========================
 // EVENT LISTENERS
 // ===========================
-
 function setupEventListeners() {
     const closeBtn = document.querySelector('.close-modal');
     if (closeBtn) closeBtn.addEventListener('click', closePropertyModal);
@@ -1230,14 +1243,57 @@ function setupEventListeners() {
     document.querySelectorAll('.hero-cta, .cta-button').forEach(btn => {
         btn.addEventListener('click', () => alert('Thank you for your interest! Our team will contact you soon.'));
     });
-}
 
-// ===========================
-// LOG
-// ===========================
+    if (sortSelect) sortSelect.addEventListener('change', () => renderProperties(appData.properties));
+}
 
 console.log('Sara Realty - Premium Real Estate Website Loaded');
 
-</script>
+    
+    
+    // ===========================
+// PROPERTY SEARCH & SORT
+// ===========================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-properties');
+    const sortSelect = document.getElementById('sort-properties');
+
+    function filterAndSortProperties() {
+        let filtered = [...appData.properties];
+
+        // SEARCH
+        const query = searchInput.value.trim().toLowerCase();
+        if (query) {
+            filtered = filtered.filter(p => 
+                p.title.toLowerCase().includes(query) ||
+                p.location.toLowerCase().includes(query)
+            );
+        }
+
+        // SORT
+        const sortValue = sortSelect.value;
+        if (sortValue === 'price-asc') {
+            filtered.sort((a, b) => parseInt(a.price.replace(/£|,/g,'')) - parseInt(b.price.replace(/£|,/g,'')));
+        } else if (sortValue === 'price-desc') {
+            filtered.sort((a, b) => parseInt(b.price.replace(/£|,/g,'')) - parseInt(a.price.replace(/£|,/g,'')));
+        } else if (sortValue === 'beds-desc') {
+            filtered.sort((a, b) => b.beds - a.beds);
+        }
+
+        // Render filtered and sorted properties
+        const propertiesGrid = document.querySelector('.properties-grid');
+        propertiesGrid.innerHTML = '';
+        filtered.forEach(p => propertiesGrid.appendChild(createPropertyCard(p)));
+        setupScrollAnimations(); // Re-apply animations
+    }
+
+    searchInput.addEventListener('input', filterAndSortProperties);
+    sortSelect.addEventListener('change', filterAndSortProperties);
+});
+    
+    
+    </script>
+
 </body>
 </html>
