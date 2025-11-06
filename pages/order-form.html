@@ -253,53 +253,63 @@ footer {
 
 <h1>Website Order Form</h1>
 
-<!-- Step 1: Business Info -->
-<div class="form-screen active" id="step-business">
-  <h2>Step 1: Business Info</h2>
-  <label>Business Name</label><input type="text" id="business-name">
-  <label>Phone</label><input type="text" id="business-phone">
-  <label>Email</label><input type="email" id="business-email">
-  <label>Address</label><input type="text" id="business-address">
-  <label>Logo Upload</label><input type="file" id="business-logo">
-  <label>Brand Colors</label><input type="text" id="business-colors" placeholder="#ff0000">
-  <button class="button" onclick="nextStep()">Next</button>
-</div>
-
-<!-- Step 2: Ownership Type -->
-<div class="form-screen" id="step-ownership">
-  <h2>Step 2: Ownership Type</h2>
-  <input type="radio" id="monthly" name="planType" value="Monthly Plan" checked>
-  <label for="monthly">Monthly Plan</label><br>
-  <input type="radio" id="outright" name="planType" value="Buy Outright">
-  <label for="outright">Buy Outright</label><br>
-  <button class="button" onclick="nextStep()">Next</button>
-</div>
-
-<!-- Step 3: Service-Specific Assets -->
-<div class="form-screen" id="step-services">
-  <h2>Step 3: Service-Specific Assets</h2>
-  <div id="service-sections"></div>
-  <button class="button" onclick="nextStep()">Next</button>
-</div>
-
-<!-- Step 4: Pages -->
-<div class="form-screen" id="step-pages">
-  <h2>Step 4: Website Pages</h2>
-  <div id="pages-container"></div>
-  <button class="button" onclick="nextStep()">Next</button>
-</div>
-
-<!-- Step 5: GDPR + ToS -->
-<div class="form-screen" id="step-consent">
-  <h2>Step 5: Consent & Submit</h2>
-  <div class="gdpr-tos">
-    <input type="checkbox" id="gdpr"><label for="gdpr">I consent to the collection and use of my data in accordance with the <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</label>
+  <!-- Step 1: Business Info -->
+  <div class="form-screen active" id="step-business" data-step="1">
+    <h2>Step 1: Business Info</h2>
+    <label>Business Name *</label>
+    <input type="text" id="business-name" placeholder="e.g. John Doe Driving Tuition">
+    <label>Instructor Name *</label>
+    <input type="text" id="instructor-name" placeholder="Instructor full name">
+    <label>Phone *</label>
+    <input type="text" id="business-phone" placeholder="+44 7123 456789">
+    <label>Email *</label>
+    <input type="email" id="business-email" placeholder="instructor@example.com">
+    <label>Address (optional)</label>
+    <input type="text" id="business-address" placeholder="Business address or town">
+    <label>Logo Upload (optional)</label>
+    <input type="file" id="business-logo" accept="image/*">
+    <label>Brand Colors (optional)</label>
+    <input type="text" id="business-colors" placeholder="e.g. #0044ff or Blue & White">
+    <label>Social / Website Link (optional)</label>
+    <input type="text" id="business-social" placeholder="Facebook, Instagram or website URL">
+    <div class="small">Fields marked * are required to proceed.</div>
+    <button class="button" onclick="nextStep()">Next</button>
   </div>
-  <div class="gdpr-tos">
-    <input type="checkbox" id="tos"><label for="tos">I agree to the <a href="/terms-of-service" target="_blank">Terms of Service</a>.</label>
+
+  <!-- Step 2: Service-Specific Assets -->
+  <div class="form-screen" id="step-services" data-step="2">
+    <h2>Step 2: Service-specific content & assets</h2>
+    <div id="service-sections"></div>
+    <div style="margin-top:10px;">
+      <button class="button" onclick="previousStep()">Back</button>
+      <button class="button" onclick="nextStep()">Next</button>
+    </div>
   </div>
-  <button class="button" onclick="submitForm()">Submit Order</button>
-</div>
+
+  <!-- Step 3: Pages -->
+  <div class="form-screen" id="step-pages" data-step="3">
+    <h2>Step 3: Website Pages</h2>
+    <div id="pages-container"></div>
+    <div style="margin-top:10px;">
+      <button class="button" onclick="previousStep()">Back</button>
+      <button class="button" onclick="nextStep()">Next</button>
+    </div>
+  </div>
+
+  <!-- Step 4: GDPR + ToS -->
+  <div class="form-screen" id="step-consent" data-step="4">
+    <h2>Step 4: Consent & Submit</h2>
+    <div class="gdpr-tos">
+      <input type="checkbox" id="gdpr"><label for="gdpr"> I consent to the collection and use of my data in accordance with the <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</label>
+    </div>
+    <div class="gdpr-tos">
+      <input type="checkbox" id="tos"><label for="tos"> I agree to the <a href="/terms-of-service" target="_blank">Terms of Service</a>.</label>
+    </div>
+    <div style="margin-top:10px;">
+      <button class="button" onclick="previousStep()">Back</button>
+      <button class="button" onclick="submitForm()">Submit Order</button>
+    </div>
+  </div>
 
 
 
@@ -321,236 +331,185 @@ footer {
 
 
   
- <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  
-  // Initialize AOS animation
-  AOS.init();
+ <script>
+// Initialize AOS animation
+AOS.init();
 
-// --- Config ---
-let selectedPlan = localStorage.getItem("selectedPlanLevel") || "Pro";
+// --- CONFIG ---
+let selectedPlan = (localStorage.getItem("selectedPlanLevel") || "Pro").toLowerCase();
 let planType = localStorage.getItem("planType") || "Monthly Plan";
-let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || '["booking","reviews","newsletter"]'); // example
+let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || '["booking","reviews","newsletter"]');
 
 const featureLabels = {
-  mobile: "Mobile-friendly design",
-  contact: "Simple contact form",
-  bio: "About / Instructor bio",
-  social: "Social media integration",
-  booking: "Online booking & payment",
-  cta: "Strong call-to-action buttons",
-  home: "Structured Home Page",
-  services: "Dedicated Services Page",
-  testimonials: "Testimonials Section",
-  map: "Google Map Integration",
-  seo: "Local Google SEO",
-  reviews: "Student reviews section",
-  branding: "Branding help (logo & colors)",
-  faq: "FAQ / Student Guide",
-  newsletter: "Newsletter Signup form",
-  gallery: "Photo Gallery",
-  blog: "Blog or Updates Section",
-  navigation: "Multi-page Navigation",
-  "lesson-pricing": "Lesson Pricing Table",
-  packages: "Lesson Packages & Gift Vouchers",
-  email: "Professional Email Address",
-  content: "Content Creation help",
-  "expect-guide": "“What to Expect” Guide",
-  pdfs: "Downloadable PDFs",
-  video: "Video Embed Section",
-  "auto-booking": "Fully Automated Online Booking",
+  mobile: "Mobile-friendly design", contact: "Simple contact form", bio: "About / Instructor bio",
+  social: "Social media integration", booking: "Online booking & payment", cta: "Strong call-to-action buttons",
+  home: "Structured Home Page", services: "Dedicated Services Page", testimonials: "Testimonials Section",
+  map: "Google Map Integration", seo: "Local Google SEO", reviews: "Student reviews section",
+  branding: "Branding help (logo & colors)", faq: "FAQ / Student Guide", newsletter: "Newsletter Signup form",
+  gallery: "Photo Gallery", blog: "Blog or Updates Section", navigation: "Multi-page Navigation",
+  "lesson-pricing": "Lesson Pricing Table", analytics: "Google Analytics setup",
+  packages: "Lesson Packages & Gift Vouchers", email: "Professional Email Address",
+  content: "Content Creation help", "expect-guide": "What to Expect Guide",
+  pdfs: "Downloadable PDFs", video: "Video Embed Section", "auto-booking": "Fully Automated Online Booking",
   reporting: "Advanced Reporting & Insights"
 };
 
+const featuresWithUploads = new Set(["gallery","pdfs","branding","content","video"]);
+
 // --- Determine page count per plan ---
-let pageCount;
-switch(selectedPlan.toLowerCase()) {
+let pageCount = 20;
+switch(selectedPlan){
   case "basic": pageCount = 10; break;
   case "pro": pageCount = 20; break;
   case "premium": pageCount = 30; break;
-  default: pageCount = 20;
 }
 
 // --- Multi-step navigation ---
 let currentStep = 0;
 const screens = document.querySelectorAll('.form-screen');
-function nextStep() {
-  screens[currentStep].classList.remove('active');
-  currentStep++;
-  screens[currentStep].classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function showStep(index){
+  screens.forEach((s,i)=>s.classList.toggle('active', i===index));
+  currentStep=index;
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
-
-// --- Populate service sections dynamically ---
-const serviceContainer = document.getElementById("service-sections");
-yesFeatures.forEach(key => {
-  if (featureLabels[key]) {
-    const div = document.createElement("div");
-    div.className = "feature-card";
-    div.textContent = featureLabels[key];
-    // Example input for asset
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = `Enter ${featureLabels[key]} info / URL`;
-    input.id = `feature-${key}`;
-    div.appendChild(input);
-    serviceContainer.appendChild(div);
+function nextStep(){
+  // Required fields validation for Step 1
+  if(currentStep===0){
+    const required = ["business-name","business-phone","business-email","instructor-name"];
+    for(let id of required){
+      if(!document.getElementById(id).value.trim()){
+        alert("Please fill all required fields.");
+        return;
+      }
+    }
   }
+  if(currentStep < screens.length-1) showStep(currentStep+1);
+}
+function previousStep(){ if(currentStep>0) showStep(currentStep-1); }
+
+// --- Populate Service Sections ---
+const serviceContainer = document.getElementById("service-sections");
+yesFeatures.forEach(key=>{
+  if(!featureLabels[key]) return;
+  const div = document.createElement("div");
+  div.className = "feature-card";
+  const title = document.createElement("div");
+  title.style.fontWeight="700"; title.style.marginBottom="8px";
+  title.textContent = featureLabels[key];
+  div.appendChild(title);
+
+  const input = document.createElement(featuresWithUploads.has(key) ? "textarea" : "input");
+  input.id = `feature-${key}`;
+  input.placeholder = `Enter ${featureLabels[key]} info / content`;
+  if(input.tagName==="TEXTAREA") input.style.minHeight="80px";
+  div.appendChild(input);
+
+  if(featuresWithUploads.has(key)){
+    const fileInput = document.createElement("input");
+    fileInput.type="file"; fileInput.id=`feature-${key}-files`;
+    fileInput.multiple=true; fileInput.accept="image/*,application/pdf,video/*";
+    fileInput.addEventListener("change", function(){
+      if(this.files.length>3){ alert("Max 3 files allowed."); this.value=''; }
+    });
+    div.appendChild(fileInput);
+  }
+  serviceContainer.appendChild(div);
 });
 
 // --- Populate Pages Section ---
-const pageOptions = [
-  "About Me / About Us", "Contact Page", "Services / Lesson Packages", "Pricing",
-  "Testimonials", "FAQ", "Blog", "Gallery", "Terms & Conditions", "Privacy Policy",
-  "Booking Page", "Student Area", "Gift Voucher Page", "Lesson Packages", "Newsletter Signup",
-  "Reviews Page", "Instructor Bio", "Locations Page", "Custom Page"
-];
-
 const pagesContainer = document.getElementById("pages-container");
+const pageOptions = [
+  "Home","About Me / About Us","Contact Page","Services / Lesson Packages","Pricing",
+  "Testimonials","FAQ","Blog","Gallery","Terms & Conditions","Privacy Policy",
+  "Booking Page","Student Area","Gift Voucher Page","Lesson Packages","Newsletter Signup",
+  "Reviews Page","Instructor Bio","Locations Page","Custom Page"
+];
 
 // Page 1 fixed
 const page1Div = document.createElement("div");
-page1Div.className = "page-dropdown";
-page1Div.innerHTML = "<label>Page 1:</label><input type='text' value='Home Page' disabled>";
+page1Div.className="page-dropdown";
+page1Div.innerHTML="<label>Page 1:</label><input type='text' value='Home Page' disabled>";
 pagesContainer.appendChild(page1Div);
 
-// Page 2 → N
-for (let i = 2; i <= pageCount; i++) {
+// Pages 2 → N
+for(let i=2;i<=pageCount;i++){
   const div = document.createElement("div");
-  div.className = "page-dropdown";
-  const label = document.createElement("label");
-  label.textContent = `Page ${i}:`;
+  div.className="page-dropdown";
+  const label = document.createElement("label"); label.textContent=`Page ${i}:`;
   div.appendChild(label);
 
-  const select = document.createElement("select");
-  select.id = `page${i}`;
-
-  pageOptions.forEach(opt => {
-    const option = document.createElement("option");
-    option.value = opt;
-    option.textContent = opt;
-    select.appendChild(option);
+  const select = document.createElement("select"); select.id=`page${i}`;
+  pageOptions.forEach(opt=>{
+    const option=document.createElement("option"); option.value=opt; option.textContent=opt; select.appendChild(option);
   });
-
-  // Add custom input dynamically
-  select.addEventListener("change", function() {
-    let customInput = div.querySelector("input.custom");
-    if (this.value === "Custom Page" && !customInput) {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Enter custom page name";
-      input.className = "custom";
+  select.addEventListener("change", function(){
+    let customInput=div.querySelector("input.custom");
+    if(this.value==="Custom Page" && !customInput){
+      const input=document.createElement("input"); input.type="text"; input.placeholder="Enter custom page name"; input.className="custom";
       div.appendChild(input);
-    } else if (customInput && this.value !== "Custom Page") {
-      div.removeChild(customInput);
-    }
+    } else if(customInput && this.value!=="Custom Page"){ div.removeChild(customInput); }
   });
-
   div.appendChild(select);
+
+  const desc = document.createElement("textarea");
+  desc.id=`page${i}-desc`; desc.placeholder="Page description (optional)"; desc.style.marginTop="6px";
+  div.appendChild(desc);
+
+  const fileInput = document.createElement("input");
+  fileInput.type="file"; fileInput.id=`page${i}-files`; fileInput.multiple=true; fileInput.accept="image/*";
+  fileInput.addEventListener("change", function(){ if(this.files.length>3){ alert("Max 3 files allowed."); this.value=''; }});
+  div.appendChild(fileInput);
+
   pagesContainer.appendChild(div);
 }
 
 // --- Submit Form ---
-function submitForm() {
+function submitForm(){
   const gdprChecked = document.getElementById("gdpr").checked;
   const tosChecked = document.getElementById("tos").checked;
-  if (!gdprChecked || !tosChecked) {
-    alert("You must agree to GDPR and Terms of Service before submitting.");
-    return;
-  }
+  if(!gdprChecked || !tosChecked){ alert("You must agree to GDPR and TOS."); return; }
 
-  // Business Info
   const businessInfo = {
-    name: document.getElementById("business-name").value,
-    phone: document.getElementById("business-phone").value,
-    email: document.getElementById("business-email").value,
-    address: document.getElementById("business-address").value,
+    name: document.getElementById("business-name").value.trim(),
+    instructor: document.getElementById("instructor-name").value.trim(),
+    phone: document.getElementById("business-phone").value.trim(),
+    email: document.getElementById("business-email").value.trim(),
+    address: document.getElementById("business-address").value.trim(),
     logo: document.getElementById("business-logo").files[0]?.name || "",
-    colors: document.getElementById("business-colors").value
+    colors: document.getElementById("business-colors").value.trim(),
+    social: document.getElementById("business-social")?.value?.trim() || ""
   };
 
-  // Ownership
-  const planType = document.querySelector('input[name="planType"]:checked').value;
-
-  // Service Assets
   const serviceAssets = {};
-  yesFeatures.forEach(key => {
-    serviceAssets[key] = document.getElementById(`feature-${key}`).value;
+  yesFeatures.forEach(key=>{
+    serviceAssets[key]={
+      text: document.getElementById(`feature-${key}`).value,
+      files: Array.from(document.getElementById(`feature-${key}-files`)?.files||[]).map(f=>f.name)
+    };
   });
 
-  // Pages
-  const pages = {};
-  pages["page1"] = "Home Page";
-  for (let i = 2; i <= pageCount; i++) {
-    const select = document.getElementById(`page${i}`);
-    const customInput = select.parentElement.querySelector("input.custom");
-    pages[`page${i}`] = customInput ? customInput.value : select.value;
+  const pages = {}; pages["page1"]={ name:"Home Page" };
+  for(let i=2;i<=pageCount;i++){
+    const select=document.getElementById(`page${i}`);
+    const customInput=select.parentElement.querySelector("input.custom");
+    pages[`page${i}`]={
+      name: customInput ? customInput.value : select.value,
+      description: document.getElementById(`page${i}-desc`).value,
+      files: Array.from(document.getElementById(`page${i}-files`)?.files||[]).map(f=>f.name)
+    };
   }
 
-  // Final Data Object
-  const finalData = {
-    selectedPlan,
-    planType,
-    yesFeatures,
-    businessInfo,
-    serviceAssets,
-    pages,
-    gdprConsent: gdprChecked,
-    tosAgreement: tosChecked
-  };
-
+  const finalData = { selectedPlan, planType, yesFeatures, businessInfo, serviceAssets, pages, gdprConsent: gdprChecked, tosAgreement: tosChecked };
   console.log(finalData);
   localStorage.setItem("finalOrderData", JSON.stringify(finalData));
-  alert("Form submitted! You can now proceed to the Thank You page.");
+  alert("Form submitted! Proceed to Thank You page.");
 }
 
+// --- INIT ---
+document.addEventListener("DOMContentLoaded",()=>{ showStep(0); });
+   
+ </script>
 
-
-
-
-  
-
-  // Hamburger Menu and Search Filter
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.querySelector('.hamburger');
-    const menu = document.querySelector('nav.menu');
-    
-    function toggleMenu() {
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    }
-
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMenu();
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-
-    // Search filter
-    const searchInput = document.getElementById("search");
-    const items = document.querySelectorAll(".item");
-    
-    searchInput.addEventListener("keyup", () => {
-      const term = searchInput.value.toLowerCase();
-      items.forEach(item => {
-        const code = item.querySelector(".code").textContent.toLowerCase();
-        item.style.display = code.includes(term) ? "block" : "none";
-      });
-    });
-  });
-</script>
 
 </body>
 </html>
