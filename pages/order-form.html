@@ -4,8 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Concept Library</title>
-<style>
- * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  
+  <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #33a7d4;
@@ -21,21 +23,11 @@ header {
   background-color: #33a7d4; z-index: 2000;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
 }
-.logo {
-  font-weight: 900; font-size: 1.7rem; letter-spacing: 2px;
-  user-select: none; cursor: default;
-}
+.logo { font-weight: 900; font-size: 1.7rem; letter-spacing: 2px; user-select: none; cursor: default; }
 
 /* ===== HAMBURGER ===== */
-.hamburger {
-  width: 28px; height: 22px; cursor: pointer;
-  display: flex; flex-direction: column;
-  justify-content: space-between; z-index: 2100;
-}
-.hamburger span {
-  display: block; height: 3.5px; background: white;
-  border-radius: 2px; transition: all 0.35s ease-in-out;
-}
+.hamburger { width: 28px; height: 22px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; z-index: 2100; }
+.hamburger span { display: block; height: 3.5px; background: white; border-radius: 2px; transition: all 0.35s ease-in-out; }
 .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
@@ -53,43 +45,19 @@ nav.menu {
 }
 nav.menu.open { transform: translateX(0); }
 nav.menu ul { list-style: none; }
-nav.menu ul li {
-  margin-bottom: 2.2rem; opacity: 0; transform: translateX(-40px);
-  font-weight: 900; font-size: 3rem; letter-spacing: 0.1em;
-}
-nav.menu ul li a {
-  color: white; text-decoration: none;
-  display: inline-block; transition: color 0.3s ease;
-}
+nav.menu ul li { margin-bottom: 2.2rem; opacity: 0; transform: translateX(-40px); font-weight: 900; font-size: 3rem; letter-spacing: 0.1em; }
+nav.menu ul li a { color: white; text-decoration: none; display: inline-block; transition: color 0.3s ease; }
 nav.menu ul li a:hover { color: #222; }
 nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
-nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
-nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
-nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
-nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
-nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
-@keyframes slideInFade {
-  to { opacity: 1; transform: translateX(0); }
-}
+@keyframes slideInFade { to { opacity: 1; transform: translateX(0); } }
 
 /* ===== DESKTOP MENU ===== */
 @media (min-width: 1024px) {
   .hamburger { display: none; }
-  nav.menu {
-    position: static; height: auto; width: auto;
-    background: transparent; transform: none !important;
-    padding-left: 0; flex-direction: row;
-    justify-content: flex-end; align-items: center;
-  }
+  nav.menu { position: static; height: auto; width: auto; background: transparent; transform: none !important; padding-left: 0; flex-direction: row; justify-content: flex-end; align-items: center; }
   nav.menu ul { display: flex; gap: 3rem; }
-  nav.menu ul li {
-    margin: 0; opacity: 1 !important; transform: none !important;
-    font-size: 1.4rem; animation: none !important;
-  }
-  nav.menu ul li a {
-    font-weight: 900; font-size: 1.2rem;
-    color: white; letter-spacing: 0.15em; text-decoration: none;
-  }
+  nav.menu ul li { margin: 0; opacity: 1 !important; transform: none !important; font-size: 1.4rem; animation: none !important; }
+  nav.menu ul li a { font-weight: 900; font-size: 1.2rem; color: white; letter-spacing: 0.15em; text-decoration: none; }
   nav.menu ul li a:hover { color: #222; }
 }
 
@@ -97,138 +65,46 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 main {
   margin-top: 80px; padding: 20px; text-align: center;
 }
-.search-container { margin-bottom: 30px; }
-.search-container input {
-  width: 100%; max-width: 600px;
-  padding: 12px 16px; font-size: 1rem;
-  border-radius: 50px; border: none; outline: none;
+
+/* ===== FORM SCREENS ===== */
+.form-screen { display: none; text-align: left; max-width: 800px; margin: auto; padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.05); }
+.form-screen.active { display: block; }
+.form-screen h2 { margin-bottom: 20px; font-size: 1.6rem; text-align: center; }
+.form-screen label { display: block; margin: 10px 0 4px; font-weight: 600; }
+.form-screen input[type="text"],
+.form-screen input[type="email"],
+.form-screen textarea,
+.form-screen select { width: 100%; padding: 10px 12px; border-radius: 6px; border: none; outline: none; margin-bottom: 10px; font-size: 1rem; }
+.form-screen textarea { min-height: 80px; resize: vertical; }
+
+/* ===== FEATURE CARDS ===== */
+.feature-card { background: rgba(255,255,255,0.1); padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; }
+.feature-card div { font-weight: 700; margin-bottom: 6px; }
+.feature-card input, .feature-card textarea { width: 100%; margin-bottom: 6px; }
+
+/* ===== PAGE DROPDOWNS ===== */
+.page-dropdown { background: rgba(255,255,255,0.1); padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; }
+.page-dropdown label { font-weight: 600; margin-bottom: 6px; display: block; }
+.page-dropdown select, .page-dropdown input, .page-dropdown textarea { width: 100%; margin-bottom: 6px; }
+
+/* ===== BUTTONS ===== */
+.button { background-color: #fff; color: #33a7d4; padding: 12px 25px; border: none; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 1rem; margin: 5px; transition: all 0.3s ease; }
+.button:hover { background-color: #e6e6e6; }
+
+/* ===== GDPR / TOS ===== */
+.gdpr-tos { margin: 12px 0; font-size: 0.95rem; }
+.gdpr-tos a { color: #fff; text-decoration: underline; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .form-screen { padding: 15px; }
+  .feature-card, .page-dropdown { padding: 10px; }
+  .button { width: 100%; padding: 12px 0; margin: 6px 0; }
 }
 
-/* ===== LIBRARY GRID ===== */
-.library {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px; max-width: 1400px; margin: auto;
-}
-.item { position: relative; }
-.item img {
-  width: 100%; height: auto; aspect-ratio: 4 / 3;
-  object-fit: cover; border-radius: 6px;
-}
-.code {
-  margin-top: 6px; font-size: 0.9rem;
-  font-weight: bold; color: #fff;
-}
-.item a {
-  display: inline-block; margin-top: 4px;
-  font-size: 0.85rem; color: #ffe;
-  text-decoration: underline;
-}
-
-
-
-
-  @media (max-width: 600px) and (orientation: portrait) {
-  .library {
-    grid-template-columns: 1fr;       /* 1 image per row */
-    grid-auto-rows: 80vh;             /* each image row is 80% of viewport height */
-    gap: 0;
-  }
-  .item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0;
-  }
-  .code, .item a {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.6);
-    padding: 4px 6px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-  .item a { left: auto; right: 10px; }
-}
-
-  /* Footer layout */
-footer {
-  flex-direction: column;
-  text-align: center;
-}
-
-/* Social Icons Container */
-.social-icons {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  display: flex !important;
-  flex-wrap: nowrap;
-  padding: 0;
-}
-
-/* Each social link */
-.social-icons a {
-  width: 60px;
-  height: 60px;
-  font-size: 40px;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: coin-spin 6s linear infinite;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  margin: 0;
-}
-
-/* Icon images */
-.social-icons img {
-  width: 48px;
-  height: 48px;
-  filter: brightness(0) invert(1);
-  transition: transform 0.4s ease;
-}
-
-/* Spacing between icons */
-.social-icons a:not(:last-child) {
-  margin-right: 40px;
-}
-
-/* Coin spin animation */
-@keyframes coin-spin {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
-}
-
-/* Footer bottom text */
-.footer-inner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.95rem;
-  padding-top: 10px;
-}
-
-/* iPhone landscape fix */
-@media (orientation: landscape) and (max-device-width: 812px) {
-  footer {
-    padding-left: max(env(safe-area-inset-left), 20px);
-    padding-right: max(env(safe-area-inset-right), 20px);
-  }
-}
 </style>
+
+  
 </head>
 <body>
 
@@ -251,7 +127,9 @@ footer {
 
   
 
+<main>
 <h1>Website Order Form</h1>
+
 <!-- Step 1: Business Info -->
 <div class="form-screen active" id="step-business" data-step="1">
   <h2>Step 1: Business Info</h2>
@@ -316,6 +194,11 @@ footer {
   </div>
 </div>
 
+</main>
+
+
+
+
 
 
   div class="social-icons" aria-label="Social media links">
@@ -335,15 +218,23 @@ footer {
 </div>
 
 
-<script>
-// --- CONFIG ---
-AOS.init(); // if using animations
+  <script>
+// -----------------------------
+// --- HAMBURGER MENU ----------
+const hamburger = document.querySelector(".hamburger");
+const navMenu = document.querySelector("nav.menu");
+hamburger?.addEventListener("click", () => {
+  hamburger.classList.toggle("active");
+  navMenu.classList.toggle("open");
+});
 
+// -----------------------------
+// --- CONFIG & LOCAL STORAGE ---
 let selectedPlan = (localStorage.getItem("selectedPlanLevel") || "Pro").toLowerCase();
 let planType = localStorage.getItem("planType") || "Monthly Plan";
 let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || '[]');
 
-// --- Features & Labels ---
+// Labels for features
 const featureLabels = {
   mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
   social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
@@ -356,59 +247,39 @@ const featureLabels = {
   "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
 };
 
-// --- Hard-coded features (always optional) ---
-const hardCodedFeatures = ["navigation", "blog", "packages"];
+// Always optional features
+const hardCodedFeatures = ["navigation","blog","packages"];
 
-// --- Feature availability per plan ---
+// Feature availability per plan
 const featurePlans = {
-  mobile:["basic","pro","premium"],
-  contact:["basic","pro","premium"],
-  bio:["pro","premium"],
-  social:["basic","pro","premium"],
-  booking:["pro","premium"],
-  cta:["pro","premium"],
-  home:["basic","pro","premium"],
-  services:["pro","premium"],
-  testimonials:["pro","premium"],
-  map:["pro","premium"],
-  seo:["pro","premium"],
-  reviews:["pro","premium"],
-  branding:["basic","pro","premium"],
-  faq:["pro","premium"],
-  newsletter:["pro","premium"],
-  gallery:["basic","pro","premium"],
-  blog:["pro","premium"],
-  navigation:["basic","pro","premium"],
-  "lesson-pricing":["pro","premium"],
-  analytics:["pro","premium"],
-  packages:["pro","premium"],
-  email:["pro","premium"],
-  content:["pro","premium"],
-  "expect-guide":["pro","premium"],
-  pdfs:["pro","premium"],
-  video:["pro","premium"],
-  "auto-booking":["premium"],
-  reporting:["premium"]
+  mobile:["basic","pro","premium"], contact:["basic","pro","premium"], bio:["pro","premium"],
+  social:["basic","pro","premium"], booking:["pro","premium"], cta:["pro","premium"], home:["basic","pro","premium"],
+  services:["pro","premium"], testimonials:["pro","premium"], map:["pro","premium"], seo:["pro","premium"],
+  reviews:["pro","premium"], branding:["basic","pro","premium"], faq:["pro","premium"], newsletter:["pro","premium"],
+  gallery:["basic","pro","premium"], blog:["pro","premium"], navigation:["basic","pro","premium"], "lesson-pricing":["pro","premium"],
+  analytics:["pro","premium"], packages:["pro","premium"], email:["pro","premium"], content:["pro","premium"],
+  "expect-guide":["pro","premium"], pdfs:["pro","premium"], video:["pro","premium"], "auto-booking":["premium"], reporting:["premium"]
 };
 
-// --- Required features per plan ---
+// Required fields per plan
 const requiredFieldsByPlan = {
   basic:["mobile","contact"],
   pro:["mobile","contact","booking","video"],
   premium:["mobile","contact","booking","video","reporting","auto-booking"]
 };
 
-// --- Pages per plan ---
+// Pages per plan
 const pagesByPlan = {
   basic:["Home","About","Contact"],
   pro:["Home","About","Contact","Services","Gallery","Testimonials","FAQ","Pricing"],
   premium:["Home","About","Contact","Services","Gallery","Testimonials","FAQ","Pricing","Student Area","Advanced Booking","Gift Voucher Page"]
 };
 
-// --- Pages count per plan ---
+// Pages count per plan
 const pageCount = { basic:10, pro:20, premium:30 };
 
-// --- Multi-step navigation ---
+// -----------------------------
+// --- MULTI-STEP NAVIGATION ---
 let currentStep = 0;
 const screens = document.querySelectorAll('.form-screen');
 function showStep(index){
@@ -419,12 +290,12 @@ function showStep(index){
 function nextStep(){ if(currentStep < screens.length-1) showStep(currentStep+1); }
 function previousStep(){ if(currentStep>0) showStep(currentStep-1); }
 
-// --- Populate Services Section ---
+// -----------------------------
+// --- POPULATE SERVICE FEATURES ---
 const serviceContainer = document.getElementById("service-sections");
 const allFeatures = Array.from(new Set([...yesFeatures, ...hardCodedFeatures]));
 
 allFeatures.forEach(key => {
-  // Only include if feature exists and allowed by plan
   if(!featureLabels[key] || !featurePlans[key].includes(selectedPlan)) return;
 
   const div = document.createElement("div");
@@ -436,12 +307,12 @@ allFeatures.forEach(key => {
   title.textContent = featureLabels[key];
   div.appendChild(title);
 
-  const input = document.createElement(["pdfs","gallery","branding","content","video"].includes(key) ? "textarea" : "input");
+  const inputType = ["pdfs","gallery","branding","content","video"].includes(key) ? "textarea" : "input";
+  const input = document.createElement(inputType);
   input.id = `feature-${key}`;
   input.placeholder = `Enter ${featureLabels[key]} content`;
   if(input.tagName==="TEXTAREA") input.style.minHeight="80px";
   if(requiredFieldsByPlan[selectedPlan].includes(key)) input.required = true;
-
   div.appendChild(input);
 
   // Optional file uploads
@@ -456,7 +327,8 @@ allFeatures.forEach(key => {
   serviceContainer.appendChild(div);
 });
 
-// --- Populate Pages Section ---
+// -----------------------------
+// --- POPULATE PAGES ---
 const pagesContainer = document.getElementById("pages-container");
 const allowedPages = pagesByPlan[selectedPlan];
 for(let i=1;i<=pageCount[selectedPlan];i++){
@@ -475,22 +347,20 @@ for(let i=1;i<=pageCount[selectedPlan];i++){
     option.textContent=opt;
     select.appendChild(option);
   });
+
   const customInput = document.createElement("input");
   customInput.type="text";
   customInput.placeholder="Custom page name";
   customInput.className="custom";
   customInput.style.display="none";
-  div.appendChild(select);
-  div.appendChild(customInput);
 
   select.addEventListener("change",()=>{
-    if(select.value==="Custom Page"){
-      customInput.style.display="block";
-    } else {
-      customInput.style.display="none";
-      customInput.value="";
-    }
+    if(select.value==="Custom Page") customInput.style.display="block";
+    else { customInput.style.display="none"; customInput.value=""; }
   });
+
+  div.appendChild(select);
+  div.appendChild(customInput);
 
   const desc = document.createElement("textarea");
   desc.id=`page${i}-desc`;
@@ -507,7 +377,8 @@ for(let i=1;i<=pageCount[selectedPlan];i++){
   pagesContainer.appendChild(div);
 }
 
-// --- Submit Form ---
+// -----------------------------
+// --- SUBMIT FORM ---
 function submitForm(){
   const gdpr = document.getElementById("gdpr").checked;
   const tos = document.getElementById("tos").checked;
@@ -548,8 +419,10 @@ function submitForm(){
   alert("Form submitted! Proceed to Thank You page.");
 }
 
-// --- Init ---
+// -----------------------------
+// --- INIT ---
 document.addEventListener("DOMContentLoaded",()=>{ showStep(0); });
 </script>
+
   </body>
 </html>
