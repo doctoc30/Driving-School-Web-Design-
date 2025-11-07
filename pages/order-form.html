@@ -102,6 +102,77 @@ main {
   .button { width: 100%; padding: 12px 0; margin: 6px 0; }
 }
 
+
+
+    /* Social Icons Container */
+.social-icons {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: flex !important;
+  flex-wrap: nowrap;
+  padding: 0;
+}
+
+/* Each social link */
+.social-icons a {
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: coin-spin 6s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  margin: 0;
+}
+
+/* Icon images */
+.social-icons img {
+  width: 48px;
+  height: 48px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.4s ease;
+}
+
+/* Spacing between icons */
+.social-icons a:not(:last-child) {
+  margin-right: 40px;
+}
+
+/* Coin spin animation */
+@keyframes coin-spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Footer bottom text */
+.footer-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  padding-top: 10px;
+}
+
+/* iPhone landscape fix */
+@media (orientation: landscape) and (max-device-width: 812px) {
+  footer {
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
+  }
+}
 </style>
 
   
