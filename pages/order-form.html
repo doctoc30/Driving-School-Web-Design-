@@ -252,64 +252,69 @@ footer {
   
 
 <h1>Website Order Form</h1>
+<!-- Step 1: Business Info -->
+<div class="form-screen active" id="step-business" data-step="1">
+  <h2>Step 1: Business Info</h2>
+  <label>Business Name *</label>
+  <input type="text" id="business-name" placeholder="e.g. John Doe Driving Tuition">
+  <label>Instructor Name *</label>
+  <input type="text" id="instructor-name" placeholder="Instructor full name">
+  <label>Phone *</label>
+  <input type="text" id="business-phone" placeholder="+44 7123 456789">
+  <label>Email *</label>
+  <input type="email" id="business-email" placeholder="instructor@example.com">
+  <label>Address (optional)</label>
+  <input type="text" id="business-address" placeholder="Business address or town">
+  <label>Logo Upload (optional)</label>
+  <input type="file" id="business-logo" accept="image/*">
+  <label>Brand Colors (optional)</label>
+  <input type="text" id="business-colors" placeholder="e.g. #0044ff or Blue & White">
+  <label>Social / Website Link (optional)</label>
+  <input type="text" id="business-social" placeholder="Facebook, Instagram or website URL">
+  <div class="small">Fields marked * are required to proceed.</div>
+  <button class="button" onclick="nextStep()">Next</button>
+</div>
 
-  <!-- Step 1: Business Info -->
-  <div class="form-screen active" id="step-business" data-step="1">
-    <h2>Step 1: Business Info</h2>
-    <label>Business Name *</label>
-    <input type="text" id="business-name" placeholder="e.g. John Doe Driving Tuition">
-    <label>Instructor Name *</label>
-    <input type="text" id="instructor-name" placeholder="Instructor full name">
-    <label>Phone *</label>
-    <input type="text" id="business-phone" placeholder="+44 7123 456789">
-    <label>Email *</label>
-    <input type="email" id="business-email" placeholder="instructor@example.com">
-    <label>Address (optional)</label>
-    <input type="text" id="business-address" placeholder="Business address or town">
-    <label>Logo Upload (optional)</label>
-    <input type="file" id="business-logo" accept="image/*">
-    <label>Brand Colors (optional)</label>
-    <input type="text" id="business-colors" placeholder="e.g. #0044ff or Blue & White">
-    <label>Social / Website Link (optional)</label>
-    <input type="text" id="business-social" placeholder="Facebook, Instagram or website URL">
-    <div class="small">Fields marked * are required to proceed.</div>
+<!-- Step 2: Service-Specific Assets -->
+<div class="form-screen" id="step-services" data-step="2">
+  <h2>Step 2: Service-specific content & assets</h2>
+  <div id="service-sections">
+    <!-- Dynamic features populate here based on plan and yesFeatures -->
+  </div>
+  <div style="margin-top:10px;">
+    <button class="button" onclick="previousStep()">Back</button>
     <button class="button" onclick="nextStep()">Next</button>
   </div>
+</div>
 
-  <!-- Step 2: Service-Specific Assets -->
-  <div class="form-screen" id="step-services" data-step="2">
-    <h2>Step 2: Service-specific content & assets</h2>
-    <div id="service-sections"></div>
-    <div style="margin-top:10px;">
-      <button class="button" onclick="previousStep()">Back</button>
-      <button class="button" onclick="nextStep()">Next</button>
-    </div>
+<!-- Step 3: Pages -->
+<div class="form-screen" id="step-pages" data-step="3">
+  <h2>Step 3: Website Pages</h2>
+  <div id="pages-container">
+    <!-- Dynamic pages dropdowns populate here based on plan -->
   </div>
+  <div style="margin-top:10px;">
+    <button class="button" onclick="previousStep()">Back</button>
+    <button class="button" onclick="nextStep()">Next</button>
+  </div>
+</div>
 
-  <!-- Step 3: Pages -->
-  <div class="form-screen" id="step-pages" data-step="3">
-    <h2>Step 3: Website Pages</h2>
-    <div id="pages-container"></div>
-    <div style="margin-top:10px;">
-      <button class="button" onclick="previousStep()">Back</button>
-      <button class="button" onclick="nextStep()">Next</button>
-    </div>
+<!-- Step 4: GDPR + ToS -->
+<div class="form-screen" id="step-consent" data-step="4">
+  <h2>Step 4: Consent & Submit</h2>
+  <div class="gdpr-tos">
+    <input type="checkbox" id="gdpr">
+    <label for="gdpr"> I consent to the collection and use of my data in accordance with the <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</label>
   </div>
-
-  <!-- Step 4: GDPR + ToS -->
-  <div class="form-screen" id="step-consent" data-step="4">
-    <h2>Step 4: Consent & Submit</h2>
-    <div class="gdpr-tos">
-      <input type="checkbox" id="gdpr"><label for="gdpr"> I consent to the collection and use of my data in accordance with the <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</label>
-    </div>
-    <div class="gdpr-tos">
-      <input type="checkbox" id="tos"><label for="tos"> I agree to the <a href="/terms-of-service" target="_blank">Terms of Service</a>.</label>
-    </div>
-    <div style="margin-top:10px;">
-      <button class="button" onclick="previousStep()">Back</button>
-      <button class="button" onclick="submitForm()">Submit Order</button>
-    </div>
+  <div class="gdpr-tos">
+    <input type="checkbox" id="tos">
+    <label for="tos"> I agree to the <a href="/terms-of-service" target="_blank">Terms of Service</a>.</label>
   </div>
+  <div style="margin-top:10px;">
+    <button class="button" onclick="previousStep()">Back</button>
+    <button class="button" onclick="submitForm()">Submit Order</button>
+  </div>
+</div>
 
 
 
@@ -330,39 +335,78 @@ footer {
 </div>
 
 
-  
- <script>
-// Initialize AOS animation
-AOS.init();
-
+<script>
 // --- CONFIG ---
+AOS.init(); // if using animations
+
 let selectedPlan = (localStorage.getItem("selectedPlanLevel") || "Pro").toLowerCase();
 let planType = localStorage.getItem("planType") || "Monthly Plan";
-let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || '["booking","reviews","newsletter"]');
+let yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || '[]');
 
+// --- Features & Labels ---
 const featureLabels = {
-  mobile: "Mobile-friendly design", contact: "Simple contact form", bio: "About / Instructor bio",
-  social: "Social media integration", booking: "Online booking & payment", cta: "Strong call-to-action buttons",
-  home: "Structured Home Page", services: "Dedicated Services Page", testimonials: "Testimonials Section",
-  map: "Google Map Integration", seo: "Local Google SEO", reviews: "Student reviews section",
-  branding: "Branding help (logo & colors)", faq: "FAQ / Student Guide", newsletter: "Newsletter Signup form",
-  gallery: "Photo Gallery", blog: "Blog or Updates Section", navigation: "Multi-page Navigation",
-  "lesson-pricing": "Lesson Pricing Table", analytics: "Google Analytics setup",
-  packages: "Lesson Packages & Gift Vouchers", email: "Professional Email Address",
-  content: "Content Creation help", "expect-guide": "What to Expect Guide",
-  pdfs: "Downloadable PDFs", video: "Video Embed Section", "auto-booking": "Fully Automated Online Booking",
-  reporting: "Advanced Reporting & Insights"
+  mobile:"Mobile-friendly design", contact:"Simple contact form", bio:"About / Instructor bio",
+  social:"Social media integration", booking:"Online booking & payment", cta:"Strong call-to-action buttons",
+  home:"Structured Home Page", services:"Dedicated Services Page", testimonials:"Testimonials Section",
+  map:"Google Map Integration", seo:"Local Google SEO", reviews:"Student reviews section", branding:"Branding help (logo & colors)",
+  faq:"FAQ / Student Guide", newsletter:"Newsletter Signup form", gallery:"Photo Gallery", blog:"Blog or Updates Section",
+  navigation:"Multi-page Navigation", "lesson-pricing":"Lesson Pricing Table", analytics:"Google Analytics setup",
+  packages:"Lesson Packages & Gift Vouchers", email:"Professional Email Address", content:"Content Creation help",
+  "expect-guide":"What to Expect Guide", pdfs:"Downloadable PDFs", video:"Video Embed Section",
+  "auto-booking":"Fully Automated Online Booking", reporting:"Advanced Reporting & Insights"
 };
 
-const featuresWithUploads = new Set(["gallery","pdfs","branding","content","video"]);
+// --- Hard-coded features (always optional) ---
+const hardCodedFeatures = ["navigation", "blog", "packages"];
 
-// --- Determine page count per plan ---
-let pageCount = 20;
-switch(selectedPlan){
-  case "basic": pageCount = 10; break;
-  case "pro": pageCount = 20; break;
-  case "premium": pageCount = 30; break;
-}
+// --- Feature availability per plan ---
+const featurePlans = {
+  mobile:["basic","pro","premium"],
+  contact:["basic","pro","premium"],
+  bio:["pro","premium"],
+  social:["basic","pro","premium"],
+  booking:["pro","premium"],
+  cta:["pro","premium"],
+  home:["basic","pro","premium"],
+  services:["pro","premium"],
+  testimonials:["pro","premium"],
+  map:["pro","premium"],
+  seo:["pro","premium"],
+  reviews:["pro","premium"],
+  branding:["basic","pro","premium"],
+  faq:["pro","premium"],
+  newsletter:["pro","premium"],
+  gallery:["basic","pro","premium"],
+  blog:["pro","premium"],
+  navigation:["basic","pro","premium"],
+  "lesson-pricing":["pro","premium"],
+  analytics:["pro","premium"],
+  packages:["pro","premium"],
+  email:["pro","premium"],
+  content:["pro","premium"],
+  "expect-guide":["pro","premium"],
+  pdfs:["pro","premium"],
+  video:["pro","premium"],
+  "auto-booking":["premium"],
+  reporting:["premium"]
+};
+
+// --- Required features per plan ---
+const requiredFieldsByPlan = {
+  basic:["mobile","contact"],
+  pro:["mobile","contact","booking","video"],
+  premium:["mobile","contact","booking","video","reporting","auto-booking"]
+};
+
+// --- Pages per plan ---
+const pagesByPlan = {
+  basic:["Home","About","Contact"],
+  pro:["Home","About","Contact","Services","Gallery","Testimonials","FAQ","Pricing"],
+  premium:["Home","About","Contact","Services","Gallery","Testimonials","FAQ","Pricing","Student Area","Advanced Booking","Gift Voucher Page"]
+};
+
+// --- Pages count per plan ---
+const pageCount = { basic:10, pro:20, premium:30 };
 
 // --- Multi-step navigation ---
 let currentStep = 0;
@@ -372,92 +416,92 @@ function showStep(index){
   currentStep=index;
   window.scrollTo({ top:0, behavior:'smooth' });
 }
-function nextStep(){
-  // Required fields validation for Step 1
-  if(currentStep===0){
-    const required = ["business-name","business-phone","business-email","instructor-name"];
-    for(let id of required){
-      if(!document.getElementById(id).value.trim()){
-        alert("Please fill all required fields.");
-        return;
-      }
-    }
-  }
-  if(currentStep < screens.length-1) showStep(currentStep+1);
-}
+function nextStep(){ if(currentStep < screens.length-1) showStep(currentStep+1); }
 function previousStep(){ if(currentStep>0) showStep(currentStep-1); }
 
-// --- Populate Service Sections ---
+// --- Populate Services Section ---
 const serviceContainer = document.getElementById("service-sections");
-yesFeatures.forEach(key=>{
-  if(!featureLabels[key]) return;
+const allFeatures = Array.from(new Set([...yesFeatures, ...hardCodedFeatures]));
+
+allFeatures.forEach(key => {
+  // Only include if feature exists and allowed by plan
+  if(!featureLabels[key] || !featurePlans[key].includes(selectedPlan)) return;
+
   const div = document.createElement("div");
   div.className = "feature-card";
+
   const title = document.createElement("div");
-  title.style.fontWeight="700"; title.style.marginBottom="8px";
+  title.style.fontWeight="700";
+  title.style.marginBottom="6px";
   title.textContent = featureLabels[key];
   div.appendChild(title);
 
-  const input = document.createElement(featuresWithUploads.has(key) ? "textarea" : "input");
+  const input = document.createElement(["pdfs","gallery","branding","content","video"].includes(key) ? "textarea" : "input");
   input.id = `feature-${key}`;
-  input.placeholder = `Enter ${featureLabels[key]} info / content`;
+  input.placeholder = `Enter ${featureLabels[key]} content`;
   if(input.tagName==="TEXTAREA") input.style.minHeight="80px";
+  if(requiredFieldsByPlan[selectedPlan].includes(key)) input.required = true;
+
   div.appendChild(input);
 
-  if(featuresWithUploads.has(key)){
+  // Optional file uploads
+  if(["gallery","pdfs","branding","content","video"].includes(key)){
     const fileInput = document.createElement("input");
     fileInput.type="file"; fileInput.id=`feature-${key}-files`;
-    fileInput.multiple=true; fileInput.accept="image/*,application/pdf,video/*";
-    fileInput.addEventListener("change", function(){
-      if(this.files.length>3){ alert("Max 3 files allowed."); this.value=''; }
-    });
+    fileInput.multiple=true;
+    fileInput.accept="image/*,application/pdf,video/*";
     div.appendChild(fileInput);
   }
+
   serviceContainer.appendChild(div);
 });
 
 // --- Populate Pages Section ---
 const pagesContainer = document.getElementById("pages-container");
-const pageOptions = [
-  "Home","About Me / About Us","Contact Page","Services / Lesson Packages","Pricing",
-  "Testimonials","FAQ","Blog","Gallery","Terms & Conditions","Privacy Policy",
-  "Booking Page","Student Area","Gift Voucher Page","Lesson Packages","Newsletter Signup",
-  "Reviews Page","Instructor Bio","Locations Page","Custom Page"
-];
-
-// Page 1 fixed
-const page1Div = document.createElement("div");
-page1Div.className="page-dropdown";
-page1Div.innerHTML="<label>Page 1:</label><input type='text' value='Home Page' disabled>";
-pagesContainer.appendChild(page1Div);
-
-// Pages 2 → N
-for(let i=2;i<=pageCount;i++){
+const allowedPages = pagesByPlan[selectedPlan];
+for(let i=1;i<=pageCount[selectedPlan];i++){
   const div = document.createElement("div");
-  div.className="page-dropdown";
-  const label = document.createElement("label"); label.textContent=`Page ${i}:`;
+  div.className = "page-dropdown";
+
+  const label = document.createElement("label");
+  label.textContent = `Page ${i}:`;
   div.appendChild(label);
 
-  const select = document.createElement("select"); select.id=`page${i}`;
-  pageOptions.forEach(opt=>{
-    const option=document.createElement("option"); option.value=opt; option.textContent=opt; select.appendChild(option);
+  const select = document.createElement("select");
+  select.id = `page${i}`;
+  allowedPages.forEach(opt=>{
+    const option=document.createElement("option");
+    option.value=opt;
+    option.textContent=opt;
+    select.appendChild(option);
   });
-  select.addEventListener("change", function(){
-    let customInput=div.querySelector("input.custom");
-    if(this.value==="Custom Page" && !customInput){
-      const input=document.createElement("input"); input.type="text"; input.placeholder="Enter custom page name"; input.className="custom";
-      div.appendChild(input);
-    } else if(customInput && this.value!=="Custom Page"){ div.removeChild(customInput); }
-  });
+  const customInput = document.createElement("input");
+  customInput.type="text";
+  customInput.placeholder="Custom page name";
+  customInput.className="custom";
+  customInput.style.display="none";
   div.appendChild(select);
+  div.appendChild(customInput);
+
+  select.addEventListener("change",()=>{
+    if(select.value==="Custom Page"){
+      customInput.style.display="block";
+    } else {
+      customInput.style.display="none";
+      customInput.value="";
+    }
+  });
 
   const desc = document.createElement("textarea");
-  desc.id=`page${i}-desc`; desc.placeholder="Page description (optional)"; desc.style.marginTop="6px";
+  desc.id=`page${i}-desc`;
+  desc.placeholder="Page description (optional)";
   div.appendChild(desc);
 
   const fileInput = document.createElement("input");
-  fileInput.type="file"; fileInput.id=`page${i}-files`; fileInput.multiple=true; fileInput.accept="image/*";
-  fileInput.addEventListener("change", function(){ if(this.files.length>3){ alert("Max 3 files allowed."); this.value=''; }});
+  fileInput.type="file";
+  fileInput.id=`page${i}-files`;
+  fileInput.multiple=true;
+  fileInput.accept="image/*";
   div.appendChild(fileInput);
 
   pagesContainer.appendChild(div);
@@ -465,9 +509,9 @@ for(let i=2;i<=pageCount;i++){
 
 // --- Submit Form ---
 function submitForm(){
-  const gdprChecked = document.getElementById("gdpr").checked;
-  const tosChecked = document.getElementById("tos").checked;
-  if(!gdprChecked || !tosChecked){ alert("You must agree to GDPR and TOS."); return; }
+  const gdpr = document.getElementById("gdpr").checked;
+  const tos = document.getElementById("tos").checked;
+  if(!gdpr || !tos){ alert("You must agree to GDPR and TOS."); return; }
 
   const businessInfo = {
     name: document.getElementById("business-name").value.trim(),
@@ -475,41 +519,37 @@ function submitForm(){
     phone: document.getElementById("business-phone").value.trim(),
     email: document.getElementById("business-email").value.trim(),
     address: document.getElementById("business-address").value.trim(),
-    logo: document.getElementById("business-logo").files[0]?.name || "",
+    logo: document.getElementById("business-logo")?.files[0]?.name || "",
     colors: document.getElementById("business-colors").value.trim(),
-    social: document.getElementById("business-social")?.value?.trim() || ""
+    social: document.getElementById("business-social")?.value.trim() || ""
   };
 
   const serviceAssets = {};
-  yesFeatures.forEach(key=>{
-    serviceAssets[key]={
-      text: document.getElementById(`feature-${key}`).value,
-      files: Array.from(document.getElementById(`feature-${key}-files`)?.files||[]).map(f=>f.name)
-    };
+  allFeatures.forEach(key=>{
+    const text = document.getElementById(`feature-${key}`)?.value || "";
+    const files = Array.from(document.getElementById(`feature-${key}-files`)?.files||[]).map(f=>f.name);
+    serviceAssets[key] = { text, files };
   });
 
-  const pages = {}; pages["page1"]={ name:"Home Page" };
-  for(let i=2;i<=pageCount;i++){
+  const pages = {};
+  for(let i=1;i<=pageCount[selectedPlan];i++){
     const select=document.getElementById(`page${i}`);
     const customInput=select.parentElement.querySelector("input.custom");
     pages[`page${i}`]={
-      name: customInput ? customInput.value : select.value,
-      description: document.getElementById(`page${i}-desc`).value,
+      name: customInput && customInput.value ? customInput.value : select.value,
+      description: document.getElementById(`page${i}-desc`)?.value || "",
       files: Array.from(document.getElementById(`page${i}-files`)?.files||[]).map(f=>f.name)
     };
   }
 
-  const finalData = { selectedPlan, planType, yesFeatures, businessInfo, serviceAssets, pages, gdprConsent: gdprChecked, tosAgreement: tosChecked };
+  const finalData = { selectedPlan, planType, yesFeatures, hardCodedFeatures, businessInfo, serviceAssets, pages, gdprConsent: gdpr, tosAgreement: tos };
   console.log(finalData);
   localStorage.setItem("finalOrderData", JSON.stringify(finalData));
   alert("Form submitted! Proceed to Thank You page.");
 }
 
-// --- INIT ---
+// --- Init ---
 document.addEventListener("DOMContentLoaded",()=>{ showStep(0); });
-   
- </script>
-
-
-</body>
+</script>
+  </body>
 </html>
