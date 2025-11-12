@@ -1513,8 +1513,15 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 
+ <div id="enquiry-popup" style="display:none; position:fixed; bottom:20px; right:20px; border:1px solid #ccc; padding:15px; background:#fff; z-index:999;">
+  <p>Have a question? Contact us now!</p>
+  <button onclick="closePopup()">Close</button>
+</div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
+
+ 
+ 
+ <script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
 
 <script>
 /* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
@@ -1959,6 +1966,21 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
   }
 }
+
+
+
+
+function showPopup() {
+  document.getElementById('enquiry-popup').style.display = 'block';
+}
+
+function closePopup() {
+  document.getElementById('enquiry-popup').style.display = 'none';
+}
+
+// Show popup after 15 seconds
+setTimeout(showPopup, 15000);
+
 
 
   
