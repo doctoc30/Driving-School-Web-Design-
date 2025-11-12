@@ -1851,13 +1851,6 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 </div>
 
 
-
-
- 
-
-
-
-
  
  
  <script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
@@ -2201,13 +2194,24 @@ const labels = {
     premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
   };
 
+ 
   const monthlyPrices = { basic:70, pro:100, premium:150 };
   const outrightPrices = { basic:750, pro:1500, premium:2500 };
   const setupFees = { basic:100, pro:200, premium:300 };
 
-  const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
-                    : yes.some(f => tiers.pro.includes(f)) ? "pro"
-                    : "basic";
+
+ const hasPremium = yes.some(f => tiers.premium.includes(f));
+const hasPro = yes.some(f => tiers.pro.includes(f));
+const hasBasic = yes.some(f => tiers.basic.includes(f));
+
+let highestTier = "basic";
+if (hasPremium) highestTier = "premium";
+else if (hasPro) highestTier = "pro";
+else if (hasBasic) highestTier = "basic";
+
+ 
+
+ 
 
   const selectedPlanLevel = highestTier;
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
