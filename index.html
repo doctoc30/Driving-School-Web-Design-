@@ -2026,9 +2026,11 @@ function showFilteredTemplate(rawCode) {
 
 
 
-
-function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planTypeInput = 'outright') {
+  // ✅ Ensure correct plan type is used and stored
+  const planType = planTypeInput || localStorage.getItem("selectedPlanType") || 'outright';
   const isMonthly = planType === 'monthly';
+
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
@@ -2080,12 +2082,12 @@ function showRecommendedPlan(planType = 'outright') {
 
   const selectedPlanLevel = highestTier;
 
-  // --- STORE DYNAMIC PLAN DATA FOR THANK-YOU PAGE ---
+  // --- Store for thank-you page ---
   localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
   localStorage.setItem("selectedPlanType", planType);
   localStorage.setItem("yesFeatures", JSON.stringify(yes));
 
-  // --- Keep hidden input for form submission / PayPal ---
+  // --- Keep hidden input for form submission ---
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
   function ensurePayPalSdk(cb){
@@ -2194,6 +2196,7 @@ function showRecommendedPlan(planType = 'outright') {
             },
             onApprove:(data,actions)=>{
               return actions.order.capture().then(()=>{
+                // ✅ Redirect to correct thank-you page
                 window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
@@ -2226,6 +2229,15 @@ function showRecommendedPlan(planType = 'outright') {
     setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
   }
 }
+
+ 
+
+
+ 
+
+
+ 
+
 
 // ------------------ Typewriter Animation ------------------
 const typewriterEl = document.getElementById('typewriter');
