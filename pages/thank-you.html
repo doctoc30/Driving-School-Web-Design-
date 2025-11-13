@@ -131,47 +131,39 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
   
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Hamburger menu ---
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
-  if(hamburger && menu){
-    function toggleMenu() {
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    }
-    hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
 
-  // --- Retrieve funnel data ---
+  // --- Hamburger toggle ---
+  function toggleMenu() {
+    const isOpen = menu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', false);
+      menu.setAttribute('aria-hidden', true);
+      document.body.style.overflow = '';
+    }
+  });
+
+  // --- Read plan info from localStorage ---
+  const planSummaryEl = document.getElementById("plan-summary");
   const selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
   const planType = localStorage.getItem("planType") || "Owned Outright";
-  const funnelPath = localStorage.getItem("funnelPath") || "new"; // new/redesign/maintenance
-  const designCode = localStorage.getItem("designCode") || "N/A";
-  const lessonType = localStorage.getItem("lessonType") || "N/A";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
-  // --- Display plan summary ---
-  const planSummaryEl = document.getElementById("plan-summary");
-  planSummaryEl.innerHTML = `
-    <strong>Plan:</strong> ${selectedPlan} Website (${planType})<br>
-    <strong>Path:</strong> ${funnelPath}<br>
-    <strong>Design Code:</strong> ${designCode}<br>
-    <strong>Lesson Type:</strong> ${lessonType}
-  `;
+  // Display plan summary
+  const displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
+  planSummaryEl.textContent = `${selectedPlan} Website (${displayType})`;
 
-  // --- Display selected features ---
+  // --- Feature labels (updated for new funnel) ---
   const featureLabels = {
     mobile:"Mobile-Friendly Website", contact:"Simple Enquiry Form", social:"Social Media Icons",
     reviews:"Student Reviews Section", map:"Google Map Integration", sticky_cta:"Sticky “Book Now” Button",
@@ -194,8 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
     manual_lessons:"Manual Lessons Offered", automatic_lessons:"Automatic Lessons Offered", both_lessons:"Both Manual & Automatic Lessons"
   };
 
+  // --- Build features list ---
   const featureListContainer = document.createElement("ul");
   featureListContainer.id = "feature-list";
+
   if(yesFeatures.length === 0){
     const li = document.createElement("li");
     li.textContent = "No additional services selected.";
@@ -209,21 +203,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // Insert feature list below plan summary
   planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
 
   // --- Next Steps buttons ---
-  const startBtn = document.getElementById("start-btn");
-  const emailBtn = document.getElementById("email-btn");
-  if(startBtn) startBtn.addEventListener("click", () => {
+  document.getElementById("start-btn").addEventListener("click", () => {
     window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
   });
-  if(emailBtn) emailBtn.addEventListener("click", () => {
+
+  document.getElementById("email-btn").addEventListener("click", () => {
     const email = prompt("Please enter your email to receive the link:");
-    if(email) alert("A secure link has been sent to " + email);
+    if(email) {
+      // Optional: integrate your backend email sending here
+      alert("A secure link has been sent to " + email);
+    }
   });
 });
 </script>
-
 
 </body>
 </html>
