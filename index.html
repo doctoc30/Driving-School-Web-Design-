@@ -2032,24 +2032,13 @@ function showRecommendedPlan(planType = 'outright') {
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
 
-  // --- Use yesFeatures from the funnel ---
-  const yes = yesFeatures.slice(); 
+  // --- Get selected features from localStorage ---
+  const yes = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
   const tiers = {
-    basic: [
-      "mobile","contact","social","reviews","map","sticky_cta",
-      "services_list","photo_gallery","faq","bio","branding"
-    ],
-    pro: [
-      "testimonials_slider","delayed_popup","countdown_banner","sticky_contact",
-      "lesson_calculator","interactive_gallery","scroll_animations","popup_offer",
-      "sticky_bar","stats_counters","book_popup","seo_meta"
-    ],
-    premium: [
-      "gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker",
-      "feedback_popup","content_images","package_comparison","weekly_banner","fast_track",
-      "premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"
-    ]
+    basic: ["mobile","contact","social","reviews","map","sticky_cta","services_list","photo_gallery","faq","bio","branding"],
+    pro: ["testimonials_slider","delayed_popup","countdown_banner","sticky_contact","lesson_calculator","interactive_gallery","scroll_animations","popup_offer","sticky_bar","stats_counters","book_popup","seo_meta"],
+    premium: ["gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker","feedback_popup","content_images","package_comparison","weekly_banner","fast_track","premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"]
   };
 
   const labels = {
@@ -2079,43 +2068,59 @@ function showRecommendedPlan(planType = 'outright') {
     pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
     premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
   };
+
   const monthlyPrices = { basic:70, pro:100, premium:150 };
   const outrightPrices = { basic:750, pro:1500, premium:2500 };
   const setupFees = { basic:100, pro:200, premium:300 };
 
-  // --- Determine highest tier based on selected features ---
+  // --- Determine recommended plan ---
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
                     : yes.some(f => tiers.pro.includes(f)) ? "pro"
                     : "basic";
-
   const selectedPlanLevel = highestTier;
 
-  // --- Save selections to localStorage for thank-you page ---
+  // --- Save to localStorage for thank-you page ---
   localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
   localStorage.setItem("planType", planType);
   localStorage.setItem("yesFeatures", JSON.stringify(yes));
 
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
-  // --- rest of your existing code for rendering features, price, PayPal buttons ---
-  planCards.forEach(card=>{
-    try{
+  // --- PayPal SDK loader ---
+  function ensurePayPalSdk(cb){
+    if(window.paypal) return cb();
+    if(document.getElementById('paypal-sdk-loader')){
+      const poll = setInterval(()=>{ if(window.paypal){ clearInterval(poll); cb(); } },150);
+      setTimeout(()=>clearInterval(poll),8000);
+      return;
+    }
+    const s = document.createElement('script');
+    s.id='paypal-sdk-loader';
+    s.src='https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
+    s.onload = ()=>cb();
+    s.onerror = ()=>cb(new Error('paypal-sdk-load-failed'));
+    document.head.appendChild(s);
+  }
+
+  // --- Populate plan cards ---
+  planCards.forEach(card => {
+    try {
       const level = card.dataset.plan?.toLowerCase();
-      if(!level) return;
+      if (!level) return;
 
       const list = card.querySelector(".features-list");
       const priceEl = card.querySelector(".price");
       const note = card.querySelector("small");
       const badge = card.querySelector(".badge");
       const payContainer = card.querySelector(".pay-now-container");
-      const payBtn = card.querySelector(".pay-now");
-      if(!list || !priceEl || !payContainer) return;
+      if (!list || !priceEl || !payContainer) return;
 
       const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
       priceEl.textContent = isMonthly ? `£${priceValue}/month` : `£${priceValue}`;
       if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
       if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
 
+      // Features
       list.innerHTML = "";
       coreDefaults[level].forEach(f=>{
         const li = document.createElement("li");
@@ -2123,7 +2128,6 @@ function showRecommendedPlan(planType = 'outright') {
         li.style.marginBottom = "12px";
         list.appendChild(li);
       });
-
       const divider = document.createElement("li");
       divider.className = "gradient-divider";
       divider.style.height = "2px";
@@ -2133,7 +2137,7 @@ function showRecommendedPlan(planType = 'outright') {
       list.appendChild(divider);
 
       const currentIndex = tierOrder.indexOf(level);
-      for (let i = 0; i <= currentIndex; i++) {
+      for (let i=0;i<=currentIndex;i++){
         const tierName = tierOrder[i];
         const tierFeatures = yes.filter(f => tiers[tierName].includes(f));
         if (!tierFeatures.length) continue;
@@ -2148,9 +2152,7 @@ function showRecommendedPlan(planType = 'outright') {
         sectionDiv.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.1)";
 
         const heading = document.createElement("div");
-        heading.textContent = (tierName === level)
-          ? `${level.charAt(0).toUpperCase() + level.slice(1)} Features`
-          : `Includes from ${tierName.charAt(0).toUpperCase() + tierName.slice(1)}`;
+        heading.textContent = (tierName===level) ? `${level.charAt(0).toUpperCase()+level.slice(1)} Features` : `Includes from ${tierName.charAt(0).toUpperCase()+tierName.slice(1)}`;
         heading.style.fontWeight = "700";
         heading.style.marginBottom = "10px";
         heading.style.fontSize = "16px";
@@ -2161,7 +2163,7 @@ function showRecommendedPlan(planType = 'outright') {
 
         const ul = document.createElement("ul");
         ul.style.margin = "10px 0 0 10px";
-        tierFeatures.forEach(f => {
+        tierFeatures.forEach(f=>{
           const li = document.createElement("li");
           li.textContent = labels[f];
           li.style.marginBottom = "8px";
@@ -2175,53 +2177,37 @@ function showRecommendedPlan(planType = 'outright') {
         list.appendChild(wrapperLi);
       }
 
-      // PayPal rendering remains unchanged
-      if(payContainer) payContainer.innerHTML='';
+      // --- PayPal button ---
+      payContainer.innerHTML = "";
       function attachSdkButton(){
-        try{
-          if(!window.paypal) throw new Error('paypal-not-ready');
-          paypal.Buttons({
-            style:{shape:'rect',color:'gold',label:'paypal',layout:'vertical'},
-            createOrder:(data,actions)=>{
-              return actions.order.create({
-                purchase_units:[{description:`${level.charAt(0).toUpperCase()+level.slice(1)} Website Plan (${planType})`, amount:{value:priceValue.toString(), currency_code:'GBP'}}]
-              });
-            },
-            onApprove:(data,actions)=>{
-              return actions.order.capture().then(()=>{
-                window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
-              });
-            },
-            onError:(err)=>{
-              console.error('PayPal error', err);
-              if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
-            }
-          }).render(payContainer);
-        }catch(err){
-          if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
-        }
+        if(!window.paypal) return;
+        paypal.Buttons({
+          style:{shape:'rect',color:'gold',label:'paypal',layout:'vertical'},
+          createOrder:(data,actions)=>{
+            return actions.order.create({
+              purchase_units:[{
+                description:`${level.charAt(0).toUpperCase()+level.slice(1)} Website Plan (${planType})`,
+                amount:{value:priceValue.toString(),currency_code:'GBP'}
+              }]
+            });
+          },
+          onApprove:(data,actions)=>{
+            return actions.order.capture().then(()=>window.location.href="/pages/thank-you.html");
+          }
+        }).render(payContainer);
       }
-      if(payContainer) ensurePayPalSdk(err=>{
-        if(err){
-          if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
-          return;
-        }
-        attachSdkButton();
-      });
+      ensurePayPalSdk(err=>{ if(!err) attachSdkButton(); });
 
-    }catch(err){ console.error(err); }
+    } catch(err){ console.error(err); }
   });
 
-  // Highlight recommended plan card
-  planCards.forEach(card=>card.classList.remove("recommended","in-view"));
+  // --- Highlight recommended plan ---
+  planCards.forEach(c=>c.classList.remove("recommended","in-view"));
   const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
   if(recCard){
     recCard.classList.add("recommended","in-view");
     setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
   }
-
-  // Return highest tier for localStorage use
-  return highestTier;
 }
   
 // ------------------ Typewriter Animation ------------------
