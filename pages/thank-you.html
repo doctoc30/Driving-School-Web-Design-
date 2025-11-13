@@ -95,69 +95,83 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
 
 
 
+
   <h1>Thank You for Your Order!</h1>
 
-<div class="section">
-  <h2>Plan Summary</h2>
-  <div class="plan-summary" id="plan-summary">Loading...</div>
-</div>
+  <div class="section">
+    <h2>Plan Summary</h2>
+    <div class="plan-summary" id="plan-summary">Loading...</div>
+  </div>
 
-<div class="section">
-  <h2>Next Steps</h2>
-  <p>You can either start providing your website details now, or we can send you a secure link via email to continue later.</p>
-  <button id="start-btn">Start Providing Details</button>
-  <button id="email-btn">Send Me a Link via Email</button>
-</div>
+  <div class="section">
+    <h2>Next Steps</h2>
+    <p>You can either start providing your website details now, or we can send you a secure link via email to continue later.</p>
+    <button id="start-btn">Start Providing Details</button>
+    <button id="email-btn">Send Me a Link via Email</button>
+  </div>
 
-<div class="social-icons" aria-label="Social media links">
-  <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
-  </a>
-  <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
-  </a>
-  <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
-  </a>
-</div>
+  <div class="social-icons" aria-label="Social media links">
+    <a href="https://x.com/yourprofile" target="_blank" aria-label="X / Twitter">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X / Twitter">
+    </a>
+    <a href="https://facebook.com/yourpage" target="_blank" aria-label="Facebook">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+    </a>
+    <a href="https://instagram.com/yourhandle" target="_blank" aria-label="Instagram">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+    </a>
+  </div>
 
-<div class="footer-inner">
-  <p>&copy; 2025 Faz Designs. All rights reserved.</p>
-</div>
+  <div class="footer-inner">
+    <p>&copy; 2025 Faz Designs. All rights reserved.</p>
+  </div>
+</main>
 
+
+  
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Hamburger menu ---
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
-
-  // Hamburger toggle
-  function toggleMenu() {
-    const isOpen = menu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    menu.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-  hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
-  document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-      menu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', false);
-      menu.setAttribute('aria-hidden', true);
-      document.body.style.overflow = '';
+  if(hamburger && menu){
+    function toggleMenu() {
+      const isOpen = menu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      menu.setAttribute('aria-hidden', !isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     }
-  });
+    hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+        document.body.style.overflow = '';
+      }
+    });
+  }
 
-  // --- Populate plan summary ---
-  const planSummaryEl = document.getElementById("plan-summary");
+  // --- Retrieve funnel data ---
   const selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
   const planType = localStorage.getItem("planType") || "Owned Outright";
-  const displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
-  planSummaryEl.textContent = `${selectedPlan} Website (${displayType})`;
-
-  // --- Populate selected features from new funnel ---
+  const funnelPath = localStorage.getItem("funnelPath") || "new"; // new/redesign/maintenance
+  const designCode = localStorage.getItem("designCode") || "N/A";
+  const lessonType = localStorage.getItem("lessonType") || "N/A";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
+
+  // --- Display plan summary ---
+  const planSummaryEl = document.getElementById("plan-summary");
+  planSummaryEl.innerHTML = `
+    <strong>Plan:</strong> ${selectedPlan} Website (${planType})<br>
+    <strong>Path:</strong> ${funnelPath}<br>
+    <strong>Design Code:</strong> ${designCode}<br>
+    <strong>Lesson Type:</strong> ${lessonType}
+  `;
+
+  // --- Display selected features ---
   const featureLabels = {
     mobile:"Mobile-Friendly Website", contact:"Simple Enquiry Form", social:"Social Media Icons",
     reviews:"Student Reviews Section", map:"Google Map Integration", sticky_cta:"Sticky “Book Now” Button",
@@ -182,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const featureListContainer = document.createElement("ul");
   featureListContainer.id = "feature-list";
-
   if(yesFeatures.length === 0){
     const li = document.createElement("li");
     li.textContent = "No additional services selected.";
@@ -196,23 +209,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // Insert feature list below plan summary
   planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
 
   // --- Next Steps buttons ---
-  document.getElementById("start-btn").addEventListener("click", () => {
+  const startBtn = document.getElementById("start-btn");
+  const emailBtn = document.getElementById("email-btn");
+  if(startBtn) startBtn.addEventListener("click", () => {
     window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
   });
-
-  document.getElementById("email-btn").addEventListener("click", () => {
+  if(emailBtn) emailBtn.addEventListener("click", () => {
     const email = prompt("Please enter your email to receive the link:");
-    if(email) {
-      // Optional: send email via backend integration
-      alert("A secure link has been sent to " + email);
-    }
+    if(email) alert("A secure link has been sent to " + email);
   });
 });
 </script>
+
+
 </body>
 </html>
