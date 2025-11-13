@@ -2027,7 +2027,7 @@ function showFilteredTemplate(rawCode) {
 
 
 
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
@@ -2036,20 +2036,9 @@ function showFilteredTemplate(rawCode) {
   const yes = yesFeatures.slice();
 
   const tiers = {
-    basic: [
-      "mobile","contact","social","reviews","map","sticky_cta",
-      "services_list","photo_gallery","faq","bio","branding"
-    ],
-    pro: [
-      "testimonials_slider","delayed_popup","countdown_banner","sticky_contact",
-      "lesson_calculator","interactive_gallery","scroll_animations","popup_offer",
-      "sticky_bar","stats_counters","book_popup","seo_meta"
-    ],
-    premium: [
-      "gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker",
-      "feedback_popup","content_images","package_comparison","weekly_banner","fast_track",
-      "premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"
-    ]
+    basic: ["mobile","contact","social","reviews","map","sticky_cta","services_list","photo_gallery","faq","bio","branding"],
+    pro: ["testimonials_slider","delayed_popup","countdown_banner","sticky_contact","lesson_calculator","interactive_gallery","scroll_animations","popup_offer","sticky_bar","stats_counters","book_popup","seo_meta"],
+    premium: ["gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker","feedback_popup","content_images","package_comparison","weekly_banner","fast_track","premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"]
   };
 
   const labels = {
@@ -2074,7 +2063,6 @@ function showFilteredTemplate(rawCode) {
   };
 
   const tierOrder = ["basic","pro","premium"];
-
   const coreDefaults = {
     basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
     pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
@@ -2085,21 +2073,20 @@ function showFilteredTemplate(rawCode) {
   const outrightPrices = { basic:750, pro:1500, premium:2500 };
   const setupFees = { basic:100, pro:200, premium:300 };
 
+  // --- Determine recommended plan ---
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
                     : yes.some(f => tiers.pro.includes(f)) ? "pro"
                     : "basic";
 
   const selectedPlanLevel = highestTier;
+
+  // --- STORE DYNAMIC PLAN DATA FOR THANK-YOU PAGE ---
+  localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
+  localStorage.setItem("selectedPlanType", planType);
+  localStorage.setItem("yesFeatures", JSON.stringify(yes));
+
+  // --- Keep hidden input for form submission / PayPal ---
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
-
-
- const selectedPlanLevel = highestTier;
-
-// --- STORE DYNAMIC PLAN DATA FOR THANK-YOU PAGE ---
-localStorage.setItem("selectedPlanLevel", selectedPlanLevel); // e.g., "basic" / "pro" / "premium"
-localStorage.setItem("selectedPlanType", planType); // e.g., "outright" / "monthly"
-localStorage.setItem("yesFeatures", JSON.stringify(yes)); // the selected features array
-
 
   function ensurePayPalSdk(cb){
     if(window.paypal) return cb();
@@ -2116,6 +2103,7 @@ localStorage.setItem("yesFeatures", JSON.stringify(yes)); // the selected featur
     document.head.appendChild(s);
   }
 
+  // --- Update plan cards ---
   planCards.forEach(card=>{
     try{
       const level = card.dataset.plan?.toLowerCase();
@@ -2206,7 +2194,6 @@ localStorage.setItem("yesFeatures", JSON.stringify(yes)); // the selected featur
             },
             onApprove:(data,actions)=>{
               return actions.order.capture().then(()=>{
-                // ✅ Redirect to correct thank you page
                 window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
@@ -2231,7 +2218,7 @@ localStorage.setItem("yesFeatures", JSON.stringify(yes)); // the selected featur
     }catch(err){ console.error(err); }
   });
 
-  // Highlight recommended plan card
+  // --- Highlight recommended plan card ---
   planCards.forEach(card=>card.classList.remove("recommended","in-view"));
   const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
   if(recCard){
