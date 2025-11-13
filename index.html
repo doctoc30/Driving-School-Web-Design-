@@ -1853,7 +1853,30 @@ nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
 
 
 
- 
+    <div class="pricing-cards">
+      <div class="card" data-plan="Basic">
+        <h3>Basic</h3>
+        <p class="price">£52.50 <span class="original-price" style="text-decoration: line-through;">£70</span></p>
+        <p>Pages: 10 | Revisions: 10 | Delivery: 15 Days</p>
+        <a href="#" class="claim-btn">Claim Discount</a>
+      </div>
+
+      <div class="card" data-plan="Pro">
+        <h3>Pro</h3>
+        <p class="price">£75 <span class="original-price" style="text-decoration: line-through;">£100</span></p>
+        <p>Pages: 20 | Revisions: 20 | Delivery: 20 Days</p>
+        <a href="#" class="claim-btn">Claim Discount</a>
+      </div>
+
+      <div class="card" data-plan="Premium">
+        <h3>Premium</h3>
+        <p class="price">£112.50 <span class="original-price" style="text-decoration: line-through;">£150</span></p>
+        <p>Pages: 30 | Revisions: 30 | Delivery: 30 Days</p>
+        <a href="#" class="claim-btn">Claim Discount</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -2091,69 +2114,110 @@ function showFilteredTemplate(rawCode) {
 }
 
 
-
-
- 
-
 function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
 
-  // Normalize yesFeatures to match tier keys
-  const yes = yesFeatures.map(f => f.trim().toLowerCase().replace(/\s+/g, '_'));
+  const yes = yesFeatures.slice();
 
-  // ===== Tier Configuration =====
-  const tiers = {
-    basic: ["mobile","contact","social","reviews","map","sticky_cta","services_list","photo_gallery","faq","bio","branding"],
-    pro: ["lesson_pricing","testimonials_slider","enquiry_popup","countdown_banner","whatsapp_button","lesson_calculator","photo_video_gallery","scroll_animations","contact_bar","stats_counters","book_lesson_popup","areas_covered"],
-    premium: ["gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker","feedback_popup","content_images","package_comparison","weekly_banner","fast_track","premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"]
-  };
+ 
 
-  const tierOrder = ["basic","pro","premium"];
+ // ===== Updated Tier Configuration =====
+const tiers = {
+  basic: [
+    "mobile",           // Mobile-friendly website
+    "contact",          // Simple enquiry form
+    "social",           // Social media icons
+    "reviews",          // Student reviews section
+    "map",              // Google Map integration
+    "sticky_cta",       // Sticky “Book Now” button
+    "services_list",    // Services list page
+    "photo_gallery",    // Photo gallery
+    "faq",              // FAQ section
+    "bio",              // Instructor bio
+    "branding"          // Logo & brand colors
+  ],
+  pro: [
+    "lesson_pricing",       // Lesson Pricing & Payments
+    "testimonials_slider",  // Animated testimonials slider
+    "enquiry_popup",        // Time-delayed enquiry popup
+    "countdown_banner",     // Countdown offer banner
+    "whatsapp_button",      // Sticky WhatsApp button
+    "lesson_calculator",    // Lesson quote calculator
+    "photo_video_gallery",  // Interactive photo/video gallery
+    "scroll_animations",    // Scroll-trigger animations
+    "contact_bar",          // Sticky contact bar
+    "stats_counters",       // Animated stats counters
+    "book_lesson_popup",    // “Book My Lesson” popup form
+    "areas_covered"         // Display areas covered
+  ],
+  premium: [
+    "gift_rewards",          // Gift voucher & referral rewards
+    "lesson_guides",         // Downloadable lesson guides
+    "intro_video",           // Intro video section
+    "expect_guide",          // “What to Expect” guide
+    "progress_tracker",      // Lesson progress tracker
+    "feedback_popup",        // Feedback popup widget
+    "content_images",        // Help with content/text and stock images
+    "package_comparison",    // Interactive package comparison tool
+    "weekly_banner",         // Auto-updating weekly offer banner
+    "fast_track",            // Fast Track courses
+    "premium_calculator",    // Lesson quote calculator (premium)
+    "featured_student",      // Weekly featured student/story section
+    "seo_meta_premium",      // SEO meta & structured tags
+    "certificates",          // Printable lesson certificates
+    "feedback_integration"   // Feedback/Review integration
+  ]
+};
 
-  const labels = {
-    mobile: "Mobile-friendly website",
-    contact: "Simple enquiry form",
-    social: "Social media icons",
-    reviews: "Student reviews section",
-    map: "Google Map integration",
-    sticky_cta: "Sticky “Book Now” button",
-    services_list: "Services list page",
-    photo_gallery: "Photo gallery",
-    faq: "FAQ section",
-    bio: "Instructor bio",
-    branding: "Logo & brand colors",
-    lesson_pricing: "Lesson Pricing & Payments",
-    testimonials_slider: "Animated testimonials slider",
-    enquiry_popup: "Time-delayed enquiry popup",
-    countdown_banner: "Countdown offer banner",
-    whatsapp_button: "Sticky WhatsApp button",
-    lesson_calculator: "Lesson quote calculator",
-    photo_video_gallery: "Interactive photo/video gallery",
-    scroll_animations: "Scroll-trigger animations",
-    contact_bar: "Sticky contact bar",
-    stats_counters: "Animated stats counters",
-    book_lesson_popup: "“Book My Lesson” popup form",
-    areas_covered: "Areas covered",
-    gift_rewards: "Gift voucher & referral rewards",
-    lesson_guides: "Downloadable lesson guides",
-    intro_video: "Intro video section",
-    expect_guide: "“What to Expect” guide",
-    progress_tracker: "Lesson progress tracker",
-    feedback_popup: "Feedback popup widget",
-    content_images: "Help with content/text and stock images",
-    package_comparison: "Interactive package comparison tool",
-    weekly_banner: "Auto-updating weekly offer banner",
-    fast_track: "Fast Track courses",
-    premium_calculator: "Lesson quote calculator (Premium)",
-    featured_student: "Weekly featured student/story section",
-    seo_meta_premium: "SEO meta & structured tags",
-    certificates: "Printable lesson certificates",
-    feedback_integration: "Feedback/Review integration"
-  };
+// ===== Tier Display Order =====
+const tierOrder = ["basic", "pro", "premium"];
 
+// ===== Labels for each key =====
+const labels = {
+  mobile: "Mobile-friendly website",
+  contact: "Simple enquiry form",
+  social: "Social media icons",
+  reviews: "Student reviews section",
+  map: "Google Map integration",
+  sticky_cta: "Sticky “Book Now” button",
+  services_list: "Services list page",
+  photo_gallery: "Photo gallery",
+  faq: "FAQ section",
+  bio: "Instructor bio",
+  branding: "Logo & brand colors",
+  lesson_pricing: "Lesson Pricing & Payments",
+  testimonials_slider: "Animated testimonials slider",
+  enquiry_popup: "Time-delayed enquiry popup",
+  countdown_banner: "Countdown offer banner",
+  whatsapp_button: "Sticky WhatsApp button",
+  lesson_calculator: "Lesson quote calculator",
+  photo_video_gallery: "Interactive photo/video gallery",
+  scroll_animations: "Scroll-trigger animations",
+  contact_bar: "Sticky contact bar",
+  stats_counters: "Animated stats counters",
+  book_lesson_popup: "“Book My Lesson” popup form",
+  areas_covered: "Areas covered",
+  gift_rewards: "Gift voucher & referral rewards",
+  lesson_guides: "Downloadable lesson guides",
+  intro_video: "Intro video section",
+  expect_guide: "“What to Expect” guide",
+  progress_tracker: "Lesson progress tracker",
+  feedback_popup: "Feedback popup widget",
+  content_images: "Help with content/text and stock images",
+  package_comparison: "Interactive package comparison tool",
+  weekly_banner: "Auto-updating weekly offer banner",
+  fast_track: "Fast Track courses",
+  premium_calculator: "Lesson quote calculator (Premium)",
+  featured_student: "Weekly featured student/story section",
+  seo_meta_premium: "SEO meta & structured tags",
+  certificates: "Printable lesson certificates",
+  feedback_integration: "Feedback/Review integration"
+};
+
+ 
   const coreDefaults = {
     basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
     pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
@@ -2164,7 +2228,6 @@ function showRecommendedPlan(planType = 'outright') {
   const outrightPrices = { basic:750, pro:1500, premium:2500 };
   const setupFees = { basic:100, pro:200, premium:300 };
 
-  // Determine the highest tier based on selected features
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
                     : yes.some(f => tiers.pro.includes(f)) ? "pro"
                     : "basic";
@@ -2172,8 +2235,23 @@ function showRecommendedPlan(planType = 'outright') {
   const selectedPlanLevel = highestTier;
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
-  planCards.forEach(card => {
-    try {
+  function ensurePayPalSdk(cb){
+    if(window.paypal) return cb();
+    if(document.getElementById('paypal-sdk-loader')){
+      const poll = setInterval(()=>{ if(window.paypal){ clearInterval(poll); cb(); } },150);
+      setTimeout(()=>clearInterval(poll),8000);
+      return;
+    }
+    const s = document.createElement('script');
+    s.id='paypal-sdk-loader';
+    s.src='https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
+    s.onload = ()=>cb();
+    s.onerror = ()=>cb(new Error('paypal-sdk-load-failed'));
+    document.head.appendChild(s);
+  }
+
+  planCards.forEach(card=>{
+    try{
       const level = card.dataset.plan?.toLowerCase();
       if(!level) return;
 
@@ -2190,9 +2268,9 @@ function showRecommendedPlan(planType = 'outright') {
       if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
       if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
 
-      // --- Build feature list dynamically ---
+      // --- Build features list ---
       list.innerHTML = "";
-      coreDefaults[level].forEach(f => {
+      coreDefaults[level].forEach(f=>{
         const li = document.createElement("li");
         li.textContent = f;
         li.style.marginBottom = "12px";
@@ -2207,11 +2285,14 @@ function showRecommendedPlan(planType = 'outright') {
       divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
       list.appendChild(divider);
 
-      // Render all selected features per tier
-      tierOrder.forEach(tierName => {
+      // Gather features from current and lower tiers
+      const currentIndex = tierOrder.indexOf(level);
+      for (let i = 0; i <= currentIndex; i++) {
+        const tierName = tierOrder[i];
         const tierFeatures = yes.filter(f => tiers[tierName].includes(f));
-        if(!tierFeatures.length) return;
+        if (!tierFeatures.length) continue;
 
+        // Container block for each tier group
         const sectionDiv = document.createElement("div");
         sectionDiv.style.border = "1px solid rgba(255,255,255,0.3)";
         sectionDiv.style.borderRadius = "8px";
@@ -2221,10 +2302,11 @@ function showRecommendedPlan(planType = 'outright') {
         sectionDiv.style.backdropFilter = "blur(4px)";
         sectionDiv.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.1)";
 
+        // Heading
         const heading = document.createElement("div");
-        heading.textContent = (tierName === level) ? 
-          `${level.charAt(0).toUpperCase() + level.slice(1)} Features` : 
-          `Includes from ${tierName.charAt(0).toUpperCase() + tierName.slice(1)}`;
+        heading.textContent = (tierName === level)
+          ? `${level.charAt(0).toUpperCase() + level.slice(1)} Features`
+          : `Includes from ${tierName.charAt(0).toUpperCase() + tierName.slice(1)}`;
         heading.style.fontWeight = "700";
         heading.style.marginBottom = "10px";
         heading.style.fontSize = "16px";
@@ -2233,11 +2315,12 @@ function showRecommendedPlan(planType = 'outright') {
         heading.style.paddingBottom = "6px";
         sectionDiv.appendChild(heading);
 
+        // Features
         const ul = document.createElement("ul");
         ul.style.margin = "10px 0 0 10px";
         tierFeatures.forEach(f => {
           const li = document.createElement("li");
-          li.textContent = labels[f] || f;
+          li.textContent = labels[f];
           li.style.marginBottom = "8px";
           ul.appendChild(li);
         });
@@ -2247,11 +2330,7 @@ function showRecommendedPlan(planType = 'outright') {
         wrapperLi.style.listStyle = "none";
         wrapperLi.appendChild(sectionDiv);
         list.appendChild(wrapperLi);
-      });
-
-    } catch(err) { console.error(err); }
-  });
-}
+      }
 
       // --- PayPal integration ---
       if(payContainer) payContainer.innerHTML='';
