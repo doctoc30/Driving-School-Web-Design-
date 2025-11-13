@@ -153,17 +153,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- Read plan info from localStorage ---
+  // --- Read plan info from localStorage (matching index.html keys) ---
   const planSummaryEl = document.getElementById("plan-summary");
-  const selectedPlan = localStorage.getItem("selectedPlanLevel") || "Premium";
-  const planType = localStorage.getItem("planType") || "Owned Outright";
+  const selectedPlan = localStorage.getItem("selectedPlanLevel") || "premium";
+  const planType = localStorage.getItem("selectedPlanType") || "outright";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
-  // Display plan summary
+  // --- Display plan summary ---
   const displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
-  planSummaryEl.textContent = `${selectedPlan} Website (${displayType})`;
+  const planName = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+  planSummaryEl.textContent = `${planName} Website (${displayType})`;
 
-  // --- Feature labels (updated for new funnel) ---
+  // --- Feature labels (aligned with funnel options) ---
   const featureLabels = {
     mobile:"Mobile-Friendly Website", contact:"Simple Enquiry Form", social:"Social Media Icons",
     reviews:"Student Reviews Section", map:"Google Map Integration", sticky_cta:"Sticky “Book Now” Button",
@@ -186,17 +187,17 @@ document.addEventListener("DOMContentLoaded", () => {
     manual_lessons:"Manual Lessons Offered", automatic_lessons:"Automatic Lessons Offered", both_lessons:"Both Manual & Automatic Lessons"
   };
 
-  // --- Build features list ---
+  // --- Build selected features list ---
   const featureListContainer = document.createElement("ul");
   featureListContainer.id = "feature-list";
 
-  if(yesFeatures.length === 0){
+  if (yesFeatures.length === 0) {
     const li = document.createElement("li");
     li.textContent = "No additional services selected.";
     featureListContainer.appendChild(li);
   } else {
     yesFeatures.forEach(key => {
-      if(featureLabels[key]){
+      if (featureLabels[key]) {
         const li = document.createElement("li");
         li.textContent = featureLabels[key];
         featureListContainer.appendChild(li);
@@ -204,21 +205,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Insert feature list below plan summary
+  // --- Insert feature list below plan summary ---
   planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
 
   // --- Next Steps buttons ---
-  document.getElementById("start-btn").addEventListener("click", () => {
-    window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
-  });
+  const startBtn = document.getElementById("start-btn");
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      window.location.href = "/Driving-School-Web-Design-/pages/order-form.html";
+    });
+  }
 
-  document.getElementById("email-btn").addEventListener("click", () => {
-    const email = prompt("Please enter your email to receive the link:");
-    if(email) {
-      // Optional: integrate your backend email sending here
-      alert("A secure link has been sent to " + email);
-    }
-  });
+  const emailBtn = document.getElementById("email-btn");
+  if (emailBtn) {
+    emailBtn.addEventListener("click", () => {
+      const email = prompt("Please enter your email to receive the link:");
+      if (email) {
+        alert("A secure link has been sent to " + email);
+      }
+    });
+  }
 });
 </script>
 
