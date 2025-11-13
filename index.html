@@ -2026,14 +2026,14 @@ function showFilteredTemplate(rawCode) {
 
 
 
-
- function showRecommendedPlan(planType = 'outright') {
+function showRecommendedPlan(planType = 'outright') {
   const isMonthly = planType === 'monthly';
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
   if (!planCards.length || !hiddenPlanEl) return;
 
-  const yes = yesFeatures.slice();
+  // --- Use yesFeatures from the funnel ---
+  const yes = yesFeatures.slice(); 
 
   const tiers = {
     basic: [
@@ -2074,39 +2074,30 @@ function showFilteredTemplate(rawCode) {
   };
 
   const tierOrder = ["basic","pro","premium"];
-
   const coreDefaults = {
     basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
     pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
     premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
   };
-
   const monthlyPrices = { basic:70, pro:100, premium:150 };
   const outrightPrices = { basic:750, pro:1500, premium:2500 };
   const setupFees = { basic:100, pro:200, premium:300 };
 
+  // --- Determine highest tier based on selected features ---
   const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
                     : yes.some(f => tiers.pro.includes(f)) ? "pro"
                     : "basic";
 
   const selectedPlanLevel = highestTier;
+
+  // --- Save selections to localStorage for thank-you page ---
+  localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
+  localStorage.setItem("planType", planType);
+  localStorage.setItem("yesFeatures", JSON.stringify(yes));
+
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
-  function ensurePayPalSdk(cb){
-    if(window.paypal) return cb();
-    if(document.getElementById('paypal-sdk-loader')){
-      const poll = setInterval(()=>{ if(window.paypal){ clearInterval(poll); cb(); } },150);
-      setTimeout(()=>clearInterval(poll),8000);
-      return;
-    }
-    const s = document.createElement('script');
-    s.id='paypal-sdk-loader';
-    s.src='https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
-    s.onload = ()=>cb();
-    s.onerror = ()=>cb(new Error('paypal-sdk-load-failed'));
-    document.head.appendChild(s);
-  }
-
+  // --- rest of your existing code for rendering features, price, PayPal buttons ---
   planCards.forEach(card=>{
     try{
       const level = card.dataset.plan?.toLowerCase();
@@ -2184,6 +2175,7 @@ function showFilteredTemplate(rawCode) {
         list.appendChild(wrapperLi);
       }
 
+      // PayPal rendering remains unchanged
       if(payContainer) payContainer.innerHTML='';
       function attachSdkButton(){
         try{
@@ -2209,7 +2201,6 @@ function showFilteredTemplate(rawCode) {
           if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
         }
       }
-
       if(payContainer) ensurePayPalSdk(err=>{
         if(err){
           if(payBtn) payBtn.onclick=()=>{ document.getElementById('hiddenPaymentLink').value=paypalLink; document.getElementById('formWrapper').submit(); };
@@ -2228,8 +2219,10 @@ function showFilteredTemplate(rawCode) {
     recCard.classList.add("recommended","in-view");
     setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
   }
-}
 
+  // Return highest tier for localStorage use
+  return highestTier;
+}
   
 // ------------------ Typewriter Animation ------------------
 const typewriterEl = document.getElementById('typewriter');
