@@ -2092,6 +2092,15 @@ function showFilteredTemplate(rawCode) {
   const selectedPlanLevel = highestTier;
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
+
+ const selectedPlanLevel = highestTier;
+
+// --- STORE DYNAMIC PLAN DATA FOR THANK-YOU PAGE ---
+localStorage.setItem("selectedPlanLevel", selectedPlanLevel); // e.g., "basic" / "pro" / "premium"
+localStorage.setItem("selectedPlanType", planType); // e.g., "outright" / "monthly"
+localStorage.setItem("yesFeatures", JSON.stringify(yes)); // the selected features array
+
+
   function ensurePayPalSdk(cb){
     if(window.paypal) return cb();
     if(document.getElementById('paypal-sdk-loader')){
