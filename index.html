@@ -2028,21 +2028,12 @@ function showFilteredTemplate(rawCode) {
 function showRecommendedPlan(planTypeInput = 'outright') {
 
   // ✅ Determine correct plan type from funnel input
-  // If user clicked Monthly → planTypeInput = 'monthly'
-  // If user clicked Buy Outright → planTypeInput = 'outright'
-  // If nothing passed, fallback to stored value
   const planType =
     planTypeInput ||
     localStorage.getItem("selectedPlanType") ||
     "outright";
 
-  // ✅ true if user chose monthly
   const isMonthly = planType === "monthly";
-
-  // -------------------------------------------------------------
-  // Everything below is your exact code, only using the corrected
-  // "planType" variable above.
-  // -------------------------------------------------------------
 
   const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
   const hiddenPlanEl = document.getElementById('hiddenPlan');
@@ -2056,7 +2047,54 @@ function showRecommendedPlan(planTypeInput = 'outright') {
     premium: ["gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker","feedback_popup","content_images","package_comparison","weekly_banner","fast_track","premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"]
   };
 
-  const labels = { /* unchanged */ };
+  const labels = {
+    // --- BASIC ---
+    mobile: "Mobile-Optimised Design",
+    contact: "Contact Page",
+    social: "Social Media Links",
+    reviews: "Google Reviews Section",
+    map: "Google Map Integration",
+    sticky_cta: "Sticky Call-to-Action Button",
+    services_list: "Services List",
+    photo_gallery: "Photo Gallery",
+    faq: "FAQ Section",
+    bio: "Instructor Bio",
+    branding: "Brand Colours + Typography",
+
+    // --- PRO ---
+    testimonials_slider: "Testimonials Slider",
+    delayed_popup: "Delayed Offer Popup",
+    countdown_banner: "Countdown Banner",
+    sticky_contact: "Sticky Contact Bar",
+    lesson_calculator: "Lesson Price Calculator",
+    interactive_gallery: "Interactive Image Gallery",
+    scroll_animations: "Scroll Animations",
+    popup_offer: "Timed Popup Offer",
+    sticky_bar: "Sticky Info Bar",
+    stats_counters: "Animated Stats Counters",
+    book_popup: "Book Lesson Popup Form",
+    seo_meta: "Advanced SEO Meta Tags",
+
+    // --- PREMIUM ---
+    gift_rewards: "Gift Voucher System",
+    lesson_guides: "Lesson Guides Library",
+    intro_video: "Instructor Intro Video",
+    expect_guide: "‘What to Expect’ Guide",
+    progress_tracker: "Student Progress Tracker",
+    feedback_popup: "Feedback Popup System",
+    content_images: "Professional Content + Imagery",
+    package_comparison: "Package Comparison Table",
+    weekly_banner: "Weekly Promo Banner",
+    fast_track: "Fast-Track Booking System",
+    premium_calculator: "Premium Lesson Calculator",
+    featured_student: "Featured Student Section",
+    seo_meta_premium: "Premium SEO Optimisation",
+    certificates: "Certificate Generator",
+    feedback_integration: "Feedback Integration System",
+
+    // --- FUNNEL ANSWER (IMPORTANT!) ---
+    business_type: "Business Type"  // <-- for Solo Instructor vs Driving School
+  };
 
   const tierOrder = ["basic","pro","premium"];
   const coreDefaults = {
@@ -2076,15 +2114,19 @@ function showRecommendedPlan(planTypeInput = 'outright') {
 
   const selectedPlanLevel = highestTier;
 
-  // --- Store for thank-you page (FIXED) ---
+  // --- Store for thank-you page ---
   localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
-  localStorage.setItem("selectedPlanType", planType);  // <-- correct key + value stored
+  localStorage.setItem("selectedPlanType", planType);
   localStorage.setItem("yesFeatures", JSON.stringify(yes));
+
+  // Store business type if selected
+  if (yes.includes("business_type")) {
+    localStorage.setItem("businessType", localStorage.getItem("businessType") || "Solo Instructor");
+  }
 
   // --- Hidden form input
   hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
 
- 
   function ensurePayPalSdk(cb){
     if(window.paypal) return cb();
     if(document.getElementById('paypal-sdk-loader')){
@@ -2119,6 +2161,7 @@ function showRecommendedPlan(planTypeInput = 'outright') {
       if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
       if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
 
+      // --- Features list ---
       list.innerHTML = "";
       coreDefaults[level].forEach(f=>{
         const li = document.createElement("li");
@@ -2191,7 +2234,6 @@ function showRecommendedPlan(planTypeInput = 'outright') {
             },
             onApprove:(data,actions)=>{
               return actions.order.capture().then(()=>{
-                // ✅ Redirect to correct thank-you page
                 window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
               });
             },
@@ -2224,9 +2266,6 @@ function showRecommendedPlan(planTypeInput = 'outright') {
     setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
   }
 }
-
- 
-
 
  
 
