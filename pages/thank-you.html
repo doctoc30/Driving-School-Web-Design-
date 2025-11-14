@@ -131,10 +131,13 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
   
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* ------------------------------
+     NAV MENU (unchanged)
+  ------------------------------ */
   const hamburger = document.querySelector('.hamburger');
   const menu = document.querySelector('nav.menu');
 
-  // --- Hamburger toggle ---
   function toggleMenu() {
     const isOpen = menu.classList.toggle('open');
     hamburger.classList.toggle('active');
@@ -142,7 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.setAttribute('aria-hidden', !isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
-  hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
   document.addEventListener('click', (e) => {
     if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
       menu.classList.remove('open');
@@ -153,47 +161,99 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- Read plan info from localStorage (matching index.html keys) ---
+
+  /* ------------------------------
+      READ DATA FROM LOCALSTORAGE
+  ------------------------------ */
   const planSummaryEl = document.getElementById("plan-summary");
+
   const selectedPlan = localStorage.getItem("selectedPlanLevel") || "premium";
   const planType = localStorage.getItem("selectedPlanType") || "outright";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
 
-  // --- Display plan summary ---
-  const displayType = planType.toLowerCase().includes("monthly") ? "Monthly Plan" : "Buy Outright";
+  // NEW: business type (Solo Instructor / Driving School)
+  const businessType = localStorage.getItem("businessType") || null;
+
+
+  /* ------------------------------
+      DISPLAY PLAN SUMMARY
+  ------------------------------ */
+  const displayType = planType === "monthly" ? "Monthly Plan" : "Buy Outright";
   const planName = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+
   planSummaryEl.textContent = `${planName} Website (${displayType})`;
 
-  // --- Feature labels (aligned with funnel options) ---
+
+  /* ------------------------------
+      FEATURE LABELS (100% MATCHED)
+  ------------------------------ */
   const featureLabels = {
-    mobile:"Mobile-Friendly Website", contact:"Simple Enquiry Form", social:"Social Media Icons",
-    reviews:"Student Reviews Section", map:"Google Map Integration", sticky_cta:"Sticky “Book Now” Button",
-    services_list:"Services List Page", photo_gallery:"Photo Gallery", faq:"FAQ Section",
-    bio:"Instructor Bio", branding:"Logo & Brand Colors",
-    testimonials_slider:"Animated Testimonials Slider", delayed_popup:"Time-Delayed Enquiry Popup",
-    countdown_banner:"Countdown Offer Banner", sticky_contact:"Sticky WhatsApp / Contact Button",
-    lesson_calculator:"Lesson Quote Calculator", interactive_gallery:"Interactive Photo/Video Gallery",
-    scroll_animations:"Scroll-Triggered Animations", popup_offer:"Popup Special Offer",
-    sticky_bar:"Sticky Contact Bar", stats_counters:"Animated Stats Counters",
-    book_popup:"Book My Lesson Popup Form", seo_meta:"On-Page SEO Meta & Structured Tags",
-    gift_rewards:"Gift Voucher & Referral Rewards", lesson_guides:"Downloadable Lesson Guides",
-    intro_video:"Intro Video Section", expect_guide:"“What to Expect” Guide",
-    progress_tracker:"Lesson Progress Tracker", feedback_popup:"Feedback Popup Widget",
-    content_images:"Content & Images Assistance", package_comparison:"Interactive Package Comparison Tool",
-    weekly_banner:"Auto-Updating Weekly Offer Banner", fast_track:"Fast Track Courses",
-    premium_calculator:"Premium Lesson Quote Calculator", featured_student:"Weekly Featured Student / Story Section",
-    seo_meta_premium:"SEO Meta & Structured Tags (Premium)", certificates:"Printable Lesson Certificates",
-    feedback_integration:"Feedback/Review Integration",
-    manual_lessons:"Manual Lessons Offered", automatic_lessons:"Automatic Lessons Offered", both_lessons:"Both Manual & Automatic Lessons"
+    // BASIC
+    mobile:"Mobile-Optimised Design",
+    contact:"Contact Page",
+    social:"Social Media Links",
+    reviews:"Google Reviews Section",
+    map:"Google Map Integration",
+    sticky_cta:"Sticky Call-to-Action Button",
+    services_list:"Services List",
+    photo_gallery:"Photo Gallery",
+    faq:"FAQ Section",
+    bio:"Instructor Bio",
+    branding:"Brand Colours + Typography",
+
+    // PRO
+    testimonials_slider:"Testimonials Slider",
+    delayed_popup:"Delayed Offer Popup",
+    countdown_banner:"Countdown Banner",
+    sticky_contact:"Sticky Contact Bar",
+    lesson_calculator:"Lesson Price Calculator",
+    interactive_gallery:"Interactive Image Gallery",
+    scroll_animations:"Scroll Animations",
+    popup_offer:"Timed Popup Offer",
+    sticky_bar:"Sticky Info Bar",
+    stats_counters:"Animated Stats Counters",
+    book_popup:"Book Lesson Popup Form",
+    seo_meta:"Advanced SEO Meta Tags",
+
+    // PREMIUM
+    gift_rewards:"Gift Voucher System",
+    lesson_guides:"Lesson Guides Library",
+    intro_video:"Instructor Intro Video",
+    expect_guide:"‘What to Expect’ Guide",
+    progress_tracker:"Student Progress Tracker",
+    feedback_popup:"Feedback Popup System",
+    content_images:"Professional Content + Imagery",
+    package_comparison:"Package Comparison Table",
+    weekly_banner:"Weekly Promo Banner",
+    fast_track:"Fast-Track Booking System",
+    premium_calculator:"Premium Lesson Calculator",
+    featured_student:"Featured Student Section",
+    seo_meta_premium:"Premium SEO Optimisation",
+    certificates:"Certificate Generator",
+    feedback_integration:"Feedback Integration System",
+
+    // BUSINESS TYPE (important)
+    business_type:"Business Type"
   };
 
-  // --- Build selected features list ---
+
+  /* ------------------------------
+      BUILD SELECTED FEATURES LIST
+  ------------------------------ */
   const featureListContainer = document.createElement("ul");
   featureListContainer.id = "feature-list";
 
+  // Insert business type FIRST
+  if (businessType) {
+    const li = document.createElement("li");
+    li.textContent = `Business Type: ${businessType}`;
+    li.style.fontWeight = "600";
+    featureListContainer.appendChild(li);
+  }
+
   if (yesFeatures.length === 0) {
     const li = document.createElement("li");
-    li.textContent = "No additional services selected.";
+    li.textContent = "No additional features selected.";
     featureListContainer.appendChild(li);
   } else {
     yesFeatures.forEach(key => {
@@ -205,10 +265,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Insert feature list below plan summary ---
-  planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
+  planSummaryEl.parentNode.insertBefore(
+    featureListContainer,
+    planSummaryEl.nextSibling
+  );
 
-  // --- Next Steps buttons ---
+
+  /* ------------------------------
+      BUTTONS
+  ------------------------------ */
   const startBtn = document.getElementById("start-btn");
   if (startBtn) {
     startBtn.addEventListener("click", () => {
@@ -225,6 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 });
 </script>
 
