@@ -128,8 +128,7 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
 </main>
 
 
-  
-<script>
+  <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   /* ------------------------------
@@ -166,12 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
       READ DATA FROM LOCALSTORAGE
   ------------------------------ */
   const planSummaryEl = document.getElementById("plan-summary");
-
   const selectedPlan = localStorage.getItem("selectedPlanLevel") || "premium";
   const planType = localStorage.getItem("selectedPlanType") || "outright";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
-
-  // NEW: business type (Solo Instructor / Driving School)
   const businessType = localStorage.getItem("businessType") || null;
 
 
@@ -180,12 +176,11 @@ document.addEventListener("DOMContentLoaded", () => {
   ------------------------------ */
   const displayType = planType === "monthly" ? "Monthly Plan" : "Buy Outright";
   const planName = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
-
   planSummaryEl.textContent = `${planName} Website (${displayType})`;
 
 
   /* ------------------------------
-      FEATURE LABELS (100% MATCHED)
+      FEATURE LABELS
   ------------------------------ */
   const featureLabels = {
     // BASIC
@@ -232,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
     certificates:"Certificate Generator",
     feedback_integration:"Feedback Integration System",
 
-    // BUSINESS TYPE (important)
+    // BUSINESS TYPE
     business_type:"Business Type"
   };
 
@@ -243,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const featureListContainer = document.createElement("ul");
   featureListContainer.id = "feature-list";
 
-  // Insert business type FIRST
+  // Insert business type first
   if (businessType) {
     const li = document.createElement("li");
     li.textContent = `Business Type: ${businessType}`;
@@ -251,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     featureListContainer.appendChild(li);
   }
 
+  // Insert selected features
   if (yesFeatures.length === 0) {
     const li = document.createElement("li");
     li.textContent = "No additional features selected.";
@@ -265,10 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  planSummaryEl.parentNode.insertBefore(
-    featureListContainer,
-    planSummaryEl.nextSibling
-  );
+  planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
 
 
   /* ------------------------------
@@ -293,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+
 
 </body>
 </html>
