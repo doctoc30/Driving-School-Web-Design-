@@ -176,6 +176,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ------------------------------
+      PLAN DETAILS (STATIC)
+  ------------------------------ */
+  const planDetails = {
+    basic: "5 Pages | 5 Revisions | 10 Days | HTML Site",
+    pro: "10 Pages | 15 Revisions | 20 Days | HTML Site",
+    premium: "20 Pages | 25 Revisions | 30 Days | HTML Site"
+  };
+
+  /* ------------------------------
       DISPLAY PLAN SUMMARY
   ------------------------------ */
   const displayType = planType === "monthly" ? "Monthly Plan" : "Buy Outright";
@@ -183,8 +192,24 @@ document.addEventListener("DOMContentLoaded", () => {
   planSummaryEl.textContent = `${planName} Website (${displayType})`;
 
   /* ------------------------------
-      FEATURE LABELS
+      BUILD SELECTED FEATURES LIST
   ------------------------------ */
+  const featureListContainer = document.createElement("ul");
+  featureListContainer.id = "feature-list";
+
+  // 1️⃣ Plan Details first
+  const liPlanDetails = document.createElement("li");
+  liPlanDetails.textContent = planDetails[selectedPlan.toLowerCase()] || "";
+  liPlanDetails.style.fontWeight = "600";
+  featureListContainer.appendChild(liPlanDetails);
+
+  // 2️⃣ Business Type
+  const liBusiness = document.createElement("li");
+  liBusiness.textContent = `Business Type: ${businessType}`;
+  liBusiness.style.fontWeight = "600";
+  featureListContainer.appendChild(liBusiness);
+
+  // 3️⃣ Dynamic features
   const featureLabels = {
     // BASIC
     mobile:"Mobile-Optimised Design",
@@ -234,19 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
     business_type:"Business Type"
   };
 
-  /* ------------------------------
-      BUILD SELECTED FEATURES LIST
-  ------------------------------ */
-  const featureListContainer = document.createElement("ul");
-  featureListContainer.id = "feature-list";
-
-  // Insert business type first
-  const liBusiness = document.createElement("li");
-  liBusiness.textContent = `Business Type: ${businessType}`;
-  liBusiness.style.fontWeight = "600";
-  featureListContainer.appendChild(liBusiness);
-
-  // Insert selected features
   if (yesFeatures.length === 0) {
     const li = document.createElement("li");
     li.textContent = "No additional features selected.";
