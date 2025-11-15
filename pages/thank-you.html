@@ -128,7 +128,7 @@ footer{padding-left:max(env(safe-area-inset-left),20px); padding-right:max(env(s
 </main>
 
 
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
   /* ------------------------------
@@ -160,7 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   /* ------------------------------
       READ DATA FROM LOCALSTORAGE
   ------------------------------ */
@@ -168,8 +167,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedPlan = localStorage.getItem("selectedPlanLevel") || "premium";
   const planType = localStorage.getItem("selectedPlanType") || "outright";
   const yesFeatures = JSON.parse(localStorage.getItem("yesFeatures") || "[]");
-  const businessType = localStorage.getItem("businessType") || null;
 
+  // Ensure businessType always has a value
+  let businessType = localStorage.getItem("businessType");
+  if (!businessType) {
+    businessType = "Solo Instructor";
+    localStorage.setItem("businessType", businessType);
+  }
 
   /* ------------------------------
       DISPLAY PLAN SUMMARY
@@ -177,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayType = planType === "monthly" ? "Monthly Plan" : "Buy Outright";
   const planName = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
   planSummaryEl.textContent = `${planName} Website (${displayType})`;
-
 
   /* ------------------------------
       FEATURE LABELS
@@ -231,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
     business_type:"Business Type"
   };
 
-
   /* ------------------------------
       BUILD SELECTED FEATURES LIST
   ------------------------------ */
@@ -239,12 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
   featureListContainer.id = "feature-list";
 
   // Insert business type first
-  if (businessType) {
-    const li = document.createElement("li");
-    li.textContent = `Business Type: ${businessType}`;
-    li.style.fontWeight = "600";
-    featureListContainer.appendChild(li);
-  }
+  const liBusiness = document.createElement("li");
+  liBusiness.textContent = `Business Type: ${businessType}`;
+  liBusiness.style.fontWeight = "600";
+  featureListContainer.appendChild(liBusiness);
 
   // Insert selected features
   if (yesFeatures.length === 0) {
@@ -262,7 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   planSummaryEl.parentNode.insertBefore(featureListContainer, planSummaryEl.nextSibling);
-
 
   /* ------------------------------
       BUTTONS
