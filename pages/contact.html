@@ -3,1297 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxe Properties - Premium Real Estate</title>
+    <title>Barber's Shop</title>
+    
 
-
-<style>
-
-/* ===========================
-   VARIABLES & RESET
-   =========================== */
-
-:root {
-    --primary-color: #1a1a1a;
-    --secondary-color: #d4af37;
-    --accent-color: #f5f5f5;
-    --text-dark: #2c2c2c;
-    --text-light: #666666;
-    --bg-light: #fafafa;
-    --bg-dark: #0f0f0f;
-    --border-color: #e0e0e0;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.2);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+    <style>
+        /* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-dark);
-    background-color: #fff;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ===========================
-   NAVBAR
-   =========================== */
-
-.navbar {
-    position: fixed;
-    top: 0;
+/* Header */
+.header {
+    position: relative;
+    height: 100vh;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    box-shadow: var(--shadow-sm);
+    color: gold;
+    overflow: hidden;
 }
 
-.navbar .container {
+/* Background Video */
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.5);
+}
+
+/* Navbar */
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 20px;
+    padding: 20px 50px;
+    position: relative;
+    z-index: 2;
 }
 
 .logo {
     font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    letter-spacing: 2px;
+    font-weight: bold;
 }
 
-.nav-menu {
-    display: flex;
+/* Nav Links */
+.nav-links {
     list-style: none;
-    gap: 2rem;
-    align-items: center;
+    display: flex;
+    gap: 30px;
 }
 
-.nav-menu a {
+.nav-links li a {
     text-decoration: none;
-    color: var(--text-dark);
+    color: gold;
     font-weight: 500;
-    font-size: 0.95rem;
-    transition: var(--transition);
-    position: relative;
+    transition: color 0.3s;
 }
 
-.nav-menu a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--secondary-color);
-    transition: var(--transition);
+.nav-links li a:hover {
+    color: #fff;
 }
 
-.nav-menu a:hover::after {
-    width: 100%;
-}
-
-.cta-btn {
-    background: var(--primary-color);
-    color: white !important;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-.cta-btn:hover {
-    background: var(--secondary-color);
-    color: var(--primary-color) !important;
-}
-
-.hamburger {
+/* Hamburger Menu */
+.menu-toggle {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    gap: 5px;
 }
 
-.hamburger span {
+.bar {
     width: 25px;
     height: 3px;
-    background: var(--primary-color);
-    margin: 5px 0;
-    transition: var(--transition);
+    background-color: gold;
+    transition: all 0.3s;
 }
 
-/* ===========================
-   HERO SECTION
-   =========================== */
-
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-    position: relative;
-    overflow: hidden;
-    margin-top: 60px;
-}
-
-.hero-background {
+/* Header Content */
+.header-content {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-.gradient-blob {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: blob-animation 8s infinite;
-}
-
-.blob-1 {
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(135deg, var(--secondary-color), #ff6b6b);
-    top: 20%;
-    right: 10%;
-    animation-delay: 0s;
-}
-
-.blob-2 {
-    width: 250px;
-    height: 250px;
-    background: linear-gradient(135deg, #4ecdc4, var(--secondary-color));
-    bottom: 10%;
-    left: 5%;
-    animation-delay: 2s;
-}
-
-@keyframes blob-animation {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(30px, -50px) scale(1.1);
-    }
-    50% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-    75% {
-        transform: translate(50px, 50px) scale(1.05);
-    }
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 800px;
-    padding: 0 20px;
-}
-
-.hero-title {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.hero-subtitle {
-    font-size: 1.3rem;
-    color: var(--text-light);
-    margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out 0.2s forwards;
-}
-
-.hero-cta {
-    background: var(--primary-color);
-    color: white;
-    padding: 1rem 2.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--transition);
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out 0.4s forwards;
-}
-
-.hero-cta:hover {
-    background: var(--secondary-color);
-    color: var(--primary-color);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ===========================
-   SCROLL ANIMATIONS
-   =========================== */
-
-[data-scroll] {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: var(--transition);
-}
-
-[data-scroll].show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ===========================
-   PROPERTIES SECTION
-   =========================== */
-
-.properties {
-    padding: 6rem 0;
-    background: white;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.section-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-light);
-}
-
-.properties-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-}
-
-.property-card {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.property-card:nth-child(1) { animation-delay: 0.1s; }
-.property-card:nth-child(2) { animation-delay: 0.2s; }
-.property-card:nth-child(3) { animation-delay: 0.3s; }
-.property-card:nth-child(4) { animation-delay: 0.4s; }
-.property-card:nth-child(5) { animation-delay: 0.5s; }
-.property-card:nth-child(6) { animation-delay: 0.6s; }
-
-.property-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-}
-
-.property-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.property-card:hover .property-image {
-    transform: scale(1.05);
-}
-
-.property-content {
-    padding: 1.5rem;
-}
-
-.property-price {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--secondary-color);
-    margin-bottom: 0.5rem;
-}
-
-.property-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.property-location {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-}
-
-.property-specs {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.9rem;
-    color: var(--text-light);
-}
-
-.property-spec {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.property-spec strong {
-    color: var(--primary-color);
-}
-
-.property-description {
-    color: var(--text-light);
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-}
-
-.property-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.feature-tag {
-    background: var(--bg-light);
-    color: var(--primary-color);
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-/* ===========================
-   SERVICES SECTION
-   =========================== */
-
-.services {
-    padding: 6rem 0;
-    background: var(--bg-light);
-}
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-}
-
-.service-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.service-card:nth-child(1) { animation-delay: 0.1s; }
-.service-card:nth-child(2) { animation-delay: 0.2s; }
-.service-card:nth-child(3) { animation-delay: 0.3s; }
-.service-card:nth-child(4) { animation-delay: 0.4s; }
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-}
-
-.service-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--secondary-color), #ff6b6b);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 1.8rem;
-}
-
-.service-card h3 {
-    font-size: 1.3rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.service-card p {
-    color: var(--text-light);
-    line-height: 1.6;
-}
-
-/* ===========================
-   TESTIMONIALS SECTION
-   =========================== */
-
-.testimonials {
-    padding: 6rem 0;
-    background: white;
-}
-
-.testimonials-carousel {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.testimonial-card {
-    background: var(--bg-light);
-    padding: 2rem;
-    border-radius: 8px;
-    border-left: 4px solid var(--secondary-color);
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.testimonial-card:nth-child(1) { animation-delay: 0.1s; }
-.testimonial-card:nth-child(2) { animation-delay: 0.2s; }
-.testimonial-card:nth-child(3) { animation-delay: 0.3s; }
-
-.testimonial-text {
-    color: var(--text-dark);
-    font-style: italic;
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-}
-
-.testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.author-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.author-info h4 {
-    color: var(--primary-color);
-    margin-bottom: 0.25rem;
-}
-
-.author-info p {
-    color: var(--text-light);
-    font-size: 0.9rem;
-}
-
-/* ===========================
-   CTA SECTION
-   =========================== */
-
-.cta-section {
-    padding: 6rem 0;
-    background: linear-gradient(135deg, var(--primary-color), #2c2c2c);
-    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
 }
 
-.cta-content {
-    max-width: 600px;
-    margin: 0 auto;
+.header-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
 }
 
-.cta-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
+.header-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
 }
 
-.cta-text {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out 0.2s forwards;
-}
-
-.cta-button {
-    background: var(--secondary-color);
-    color: var(--primary-color);
-    padding: 1rem 2.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out 0.4s forwards;
-}
-
-.cta-button:hover {
-    background: white;
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* ===========================
-   FOOTER
-   =========================== */
-
-.footer {
-    background: var(--primary-color);
-    color: white;
-    padding: 3rem 0 1rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-.footer-section h3,
-.footer-section h4 {
-    margin-bottom: 1rem;
-    color: var(--secondary-color);
-}
-
-.footer-section p {
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.8;
-}
-
-.footer-section ul {
-    list-style: none;
-}
-
-.footer-section ul li {
-    margin-bottom: 0.5rem;
-}
-
-.footer-section a {
-    color: rgba(255, 255, 255, 0.7);
+.btn {
+    padding: 15px 40px;
+    background-color: gold;
+    color: black;
     text-decoration: none;
-    transition: var(--transition);
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
-.footer-section a:hover {
-    color: var(--secondary-color);
+.btn:hover {
+    background-color: #fff;
 }
 
-.social-links {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-icon {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.social-icon:hover {
-    background: var(--secondary-color);
-    color: var(--primary-color);
-}
-
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* ===========================
-   MODAL
-   =========================== */
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.3s ease-out;
-}
-
-.modal.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100%;
+        width: 100%;
+        background-color: black;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        transition: left 0.3s ease-in-out;
     }
-    to {
-        opacity: 1;
+
+    .nav-links.active {
+        left: 0;
     }
-}
 
-.modal-content {
-    background-color: white;
-    padding: 0;
-    border-radius: 8px;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.close-modal {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--text-light);
-    transition: var(--transition);
-    z-index: 10;
-}
-
-.close-modal:hover {
-    color: var(--primary-color);
-}
-
-.modal-body {
-    padding: 2rem;
-}
-
-.modal-image {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-}
-
-.modal-title {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.modal-price {
-    font-size: 1.8rem;
-    color: var(--secondary-color);
-    margin-bottom: 1rem;
-}
-
-.modal-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.modal-detail-item {
-    text-align: center;
-}
-
-.modal-detail-item strong {
-    display: block;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.modal-detail-item span {
-    color: var(--text-light);
-}
-
-/* ===========================
-   RESPONSIVE DESIGN
-   =========================== */
-
-@media (max-width: 768px) {
-    .hamburger {
+    .menu-toggle {
         display: flex;
     }
-
-    .nav-menu {
-        display: none;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .properties-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .testimonials-carousel {
-        grid-template-columns: 1fr;
-    }
-
-    .cta-title {
-        font-size: 2rem;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
-
-    .blob-1,
-    .blob-2 {
-        width: 150px;
-        height: 150px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo {
-        font-size: 1.5rem;
-    }
-
-    .hero-title {
-        font-size: 2rem;
-    }
-
-    .hero-cta {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .section-title {
-        font-size: 1.8rem;
-    }
-
-    .section-subtitle {
-        font-size: 1rem;
-    }
-
-    .property-specs {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .cta-title {
-        font-size: 1.5rem;
-    }
-
-    .cta-text {
-        font-size: 1rem;
-    }
-
-    .modal-content {
-        width: 95%;
-        max-height: 95vh;
-    }
-
-    .modal-body {
-        padding: 1rem;
-    }
-
-    .modal-image {
-        height: 250px;
-    }
-
-    .modal-title {
-        font-size: 1.5rem;
-    }
 }
 
 
-</style>
+        </style>
 
-
+    
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <h1 class="logo">Luxe</h1>
+    <header class="header">
+        <!-- Background Video -->
+        <video autoplay muted loop class="bg-video">
+            <source src="assets/barber-bg.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">Barber's Shop</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#properties">Properties</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact" class="cta-btn">Contact</a></li>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+        </nav>
+
+        <!-- Header Content -->
+        <div class="header-content">
+            <h1>Experience Premium Grooming</h1>
+            <p>Your style, our expertise.</p>
+            <a href="#" class="btn">Book Now</a>
         </div>
-    </nav>
+    </header>
 
 
 
 
-    <!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h2 class="hero-title" data-scroll>Discover Luxury Living</h2>
-        <p class="hero-subtitle" data-scroll>Explore our curated collection of premium properties</p>
-        <button class="hero-cta" data-scroll>Explore Properties</button>
-    </div>
-    <div class="hero-background">
-        <div class="gradient-blob blob-1"></div>
-        <div class="gradient-blob blob-2"></div>
-    </div>
-</section>
 
-<!-- Properties Section -->
-<section class="properties" id="properties">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title" data-scroll>Featured Properties</h2>
-            <p class="section-subtitle" data-scroll>Handpicked luxury homes for discerning buyers</p>
-        </div>
-
-        <!-- Property Filters -->
-        <div class="property-filters" style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
-            <input type="text" id="search-properties" placeholder="Search by title or location" style="padding:0.5rem; width:50%; border-radius:4px; border:1px solid #ccc;">
-            <select id="sort-properties" style="padding:0.5rem; border-radius:4px; border:1px solid #ccc;">
-                <option value="">Sort By</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="beds-desc">Bedrooms: High to Low</option>
-            </select>
-        </div>
-
-        <div class="properties-grid">
-            <!-- Properties will be dynamically inserted here -->
-        </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section class="services" id="services">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title" data-scroll>Our Services</h2>
-            <p class="section-subtitle" data-scroll>Comprehensive real estate solutions</p>
-        </div>
-
-        <div class="services-grid">
-            <!-- Services will be dynamically inserted here -->
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="testimonials" id="testimonials">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title" data-scroll>Client Testimonials</h2>
-            <p class="section-subtitle" data-scroll>What our satisfied clients say</p>
-        </div>
-
-        <div class="testimonials-carousel">
-            <!-- Testimonials will be dynamically inserted here -->
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="cta-section">
-    <div class="container">
-        <div class="cta-content">
-            <h2 class="cta-title" data-scroll>Ready to Find Your Dream Home?</h2>
-            <p class="cta-text" data-scroll>Let our expert team guide you through the process</p>
-            <button class="cta-button hero-cta" id="contact" data-scroll>Get Started Today</button>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Luxe Properties</h3>
-                <p>Premium real estate agency specializing in luxury properties.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#properties">Properties</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: info@luxeproperties.com</p>
-                <p>Phone: +1 (555) 123-4567</p>
-            </div>
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#" class="social-icon">Instagram</a>
-                    <a href="#" class="social-icon">Facebook</a>
-                    <a href="#" class="social-icon">LinkedIn</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Luxe Properties. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
-
-<!-- Property Modal -->
-<div class="modal" id="propertyModal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="modal-body">
-            <!-- Property details will be inserted here -->
-        </div>
-    </div>
-</div>
-
+    
     <script>
-// ===========================
-// APP DATA (Inline JSON with 20 properties)
-// ===========================
-let appData = {
-    "properties": [
-        { "id":"L1","title":"Modern Family Home","price":"£450,000","location":"London, UK","beds":3,"baths":2,"sqft":120,"image":"https://via.placeholder.com/400x300?text=Property+1","description":"A beautiful modern family home with garden and parking.","features":["Garden","Garage","Modern Kitchen"] },
-        { "id":"L2","title":"City Apartment","price":"£320,000","location":"London, UK","beds":2,"baths":1,"sqft":80,"image":"https://via.placeholder.com/400x300?text=Property+2","description":"A stylish apartment in the heart of the city with balcony views.","features":["Balcony","City View","Close to Transport"] },
-        { "id":"L3","title":"Luxury Villa","price":"£950,000","location":"Surrey, UK","beds":5,"baths":4,"sqft":300,"image":"https://via.placeholder.com/400x300?text=Property+3","description":"A spacious luxury villa with pool and landscaped garden.","features":["Swimming Pool","Landscaped Garden","Home Cinema"] },
-        { "id":"L4","title":"Cozy Cottage","price":"£280,000","location":"Bath, UK","beds":2,"baths":1,"sqft":75,"image":"https://via.placeholder.com/400x300?text=Property+4","description":"Charming cottage with a small garden and fireplace.","features":["Fireplace","Garden","Quaint"] },
-        { "id":"L5","title":"Penthouse Suite","price":"£1,200,000","location":"London, UK","beds":4,"baths":3,"sqft":220,"image":"https://via.placeholder.com/400x300?text=Property+5","description":"Top-floor penthouse with panoramic city views.","features":["Rooftop Terrace","City View","Luxury Finish"] },
-        { "id":"L6","title":"Suburban Home","price":"£370,000","location":"Wimbledon, UK","beds":3,"baths":2,"sqft":140,"image":"https://via.placeholder.com/400x300?text=Property+6","description":"Classic suburban home with garage and garden.","features":["Garage","Garden","Quiet Street"] },
-        { "id":"L7","title":"Modern Loft","price":"£400,000","location":"Shoreditch, London","beds":2,"baths":1,"sqft":90,"image":"https://via.placeholder.com/400x300?text=Property+7","description":"Open-plan loft with modern interiors and high ceilings.","features":["High Ceilings","Open-plan","Modern Kitchen"] },
-        { "id":"L8","title":"Beachside Bungalow","price":"£650,000","location":"Brighton, UK","beds":3,"baths":2,"sqft":130,"image":"https://via.placeholder.com/400x300?text=Property+8","description":"Relaxed bungalow steps from the beach with sea views.","features":["Sea View","Patio","Beach Access"] },
-        { "id":"L9","title":"Countryside Estate","price":"£1,500,000","location":"Cotswolds, UK","beds":6,"baths":5,"sqft":400,"image":"https://via.placeholder.com/400x300?text=Property+9","description":"Large countryside estate with stables and gardens.","features":["Stables","Garden","Private Drive"] },
-        { "id":"L10","title":"Studio Apartment","price":"£210,000","location":"Camden, London","beds":1,"baths":1,"sqft":35,"image":"https://via.placeholder.com/400x300?text=Property+10","description":"Compact studio perfect for city professionals.","features":["Compact","City Living","Modern"] },
-        { "id":"L11","title":"Victorian Townhouse","price":"£720,000","location":"Islington, London","beds":4,"baths":3,"sqft":200,"image":"https://via.placeholder.com/400x300?text=Property+11","description":"Period townhouse with modern renovation and courtyard.","features":["Courtyard","Period Features","Modern Kitchen"] },
-        { "id":"L12","title":"Riverside Flat","price":"£430,000","location":"Canary Wharf, London","beds":2,"baths":2,"sqft":95,"image":"https://via.placeholder.com/400x300?text=Property+12","description":"Flat with riverside views and concierge service.","features":["River View","Gym","Concierge"] },
-        { "id":"L13","title":"Luxury Mansion","price":"£2,500,000","location":"Richmond, UK","beds":7,"baths":6,"sqft":500,"image":"https://via.placeholder.com/400x300?text=Property+13","description":"Exclusive mansion with swimming pool and cinema.","features":["Cinema","Swimming Pool","Garden"] },
-        { "id":"L14","title":"Minimalist Apartment","price":"£345,000","location":"Hackney, London","beds":2,"baths":1,"sqft":85,"image":"https://via.placeholder.com/400x300?text=Property+14","description":"Sleek minimalist apartment with open-plan living.","features":["Open-plan","Minimalist","Modern"] },
-        { "id":"L15","title":"Detached Cottage","price":"£295,000","location":"Oxford, UK","beds":3,"baths":2,"sqft":110,"image":"https://via.placeholder.com/400x300?text=Property+15","description":"Cozy detached cottage with a small garden and shed.","features":["Garden","Shed","Quiet"] },
-        { "id":"L16","title":"High-Rise Condo","price":"£520,000","location":"Canary Wharf, London","beds":3,"baths":2,"sqft":120,"image":"https://via.placeholder.com/400x300?text=Property+16","description":"Modern condo in a high-rise building with balcony.","features":["Balcony","High-Rise","Gym Access"] },
-        { "id":"L17","title":"Seaside Villa","price":"£870,000","location":"Bournemouth, UK","beds":4,"baths":3,"sqft":250,"image":"https://via.placeholder.com/400x300?text=Property+17","description":"Spacious villa with sea views and pool.","features":["Pool","Sea View","Garden"] },
-        { "id":"L18","title":"Town Centre Flat","price":"£330,000","location":"Reading, UK","beds":2,"baths":1,"sqft":70,"image":"https://via.placeholder.com/400x300?text=Property+18","description":"Flat in the heart of town with all amenities nearby.","features":["Central Location","Modern Kitchen","Balcony"] },
-        { "id":"L19","title":"Eco-Friendly Home","price":"£480,000","location":"Bristol, UK","beds":3,"baths":2,"sqft":130,"image":"https://via.placeholder.com/400x300?text=Property+19","description":"Sustainable home with solar panels and modern interior.","features":["Solar Panels","Garden","Modern Kitchen"] },
-        { "id":"L20","title":"Luxury Penthouse","price":"£1,400,000","location":"London, UK","beds":4,"baths":3,"sqft":220,"image":"https://via.placeholder.com/400x300?text=Property+20","description":"Exclusive penthouse with panoramic city skyline views.","features":["Rooftop Terrace","Skyline View","Luxury Finish"] }
-    ],
-    "services": [
-        { "id":"S1","title":"Professional Photography","description":"High-quality property photos to showcase listings." },
-        { "id":"S2","title":"3D Floor Plans","description":"Convert 2D floor plans into 3D visualizations for buyers." },
-        { "id":"S3","title":"Virtual Tours","description":"Immersive walkthrough videos for remote viewing." }
-    ],
-    "testimonials": [
-        { "name":"John Doe","title":"Happy Buyer","text":"Sara Realty helped me find my dream home quickly!","image":"https://via.placeholder.com/80x80?text=JD" },
-        { "name":"Jane Smith","title":"Property Investor","text":"Professional service and amazing property insights.","image":"https://via.placeholder.com/80x80?text=JS" }
-    ]
-};
+const mobileMenu = document.getElementById('mobile-menu');
+const navLinks = document.getElementById('nav-links');
 
-// ===========================
-// DOM ELEMENTS
-// ===========================
-const propertiesGrid = document.querySelector('.properties-grid');
-const servicesGrid = document.querySelector('.services-grid');
-const testimonialCarousel = document.querySelector('.testimonials-carousel');
-const sortSelect = document.getElementById('sort-properties');
-
-// ===========================
-// INITIALIZATION
-// ===========================
-document.addEventListener('DOMContentLoaded', () => {
-    renderProperties(appData.properties);
-    renderServices();
-    renderTestimonials();
-    setupScrollAnimations();
-    setupEventListeners();
+mobileMenu.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
 });
 
-// ===========================
-// RENDER FUNCTIONS
-// ===========================
-function renderProperties(list) {
-    propertiesGrid.innerHTML = '';
-    if (!list.length) {
-        propertiesGrid.innerHTML = '<p>No listings found.</p>';
-        return;
-    }
-
-    // Sort
-    const sorted = [...list];
-    const sortValue = sortSelect ? sortSelect.value : '';
-    if (sortValue === 'price-asc') {
-        sorted.sort((a, b) => parseInt(a.price.replace(/[£,]/g,'')) - parseInt(b.price.replace(/[£,]/g,'')));
-    } else if (sortValue === 'price-desc') {
-        sorted.sort((a, b) => parseInt(b.price.replace(/[£,]/g,'')) - parseInt(a.price.replace(/[£,]/g,'')));
-    } else if (sortValue === 'beds-desc') {
-        sorted.sort((a, b) => b.beds - a.beds);
-    }
-
-    sorted.forEach(property => propertiesGrid.appendChild(createPropertyCard(property)));
-}
-
-function createPropertyCard(property) {
-    const card = document.createElement('div');
-    card.className = 'property-card';
-    card.innerHTML = `
-        <img src="${property.image}" alt="${property.title}" class="property-image">
-        <div class="property-content">
-            <div class="property-price">${property.price}</div>
-            <h3 class="property-title">${property.title}</h3>
-            <p class="property-location">📍 ${property.location}</p>
-            <div class="property-specs">
-                <div class="property-spec"><strong>${property.beds}</strong> Beds</div>
-                <div class="property-spec"><strong>${property.baths}</strong> Baths</div>
-                <div class="property-spec"><strong>${property.sqft}</strong> sqft</div>
-            </div>
-            <p class="property-description">${property.description}</p>
-            <div class="property-features">
-                ${property.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
-            </div>
-        </div>
-    `;
-    card.addEventListener('click', () => openPropertyModal(property));
-    return card;
-}
-
-function renderServices() {
-    servicesGrid.innerHTML = '';
-    appData.services.forEach(service => {
-        const card = document.createElement('div');
-        card.className = 'service-card';
-        card.innerHTML = `
-            <div class="service-icon">✨</div>
-            <h3>${service.title}</h3>
-            <p>${service.description}</p>
-        `;
-        servicesGrid.appendChild(card);
-    });
-}
-
-function renderTestimonials() {
-    testimonialCarousel.innerHTML = '';
-    appData.testimonials.forEach(testimonial => {
-        const card = document.createElement('div');
-        card.className = 'testimonial-card';
-        card.innerHTML = `
-            <p class="testimonial-text">"${testimonial.text}"</p>
-            <div class="testimonial-author">
-                <img src="${testimonial.image}" alt="${testimonial.name}" class="author-image">
-                <div class="author-info">
-                    <h4>${testimonial.name}</h4>
-                    <p>${testimonial.title}</p>
-                </div>
-            </div>
-        `;
-        testimonialCarousel.appendChild(card);
-    });
-}
-
-// ===========================
-// MODAL FUNCTIONS
-// ===========================
-function openPropertyModal(property) {
-    const modal = document.getElementById('propertyModal');
-    const modalBody = modal.querySelector('.modal-body');
-    modalBody.innerHTML = `
-        <img src="${property.image}" alt="${property.title}" class="modal-image">
-        <h2 class="modal-title">${property.title}</h2>
-        <div class="modal-price">${property.price}</div>
-        <p class="property-location">📍 ${property.location}</p>
-        <div class="modal-details">
-            <div class="modal-detail-item"><strong>${property.beds}</strong> Bedrooms</div>
-            <div class="modal-detail-item"><strong>${property.baths}</strong> Bathrooms</div>
-            <div class="modal-detail-item"><strong>${property.sqft}</strong> sqft</div>
-        </div>
-        <h3 style="color: var(--primary-color);">About This Property</h3>
-        <p>${property.description}</p>
-        <h3 style="color: var(--primary-color);">Key Features</h3>
-        <div class="property-features">
-            ${property.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
-        </div>
-        <button class="cta-button" style="width:100%;background:var(--primary-color);color:white;">
-            Schedule a Viewing
-        </button>
-    `;
-    modal.classList.add('show');
-}
-
-function closePropertyModal() {
-    const modal = document.getElementById('propertyModal');
-    modal.classList.remove('show');
-}
-
-// ===========================
-// SCROLL ANIMATIONS
-// ===========================
-function setupScrollAnimations() {
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show');
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('[data-scroll]').forEach(el => observer.observe(el));
-    document.querySelectorAll('.property-card, .service-card, .testimonial-card').forEach(el => observer.observe(el));
-}
-
-// ===========================
-// EVENT LISTENERS
-// ===========================
-function setupEventListeners() {
-    const closeBtn = document.querySelector('.close-modal');
-    if (closeBtn) closeBtn.addEventListener('click', closePropertyModal);
-
-    const modal = document.getElementById('propertyModal');
-    window.addEventListener('click', (e) => { if (e.target === modal) closePropertyModal(); });
-
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    if (hamburger) hamburger.addEventListener('click', () => {
-        navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-    });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    });
-
-    document.querySelectorAll('.hero-cta, .cta-button').forEach(btn => {
-        btn.addEventListener('click', () => alert('Thank you for your interest! Our team will contact you soon.'));
-    });
-
-    if (sortSelect) sortSelect.addEventListener('change', () => renderProperties(appData.properties));
-}
-
-console.log('Sara Realty - Premium Real Estate Website Loaded');
-
-    
-    
-    // ===========================
-// PROPERTY SEARCH & SORT
-// ===========================
-
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search-properties');
-    const sortSelect = document.getElementById('sort-properties');
-
-    function filterAndSortProperties() {
-        let filtered = [...appData.properties];
-
-        // SEARCH
-        const query = searchInput.value.trim().toLowerCase();
-        if (query) {
-            filtered = filtered.filter(p => 
-                p.title.toLowerCase().includes(query) ||
-                p.location.toLowerCase().includes(query)
-            );
-        }
-
-        // SORT
-        const sortValue = sortSelect.value;
-        if (sortValue === 'price-asc') {
-            filtered.sort((a, b) => parseInt(a.price.replace(/£|,/g,'')) - parseInt(b.price.replace(/£|,/g,'')));
-        } else if (sortValue === 'price-desc') {
-            filtered.sort((a, b) => parseInt(b.price.replace(/£|,/g,'')) - parseInt(a.price.replace(/£|,/g,'')));
-        } else if (sortValue === 'beds-desc') {
-            filtered.sort((a, b) => b.beds - a.beds);
-        }
-
-        // Render filtered and sorted properties
-        const propertiesGrid = document.querySelector('.properties-grid');
-        propertiesGrid.innerHTML = '';
-        filtered.forEach(p => propertiesGrid.appendChild(createPropertyCard(p)));
-        setupScrollAnimations(); // Re-apply animations
-    }
-
-    searchInput.addEventListener('input', filterAndSortProperties);
-    sortSelect.addEventListener('change', filterAndSortProperties);
-});
-    
-    
+        
+        
     </script>
-
+    
 </body>
 </html>
