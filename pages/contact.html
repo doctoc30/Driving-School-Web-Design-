@@ -521,6 +521,92 @@
     transform: scale(1.12);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
 }
+
+
+
+
+
+        #offer-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+#offer-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  background: #ffffff;
+  width: 90%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: 0.3s ease;
+  display: none;
+  font-family: "Poppins", sans-serif;
+}
+
+#offer-popup h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.offer-box {
+  background: #f7f7f7;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+
+#claim-offer-btn {
+  width: 100%;
+  padding: 14px 0;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+#claim-offer-btn:hover {
+  transform: scale(1.03);
+}
+
+#offer-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.small-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
         </style>
 
     
@@ -730,6 +816,27 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
+
+<div id="offer-popup-overlay"></div>
+
+<div id="offer-popup">
+    <button id="offer-close">&times;</button>
+
+    <h2>🎉 Special Today Only!</h2>
+    <p class="subtitle">Get <strong>10% OFF</strong> any Website Package</p>
+
+    <div class="offer-box">
+        <p>Claim your discount before the offer expires.</p>
+    </div>
+
+    <button id="claim-offer-btn">Claim 10% Off</button>
+
+    <p class="small-text">This discount is valid only today.</p>
+</div>
+
+
+    
+
     <script>
 
         
@@ -772,7 +879,59 @@ document.querySelector('.contact-form').addEventListener('submit', e => {
         }
     });
 });
-        
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+    const popup = document.getElementById("offer-popup");
+    const overlay = document.getElementById("offer-popup-overlay");
+    const closeBtn = document.getElementById("offer-close");
+    const claimBtn = document.getElementById("claim-offer-btn");
+
+    /* --------------------------
+       SHOW POPUP AFTER 15 SECONDS
+    --------------------------- */
+    setTimeout(() => {
+        popup.style.display = "block";
+        overlay.style.display = "block";
+
+        setTimeout(() => {
+            overlay.style.opacity = "1";
+            popup.style.opacity = "1";
+            popup.style.transform = "translate(-50%, -50%) scale(1)";
+        }, 50);
+    }, 15000); // 15 seconds
+
+
+    /* --------------------------
+       CLOSE POPUP
+    --------------------------- */
+    function closePopup() {
+        popup.style.opacity = "0";
+        overlay.style.opacity = "0";
+        popup.style.transform = "translate(-50%, -50%) scale(0.85)";
+
+        setTimeout(() => {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        }, 300);
+    }
+
+    closeBtn.addEventListener("click", closePopup);
+    overlay.addEventListener("click", closePopup);
+
+
+    /* --------------------------
+       CLAIM BUTTON
+    --------------------------- */
+    claimBtn.addEventListener("click", () => {
+        alert("Your 10% OFF discount has been applied!");
+        closePopup();
+    });
+
+});
     </script>
     
 </body>
