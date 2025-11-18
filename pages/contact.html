@@ -7,166 +7,194 @@
     
 
     <style>
-        /* Reset */
+
+        /* GLOBAL RESET */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  scroll-behavior: smooth;
 }
 
-/* Header */
+/* COLORS */
+:root {
+  --gold: #FFD700;
+  --black: #000000;
+  --white: #fff;
+}
+
+/* HEADER */
 .header {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    color: gold;
-    overflow: hidden;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  color: var(--gold);
+  overflow: hidden;
 }
 
-/* Background Video */
 .bg-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    filter: brightness(0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.5);
 }
 
-/* Navbar */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-    position: relative;
-    z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  background: rgba(0,0,0,0.6);
 }
 
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--gold);
 }
 
-/* Nav Links */
 .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 30px;
+  list-style: none;
+  display: flex;
+  gap: 30px;
 }
 
 .nav-links li a {
-    text-decoration: none;
-    color: gold;
-    font-weight: 500;
-    transition: color 0.3s;
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
 .nav-links li a:hover {
-    color: #fff;
+  color: var(--white);
 }
 
-/* Hamburger Menu */
 .menu-toggle {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 5px;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
 }
 
 .bar {
-    width: 25px;
-    height: 3px;
-    background-color: gold;
-    transition: all 0.3s;
+  width: 25px;
+  height: 3px;
+  background-color: var(--gold);
+  transition: 0.3s;
 }
 
-/* Header Content */
 .header-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 .header-content h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+  font-size: 4rem;
+  margin-bottom: 20px;
 }
 
 .header-content p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
 }
 
 .btn {
-    padding: 15px 40px;
-    background-color: gold;
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    transition: background 0.3s;
+  padding: 15px 50px;
+  background-color: var(--gold);
+  color: var(--black);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
 .btn:hover {
-    background-color: #fff;
+  background-color: var(--white);
+  color: var(--black);
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .nav-links {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        height: 100%;
-        width: 100%;
-        background-color: black;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 40px;
-        transition: left 0.3s ease-in-out;
-    }
-
-    .nav-links.active {
-        left: 0;
-    }
-
-    .menu-toggle {
-        display: flex;
-    }
+/* SERVICES */
+.services {
+  padding: 80px 20px;
+  background-color: var(--black);
+  color: var(--gold);
+  text-align: center;
 }
 
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+}
 
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+.service-card {
+  background: rgba(255,215,0,0.1);
+  padding: 30px;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
 
-        .gallery {
-  padding: 60px 20px;
-  background-color: #000; /* black background to match your premium theme */
+.service-card:hover {
+  transform: translateY(-10px);
+}
+
+/* ABOUT */
+.about {
+  padding: 80px 20px;
+  background-color: var(--black);
+  color: var(--gold);
+  text-align: center;
+}
+
+.about-text {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+/* GALLERY */
+.gallery {
+  padding: 80px 20px;
+  background-color: var(--black);
+  text-align: center;
 }
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .gallery-item {
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
 .gallery-item img {
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -177,46 +205,107 @@
   transform: scale(1.05);
 }
 
-/* Responsive for mobile */
-@media (max-width: 768px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .gallery {
-    padding: 40px 10px;
-  }
+/* CONTACT */
+.contact {
+  padding: 80px 20px;
+  background-color: var(--black);
+  color: var(--gold);
+  text-align: center;
 }
 
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
+.contact-form input, .contact-form textarea {
+  padding: 15px;
+  border-radius: 5px;
+  border: none;
+}
 
+.contact-form button {
+  align-self: center;
+}
 
-        .lightbox {
+/* FOOTER */
+.footer {
+  padding: 40px 20px;
+  background-color: var(--black);
+  color: var(--gold);
+  text-align: center;
+}
+
+.social-links a {
+  margin: 0 10px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+/* LIGHTBOX */
+.lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left:0;
   width: 100%;
-  height: 100%;
+  height:100%;
   background: rgba(0,0,0,0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
 }
 
 .lightbox-img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 5px;
+  max-width:90%;
+  max-height:90%;
+  border-radius:5px;
 }
 
 .lightbox-close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 2rem;
-  color: gold; /* gold to match theme */
-  cursor: pointer;
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:2rem;
+  color:var(--gold);
+  cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px){
+  .services-grid, .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px){
+  .nav-links {
+    position: fixed;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--black);
+    gap: 40px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .nav-links.active {
+    left:0;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .services-grid, .gallery-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
         </style>
@@ -224,71 +313,108 @@
     
 </head>
 <body>
-    <header class="header">
-        <!-- Background Video -->
-        <video autoplay muted loop class="bg-video">
-            <source src="assets/barber-bg.mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
-        </video>
-
-        <!-- Navigation -->
-        <nav class="navbar">
-            <div class="logo">Barber's Shop</div>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-
-        <!-- Header Content -->
-        <div class="header-content">
-            <h1>Experience Premium Grooming</h1>
-            <p>Your style, our expertise.</p>
-            <a href="#" class="btn">Book Now</a>
-        </div>
-    </header>
 
 
 
-    <section class="gallery">
-  <div class="gallery-grid">
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-hood.jpg" alt="Bearded man in hood">
+<!-- HERO HEADER -->
+<header class="header">
+  <video autoplay muted loop class="bg-video">
+    <source src="assets/barber-bg.mp4" type="video/mp4">
+  </video>
+
+  <nav class="navbar">
+    <div class="logo">Barber's Shop</div>
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
     </div>
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-face-old.jpg" alt="Face of bearded man">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="header-content">
+    <h1>Experience Premium Grooming</h1>
+    <p>Your style, our expertise.</p>
+    <a href="#contact" class="btn">Book Now</a>
+  </div>
+</header>
+
+<!-- SERVICES SECTION -->
+<section id="services" class="services">
+  <h2 class="section-title">Our Services</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <h3>Haircut</h3>
+      <p>Precision cuts by expert barbers, tailored to your style.</p>
     </div>
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-camera.jpg" alt="Man with a beard looking at camera">
+    <div class="service-card">
+      <h3>Beard Grooming</h3>
+      <p>Luxury beard trimming and styling with premium products.</p>
     </div>
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-profile.jpg" alt="Bearded face profile">
-    </div>
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-darkroom.jpg" alt="Bearded man in dark room">
-    </div>
-    <div class="gallery-item">
-      <img src="assets/gallery/beard-formal.jpg" alt="Bearded man in formal attire">
+    <div class="service-card">
+      <h3>Shaving</h3>
+      <p>Traditional straight razor shaves for a smooth finish.</p>
     </div>
   </div>
 </section>
 
+<!-- ABOUT SECTION -->
+<section id="about" class="about">
+  <h2 class="section-title">About Us</h2>
+  <p class="about-text">At Barber's Shop, we combine traditional barbering skills with a modern, luxurious experience. Our team of skilled barbers ensures every client leaves looking sharp and feeling confident.</p>
+</section>
 
+<!-- GALLERY SECTION -->
+<section id="gallery" class="gallery">
+  <h2 class="section-title">Gallery</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="assets/gallery/beard-hood.jpg" alt="Bearded man in hood"></div>
+    <div class="gallery-item"><img src="assets/gallery/beard-face-old.jpg" alt="Face of bearded man"></div>
+    <div class="gallery-item"><img src="assets/gallery/beard-camera.jpg" alt="Man with a beard"></div>
+    <div class="gallery-item"><img src="assets/gallery/beard-profile.jpg" alt="Bearded face profile"></div>
+    <div class="gallery-item"><img src="assets/gallery/beard-darkroom.jpg" alt="Bearded man in dark room"></div>
+    <div class="gallery-item"><img src="assets/gallery/beard-formal.jpg" alt="Bearded man in formal attire"></div>
+  </div>
+</section>
 
-<!-- Place this at bottom, just before closing </body> -->
+<!-- CONTACT SECTION -->
+<section id="contact" class="contact">
+  <h2 class="section-title">Book Your Appointment</h2>
+  <form class="contact-form">
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Phone" required>
+    <textarea placeholder="Your Message" rows="4"></textarea>
+    <button type="submit" class="btn">Book Now</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2025 Barber's Shop. All rights reserved.</p>
+  <div class="social-links">
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
   <span class="lightbox-close">&times;</span>
   <img class="lightbox-img" src="" alt="Expanded image">
 </div>
-    
+
+
     <script>
+
+        
+// Mobile menu toggle
 const mobileMenu = document.getElementById('mobile-menu');
 const navLinks = document.getElementById('nav-links');
 
@@ -297,12 +423,7 @@ mobileMenu.addEventListener('click', () => {
     mobileMenu.classList.toggle('open');
 });
 
-
-
-
-
-        // script.js (or your existing JS file)
-
+// Gallery lightbox
 document.querySelectorAll('.gallery-item img').forEach(img => {
   img.addEventListener('click', () => {
     const lightbox = document.getElementById('lightbox');
@@ -314,6 +435,12 @@ document.querySelectorAll('.gallery-item img').forEach(img => {
 
 document.querySelector('.lightbox-close').addEventListener('click', () => {
   document.getElementById('lightbox').style.display = 'none';
+});
+
+// Contact form submission (example)
+document.querySelector('.contact-form').addEventListener('submit', e => {
+  e.preventDefault();
+  alert("Thank you! Your appointment request has been sent.");
 });
         
     </script>
