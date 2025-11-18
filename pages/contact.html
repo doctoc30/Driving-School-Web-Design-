@@ -493,6 +493,34 @@
         margin-left: 0;
     }
 }
+
+
+
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #FFD700, #c9a300);
+    color: #000;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.12);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+}
         </style>
 
     
@@ -693,6 +721,14 @@
   <img class="lightbox-img" src="" alt="Expanded image">
 </div>
 
+
+            <!-- WhatsApp Floating Button -->
+<a href="https://wa.me/447000000000" 
+   class="whatsapp-float" 
+   target="_blank" 
+   aria-label="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
 
     <script>
 
