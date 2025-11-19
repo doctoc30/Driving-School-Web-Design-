@@ -1,938 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber's Shop</title>
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson Progress Tracker</title>
 
-    <style>
-
-        /* GLOBAL RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-  scroll-behavior: smooth;
-}
-
-/* COLORS */
-:root {
-  --gold: #FFD700;
-  --black: #000000;
-  --white: #fff;
-}
-
-/* HEADER */
-.header {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  color: var(--gold);
-  overflow: hidden;
-}
-
-.bg-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-  filter: brightness(0.5);
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 50px;
-  position: fixed;
-  width: 100%;
-  z-index: 10;
-  background: rgba(0,0,0,0.6);
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--gold);
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-}
-
-.nav-links li a {
-  color: var(--gold);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-  color: var(--white);
-}
-
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
-}
-
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: var(--gold);
-  transition: 0.3s;
-}
-
-.header-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.header-content h1 {
-  font-size: 4rem;
-  margin-bottom: 20px;
-}
-
-.header-content p {
-  font-size: 1.5rem;
-  margin-bottom: 30px;
-}
-
-.btn {
-  padding: 15px 50px;
-  background-color: var(--gold);
-  color: var(--black);
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background-color: var(--white);
-  color: var(--black);
-}
-
-/* SERVICES */
-.services {
-  padding: 80px 20px;
-  background-color: var(--black);
-  color: var(--gold);
-  text-align: center;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.service-card {
-  background: rgba(255,215,0,0.1);
-  padding: 30px;
-  border-radius: 10px;
-  transition: transform 0.3s;
-}
-
-.service-card:hover {
-  transform: translateY(-10px);
-}
-
-/* ABOUT */
-.about {
-  padding: 80px 20px;
-  background-color: var(--black);
-  color: var(--gold);
-  text-align: center;
-}
-
-.about-text {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1.2rem;
-  line-height: 1.8;
-}
-
-/* GALLERY */
-.gallery {
-  padding: 80px 20px;
-  background-color: var(--black);
-  text-align: center;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.gallery-item {
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.gallery-item img:hover {
-  transform: scale(1.05);
-}
-
-/* CONTACT */
-.contact {
-  padding: 80px 20px;
-  background-color: var(--black);
-  color: var(--gold);
-  text-align: center;
-}
-
-.contact-form {
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-form input, .contact-form textarea {
-  padding: 15px;
-  border-radius: 5px;
-  border: none;
-}
-
-.contact-form button {
-  align-self: center;
-}
-
-
-
-/* LIGHTBOX */
-.lightbox {
-  position: fixed;
-  top: 0; left:0;
-  width: 100%;
-  height:100%;
-  background: rgba(0,0,0,0.9);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-
-.lightbox-img {
-  max-width:90%;
-  max-height:90%;
-  border-radius:5px;
-}
-
-.lightbox-close {
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:2rem;
-  color:var(--gold);
-  cursor:pointer;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px){
-  .services-grid, .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 768px){
-  .nav-links {
-    position: fixed;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--black);
-    gap: 40px;
-    transition: left 0.3s ease-in-out;
-  }
-
-  .nav-links.active {
-    left:0;
-  }
-
-  .menu-toggle {
-    display: flex;
-  }
-
-  .services-grid, .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-
-
-
-        /* Video Section */
-.video-section {
-    padding: 80px 20px;
-    background-color: #000;
-    text-align: center;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    color: gold;
-    margin-bottom: 40px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.video-item {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 ratio */
-    border: 2px solid gold;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-}
-
-.video-item iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .video-grid {
-        grid-template-columns: 1fr;
-        gap: 25px;
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 700px;
+        margin: auto;
+        background: #f7f7f7;
     }
 
-    .section-title {
-        font-size: 2rem;
-    }
-}
-
-
-
-
-
-        /* FOOTER */
-.footer {
-    background: #000;
-    padding: 80px 20px 30px;
-    color: gold;
-    border-top: 2px solid gold;
-    font-family: Arial, sans-serif;
-}
-
-/* Layout */
-.footer-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-}
-
-/* Logo / Intro */
-.footer-logo {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: gold;
-    margin-bottom: 20px;
-}
-
-.footer-desc {
-    color: #cfcfcf;
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
-/* Headings */
-.footer-heading {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    color: gold;
-    letter-spacing: 1px;
-}
-
-/* Links */
-.footer-links {
-    list-style: none;
-}
-
-.footer-links li {
-    margin-bottom: 10px;
-}
-
-.footer-links li a {
-    color: #bfbfbf;
-    text-decoration: none;
-    transition: 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.footer-links li a:hover {
-    color: gold;
-    margin-left: 5px;
-}
-
-/* Contact */
-.footer-contact {
-    color: #bfbfbf;
-    margin-bottom: 10px;
-}
-
-/* Button */
-.footer-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 25px;
-    background: gold;
-    color: black;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: 0.3s ease;
-}
-
-.footer-btn:hover {
-    background: #fff;
-}
-
-/* Social Icons */
-.social-icons {
-    display: flex;
-    gap: 12px;
-}
-
-.social-icon {
-    width: 42px;
-    height: 42px;
-    border: 2px solid gold;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: gold;
-    font-size: 1.1rem;
-    transition: 0.3s ease;
-}
-
-.social-icon:hover {
-    background: gold;
-    color: black;
-    transform: translateY(-6px);
-    box-shadow: 0 0 18px rgba(255, 215, 0, 0.4);
-}
-
-/* Footer bottom */
-.footer-bottom {
-    text-align: center;
-    padding-top: 25px;
-    margin-top: 40px;
-    border-top: 1px solid gold;
-    color: #888;
-    font-size: 0.9rem;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-    .footer-container {
-        grid-template-columns: 1fr;
-        text-align: center;
+    h2 {
+        margin-top: 30px;
     }
 
-    .social-icons {
-        justify-content: center;
+    .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
-    .footer-links li a:hover {
-        margin-left: 0;
+    label {
+        display: block;
+        margin: 8px 0;
     }
-}
 
+    textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
 
+    button {
+        padding: 12px 20px;
+        border: none;
+        background: black;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
 
-/* WhatsApp Floating Button */
-.whatsapp-float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 25px;
-    right: 25px;
-    background: linear-gradient(135deg, #FFD700, #c9a300);
-    color: #000;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+    .progress-bar {
+        width: 100%;
+        height: 10px;
+        background: #eee;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-}
+    .progress-fill {
+        height: 10px;
+        width: 0%;
+        background: #2ecc71;
+        border-radius: 5px;
+    }
 
-.whatsapp-float:hover {
-    transform: scale(1.12);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
-}
+    input[type="checkbox"] {
+        transform: scale(1.3);
+        margin-right: 10px;
+    }
 
-
-
-
-
-        #offer-popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: none;
-  z-index: 999;
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  transition: 0.3s ease;
-}
-
-#offer-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.85);
-  background: #ffffff;
-  width: 90%;
-  max-width: 420px;
-  padding: 28px;
-  border-radius: 14px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-  text-align: center;
-  z-index: 1000;
-  opacity: 0;
-  transition: 0.3s ease;
-  display: none;
-  font-family: "Poppins", sans-serif;
-}
-
-#offer-popup h2 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.subtitle {
-  font-size: 18px;
-  margin-top: 6px;
-  margin-bottom: 20px;
-}
-
-.offer-box {
-  background: #f7f7f7;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 18px;
-}
-
-#claim-offer-btn {
-  width: 100%;
-  padding: 14px 0;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 17px;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-#claim-offer-btn:hover {
-  transform: scale(1.03);
-}
-
-#offer-close {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  font-size: 30px;
-  cursor: pointer;
-}
-
-.small-text {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #777;
-}
-        </style>
-
-    
+    .share-link-box {
+        padding: 10px;
+        background: #e8e8e8;
+        border-radius: 8px;
+        margin-top: 10px;
+        word-break: break-all;
+    }
+</style>
 </head>
+
 <body>
 
+<h1>Lesson Progress Tracker</h1>
 
-
-<!-- HERO HEADER -->
-<header class="header">
-  <video autoplay muted loop class="bg-video">
-    <source src="assets/barber-bg.mp4" type="video/mp4">
-  </video>
-
-  <nav class="navbar">
-    <div class="logo">Barber's Shop</div>
-    <div class="menu-toggle" id="mobile-menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <div class="header-content">
-    <h1>Experience Premium Grooming</h1>
-    <p>Your style, our expertise.</p>
-    <a href="#contact" class="btn">Book Now</a>
-  </div>
-</header>
-
-<!-- SERVICES SECTION -->
-<section id="services" class="services">
-  <h2 class="section-title">Our Services</h2>
-  <div class="services-grid">
-    <div class="service-card">
-      <h3>Haircut</h3>
-      <p>Precision cuts by expert barbers, tailored to your style.</p>
-    </div>
-    <div class="service-card">
-      <h3>Beard Grooming</h3>
-      <p>Luxury beard trimming and styling with premium products.</p>
-    </div>
-    <div class="service-card">
-      <h3>Shaving</h3>
-      <p>Traditional straight razor shaves for a smooth finish.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT SECTION -->
-<section id="about" class="about">
-  <h2 class="section-title">About Us</h2>
-  <p class="about-text">At Barber's Shop, we combine traditional barbering skills with a modern, luxurious experience. Our team of skilled barbers ensures every client leaves looking sharp and feeling confident.</p>
-</section>
-
-<!-- GALLERY SECTION -->
-<section id="gallery" class="gallery">
-  <h2 class="section-title">Gallery</h2>
-  <div class="gallery-grid">
-    <div class="gallery-item"><img src="assets/gallery/beard-hood.jpg" alt="Bearded man in hood"></div>
-    <div class="gallery-item"><img src="assets/gallery/beard-face-old.jpg" alt="Face of bearded man"></div>
-    <div class="gallery-item"><img src="assets/gallery/beard-camera.jpg" alt="Man with a beard"></div>
-    <div class="gallery-item"><img src="assets/gallery/beard-profile.jpg" alt="Bearded face profile"></div>
-    <div class="gallery-item"><img src="assets/gallery/beard-darkroom.jpg" alt="Bearded man in dark room"></div>
-    <div class="gallery-item"><img src="assets/gallery/beard-formal.jpg" alt="Bearded man in formal attire"></div>
-  </div>
-</section>
-
-
-
-
-    <section class="video-section">
-    <h2 class="section-title">Premium Barber Tutorials</h2>
-
-    <div class="video-grid">
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/q4Yd9dYTmxI"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/T9iOlD5fojs"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/VMcX_HHlZio"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/E_qH0HEM4kY"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/HntnCfq7lC4"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/v7KIyRcPfEo"
-                    title="Barber Video"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- CONTACT SECTION -->
-<section id="contact" class="contact">
-  <h2 class="section-title">Book Your Appointment</h2>
-  <form class="contact-form">
-    <input type="text" placeholder="Full Name" required>
-    <input type="email" placeholder="Email" required>
-    <input type="tel" placeholder="Phone" required>
-    <textarea placeholder="Your Message" rows="4"></textarea>
-    <button type="submit" class="btn">Book Now</button>
-  </form>
-</section>
-
-
-
-
-    <footer class="footer">
-    <div class="footer-container">
-
-        <!-- Left: Brand -->
-        <div class="footer-section">
-            <h2 class="footer-logo">BARBER'S SHOP</h2>
-            <p class="footer-desc">
-                Premium grooming, expert craftsmanship, and a luxury experience tailored to modern gentlemen.
-            </p>
-
-            <!-- Social Icons -->
-            <div class="social-icons">
-                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            </div>
-        </div>
-
-        <!-- Middle: Links -->
-        <div class="footer-section">
-            <h3 class="footer-heading">Navigation</h3>
-            <ul class="footer-links">
-                <li><a href="#home" class="scroll">Home</a></li>
-                <li><a href="#services" class="scroll">Services</a></li>
-                <li><a href="#gallery" class="scroll">Gallery</a></li>
-                <li><a href="#videos" class="scroll">Videos</a></li>
-                <li><a href="#contact" class="scroll">Contact</a></li>
-            </ul>
-        </div>
-
-        <!-- Right: Contact -->
-        <div class="footer-section">
-            <h3 class="footer-heading">Contact</h3>
-            <p class="footer-contact">123 Barber Street, London</p>
-            <p class="footer-contact">020 1234 5678</p>
-            <p class="footer-contact">info@barbershop.com</p>
-
-            <a href="#" class="footer-btn">Book Appointment</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2025 Barber's Shop — All Rights Reserved</p>
-    </div>
-</footer>
-
-<!-- FontAwesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox">
-  <span class="lightbox-close">&times;</span>
-  <img class="lightbox-img" src="" alt="Expanded image">
+<div class="card">
+    <h2>Select Student</h2>
+    <input id="studentName" type="text" placeholder="Enter student name..." style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;">
+    <button onclick="loadStudent()">Load Student</button>
 </div>
 
+<div id="trackerArea" style="display:none;">
 
-            <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/447000000000" 
-   class="whatsapp-float" 
-   target="_blank" 
-   aria-label="Chat on WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-</a>
+    <div class="card">
+        <h2>Progress Checklist</h2>
+        <label><input type="checkbox" class="skill" data-skill="cockpit"> Cockpit Drill</label>
+        <label><input type="checkbox" class="skill" data-skill="moving_off"> Moving Off Safely</label>
+        <label><input type="checkbox" class="skill" data-skill="clutch"> Clutch Control</label>
+        <label><input type="checkbox" class="skill" data-skill="junctions"> Junctions</label>
+        <label><input type="checkbox" class="skill" data-skill="roundabouts"> Roundabouts</label>
+        <label><input type="checkbox" class="skill" data-skill="manoeuvres"> Manoeuvres</label>
 
-
-<div id="offer-popup-overlay"></div>
-
-<div id="offer-popup">
-    <button id="offer-close">&times;</button>
-
-    <h2>🎉 Special Today Only!</h2>
-    <p class="subtitle">Get <strong>10% OFF</strong> any Website Package</p>
-
-    <div class="offer-box">
-        <p>Claim your discount before the offer expires.</p>
+        <h3>Overall Progress</h3>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p id="progressPercent">0% complete</p>
     </div>
 
-    <button id="claim-offer-btn">Claim 10% Off</button>
+    <div class="card">
+        <h2>Instructor Notes</h2>
+        <textarea id="notes"></textarea>
+        <button onclick="saveData()">Save Progress</button>
+    </div>
 
-    <p class="small-text">This discount is valid only today.</p>
+    <div class="card">
+        <h2>Share With Student</h2>
+        <button onclick="generateShareLink()">Generate Student Link</button>
+        <div id="linkOutput" class="share-link-box" style="display:none;"></div>
+    </div>
+
 </div>
 
+<script>
+let currentStudent = null;
 
-    
+function loadStudent() {
+    const name = document.getElementById("studentName").value.trim();
+    if (!name) return alert("Enter a student name.");
 
-    <script>
+    currentStudent = name;
+    document.getElementById("trackerArea").style.display = "block";
 
-        
-// Mobile menu toggle
-const mobileMenu = document.getElementById('mobile-menu');
-const navLinks = document.getElementById('nav-links');
+    // Load saved data
+    const saved = JSON.parse(localStorage.getItem("student_" + name) || "{}");
 
-mobileMenu.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-});
-
-// Gallery lightbox
-document.querySelectorAll('.gallery-item img').forEach(img => {
-  img.addEventListener('click', () => {
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.querySelector('.lightbox-img');
-    lightboxImg.src = img.src;
-    lightbox.style.display = 'flex';
-  });
-});
-
-document.querySelector('.lightbox-close').addEventListener('click', () => {
-  document.getElementById('lightbox').style.display = 'none';
-});
-
-// Contact form submission (example)
-document.querySelector('.contact-form').addEventListener('submit', e => {
-  e.preventDefault();
-  alert("Thank you! Your appointment request has been sent.");
-});
-
-
-        document.querySelectorAll(".scroll").forEach(link => {
-    link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const section = document.querySelector(link.getAttribute("href"));
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-        }
-    });
-});
-
-
-
-
-        document.addEventListener("DOMContentLoaded", () => {
-
-    const popup = document.getElementById("offer-popup");
-    const overlay = document.getElementById("offer-popup-overlay");
-    const closeBtn = document.getElementById("offer-close");
-    const claimBtn = document.getElementById("claim-offer-btn");
-
-    /* --------------------------
-       SHOW POPUP AFTER 15 SECONDS
-    --------------------------- */
-    setTimeout(() => {
-        popup.style.display = "block";
-        overlay.style.display = "block";
-
-        setTimeout(() => {
-            overlay.style.opacity = "1";
-            popup.style.opacity = "1";
-            popup.style.transform = "translate(-50%, -50%) scale(1)";
-        }, 50);
-    }, 15000); // 15 seconds
-
-
-    /* --------------------------
-       CLOSE POPUP
-    --------------------------- */
-    function closePopup() {
-        popup.style.opacity = "0";
-        overlay.style.opacity = "0";
-        popup.style.transform = "translate(-50%, -50%) scale(0.85)";
-
-        setTimeout(() => {
-            popup.style.display = "none";
-            overlay.style.display = "none";
-        }, 300);
-    }
-
-    closeBtn.addEventListener("click", closePopup);
-    overlay.addEventListener("click", closePopup);
-
-
-    /* --------------------------
-       CLAIM BUTTON
-    --------------------------- */
-    claimBtn.addEventListener("click", () => {
-        alert("Your 10% OFF discount has been applied!");
-        closePopup();
+    document.querySelectorAll(".skill").forEach(chk => {
+        chk.checked = saved[chk.dataset.skill] || false;
     });
 
+    document.getElementById("notes").value = saved.notes || "";
+
+    updateProgress();
+}
+
+function saveData() {
+    if (!currentStudent) return;
+
+    const data = {};
+    document.querySelectorAll(".skill").forEach(chk => {
+        data[chk.dataset.skill] = chk.checked;
+    });
+
+    data.notes = document.getElementById("notes").value;
+
+    localStorage.setItem("student_" + currentStudent, JSON.stringify(data));
+
+    alert("Progress saved!");
+}
+
+document.querySelectorAll(".skill").forEach(chk => {
+    chk.addEventListener("change", updateProgress);
 });
-    </script>
-    
+
+function updateProgress() {
+    const skills = document.querySelectorAll(".skill");
+    const done = Array.from(skills).filter(s => s.checked).length;
+    const total = skills.length;
+    const percent = Math.round((done / total) * 100);
+
+    document.getElementById("progressFill").style.width = percent + "%";
+    document.getElementById("progressPercent").innerText = percent + "% complete";
+}
+
+function generateShareLink() {
+    const saved = JSON.parse(localStorage.getItem("student_" + currentStudent) || "{}");
+    const encoded = encodeURIComponent(JSON.stringify(saved));
+    const link = window.location.href.split("?")[0] + "?data=" + encoded;
+
+    const box = document.getElementById("linkOutput");
+    box.style.display = "block";
+    box.innerText = link;
+}
+
+// READ-ONLY MODE FOR STUDENTS
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("data")) {
+    const data = JSON.parse(decodeURIComponent(urlParams.get("data")));
+
+    document.body.innerHTML = `
+        <h1>Lesson Progress Overview</h1>
+        <div class="card">
+            <h2>Your Progress</h2>
+            <p>${Object.values(data).filter(v => v === true).length} skills completed</p>
+        </div>
+
+        <div class="card">
+            <h2>Instructor Notes</h2>
+            <p>${data.notes || "No notes yet."}</p>
+        </div>
+    `;
+}
+</script>
+
 </body>
 </html>
