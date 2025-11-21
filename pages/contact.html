@@ -5,50 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RedWalk 3D Cinematic Walkthrough</title>
 <style>
-  body { margin:0; font-family: Arial,sans-serif; background:#fff; color:#222; }
-  header { background:#c62828; color:#fff; padding:15px; text-align:center; }
-  header h1 { margin:0; font-size:1.8rem; }
-  .container { padding:10px; max-width:900px; margin:auto; }
-  .upload-area { border:2px dashed #c62828; padding:20px; text-align:center; color:#c62828; margin-bottom:10px; cursor:pointer; border-radius:5px; }
-  .upload-area.dragover { background:#ffcdd2; }
-  #fileInput { display:none; }
-  #thumbnails { display:flex; overflow-x:auto; gap:10px; margin-bottom:10px; }
-  #thumbnails img { width:100px; height:70px; object-fit:cover; border:2px solid #c62828; border-radius:5px; cursor:grab; }
-  .slide-editor { margin-bottom:10px; }
-  textarea { width:100%; padding:8px; border:2px solid #c62828; border-radius:5px; resize:none; }
-  button { background:#c62828; color:#fff; border:none; padding:10px 15px; margin:5px 0; border-radius:5px; font-size:1rem; width:100%; }
-  button:hover { background:#ff5252; }
-  #canvasContainer { width:100%; margin-top:10px; height:360px; }
-  canvas { width:100%; height:100%; display:block; border:2px solid #c62828; border-radius:5px; }
-  @media(max-width:600px){
-    #thumbnails img { width:80px; height:60px; }
-    textarea { font-size:0.9rem; }
-  }
+body { margin:0; font-family: Arial,sans-serif; background:#fff; color:#222; }
+header { background:#c62828; color:#fff; padding:15px; text-align:center; }
+header h1 { margin:0; font-size:1.8rem; }
+.container { padding:10px; max-width:900px; margin:auto; }
+.upload-area { border:2px dashed #c62828; padding:20px; text-align:center; color:#c62828; margin-bottom:10px; cursor:pointer; border-radius:5px; }
+.upload-area.dragover { background:#ffcdd2; }
+#fileInput { display:none; }
+#thumbnails { display:flex; overflow-x:auto; gap:10px; margin-bottom:10px; }
+.slide-container { display:flex; flex-direction:column; align-items:center; margin-bottom:10px; }
+.slide-container img { width:100px; height:70px; object-fit:cover; border:2px solid #c62828; border-radius:5px; cursor:pointer; }
+.slide-container textarea { width:90%; padding:8px; margin-top:5px; border:2px solid #c62828; border-radius:5px; display:none; resize:none; }
+button { background:#c62828; color:#fff; border:none; padding:10px 15px; margin:5px 0; border-radius:5px; font-size:1rem; width:100%; }
+button:hover { background:#ff5252; }
+#canvasContainer { width:100%; margin-top:10px; height:360px; }
+canvas { width:100%; height:100%; display:block; border:2px solid #c62828; border-radius:5px; }
+@media(max-width:600px){
+  .slide-container img { width:80px; height:60px; }
+  .slide-container textarea { font-size:0.9rem; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>RedWalk 3D Walkthrough</h1>
-  <p>Create cinematic property videos with narration</p>
+<h1>RedWalk 3D Walkthrough</h1>
+<p>Create cinematic property videos with narration</p>
 </header>
 
 <div class="container">
-  <div class="upload-area" id="uploadArea">Tap or drag photos here</div>
-  <input type="file" id="fileInput" multiple accept="image/*">
+<div class="upload-area" id="uploadArea">Tap or drag photos here</div>
+<input type="file" id="fileInput" multiple accept="image/*">
 
-  <div id="thumbnails"></div>
+<div id="thumbnails"></div>
 
-  <div class="slide-editor">
-    <label for="baseText">Base property description:</label>
-    <textarea id="baseText" placeholder="Enter base property description..."></textarea>
-  </div>
+<button id="generateScript">Generate Script</button>
+<button id="playNarration">Play Narration</button>
+<button id="generateVideo">Generate Video</button>
 
-  <button id="generateScript">Generate Script</button>
-  <button id="playNarration">Play Narration</button>
-  <button id="generateVideo">Generate Video</button>
-
-  <div id="canvasContainer"></div>
+<div id="canvasContainer"></div>
 </div>
 
 <!-- Three.js CDN -->
@@ -59,11 +54,9 @@
 <script>
 let photos = [];
 let script = [];
-let textures = [];
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
 const thumbnails = document.getElementById('thumbnails');
-const baseText = document.getElementById('baseText');
 const container = document.getElementById('canvasContainer');
 
 // Upload & preview
@@ -81,8 +74,28 @@ function handleFiles(e){
     reader.onload = function(ev){
       const img = new Image(); img.src = ev.target.result;
       img.onload = ()=>photos.push(img);
-      const thumb = document.createElement('img'); thumb.src=ev.target.result;
-      thumbnails.appendChild(thumb);
+
+      // Create slide container
+      const slideDiv = document.createElement('div');
+      slideDiv.classList.add('slide-container');
+
+      const thumb = document.createElement('img');
+      thumb.src = ev.target.result;
+
+      const ta = document.createElement('textarea');
+      ta.placeholder = "Add a few words describing this image for narration...";
+
+      // Click thumbnail to toggle textarea
+      thumb.addEventListener('click', ()=>{
+        const allTAs = document.querySelectorAll('.slide-container textarea');
+        allTAs.forEach(t=>t.style.display='none'); // hide others
+        ta.style.display = 'block';
+        ta.focus();
+      });
+
+      slideDiv.appendChild(thumb);
+      slideDiv.appendChild(ta);
+      thumbnails.appendChild(slideDiv);
     }
     reader.readAsDataURL(file);
   }
@@ -93,7 +106,7 @@ Sortable.create(thumbnails, {
   animation:150,
   onEnd: function(evt){
     const reordered = [];
-    thumbnails.querySelectorAll('img').forEach(img=>{
+    thumbnails.querySelectorAll('.slide-container img').forEach(img=>{
       const found = photos.find(p=>p.src===img.src);
       if(found) reordered.push(found);
     });
@@ -101,11 +114,14 @@ Sortable.create(thumbnails, {
   }
 });
 
-// Simulated AI script generation
+// Generate script based on each textarea
 document.getElementById('generateScript').addEventListener('click', ()=>{
-  const base = baseText.value || "Beautiful property with modern features.";
-  script = photos.map((p,i)=>`Slide ${i+1}: ${base} (AI-enhanced narration)`);
-  alert('Script generated for '+photos.length+' slides.');
+  script = [];
+  document.querySelectorAll('.slide-container textarea').forEach((ta,i)=>{
+    const text = ta.value || `Slide ${i+1} default description`;
+    script.push(text);
+  });
+  alert('Script generated for '+script.length+' slides.');
 });
 
 // Play narration
@@ -137,13 +153,11 @@ function initThree(){
 
   // Clear previous planes
   planes = [];
-  textures = [];
 
   // Load textures
   photos.forEach((img,i)=>{
     const tex = new THREE.Texture(img);
     tex.needsUpdate = true;
-    textures.push(tex);
     const geometry = new THREE.PlaneGeometry(4,2.25);
     const material = new THREE.MeshBasicMaterial({map:tex});
     const plane = new THREE.Mesh(geometry,material);
@@ -153,6 +167,7 @@ function initThree(){
   });
 }
 
+// Animate camera
 let animating = false;
 function animateCamera(){
   if(animating) return;
@@ -164,7 +179,6 @@ function animateCamera(){
     const duration = 3000; // 3s per slide
     const startZ = camera.position.z;
     const startTime = performance.now();
-
     function step(time){
       const elapsed = time - startTime;
       const t = Math.min(elapsed/duration,1);
@@ -178,12 +192,11 @@ function animateCamera(){
   moveNext();
 }
 
-// Generate video (canvas capture)
+// Generate video
 document.getElementById('generateVideo').addEventListener('click', async ()=>{
   if(!photos.length){ alert('Upload photos first'); return; }
   initThree();
   animateCamera();
-
   const stream = renderer.domElement.captureStream(30);
   const recorder = new MediaRecorder(stream);
   let chunks=[];
@@ -194,7 +207,7 @@ document.getElementById('generateVideo').addEventListener('click', async ()=>{
     const a = document.createElement('a'); a.href=url; a.download='property-video.webm'; a.click();
   };
   recorder.start();
-  setTimeout(()=>recorder.stop(), photos.length*3000 + 500); // total duration + small buffer
+  setTimeout(()=>recorder.stop(), photos.length*3000 + 500);
 });
 </script>
 
