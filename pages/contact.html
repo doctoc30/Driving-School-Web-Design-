@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RedWalk 3D Cinematic Walkthrough</title>
+<title>RedWalk 3D Walkthrough</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato&display=swap" rel="stylesheet">
 <style>
 body { margin:0; font-family:'Lato',sans-serif; background:#111; color:#fff; }
@@ -77,7 +77,7 @@ button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.16.0/Sortable.min.js"></script>
 
 <script>
-let photos = [], script = [], activeIndex = 0;
+let photos = [], activeIndex = 0, script = [];
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
 const thumbnails = document.getElementById('thumbnails');
@@ -85,6 +85,7 @@ const activeImage = document.getElementById('activeImage');
 const activeTextarea = document.getElementById('activeTextarea');
 const container = document.getElementById('canvasContainer');
 
+// Upload and preview
 uploadArea.addEventListener('click', ()=>fileInput.click());
 fileInput.addEventListener('change', handleFiles);
 uploadArea.addEventListener('dragover', e=>{ e.preventDefault(); uploadArea.classList.add('dragover'); });
@@ -97,49 +98,62 @@ function handleFiles(e){
     if(!file.type.startsWith('image/')) continue;
     const reader = new FileReader();
     reader.onload = function(ev){
-      const img = new Image(); img.src = ev.target.result;
-      img.onload = ()=>photos.push(img);
-
-      const thumb = document.createElement('img'); thumb.src = ev.target.result;
-      thumb.addEventListener('click', ()=>setActiveImage(photos.length-1));
-      thumbnails.appendChild(thumb);
-
-      if(photos.length===1) setActiveImage(0);
+      photos.push({src: ev.target.result, text: ''});
+      renderThumbnails();
+      setActiveImage(photos.length-1);
     }
     reader.readAsDataURL(file);
   }
 }
 
+// Render thumbnails dynamically
+function renderThumbnails(){
+  thumbnails.innerHTML = '';
+  photos.forEach((p,i)=>{
+    const img = document.createElement('img');
+    img.src = p.src;
+    if(i===activeIndex) img.classList.add('active');
+    img.addEventListener('click', ()=>setActiveImage(i));
+    thumbnails.appendChild(img);
+  });
+}
+
+// Set active image
 function setActiveImage(index){
   activeIndex = index;
   activeImage.src = photos[index].src;
-  const thumbs = thumbnails.querySelectorAll('img');
-  thumbs.forEach((t,i)=>t.classList.toggle('active', i===index));
-  activeTextarea.value = thumbs[index].dataset.text || '';
+  activeTextarea.value = photos[index].text;
+  const thumbImgs = thumbnails.querySelectorAll('img');
+  thumbImgs.forEach((t,i)=>t.classList.toggle('active', i===index));
 }
 
+// Update photo text on input
 activeTextarea.addEventListener('input', ()=>{
-  const thumbs = thumbnails.querySelectorAll('img');
-  thumbs[activeIndex].dataset.text = activeTextarea.value;
+  photos[activeIndex].text = activeTextarea.value;
 });
 
-// Reordering thumbnails
-Sortable.create(thumbnails, { animation:150, onEnd: function(){
-  const reordered = [];
-  thumbnails.querySelectorAll('img').forEach(img=>{
-    const found = photos.find(p=>p.src===img.src);
-    if(found) reordered.push(found);
-  });
-  photos = reordered;
-  setActiveImage(activeIndex);
-}});
+// Reordering thumbnails with Sortable.js
+Sortable.create(thumbnails, {
+  animation:150,
+  onEnd: function(evt){
+    const newPhotos = [];
+    const thumbImgs = thumbnails.querySelectorAll('img');
+    thumbImgs.forEach(img=>{
+      const found = photos.find(p=>p.src===img.src);
+      if(found) newPhotos.push(found);
+    });
+    photos = newPhotos;
+    // Recalculate activeIndex
+    const activeSrc = activeImage.src;
+    activeIndex = photos.findIndex(p=>p.src===activeSrc);
+    renderThumbnails();
+    setActiveImage(activeIndex);
+  }
+});
 
-// Script generation
+// Generate Script
 document.getElementById('generateScript').addEventListener('click', ()=>{
-  script = [];
-  thumbnails.querySelectorAll('img').forEach(img=>{
-    script.push(img.dataset.text || "Default description");
-  });
+  script = photos.map(p=>p.text || "Default description");
   alert('Script generated for '+script.length+' slides.');
 });
 
@@ -163,11 +177,12 @@ function initThree(){
   container.innerHTML=''; container.appendChild(renderer.domElement);
   scene.add(new THREE.AmbientLight(0xffffff,1));
   planes=[];
-  photos.forEach((img,i)=>{
-    const tex=new THREE.Texture(img); tex.needsUpdate=true;
-    const geom=new THREE.PlaneGeometry(4,2.25);
-    const mat=new THREE.MeshBasicMaterial({map:tex});
-    const plane=new THREE.Mesh(geom,mat);
+  photos.forEach((p,i)=>{
+    const img = new Image(); img.src = p.src;
+    const tex = new THREE.Texture(img); tex.needsUpdate=true;
+    const geom = new THREE.PlaneGeometry(4,2.25);
+    const mat = new THREE.MeshBasicMaterial({map:tex});
+    const plane = new THREE.Mesh(geom,mat);
     plane.position.z=-i*5; scene.add(plane); planes.push(plane);
   });
 }
@@ -188,6 +203,7 @@ function animateCamera(){
   moveNext();
 }
 
+// Generate Video
 document.getElementById('generateVideo').addEventListener('click', ()=>{
   if(!photos.length){ alert('Upload photos first'); return; }
   initThree(); animateCamera();
