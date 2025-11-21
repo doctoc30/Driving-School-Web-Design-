@@ -152,8 +152,16 @@ Sortable.create(thumbnails, {
 
 // Generate script
 document.getElementById('generateScript').addEventListener('click', ()=>{
+  // Save current active image text first
   photos[activeIndex].text = activeTextarea.value;
-  script = photos.map((p,i)=>p.text || `Slide ${i+1} default description`);
+
+  // Generate script array
+  script = photos.map((p,i)=>p.text.trim() || `Slide ${i+1} description`);
+
+  if(script.length === 0){
+    alert('Add text to images first!');
+    return;
+  }
   alert('Script generated for '+script.length+' slides.');
 });
 
@@ -162,7 +170,6 @@ async function playCinematicTTS(){
   if(!script.length){ alert('Generate script first'); return; }
   if(!photos.length){ alert('Upload photos first'); return; }
 
-  // Three.js scene setup
   const scene = new THREE.Scene();
   const width=container.clientWidth, height=container.clientHeight;
   const camera = new THREE.PerspectiveCamera(50, width/height, 0.1, 1000);
@@ -186,11 +193,8 @@ async function playCinematicTTS(){
   renderer.render(scene,camera);
 
   for(let i=0;i<planes.length;i++){
-    // Animate camera to plane
     const targetZ = -i*5;
     await animateCamera(camera, targetZ, renderer, scene);
-
-    // Speak the text for this image
     await speakText(script[i]);
   }
 }
@@ -223,9 +227,8 @@ function speakText(text){
 
 document.getElementById('playNarration').addEventListener('click', playCinematicTTS);
 
-// Video generation remains similar to previous prototype
 document.getElementById('generateVideo').addEventListener('click', ()=>{
-  alert('Video export for cinematic version requires additional server-side or advanced client-side capture implementation.');
+  alert('Video export requires advanced capture; prototype focuses on cinematic TTS walkthrough.');
 });
 </script>
 </body>
