@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RedWalk 3D Walkthrough Test</title>
+<title>RedWalk 3D Walkthrough</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato&display=swap" rel="stylesheet">
 <style>
 body { margin:0; font-family:'Lato',sans-serif; background:#111; color:#fff; }
@@ -51,8 +51,8 @@ button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4
 <body>
 
 <header>
-  <h1>RedWalk 3D Walkthrough Test</h1>
-  <p>Create cinematic property videos with narration (Test Version)</p>
+  <h1>RedWalk 3D Cinematic Walkthrough</h1>
+  <p>Create cinematic property videos with narration</p>
 </header>
 
 <div class="container">
@@ -71,6 +71,7 @@ button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4
   <button id="downloadScript">Download Script</button>
   <textarea id="scriptOutput" readonly placeholder="Enhanced script will appear here..."></textarea>
   <button id="playNarration">Play Narration</button>
+  <button id="generateVideo">Generate Video</button>
 
   <div id="canvasContainer"></div>
 </div>
@@ -154,38 +155,31 @@ Sortable.create(thumbnails, {
   }
 });
 
-// **Template-based enhancement function for testing**
+// Template-based enhancement
 function enhanceText(input){
   if(!input || input.trim()==='') return 'No description provided.';
-
   const templates = [
     `This area features ${input}, designed with elegance and functionality.`,
     `Notice the details in ${input}, perfect for modern living.`,
     `The ${input} stands out, offering both comfort and style.`,
     `Featuring ${input}, this area is ideal for entertaining or relaxing.`
   ];
-
   return templates[Math.floor(Math.random() * templates.length)];
 }
 
-// Generate enhanced script for ALL images
+// Generate enhanced script for all images
 document.getElementById('generateScript').addEventListener('click', ()=>{
   if(photos.length === 0){
     alert('Please upload at least one image first.');
     return;
   }
 
-  // Save all textarea inputs
-  photos.forEach((p, i) => {
-    if(i === activeIndex) p.text = activeTextarea.value;
-  });
+  // Save current textarea input
+  photos[activeIndex].text = activeTextarea.value;
 
-  // Generate script for all images
+  // Generate script
   script = photos.map(p => enhanceText(p.text));
-
-  // Show the full script
   scriptOutput.value = script.join('\n\n');
-
   alert('Enhanced script generated for '+script.length+' slides.');
 });
 
@@ -260,6 +254,11 @@ function speakText(text){
 }
 
 document.getElementById('playNarration').addEventListener('click', playCinematicTTS);
+
+// Placeholder video button
+document.getElementById('generateVideo').addEventListener('click', ()=>{
+  alert('Video export requires backend processing; this is a prototype.');
+});
 </script>
 </body>
 </html>
