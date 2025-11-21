@@ -6,48 +6,45 @@
 <title>RedWalk 3D Cinematic Walkthrough</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato&display=swap" rel="stylesheet">
 <style>
-body { margin:0; font-family: 'Lato', sans-serif; background:#111; color:#fff; }
-h1,h2,h3,h4,h5,h6 { font-family: 'Montserrat', sans-serif; }
+body { margin:0; font-family:'Lato',sans-serif; background:#111; color:#fff; }
+h1,h2,h3,h4,h5,h6 { font-family:'Montserrat',sans-serif; }
 header { background:#c62828; color:#fff; padding:25px 15px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
 header h1 { margin:0; font-size:2rem; letter-spacing:1px; }
 header p { margin:5px 0 0 0; font-size:1rem; opacity:0.9; }
 
-.container { max-width:1000px; margin:auto; padding:20px; display:flex; flex-direction:column; align-items:center; }
-
+.container { max-width:1200px; margin:auto; padding:20px; display:flex; flex-direction:column; gap:20px; }
 .upload-area {
   border:2px dashed #c62828; border-radius:15px; padding:40px; text-align:center;
-  font-size:1.2rem; font-weight:bold; color:#c62828; transition: all 0.3s ease; cursor:pointer;
-  background: rgba(255,255,255,0.05); box-shadow:0 5px 15px rgba(0,0,0,0.2); margin-bottom:20px;
+  font-size:1.2rem; font-weight:bold; color:#c62828; transition:0.3s; cursor:pointer;
+  background: rgba(255,255,255,0.05); box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 .upload-area.dragover { background: rgba(198,40,40,0.2); transform: scale(1.03); }
 
-#activeImageContainer { position:relative; width:100%; max-width:800px; margin-bottom:15px; }
-#activeImage { width:100%; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.6); }
-
-#activeTextarea {
-  width:90%; padding:12px; margin-top:10px; border-radius:12px; border:none; outline:none;
-  resize:none; font-size:1rem; background: rgba(255,255,255,0.1); color:#fff;
-  box-shadow:0 3px 15px rgba(0,0,0,0.5); transition: all 0.3s ease;
+.main-view { display:flex; flex-direction:column; gap:15px; width:100%; }
+.active-image-container { width:100%; text-align:center; position:relative; }
+#activeImage { width:100%; max-height:70vh; object-fit:cover; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.6); }
+#activeTextarea { width:90%; margin:10px auto 0 auto; padding:12px; border-radius:12px; border:none; outline:none;
+  resize:none; font-size:1rem; background: rgba(255,255,255,0.1); color:#fff; box-shadow:0 3px 15px rgba(0,0,0,0.5);
 }
 #activeTextarea:focus { background: rgba(255,255,255,0.2); }
 
-#thumbnails { display:flex; overflow-x:auto; gap:15px; margin-bottom:20px; padding-bottom:10px; }
-.slide-container img {
-  width:80px; height:55px; object-fit:cover; border-radius:10px;
-  cursor:pointer; border:2px solid transparent; transition: transform 0.3s, border 0.3s;
-}
-.slide-container img.active { border:2px solid #c62828; transform: scale(1.05); }
+#thumbnails { display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; }
+#thumbnails img { width:80px; height:55px; object-fit:cover; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:0.3s; }
+#thumbnails img.active { border:2px solid #c62828; transform:scale(1.05); }
 
-button {
-  background: linear-gradient(45deg, #c62828, #ff5252); color:#fff; border:none; padding:12px 20px; margin:8px 0;
-  border-radius:12px; font-size:1rem; cursor:pointer; width:90%; transition: all 0.3s ease; box-shadow:0 5px 15px rgba(0,0,0,0.3);
+button { background: linear-gradient(45deg, #c62828, #ff5252); color:#fff; border:none; padding:12px 20px; margin:8px auto;
+  border-radius:12px; font-size:1rem; cursor:pointer; width:90%; transition:0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4); }
 
 #canvasContainer { width:100%; height:450px; border-radius:15px; overflow:hidden; margin-top:20px; box-shadow:0 5px 20px rgba(0,0,0,0.5); }
 
-#thumbnails::-webkit-scrollbar { height:8px; }
-#thumbnails::-webkit-scrollbar-thumb { background:#c62828; border-radius:4px; }
+@media(min-width:900px){
+  .main-view { flex-direction:row; }
+  .active-image-container { flex:2; }
+  #thumbnails { flex-direction:column; overflow-y:auto; max-height:70vh; }
+  #thumbnails img { width:100px; height:70px; }
+}
 </style>
 </head>
 <body>
@@ -59,14 +56,15 @@ button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4
 
 <div class="container">
   <div class="upload-area" id="uploadArea">Tap or drag photos here</div>
-  <input type="file" id="fileInput" multiple accept="image/*">
+  <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
 
-  <div id="activeImageContainer">
-    <img id="activeImage" src="" alt="Active Property Image">
-    <textarea id="activeTextarea" placeholder="Add few words describing this image for narration..."></textarea>
+  <div class="main-view">
+    <div class="active-image-container">
+      <img id="activeImage" src="" alt="Active Property Image">
+      <textarea id="activeTextarea" placeholder="Add few words describing this image for narration..."></textarea>
+    </div>
+    <div id="thumbnails"></div>
   </div>
-
-  <div id="thumbnails"></div>
 
   <button id="generateScript">Generate Script</button>
   <button id="playNarration">Play Narration</button>
@@ -87,7 +85,6 @@ const activeImage = document.getElementById('activeImage');
 const activeTextarea = document.getElementById('activeTextarea');
 const container = document.getElementById('canvasContainer');
 
-// Upload & Preview
 uploadArea.addEventListener('click', ()=>fileInput.click());
 fileInput.addEventListener('change', handleFiles);
 uploadArea.addEventListener('dragover', e=>{ e.preventDefault(); uploadArea.classList.add('dragover'); });
@@ -103,39 +100,33 @@ function handleFiles(e){
       const img = new Image(); img.src = ev.target.result;
       img.onload = ()=>photos.push(img);
 
-      // Thumbnail container
-      const slideDiv = document.createElement('div'); slideDiv.classList.add('slide-container');
       const thumb = document.createElement('img'); thumb.src = ev.target.result;
-
       thumb.addEventListener('click', ()=>setActiveImage(photos.length-1));
-      slideDiv.appendChild(thumb); thumbnails.appendChild(slideDiv);
+      thumbnails.appendChild(thumb);
 
-      // Auto set first image as active
       if(photos.length===1) setActiveImage(0);
     }
     reader.readAsDataURL(file);
   }
 }
 
-// Active image & textarea
 function setActiveImage(index){
   activeIndex = index;
   activeImage.src = photos[index].src;
-  const allThumbs = thumbnails.querySelectorAll('img');
-  allThumbs.forEach((img,i)=>img.classList.toggle('active', i===index));
-  activeTextarea.value = document.querySelectorAll('.slide-text, .slide-container textarea')[index]?.value || '';
+  const thumbs = thumbnails.querySelectorAll('img');
+  thumbs.forEach((t,i)=>t.classList.toggle('active', i===index));
+  activeTextarea.value = thumbs[index].dataset.text || '';
 }
 
-// Sync textarea input
 activeTextarea.addEventListener('input', ()=>{
-  let taList = document.querySelectorAll('.slide-text, .slide-container textarea');
-  if(taList[activeIndex]) taList[activeIndex].value = activeTextarea.value;
+  const thumbs = thumbnails.querySelectorAll('img');
+  thumbs[activeIndex].dataset.text = activeTextarea.value;
 });
 
-// Drag-and-drop reordering
+// Reordering thumbnails
 Sortable.create(thumbnails, { animation:150, onEnd: function(){
   const reordered = [];
-  thumbnails.querySelectorAll('.slide-container img').forEach(img=>{
+  thumbnails.querySelectorAll('img').forEach(img=>{
     const found = photos.find(p=>p.src===img.src);
     if(found) reordered.push(found);
   });
@@ -143,15 +134,16 @@ Sortable.create(thumbnails, { animation:150, onEnd: function(){
   setActiveImage(activeIndex);
 }});
 
-// Generate Script
+// Script generation
 document.getElementById('generateScript').addEventListener('click', ()=>{
   script = [];
-  let taList = document.querySelectorAll('.slide-text, .slide-container textarea');
-  taList.forEach((ta,i)=>script.push(ta.value || `Slide ${i+1} default description`));
+  thumbnails.querySelectorAll('img').forEach(img=>{
+    script.push(img.dataset.text || "Default description");
+  });
   alert('Script generated for '+script.length+' slides.');
 });
 
-// Play Narration
+// TTS Playback
 document.getElementById('playNarration').addEventListener('click', ()=>{
   if(!script.length){ alert('Generate script first'); return; }
   const utterance = new SpeechSynthesisUtterance(script.join('. '));
@@ -159,7 +151,7 @@ document.getElementById('playNarration').addEventListener('click', ()=>{
   speechSynthesis.speak(utterance);
 });
 
-// Three.js Setup
+// Three.js Video Preview
 let scene, camera, renderer, planes=[];
 function initThree(){
   scene = new THREE.Scene();
@@ -169,8 +161,7 @@ function initThree(){
   renderer=new THREE.WebGLRenderer({antialias:true});
   renderer.setSize(width,height);
   container.innerHTML=''; container.appendChild(renderer.domElement);
-  const light=new THREE.AmbientLight(0xffffff,1); scene.add(light);
-
+  scene.add(new THREE.AmbientLight(0xffffff,1));
   planes=[];
   photos.forEach((img,i)=>{
     const tex=new THREE.Texture(img); tex.needsUpdate=true;
@@ -181,7 +172,6 @@ function initThree(){
   });
 }
 
-// Animate Camera
 let animating=false;
 function animateCamera(){
   if(animating) return; animating=true; let i=0;
@@ -198,7 +188,6 @@ function animateCamera(){
   moveNext();
 }
 
-// Generate Video
 document.getElementById('generateVideo').addEventListener('click', ()=>{
   if(!photos.length){ alert('Upload photos first'); return; }
   initThree(); animateCamera();
