@@ -168,15 +168,24 @@ function enhanceText(input){
   return templates[Math.floor(Math.random() * templates.length)];
 }
 
-// Generate enhanced script
+// Generate enhanced script for ALL images
 document.getElementById('generateScript').addEventListener('click', ()=>{
-  if(photos.length===0){ alert('Please upload at least one image first.'); return; }
+  if(photos.length === 0){
+    alert('Please upload at least one image first.');
+    return;
+  }
 
-  photos[activeIndex].text = activeTextarea.value;
+  // Save all textarea inputs
+  photos.forEach((p, i) => {
+    if(i === activeIndex) p.text = activeTextarea.value;
+  });
 
+  // Generate script for all images
   script = photos.map(p => enhanceText(p.text));
 
+  // Show the full script
   scriptOutput.value = script.join('\n\n');
+
   alert('Enhanced script generated for '+script.length+' slides.');
 });
 
