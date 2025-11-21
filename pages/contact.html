@@ -37,6 +37,7 @@ button { background: linear-gradient(45deg, #c62828, #ff5252); color:#fff; borde
 }
 button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4); }
 
+#scriptOutput { width:90%; height:150px; margin:10px auto; display:block; background:#222; color:#fff; padding:10px; border-radius:10px; }
 #canvasContainer { width:100%; height:450px; border-radius:15px; overflow:hidden; margin-top:20px; box-shadow:0 5px 20px rgba(0,0,0,0.5); }
 
 @media(min-width:900px){
@@ -66,7 +67,9 @@ button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4
     <div id="thumbnails"></div>
   </div>
 
-  <button id="generateScript">Generate Script</button>
+  <button id="generateScript">Generate Enhanced Script</button>
+  <button id="downloadScript">Download Script</button>
+  <textarea id="scriptOutput" readonly placeholder="Enhanced script will appear here..."></textarea>
   <button id="playNarration">Play Narration</button>
   <button id="generateVideo">Generate Video</button>
 
@@ -84,6 +87,8 @@ const thumbnails = document.getElementById('thumbnails');
 const activeImage = document.getElementById('activeImage');
 const activeTextarea = document.getElementById('activeTextarea');
 const container = document.getElementById('canvasContainer');
+const scriptOutput = document.getElementById('scriptOutput');
+const downloadScriptBtn = document.getElementById('downloadScript');
 
 // Upload images
 uploadArea.addEventListener('click', ()=>fileInput.click());
@@ -150,19 +155,28 @@ Sortable.create(thumbnails, {
   }
 });
 
-// Generate script
+// Rule-based enhancement function
+function enhanceText(input){
+  if(!input || input.trim()==='') return 'No description provided.';
+  return `This area features ${input}. Designed for style and functionality, it will impress potential buyers.`;
+}
+
+// Generate enhanced script
 document.getElementById('generateScript').addEventListener('click', ()=>{
-  // Save current active image text first
   photos[activeIndex].text = activeTextarea.value;
+  script = photos.map(p => enhanceText(p.text));
+  scriptOutput.value = script.join('\n\n');
+  alert('Enhanced script generated for '+script.length+' slides.');
+});
 
-  // Generate script array
-  script = photos.map((p,i)=>p.text.trim() || `Slide ${i+1} description`);
-
-  if(script.length === 0){
-    alert('Add text to images first!');
-    return;
-  }
-  alert('Script generated for '+script.length+' slides.');
+// Download script
+downloadScriptBtn.addEventListener('click', ()=>{
+  if(script.length===0){ alert('Generate the script first'); return; }
+  const blob = new Blob([script.join('\n\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'property_script.txt';
+  a.click();
 });
 
 // TTS playback synced with cinematic
@@ -226,7 +240,6 @@ function speakText(text){
 }
 
 document.getElementById('playNarration').addEventListener('click', playCinematicTTS);
-
 document.getElementById('generateVideo').addEventListener('click', ()=>{
   alert('Video export requires advanced capture; prototype focuses on cinematic TTS walkthrough.');
 });
