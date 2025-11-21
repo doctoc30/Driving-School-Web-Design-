@@ -155,16 +155,10 @@ Sortable.create(thumbnails, {
   }
 });
 
-// Template-based enhancement
+// Enhanced template for demonstration
 function enhanceText(input){
   if(!input || input.trim()==='') return 'No description provided.';
-  const templates = [
-    `This area features ${input}, designed with elegance and functionality.`,
-    `Notice the details in ${input}, perfect for modern living.`,
-    `The ${input} stands out, offering both comfort and style.`,
-    `Featuring ${input}, this area is ideal for entertaining or relaxing.`
-  ];
-  return templates[Math.floor(Math.random() * templates.length)];
+  return `Cinematic walkthrough narration: "${input}". This area is beautifully designed to impress potential buyers with style, comfort, and functionality.`;
 }
 
 // Generate enhanced script for all images
@@ -254,8 +248,6 @@ function speakText(text){
 }
 
 document.getElementById('playNarration').addEventListener('click', playCinematicTTS);
-
-// Placeholder video button
 document.getElementById('generateVideo').addEventListener('click', ()=>{
   alert('Video export requires backend processing; this is a prototype.');
 });
