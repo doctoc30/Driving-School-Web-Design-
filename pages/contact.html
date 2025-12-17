@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Realistic Continuous Walkthrough</title>
+<title>Test Walkthrough</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body { margin:0; overflow:hidden; background:#000; font-family:Arial; color:#fff; }
@@ -17,69 +17,54 @@ input, button { display:block; margin-bottom:5px; }
 <div id="ui">
   <label>Upload Images:</label>
   <input type="file" id="images" multiple accept="image/*">
-  <label>Scene Duration (s):</label>
+  <label>Scene Duration (seconds per room):</label>
   <input type="number" id="duration" value="6" min="1">
   <button id="exportBtn">Export Video</button>
 </div>
 <canvas id="canvas"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.9.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/depth-estimation@0.0.2/dist/depth-estimation.min.js"></script>
 
 <script>
 const canvas = document.getElementById('canvas');
 const durationInput = document.getElementById('duration');
 const exportBtn = document.getElementById('exportBtn');
-let images = [], planes = [];
 
-let scene, camera, renderer;
-let model;
-let startTime;
-let totalDuration = 0;
-const fps = 24;
-
-// Initialize Three.js
-scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
-camera.position.z = 1;
-renderer = new THREE.WebGLRenderer({canvas: canvas, preserveDrawingBuffer:true});
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
+let renderer = new THREE.WebGLRenderer({canvas, preserveDrawingBuffer:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Load depth model
-depthEstimation.load().then(m => { model = m; console.log('Depth model loaded'); });
+let images = [];
+let planes = [];
+let totalDuration = 6;
+let startTime;
+
+// Easing function for smooth motion
+function easeInOut(t){ return t*t*(3-2*t); }
 
 // Handle image upload
-document.getElementById('images').addEventListener('change', async (e) => {
+document.getElementById('images').addEventListener('change', async (e)=>{
   images = [...e.target.files];
-  planes.forEach(p => scene.remove(p.mesh));
-  planes = [];
+  planes.forEach(p=>scene.remove(p.mesh));
+  planes=[];
 
-  totalDuration = parseFloat(durationInput.value) * images.length;
+  totalDuration = parseFloat(durationInput.value)*images.length;
 
-  for (let i=0; i<images.length; i++) {
+  for(let i=0;i<images.length;i++){
     const url = URL.createObjectURL(images[i]);
-    const img = await new Promise(r => { const im = new Image(); im.onload=()=>r(im); im.src=url; });
+    const img = await new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.src=url; });
 
-    // Generate depth map
-    const tfImg = tf.browser.fromPixels(img).expandDims(0);
-    const depthMap = model.predict(tfImg);
-    const depthData = await depthMap.data();
-    tfImg.dispose(); depthMap.dispose();
+    const texture = new THREE.Texture(img); texture.needsUpdate=true;
 
-    const texture = new THREE.Texture(img);
-    texture.needsUpdate = true;
-
-    const geometry = new THREE.PlaneGeometry(2, 1.125, img.width/8, img.height/8);
+    const geometry = new THREE.PlaneGeometry(2, 1.125, 10, 10);
     const verts = geometry.attributes.position;
-    for (let v=0; v<verts.count; v++) {
-      verts.setZ(v, depthData[v]*0.36); // slightly increased depth for realism
-    }
+    for(let v=0; v<verts.count; v++) verts.setZ(v, Math.random()*0.05); // fake depth
     geometry.computeVertexNormals();
 
-    const material = new THREE.MeshBasicMaterial({map:texture, transparent:true, opacity:0});
+    const material = new THREE.MeshBasicMaterial({map:texture, transparent:true, opacity:1});
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.z = -i; // stack along Z-axis
+    mesh.position.z = -i; // stack planes along Z
     scene.add(mesh);
     planes.push({mesh});
   }
@@ -88,28 +73,23 @@ document.getElementById('images').addEventListener('change', async (e) => {
   animate();
 });
 
-// Easing function for smooth acceleration/deceleration
-function easeInOut(t) { return t*t*(3-2*t); }
-
-// Continuous animation with bobbing and tilt
-function animate(now) {
+// Continuous camera animation with sway, bob, tilt
+function animate(now){
   requestAnimationFrame(animate);
-  if (!planes.length) return;
+  if(!planes.length) return;
 
   const elapsed = (now-startTime)/1000;
   const t = Math.min(elapsed/totalDuration,1);
-
   const zStart = 1, zEnd = -planes.length;
   const easedT = easeInOut(t);
 
   camera.position.z = zStart + (zEnd-zStart)*easedT;
-  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2); // horizontal sway
-  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4); // subtle vertical bobbing
+  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);  // horizontal sway
+  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4); // vertical bob
   camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2); // slight tilt
-
   camera.lookAt(0,0,0);
 
-  // Cross-fade planes
+  // Cross-fade between planes
   planes.forEach((p,i)=>{
     const dist = Math.abs(camera.position.z - p.mesh.position.z);
     p.mesh.material.opacity = Math.max(0, Math.min(1, 1-dist));
@@ -117,28 +97,29 @@ function animate(now) {
 
   renderer.render(scene,camera);
 
-  if (t>=1) startTime = performance.now(); // loop
+  if(t>=1) startTime = performance.now(); // loop
 }
 
-// Export WebM video
-exportBtn.addEventListener('click', () => {
+// Export video
+exportBtn.addEventListener('click',()=>{
+  totalDuration = parseFloat(durationInput.value)*images.length;
+  const fps = 24;
   const stream = canvas.captureStream(fps);
-  const recorder = new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9'});
-  const chunks = [];
-  recorder.ondataavailable = e=>chunks.push(e.data);
+  const recorder = new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});
+  const chunks=[];
+  recorder.ondataavailable=e=>chunks.push(e.data);
   recorder.start();
 
-  const totalFrames = totalDuration*fps;
   let frameCounter = 0;
+  const totalFrames = totalDuration*fps;
 
-  function renderFrame() {
+  function renderFrame(){
     if(frameCounter>=totalFrames){
       recorder.stop();
-      recorder.onstop = ()=>{
+      recorder.onstop=()=>{
         const blob = new Blob(chunks,{type:'video/webm'});
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download='walkthrough.webm'; a.click();
+        const a = document.createElement('a'); a.href=url; a.download='walkthrough.webm'; a.click();
       };
       return;
     }
@@ -154,7 +135,7 @@ exportBtn.addEventListener('click', () => {
 
     planes.forEach((p,i)=>{
       const dist = Math.abs(camera.position.z - p.mesh.position.z);
-      p.mesh.material.opacity = Math.max(0, Math.min(1, 1-dist));
+      p.mesh.material.opacity = Math.max(0, Math.min(1,1-dist));
     });
 
     renderer.render(scene,camera);
