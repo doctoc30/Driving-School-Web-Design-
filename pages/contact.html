@@ -2,136 +2,168 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Realistic Walkthrough</title>
+<title>Realistic Continuous Walkthrough</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-  margin: 0;
-  background: #000;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  color: #fff;
+body { margin:0; overflow:hidden; background:#000; font-family:Arial; color:#fff; }
+#ui {
+  position:absolute; top:10px; left:10px; z-index:10;
+  background:rgba(0,0,0,0.6); padding:10px; border-radius:5px;
 }
-header {
-  padding: 15px;
-  text-align: center;
-  background: #111;
-  border-bottom: 1px solid #222;
-}
-input {
-  margin-top: 10px;
-}
-#viewer {
-  position: relative;
-  width: 100vw;
-  height: calc(100vh - 80px);
-  overflow: hidden;
-  background: black;
-}
-.frame-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
-.frame-layer.active {
-  opacity: 1;
-}
+input, button { display:block; margin-bottom:5px; }
 </style>
 </head>
 <body>
-<header>
-  <h2>Realistic Walkthrough Tester</h2>
-  <p>Upload layers: Foreground first, Background second</p>
-  <input type="file" id="upload" multiple accept="image/*">
-</header>
-<div id="viewer"></div>
+<div id="ui">
+  <label>Upload Images:</label>
+  <input type="file" id="images" multiple accept="image/*">
+  <label>Scene Duration (s):</label>
+  <input type="number" id="duration" value="6" min="1">
+  <button id="exportBtn">Export Video</button>
+</div>
+<canvas id="canvas"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.9.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/depth-estimation@0.0.2/dist/depth-estimation.min.js"></script>
 
 <script>
-const viewer = document.getElementById("viewer");
-const upload = document.getElementById("upload");
+const canvas = document.getElementById('canvas');
+const durationInput = document.getElementById('duration');
+const exportBtn = document.getElementById('exportBtn');
+let images = [], planes = [];
 
-let frames = []; // array of frames, each frame = array of layers
-let current = 0;
-const DISPLAY_TIME = 6500; // per frame
-const TRANSITION_TIME = 2000;
+let scene, camera, renderer;
+let model;
+let startTime;
+let totalDuration = 0;
+const fps = 24;
 
-upload.addEventListener("change", (e) => {
-  viewer.innerHTML = "";
-  frames = [];
-  current = 0;
+// Initialize Three.js
+scene = new THREE.Scene();
+camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.z = 1;
+renderer = new THREE.WebGLRenderer({canvas: canvas, preserveDrawingBuffer:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-  const files = [...e.target.files];
-  // assume layers uploaded sequentially: fg/bg
-  for (let i = 0; i < files.length; i += 2) {
-    const fgURL = URL.createObjectURL(files[i]);
-    const bgURL = files[i+1] ? URL.createObjectURL(files[i+1]) : fgURL;
+// Load depth model
+depthEstimation.load().then(m => { model = m; console.log('Depth model loaded'); });
 
-    const fg = document.createElement("div");
-    fg.className = "frame-layer";
-    fg.style.backgroundImage = `url(${fgURL})`;
-    viewer.appendChild(fg);
+// Handle image upload
+document.getElementById('images').addEventListener('change', async (e) => {
+  images = [...e.target.files];
+  planes.forEach(p => scene.remove(p.mesh));
+  planes = [];
 
-    const bg = document.createElement("div");
-    bg.className = "frame-layer";
-    bg.style.backgroundImage = `url(${bgURL})`;
-    viewer.appendChild(bg);
+  totalDuration = parseFloat(durationInput.value) * images.length;
 
-    frames.push([fg, bg]);
+  for (let i=0; i<images.length; i++) {
+    const url = URL.createObjectURL(images[i]);
+    const img = await new Promise(r => { const im = new Image(); im.onload=()=>r(im); im.src=url; });
+
+    // Generate depth map
+    const tfImg = tf.browser.fromPixels(img).expandDims(0);
+    const depthMap = model.predict(tfImg);
+    const depthData = await depthMap.data();
+    tfImg.dispose(); depthMap.dispose();
+
+    const texture = new THREE.Texture(img);
+    texture.needsUpdate = true;
+
+    const geometry = new THREE.PlaneGeometry(2, 1.125, img.width/8, img.height/8);
+    const verts = geometry.attributes.position;
+    for (let v=0; v<verts.count; v++) {
+      verts.setZ(v, depthData[v]*0.36); // slightly increased depth for realism
+    }
+    geometry.computeVertexNormals();
+
+    const material = new THREE.MeshBasicMaterial({map:texture, transparent:true, opacity:0});
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.z = -i; // stack along Z-axis
+    scene.add(mesh);
+    planes.push({mesh});
   }
 
-  if (frames.length) startWalkthrough();
+  startTime = performance.now();
+  animate();
 });
 
-function startWalkthrough() {
-  showFrame(0);
+// Easing function for smooth acceleration/deceleration
+function easeInOut(t) { return t*t*(3-2*t); }
+
+// Continuous animation with bobbing and tilt
+function animate(now) {
+  requestAnimationFrame(animate);
+  if (!planes.length) return;
+
+  const elapsed = (now-startTime)/1000;
+  const t = Math.min(elapsed/totalDuration,1);
+
+  const zStart = 1, zEnd = -planes.length;
+  const easedT = easeInOut(t);
+
+  camera.position.z = zStart + (zEnd-zStart)*easedT;
+  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2); // horizontal sway
+  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4); // subtle vertical bobbing
+  camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2); // slight tilt
+
+  camera.lookAt(0,0,0);
+
+  // Cross-fade planes
+  planes.forEach((p,i)=>{
+    const dist = Math.abs(camera.position.z - p.mesh.position.z);
+    p.mesh.material.opacity = Math.max(0, Math.min(1, 1-dist));
+  });
+
+  renderer.render(scene,camera);
+
+  if (t>=1) startTime = performance.now(); // loop
 }
 
-function showFrame(index) {
-  const layers = frames[index];
-  layers.forEach(layer => layer.classList.add("active"));
+// Export WebM video
+exportBtn.addEventListener('click', () => {
+  const stream = canvas.captureStream(fps);
+  const recorder = new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9'});
+  const chunks = [];
+  recorder.ondataavailable = e=>chunks.push(e.data);
+  recorder.start();
 
-  animateFrame(layers);
+  const totalFrames = totalDuration*fps;
+  let frameCounter = 0;
 
-  setTimeout(() => {
-    layers.forEach(layer => layer.classList.remove("active"));
-    current = (current + 1) % frames.length;
-    showFrame(current);
-  }, DISPLAY_TIME);
-}
+  function renderFrame() {
+    if(frameCounter>=totalFrames){
+      recorder.stop();
+      recorder.onstop = ()=>{
+        const blob = new Blob(chunks,{type:'video/webm'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download='walkthrough.webm'; a.click();
+      };
+      return;
+    }
 
-function animateFrame(layers) {
-  const start = performance.now();
-  const duration = DISPLAY_TIME;
+    const t = frameCounter/totalFrames;
+    const easedT = easeInOut(t);
+    const zStart = 1, zEnd = -planes.length;
+    camera.position.z = zStart + (zEnd-zStart)*easedT;
+    camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);
+    camera.position.y = 0.015*Math.sin(easedT*Math.PI*4);
+    camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2);
+    camera.lookAt(0,0,0);
 
-  const startScale = 1;
-  const endScale = 1.06;
-
-  // subtle random sway for human motion
-  const swayX = (Math.random() * 4 - 2);
-  const swayY = (Math.random() * 3 - 1.5);
-
-  function step(now) {
-    let t = (now - start) / duration;
-    t = Math.min(t, 1);
-    const ease = t*t*(3-2*t);
-
-    layers.forEach((layer, i) => {
-      const depthFactor = i === 0 ? 1.2 : 0.8; // fg moves faster, bg slower
-      const scale = startScale + (endScale - startScale)*ease;
-      layer.style.transform = `
-        scale(${scale})
-        translate(${swayX*ease*depthFactor}px, ${swayY*ease*depthFactor}px)
-      `;
+    planes.forEach((p,i)=>{
+      const dist = Math.abs(camera.position.z - p.mesh.position.z);
+      p.mesh.material.opacity = Math.max(0, Math.min(1, 1-dist));
     });
 
-    if (t < 1) requestAnimationFrame(step);
+    renderer.render(scene,camera);
+    frameCounter++;
+    setTimeout(renderFrame,1000/fps);
   }
 
-  requestAnimationFrame(step);
-}
+  renderFrame();
+});
 </script>
 </body>
 </html>
