@@ -2,14 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Test Walkthrough</title>
+<title>Walkthrough Editor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { margin:0; overflow:hidden; background:#000; font-family:Arial; color:#fff; }
-#ui {
-  position:absolute; top:10px; left:10px; z-index:10;
-  background:rgba(0,0,0,0.6); padding:10px; border-radius:5px;
+body { margin:0; overflow:hidden; background:#000; font-family:Arial, sans-serif; }
+canvas {
+  position:absolute;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  display:block;
+  z-index:0;
 }
+#ui {
+  position:absolute;
+  top:10px; left:10px;
+  z-index:10;
+  background:rgba(0,0,0,0.6);
+  padding:10px;
+  border-radius:5px;
+}
+#thumbnails {
+  position:absolute;
+  top:120px; left:10px;
+  z-index:10;
+  max-height:400px;
+  overflow-y:auto;
+  background:rgba(0,0,0,0.5);
+  padding:5px;
+  border-radius:5px;
+}
+.thumbnail {
+  position:relative;
+  margin-bottom:5px;
+  display:flex;
+  align-items:center;
+  background:rgba(255,255,255,0.1);
+  padding:3px;
+  border-radius:3px;
+}
+.thumbnail img { height:60px; margin-right:5px; }
+.thumbnail button { margin-left:3px; }
 input, button { display:block; margin-bottom:5px; }
 </style>
 </head>
@@ -21,128 +54,158 @@ input, button { display:block; margin-bottom:5px; }
   <input type="number" id="duration" value="6" min="1">
   <button id="exportBtn">Export Video</button>
 </div>
+<div id="thumbnails"></div>
 <canvas id="canvas"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-
 <script>
 const canvas = document.getElementById('canvas');
 const durationInput = document.getElementById('duration');
 const exportBtn = document.getElementById('exportBtn');
+const thumbDiv = document.getElementById('thumbnails');
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
 let renderer = new THREE.WebGLRenderer({canvas, preserveDrawingBuffer:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-let images = [];
-let planes = [];
+let imagesData = []; // {file, url, mesh}
 let totalDuration = 6;
 let startTime;
 
-// Easing function for smooth motion
 function easeInOut(t){ return t*t*(3-2*t); }
 
-// Handle image upload
-document.getElementById('images').addEventListener('change', async (e)=>{
-  images = [...e.target.files];
-  planes.forEach(p=>scene.remove(p.mesh));
-  planes=[];
-
-  totalDuration = parseFloat(durationInput.value)*images.length;
-
-  for(let i=0;i<images.length;i++){
-    const url = URL.createObjectURL(images[i]);
-    const img = await new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.src=url; });
-
-    const texture = new THREE.Texture(img); texture.needsUpdate=true;
-
-    const geometry = new THREE.PlaneGeometry(2, 1.125, 10, 10);
+// Build planes from current imagesData
+function buildPlanes(){
+  // Remove old meshes
+  scene.children = scene.children.filter(c=>!(c.isMesh));
+  imagesData.forEach((data,i)=>{
+    const texture = new THREE.Texture(data.img);
+    texture.needsUpdate = true;
+    const geometry = new THREE.PlaneGeometry(2,1.125,10,10);
     const verts = geometry.attributes.position;
-    for(let v=0; v<verts.count; v++) verts.setZ(v, Math.random()*0.05); // fake depth
+    for(let v=0; v<verts.count; v++) verts.setZ(v, Math.random()*0.05);
     geometry.computeVertexNormals();
-
     const material = new THREE.MeshBasicMaterial({map:texture, transparent:true, opacity:1});
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.z = -i; // stack planes along Z
+    mesh.position.z = -i*4;
     scene.add(mesh);
-    planes.push({mesh});
-  }
+    data.mesh = mesh;
+  });
+}
 
+// Update thumbnail panel
+function renderThumbnails(){
+  thumbDiv.innerHTML = '';
+  imagesData.forEach((data,i)=>{
+    const div = document.createElement('div');
+    div.className='thumbnail';
+    const imgEl = document.createElement('img');
+    imgEl.src = data.url;
+    const delBtn = document.createElement('button'); delBtn.textContent='Delete';
+    delBtn.onclick=()=>{ imagesData.splice(i,1); buildPlanes(); renderThumbnails(); };
+    const upBtn = document.createElement('button'); upBtn.textContent='↑';
+    upBtn.onclick=()=>{
+      if(i===0) return;
+      [imagesData[i-1], imagesData[i]]=[imagesData[i], imagesData[i-1]];
+      buildPlanes(); renderThumbnails();
+    };
+    const downBtn = document.createElement('button'); downBtn.textContent='↓';
+    downBtn.onclick=()=>{
+      if(i===imagesData.length-1) return;
+      [imagesData[i+1], imagesData[i]]=[imagesData[i], imagesData[i+1]];
+      buildPlanes(); renderThumbnails();
+    };
+    div.appendChild(imgEl);
+    div.appendChild(delBtn);
+    div.appendChild(upBtn);
+    div.appendChild(downBtn);
+    thumbDiv.appendChild(div);
+  });
+}
+
+// Handle uploads
+document.getElementById('images').addEventListener('change', async (e)=>{
+  const files=[...e.target.files];
+  for(let f of files){
+    const url = URL.createObjectURL(f);
+    const img = await new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.src=url; });
+    imagesData.push({file:f,url,img});
+  }
+  totalDuration = parseFloat(durationInput.value)*imagesData.length;
+  buildPlanes();
+  renderThumbnails();
   startTime = performance.now();
   animate();
 });
 
-// Continuous camera animation with sway, bob, tilt
+// Animation loop
 function animate(now){
   requestAnimationFrame(animate);
-  if(!planes.length) return;
+  if(!imagesData.length) return;
 
   const elapsed = (now-startTime)/1000;
   const t = Math.min(elapsed/totalDuration,1);
-  const zStart = 1, zEnd = -planes.length;
   const easedT = easeInOut(t);
-
-  camera.position.z = zStart + (zEnd-zStart)*easedT;
-  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);  // horizontal sway
-  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4); // vertical bob
-  camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2); // slight tilt
+  const zStart=2, zEnd=-imagesData.length*4;
+  camera.position.z = zStart + (zEnd - zStart)*easedT;
+  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);
+  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4);
+  camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2);
   camera.lookAt(0,0,0);
 
-  // Cross-fade between planes
-  planes.forEach((p,i)=>{
-    const dist = Math.abs(camera.position.z - p.mesh.position.z);
-    p.mesh.material.opacity = Math.max(0, Math.min(1, 1-dist));
+  const fadeRange=2;
+  imagesData.forEach(data=>{
+    const dist = Math.abs(camera.position.z - data.mesh.position.z);
+    data.mesh.material.opacity = Math.max(0, Math.min(1,1-dist/fadeRange));
   });
 
   renderer.render(scene,camera);
-
-  if(t>=1) startTime = performance.now(); // loop
+  if(t>=1) startTime=performance.now();
 }
 
 // Export video
 exportBtn.addEventListener('click',()=>{
-  totalDuration = parseFloat(durationInput.value)*images.length;
-  const fps = 24;
+  if(!imagesData.length) return;
+  totalDuration=parseFloat(durationInput.value)*imagesData.length;
+  const fps=24;
   const stream = canvas.captureStream(fps);
   const recorder = new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});
   const chunks=[];
   recorder.ondataavailable=e=>chunks.push(e.data);
   recorder.start();
-
-  let frameCounter = 0;
-  const totalFrames = totalDuration*fps;
+  let frameCounter=0;
+  const totalFrames=totalDuration*fps;
 
   function renderFrame(){
     if(frameCounter>=totalFrames){
       recorder.stop();
       recorder.onstop=()=>{
-        const blob = new Blob(chunks,{type:'video/webm'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download='walkthrough.webm'; a.click();
-      };
+        const blob=new Blob(chunks,{type:'video/webm'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='walkthrough.webm'; a.click();
+      }
       return;
     }
-
-    const t = frameCounter/totalFrames;
-    const easedT = easeInOut(t);
-    const zStart = 1, zEnd = -planes.length;
-    camera.position.z = zStart + (zEnd-zStart)*easedT;
-    camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);
-    camera.position.y = 0.015*Math.sin(easedT*Math.PI*4);
-    camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2);
+    const t=frameCounter/totalFrames;
+    const easedT=easeInOut(t);
+    const zStart=2,zEnd=-imagesData.length*4;
+    camera.position.z=zStart+(zEnd-zStart)*easedT;
+    camera.position.x=0.02*Math.sin(easedT*Math.PI*2);
+    camera.position.y=0.015*Math.sin(easedT*Math.PI*4);
+    camera.rotation.z=0.003*Math.sin(easedT*Math.PI*2);
     camera.lookAt(0,0,0);
 
-    planes.forEach((p,i)=>{
-      const dist = Math.abs(camera.position.z - p.mesh.position.z);
-      p.mesh.material.opacity = Math.max(0, Math.min(1,1-dist));
+    const fadeRange=2;
+    imagesData.forEach(data=>{
+      const dist=Math.abs(camera.position.z-data.mesh.position.z);
+      data.mesh.material.opacity=Math.max(0,Math.min(1,1-dist/fadeRange));
     });
 
     renderer.render(scene,camera);
     frameCounter++;
     setTimeout(renderFrame,1000/fps);
   }
-
   renderFrame();
 });
 </script>
