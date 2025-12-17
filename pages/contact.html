@@ -2,255 +2,136 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Realistic Walkthrough</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RedWalk 3D Walkthrough</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato&display=swap" rel="stylesheet">
 <style>
-body { margin:0; font-family:'Lato',sans-serif; background:#111; color:#fff; }
-h1,h2,h3,h4,h5,h6 { font-family:'Montserrat',sans-serif; }
-header { background:#c62828; color:#fff; padding:25px 15px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
-header h1 { margin:0; font-size:2rem; letter-spacing:1px; }
-header p { margin:5px 0 0 0; font-size:1rem; opacity:0.9; }
-
-.container { max-width:1200px; margin:auto; padding:20px; display:flex; flex-direction:column; gap:20px; }
-.upload-area {
-  border:2px dashed #c62828; border-radius:15px; padding:40px; text-align:center;
-  font-size:1.2rem; font-weight:bold; color:#c62828; cursor:pointer;
-  background: rgba(255,255,255,0.05); box-shadow:0 5px 15px rgba(0,0,0,0.2);
+body {
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: #fff;
 }
-.upload-area.dragover { background: rgba(198,40,40,0.2); transform: scale(1.03); }
-
-.main-view { display:flex; flex-direction:column; gap:15px; width:100%; }
-.active-image-container { width:100%; text-align:center; position:relative; }
-#activeImage { width:100%; max-height:70vh; object-fit:cover; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.6); }
-#activeTextarea { width:90%; margin:10px auto 0 auto; padding:12px; border-radius:12px; border:none; outline:none;
-  resize:none; font-size:1rem; background: rgba(255,255,255,0.1); color:#fff; box-shadow:0 3px 15px rgba(0,0,0,0.5);
+header {
+  padding: 15px;
+  text-align: center;
+  background: #111;
+  border-bottom: 1px solid #222;
 }
-#activeTextarea:focus { background: rgba(255,255,255,0.2); }
-
-#thumbnails { display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; }
-#thumbnails img { width:80px; height:55px; object-fit:cover; border-radius:10px; cursor:pointer; border:2px solid transparent; transition:0.3s; }
-#thumbnails img.active { border:2px solid #c62828; transform:scale(1.05); }
-
-button { background: linear-gradient(45deg, #c62828, #ff5252); color:#fff; border:none; padding:12px 20px; margin:8px auto;
-  border-radius:12px; font-size:1rem; cursor:pointer; width:90%; transition:0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.3);
+input {
+  margin-top: 10px;
 }
-button:hover { transform: translateY(-2px); box-shadow:0 7px 20px rgba(0,0,0,0.4); }
-
-#scriptOutput { width:90%; height:150px; margin:10px auto; display:block; background:#222; color:#fff; padding:10px; border-radius:10px; }
-#canvasContainer { width:100%; height:450px; border-radius:15px; overflow:hidden; margin-top:20px; box-shadow:0 5px 20px rgba(0,0,0,0.5); }
-
-@media(min-width:900px){
-  .main-view { flex-direction:row; }
-  .active-image-container { flex:2; }
-  #thumbnails { flex-direction:column; overflow-y:auto; max-height:70vh; }
-  #thumbnails img { width:100px; height:70px; }
+#viewer {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+  background: black;
+}
+.frame-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.frame-layer.active {
+  opacity: 1;
 }
 </style>
 </head>
 <body>
-
 <header>
-  <h1>RedWalk 3D Cinematic Walkthrough</h1>
-  <p>Create cinematic property videos with narration</p>
+  <h2>Realistic Walkthrough Tester</h2>
+  <p>Upload layers: Foreground first, Background second</p>
+  <input type="file" id="upload" multiple accept="image/*">
 </header>
-
-<div class="container">
-  <div class="upload-area" id="uploadArea">Tap or drag photos here</div>
-  <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
-
-  <div class="main-view">
-    <div class="active-image-container">
-      <img id="activeImage" src="" alt="Active Property Image">
-      <textarea id="activeTextarea" placeholder="Add few words describing this image for narration..."></textarea>
-    </div>
-    <div id="thumbnails"></div>
-  </div>
-
-  <button id="generateScript">Generate Enhanced Script</button>
-  <button id="downloadScript">Download Script</button>
-  <textarea id="scriptOutput" readonly placeholder="Enhanced script will appear here..."></textarea>
-  <button id="playNarration">Play Narration</button>
-  <button id="generateVideo">Generate Video</button>
-
-  <div id="canvasContainer"></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.16.0/Sortable.min.js"></script>
+<div id="viewer"></div>
 
 <script>
-let photos = [], activeIndex = 0, script = [];
-const uploadArea = document.getElementById('uploadArea');
-const fileInput = document.getElementById('fileInput');
-const thumbnails = document.getElementById('thumbnails');
-const activeImage = document.getElementById('activeImage');
-const activeTextarea = document.getElementById('activeTextarea');
-const container = document.getElementById('canvasContainer');
-const scriptOutput = document.getElementById('scriptOutput');
-const downloadScriptBtn = document.getElementById('downloadScript');
+const viewer = document.getElementById("viewer");
+const upload = document.getElementById("upload");
 
-// Upload images
-uploadArea.addEventListener('click', ()=>fileInput.click());
-fileInput.addEventListener('change', handleFiles);
-uploadArea.addEventListener('dragover', e=>{ e.preventDefault(); uploadArea.classList.add('dragover'); });
-uploadArea.addEventListener('dragleave', e=>{ uploadArea.classList.remove('dragover'); });
-uploadArea.addEventListener('drop', e=>{ e.preventDefault(); uploadArea.classList.remove('dragover'); handleFiles(e.dataTransfer); });
+let frames = []; // array of frames, each frame = array of layers
+let current = 0;
+const DISPLAY_TIME = 6500; // per frame
+const TRANSITION_TIME = 2000;
 
-function handleFiles(e){
-  const files = e.files || e.target.files;
-  for(let file of files){
-    if(!file.type.startsWith('image/')) continue;
-    const reader = new FileReader();
-    reader.onload = function(ev){
-      photos.push({src: ev.target.result, text: ''});
-      renderThumbnails();
-      setActiveImage(photos.length-1);
-    }
-    reader.readAsDataURL(file);
+upload.addEventListener("change", (e) => {
+  viewer.innerHTML = "";
+  frames = [];
+  current = 0;
+
+  const files = [...e.target.files];
+  // assume layers uploaded sequentially: fg/bg
+  for (let i = 0; i < files.length; i += 2) {
+    const fgURL = URL.createObjectURL(files[i]);
+    const bgURL = files[i+1] ? URL.createObjectURL(files[i+1]) : fgURL;
+
+    const fg = document.createElement("div");
+    fg.className = "frame-layer";
+    fg.style.backgroundImage = `url(${fgURL})`;
+    viewer.appendChild(fg);
+
+    const bg = document.createElement("div");
+    bg.className = "frame-layer";
+    bg.style.backgroundImage = `url(${bgURL})`;
+    viewer.appendChild(bg);
+
+    frames.push([fg, bg]);
   }
-}
 
-// Render thumbnails
-function renderThumbnails(){
-  thumbnails.innerHTML = '';
-  photos.forEach((p,i)=>{
-    const img = document.createElement('img');
-    img.src = p.src;
-    if(i===activeIndex) img.classList.add('active');
-    img.addEventListener('click', ()=>setActiveImage(i));
-    thumbnails.appendChild(img);
-  });
-}
-
-// Set active image
-function setActiveImage(index){
-  activeIndex = index;
-  activeImage.src = photos[index].src;
-  activeTextarea.value = photos[index].text;
-  const thumbImgs = thumbnails.querySelectorAll('img');
-  thumbImgs.forEach((t,i)=>t.classList.toggle('active', i===index));
-}
-
-// Save textarea changes immediately
-activeTextarea.addEventListener('input', ()=>{
-  photos[activeIndex].text = activeTextarea.value;
+  if (frames.length) startWalkthrough();
 });
 
-// Reordering thumbnails
-Sortable.create(thumbnails, {
-  animation:150,
-  onEnd: function(evt){
-    const newPhotos = [];
-    const thumbImgs = thumbnails.querySelectorAll('img');
-    thumbImgs.forEach(img=>{
-      const found = photos.find(p=>p.src===img.src);
-      if(found) newPhotos.push(found);
+function startWalkthrough() {
+  showFrame(0);
+}
+
+function showFrame(index) {
+  const layers = frames[index];
+  layers.forEach(layer => layer.classList.add("active"));
+
+  animateFrame(layers);
+
+  setTimeout(() => {
+    layers.forEach(layer => layer.classList.remove("active"));
+    current = (current + 1) % frames.length;
+    showFrame(current);
+  }, DISPLAY_TIME);
+}
+
+function animateFrame(layers) {
+  const start = performance.now();
+  const duration = DISPLAY_TIME;
+
+  const startScale = 1;
+  const endScale = 1.06;
+
+  // subtle random sway for human motion
+  const swayX = (Math.random() * 4 - 2);
+  const swayY = (Math.random() * 3 - 1.5);
+
+  function step(now) {
+    let t = (now - start) / duration;
+    t = Math.min(t, 1);
+    const ease = t*t*(3-2*t);
+
+    layers.forEach((layer, i) => {
+      const depthFactor = i === 0 ? 1.2 : 0.8; // fg moves faster, bg slower
+      const scale = startScale + (endScale - startScale)*ease;
+      layer.style.transform = `
+        scale(${scale})
+        translate(${swayX*ease*depthFactor}px, ${swayY*ease*depthFactor}px)
+      `;
     });
-    photos = newPhotos;
-    const activeSrc = activeImage.src;
-    activeIndex = photos.findIndex(p=>p.src===activeSrc);
-    renderThumbnails();
-    setActiveImage(activeIndex);
-  }
-});
 
-// Enhanced template for demonstration
-function enhanceText(input){
-  if(!input || input.trim()==='') return 'No description provided.';
-  return `Cinematic walkthrough narration: "${input}". This area is beautifully designed to impress potential buyers with style, comfort, and functionality.`;
-}
-
-// Generate enhanced script for all images
-document.getElementById('generateScript').addEventListener('click', ()=>{
-  if(photos.length === 0){
-    alert('Please upload at least one image first.');
-    return;
+    if (t < 1) requestAnimationFrame(step);
   }
 
-  // Save current textarea input
-  photos[activeIndex].text = activeTextarea.value;
-
-  // Generate script
-  script = photos.map(p => enhanceText(p.text));
-  scriptOutput.value = script.join('\n\n');
-  alert('Enhanced script generated for '+script.length+' slides.');
-});
-
-// Download script
-downloadScriptBtn.addEventListener('click', ()=>{
-  if(script.length===0){ alert('Generate the script first'); return; }
-  const blob = new Blob([script.join('\n\n')], {type:'text/plain'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'property_script.txt';
-  a.click();
-});
-
-// TTS playback
-async function playCinematicTTS(){
-  if(!script.length){ alert('Generate script first'); return; }
-  if(!photos.length){ alert('Upload photos first'); return; }
-
-  const scene = new THREE.Scene();
-  const width=container.clientWidth, height=container.clientHeight;
-  const camera = new THREE.PerspectiveCamera(50, width/height, 0.1, 1000);
-  camera.position.z=5;
-  const renderer = new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(width,height);
-  container.innerHTML=''; container.appendChild(renderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,1));
-
-  const planes=[];
-  for(let p of photos){
-    const img = new Image(); img.src=p.src;
-    const tex = new THREE.Texture(img); tex.needsUpdate=true;
-    const geom = new THREE.PlaneGeometry(4,2.25);
-    const mat = new THREE.MeshBasicMaterial({map:tex});
-    const plane = new THREE.Mesh(geom,mat);
-    planes.push(plane);
-    scene.add(plane);
-  }
-
-  renderer.render(scene,camera);
-
-  for(let i=0;i<planes.length;i++){
-    const targetZ = -i*5;
-    await animateCamera(camera, targetZ, renderer, scene);
-    await speakText(script[i]);
-  }
+  requestAnimationFrame(step);
 }
-
-function animateCamera(camera, targetZ, renderer, scene){
-  return new Promise(resolve=>{
-    const duration = 2000;
-    const startZ = camera.position.z;
-    const startTime = performance.now();
-    function step(time){
-      const elapsed = time-startTime;
-      const t = Math.min(elapsed/duration,1);
-      camera.position.z = startZ + (targetZ-startZ)*t;
-      renderer.render(scene,camera);
-      if(t<1) requestAnimationFrame(step);
-      else resolve();
-    }
-    requestAnimationFrame(step);
-  });
-}
-
-function speakText(text){
-  return new Promise(resolve=>{
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.rate=1; utter.pitch=1;
-    utter.onend = resolve;
-    speechSynthesis.speak(utter);
-  });
-}
-
-document.getElementById('playNarration').addEventListener('click', playCinematicTTS);
-document.getElementById('generateVideo').addEventListener('click', ()=>{
-  alert('Video export requires backend processing; this is a prototype.');
-});
 </script>
 </body>
 </html>
