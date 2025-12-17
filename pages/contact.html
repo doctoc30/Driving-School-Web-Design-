@@ -1,213 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Walkthrough Editor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body { margin:0; overflow:hidden; background:#000; font-family:Arial, sans-serif; }
-canvas {
-  position:absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  display:block;
-  z-index:0;
-}
-#ui {
-  position:absolute;
-  top:10px; left:10px;
-  z-index:10;
-  background:rgba(0,0,0,0.6);
-  padding:10px;
-  border-radius:5px;
-}
-#thumbnails {
-  position:absolute;
-  top:120px; left:10px;
-  z-index:10;
-  max-height:400px;
-  overflow-y:auto;
-  background:rgba(0,0,0,0.5);
-  padding:5px;
-  border-radius:5px;
-}
-.thumbnail {
-  position:relative;
-  margin-bottom:5px;
-  display:flex;
-  align-items:center;
-  background:rgba(255,255,255,0.1);
-  padding:3px;
-  border-radius:3px;
-}
-.thumbnail img { height:60px; margin-right:5px; }
-.thumbnail button { margin-left:3px; }
-input, button { display:block; margin-bottom:5px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Virtual Tour Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon {
+            background: #3498db;
+            color: white;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+        }
+
+        .step h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="url"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 150px;
+            background: #f8f9fa;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-category {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .script-output {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-line;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            border: 1px solid #e1e8ed;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .controls button {
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .notification {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .notification.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .notification i {
+            font-size: 1.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-<div id="ui">
-  <label>Upload Images:</label>
-  <input type="file" id="images" multiple accept="image/*">
-  <label>Scene Duration (seconds per room):</label>
-  <input type="number" id="duration" value="6" min="1">
-  <button id="exportBtn">Export Video</button>
-</div>
-<div id="thumbnails"></div>
-<canvas id="canvas"></canvas>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-home"></i> Property Virtual Tour Generator</h1>
+            <p class="subtitle">Transform any property listing into an immersive virtual tour with AI-generated narration. Simply paste the URL and let our AI do the rest.</p>
+            
+            <div class="flow-steps">
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-link"></i></div>
+                    <h3>1. Input URL</h3>
+                    <p>Paste the property listing URL</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-images"></i></div>
+                    <h3>2. Photo Organization</h3>
+                    <p>AI detects and organizes photos by room</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-script"></i></div>
+                    <h3>3. Generate Script</h3>
+                    <p>Create a compelling walkthrough narrative</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><i class="fas fa-robot"></i></div>
+                    <h3>4. AI Voice Narration</h3>
+                    <p>Convert script to natural voiceover</p>
+                </div>
+            </div>
+        </header>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-<script>
-const canvas = document.getElementById('canvas');
-const durationInput = document.getElementById('duration');
-const exportBtn = document.getElementById('exportBtn');
-const thumbDiv = document.getElementById('thumbnails');
+        <div class="notification info" id="notification">
+            <i class="fas fa-info-circle"></i>
+            <div id="notification-text">Please enter a property listing URL to begin.</div>
+        </div>
 
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
-let renderer = new THREE.WebGLRenderer({canvas, preserveDrawingBuffer:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
+        <div class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-upload"></i> Property Details</h2>
+                <div class="form-group">
+                    <label for="property-url"><i class="fas fa-globe"></i> Property Listing URL</label>
+                    <input type="url" id="property-url" placeholder="https://www.realestate.com/property/123-main-st..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="property-type"><i class="fas fa-building"></i> Property Type</label>
+                    <select id="property-type" class="form-control">
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="condo">Condo</option>
+                        <option value="villa">Villa</option>
+                    </select>
+                </div>
+                
+                <button id="generate-btn">
+                    <span id="btn-text">Generate Virtual Tour</span>
+                    <div id="btn-loading" class="loading" style="display: none;"></div>
+                </button>
+                
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                
+                <div class="controls" id="controls" style="display: none;">
+                    <button class="btn-secondary" id="preview-btn">
+                        <i class="fas fa-play-circle"></i> Preview Narration
+                    </button>
+                    <button class="btn-success" id="download-btn">
+                        <i class="fas fa-download"></i> Download Tour
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-photo-video"></i> Organized Photos</h2>
+                <p>Photos will be organized from exterior to interior following a natural flow:</p>
+                <div class="photo-gallery" id="photo-gallery">
+                    <!-- Photos will be dynamically added here -->
+                    <div class="photo-placeholder" style="text-align: center; padding: 40px; color: #7f8c8d;">
+                        <i class="fas fa-images" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>Photos will appear here after processing</p>
+                    </div>
+                </div>
+                
+                <h2 style="margin-top: 30px;"><i class="fas fa-script"></i> Walkthrough Script</h2>
+                <div class="script-output" id="script-output">
+                    Your property walkthrough script will be generated here...
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Property Virtual Tour Generator &copy; 2023 | For Real Estate Professionals</p>
+            <p>AI-powered property presentation tool</p>
+        </footer>
+    </div>
 
-let imagesData = []; // {file, url, mesh}
-let totalDuration = 6;
-let startTime;
+    <!-- Audio player for preview -->
+    <audio id="narration-audio" style="display: none;"></audio>
 
-function easeInOut(t){ return t*t*(3-2*t); }
+    <script>
+        // DOM Elements
+        const propertyUrlInput = document.getElementById('property-url');
+        const propertyTypeSelect = document.getElementById('property-type');
+        const generateBtn = document.getElementById('generate-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoading = document.getElementById('btn-loading');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const photoGallery = document.getElementById('photo-gallery');
+        const scriptOutput = document.getElementById('script-output');
+        const controls = document.getElementById('controls');
+        const previewBtn = document.getElementById('preview-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        const narrationAudio = document.getElementById('narration-audio');
 
-// Build planes from current imagesData
-function buildPlanes(){
-  // Remove old meshes
-  scene.children = scene.children.filter(c=>!(c.isMesh));
-  imagesData.forEach((data,i)=>{
-    const texture = new THREE.Texture(data.img);
-    texture.needsUpdate = true;
-    const geometry = new THREE.PlaneGeometry(2,1.125,10,10);
-    const verts = geometry.attributes.position;
-    for(let v=0; v<verts.count; v++) verts.setZ(v, Math.random()*0.05);
-    geometry.computeVertexNormals();
-    const material = new THREE.MeshBasicMaterial({map:texture, transparent:true, opacity:1});
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.z = -i*4;
-    scene.add(mesh);
-    data.mesh = mesh;
-  });
-}
+        // Sample photo data categorized by room type
+        const samplePhotos = {
+            exterior: [
+                {id: 1, url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=300&fit=crop', category: 'Exterior Front'},
+                {id: 2, url: 'https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=400&h=300&fit=crop', category: 'Exterior Back'},
+                {id: 3, url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop', category: 'Garden'}
+            ],
+            living: [
+                {id: 4, url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop', category: 'Living Room'},
+                {id: 5, url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w-400&h=300&fit=crop', category: 'Dining Area'}
+            ],
+            kitchen: [
+                {id: 6, url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop', category: 'Kitchen'}
+            ],
+            bedroom: [
+                {id: 7, url: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&h=300&fit=crop', category: 'Master Bedroom'},
+                {id: 8, url: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&h=300&fit=crop', category: 'Bedroom 2'}
+            ],
+            bathroom: [
+                {id: 9, url: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&h=300&fit=crop', category: 'Main Bathroom'},
+                {id: 10, url: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?w=400&h=300&fit=crop', category: 'Ensuite'}
+            ]
+        };
 
-// Update thumbnail panel
-function renderThumbnails(){
-  thumbDiv.innerHTML = '';
-  imagesData.forEach((data,i)=>{
-    const div = document.createElement('div');
-    div.className='thumbnail';
-    const imgEl = document.createElement('img');
-    imgEl.src = data.url;
-    const delBtn = document.createElement('button'); delBtn.textContent='Delete';
-    delBtn.onclick=()=>{ imagesData.splice(i,1); buildPlanes(); renderThumbnails(); };
-    const upBtn = document.createElement('button'); upBtn.textContent='↑';
-    upBtn.onclick=()=>{
-      if(i===0) return;
-      [imagesData[i-1], imagesData[i]]=[imagesData[i], imagesData[i-1]];
-      buildPlanes(); renderThumbnails();
-    };
-    const downBtn = document.createElement('button'); downBtn.textContent='↓';
-    downBtn.onclick=()=>{
-      if(i===imagesData.length-1) return;
-      [imagesData[i+1], imagesData[i]]=[imagesData[i], imagesData[i+1]];
-      buildPlanes(); renderThumbnails();
-    };
-    div.appendChild(imgEl);
-    div.appendChild(delBtn);
-    div.appendChild(upBtn);
-    div.appendChild(downBtn);
-    thumbDiv.appendChild(div);
-  });
-}
+        // Sample walkthrough scripts based on property type
+        const sampleScripts = {
+            house: `Welcome to this beautiful 4-bedroom, 3-bathroom family home situated in a quiet, tree-lined street.
 
-// Handle uploads
-document.getElementById('images').addEventListener('change', async (e)=>{
-  const files=[...e.target.files];
-  for(let f of files){
-    const url = URL.createObjectURL(f);
-    const img = await new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.src=url; });
-    imagesData.push({file:f,url,img});
-  }
-  totalDuration = parseFloat(durationInput.value)*imagesData.length;
-  buildPlanes();
-  renderThumbnails();
-  startTime = performance.now();
-  animate();
-});
+As we approach the property, you'll immediately notice the charming curb appeal with its well-manicured front lawn, elegant brick facade, and inviting porch area - perfect for enjoying morning coffee.
 
-// Animation loop
-function animate(now){
-  requestAnimationFrame(animate);
-  if(!imagesData.length) return;
+Step inside to the bright and airy living room featuring high ceilings, hardwood floors, and a cozy fireplace that creates a warm focal point. The open floor plan seamlessly connects to the dining area, which is bathed in natural light from the large bay window.
 
-  const elapsed = (now-startTime)/1000;
-  const t = Math.min(elapsed/totalDuration,1);
-  const easedT = easeInOut(t);
-  const zStart=2, zEnd=-imagesData.length*4;
-  camera.position.z = zStart + (zEnd - zStart)*easedT;
-  camera.position.x = 0.02*Math.sin(easedT*Math.PI*2);
-  camera.position.y = 0.015*Math.sin(easedT*Math.PI*4);
-  camera.rotation.z = 0.003*Math.sin(easedT*Math.PI*2);
-  camera.lookAt(0,0,0);
+The gourmet kitchen is a chef's dream, boasting quartz countertops, stainless steel appliances, and a spacious island with seating for four. Notice the clever use of storage solutions and the walk-in pantry.
 
-  const fadeRange=2;
-  imagesData.forEach(data=>{
-    const dist = Math.abs(camera.position.z - data.mesh.position.z);
-    data.mesh.material.opacity = Math.max(0, Math.min(1,1-dist/fadeRange));
-  });
+Down the hallway, we find the master suite - a true retreat with a walk-in closet and ensuite bathroom featuring dual vanities and a glass-enclosed shower. Three additional bedrooms all offer generous closet space and share a well-appointed family bathroom.
 
-  renderer.render(scene,camera);
-  if(t>=1) startTime=performance.now();
-}
+Stepping outside, the backyard oasis awaits with a covered patio, lush lawn, and mature landscaping providing both privacy and tranquility. The detached two-car garage completes this exceptional property.
 
-// Export video
-exportBtn.addEventListener('click',()=>{
-  if(!imagesData.length) return;
-  totalDuration=parseFloat(durationInput.value)*imagesData.length;
-  const fps=24;
-  const stream = canvas.captureStream(fps);
-  const recorder = new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});
-  const chunks=[];
-  recorder.ondataavailable=e=>chunks.push(e.data);
-  recorder.start();
-  let frameCounter=0;
-  const totalFrames=totalDuration*fps;
+This home perfectly blends modern amenities with classic charm, offering both comfort and functionality for today's lifestyle.`,
+            
+            apartment: `Welcome to this stunning contemporary apartment located in the heart of the city.
 
-  function renderFrame(){
-    if(frameCounter>=totalFrames){
-      recorder.stop();
-      recorder.onstop=()=>{
-        const blob=new Blob(chunks,{type:'video/webm'});
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a'); a.href=url; a.download='walkthrough.webm'; a.click();
-      }
-      return;
-    }
-    const t=frameCounter/totalFrames;
-    const easedT=easeInOut(t);
-    const zStart=2,zEnd=-imagesData.length*4;
-    camera.position.z=zStart+(zEnd-zStart)*easedT;
-    camera.position.x=0.02*Math.sin(easedT*Math.PI*2);
-    camera.position.y=0.015*Math.sin(easedT*Math.PI*4);
-    camera.rotation.z=0.003*Math.sin(easedT*Math.PI*2);
-    camera.lookAt(0,0,0);
+As we enter, you're greeted by an open-concept living and dining space flooded with natural light from the floor-to-ceiling windows. The engineered hardwood floors and neutral color palette create a sophisticated backdrop for your personal style.
 
-    const fadeRange=2;
-    imagesData.forEach(data=>{
-      const dist=Math.abs(camera.position.z-data.mesh.position.z);
-      data.mesh.material.opacity=Math.max(0,Math.min(1,1-dist/fadeRange));
-    });
+The living area is perfectly proportioned for both relaxation and entertaining, with space for a large sectional and media center. The adjacent dining area comfortably seats six and flows seamlessly into the kitchen.
 
-    renderer.render(scene,camera);
-    frameCounter++;
-    setTimeout(renderFrame,1000/fps);
-  }
-  renderFrame();
-});
-</script>
+Speaking of the kitchen, it's equipped with stainless steel appliances, sleek cabinetry, and a breakfast bar - ideal for quick meals. The clever design maximizes every inch of space while maintaining a streamlined look.
+
+The bedroom is a serene sanctuary with plush carpeting, a generous closet, and a private balcony offering panoramic city views. The ensuite bathroom features a modern vanity and a glass-enclosed shower.
+
+Additional highlights include in-unit laundry, central air conditioning, and access to building amenities like a fitness center and rooftop terrace.
+
+This apartment offers urban living at its finest - stylish, convenient, and maintenance-free.`
+        };
+
+        // Show notification
+        function showNotification(message, type) {
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'flex';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Simulate photo analysis and organization
+        function analyzeAndOrganizePhotos() {
+            // Clear photo gallery
+            photoGallery.innerHTML = '';
+            
+            // Define the flow order for photos
+            const flowOrder = ['exterior', 'living', 'kitchen', 'bedroom', 'bathroom'];
+            
+            // Add photos in the correct flow order
+            flowOrder.forEach(category => {
+                if (samplePhotos[category]) {
+                    samplePhotos[category].forEach(photo => {
+                        const photoItem = document.createElement('div');
+                        photoItem.className = 'photo-item';
+                        photoItem.innerHTML = `
+                            <img src="${photo.url}" alt="${photo.category}">
+                            <div class="photo-category">${photo.category}</div>
+                        `;
+                        photoGallery.appendChild(photoItem);
+                    });
+                }
+            });
+        }
+
+        // Generate walkthrough script based on property type
+        function generateScript(propertyType) {
+            const script = sampleScripts[propertyType] || sampleScripts.house;
+            scriptOutput.textContent = script;
+            return script;
+        }
+
+        // Simulate AI voice generation (in a real app, this would call an API)
+        function generateVoiceNarration(script) {
+            // In a real implementation, this would call an API like ElevenLabs or Google Text-to-Speech
+            // For this demo, we'll simulate the process and use a placeholder
+            showNotification("AI voice narration generated successfully!", "success");
+            return "data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
+        }
+
+        // Simulate the generation process with progress updates
+        async function generateVirtualTour() {
+            const url = propertyUrlInput.value.trim();
+            const propertyType = propertyTypeSelect.value;
+            
+            if (!url) {
+                showNotification("Please enter a valid property listing URL", "error");
+                propertyUrlInput.focus();
+                return;
+            }
+            
+            // Validate URL format
+            if (!url.startsWith('http')) {
+                showNotification("Please enter a valid URL starting with http:// or https://", "error");
+                return;
+            }
+            
+            // Update UI for processing
+            btnText.textContent = "Processing...";
+            btnLoading.style.display = 'block';
+            generateBtn.disabled = true;
+            progressContainer.style.display = 'block';
+            controls.style.display = 'none';
+            
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 20;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    
+                    // Process completed
+                    setTimeout(() => {
+                        // Step 1: Analyze and organize photos
+                        showNotification("Analyzing property photos...", "info");
+                        analyzeAndOrganizePhotos();
+                        
+                        // Step 2: Generate script
+                        showNotification("Generating walkthrough script...", "info");
+                        const script = generateScript(propertyType);
+                        
+                        // Step 3: Generate voice narration
+                        showNotification("Creating AI voice narration...", "info");
+                        const audioData = generateVoiceNarration(script);
+                        
+                        // Update UI
+                        btnText.textContent = "Generate Virtual Tour";
+                        btnLoading.style.display = 'none';
+                        generateBtn.disabled = false;
+                        progressContainer.style.display = 'none';
+                        controls.style.display = 'flex';
+                        
+                        // Store audio data for preview/download
+                        narrationAudio.src = audioData;
+                        
+                        showNotification("Virtual tour created successfully! You can now preview or download it.", "success");
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        // Preview the narration
+        function previewNarration() {
+            if (narrationAudio.src && !narrationAudio.src.includes("data:audio/mp3;base64,SUQzB")) {
+                narrationAudio.play();
+                showNotification("Playing narration preview...", "info");
+            } else {
+                showNotification("Narration is still being processed. Please wait a moment.", "info");
+            }
+        }
+
+        // Download the virtual tour
+        function downloadTour() {
+            // Create a zip file with all components (in a real implementation)
+            showNotification("Preparing download package...", "info");
+            
+            // Simulate download preparation
+            setTimeout(() => {
+                // Create a download link
+                const link = document.createElement('a');
+                link.href = '#';
+                link.download = `property-tour-${Date.now()}.zip`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification("Virtual tour downloaded successfully!", "success");
+            }, 1500);
+        }
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateVirtualTour);
+        
+        previewBtn.addEventListener('click', previewNarration);
+        
+        downloadBtn.addEventListener('click', downloadTour);
+        
+        // Allow Enter key to trigger generation
+        propertyUrlInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateVirtualTour();
+            }
+        });
+
+        // Initialize with sample data for demo purposes
+        window.addEventListener('load', function() {
+            // Set a sample URL
+            propertyUrlInput.value = "https://www.realestate.com/123-main-st-springfield";
+            
+            // Show initial notification
+            showNotification("Enter a property URL and click 'Generate Virtual Tour' to begin.", "info");
+        });
+    </script>
 </body>
 </html>
