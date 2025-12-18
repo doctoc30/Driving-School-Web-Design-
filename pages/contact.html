@@ -3,896 +3,1103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walkthrough Pro - Realistic Property Tours</title>
+    <title>CW Services | Premium Plumbing & Heating Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <style>
+        :root {
+            --primary: #0a3d62;
+            --primary-light: #1e5799;
+            --secondary: #d4af37;
+            --secondary-light: #e6c158;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --success: #28a745;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: white;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
         }
-
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            color: #00d4ff;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #00d4ff, #0083b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-        }
-
-        .subtitle {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .control-panel {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tour-viewer {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .input-group {
-            margin-bottom: 30px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: #00d4ff;
-            font-weight: 600;
-        }
-
-        .url-input {
-            width: 100%;
-            padding: 18px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            border-radius: 12px;
-            color: white;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-        }
-
-        .url-input:focus {
-            outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
-        }
-
-        .url-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .duration-control {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .duration-slider {
-            flex: 1;
-            height: 8px;
-            -webkit-appearance: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            outline: none;
-        }
-
-        .duration-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            background: #00d4ff;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-        }
-
-        .duration-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #00d4ff;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .duration-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            display: block;
-            margin-top: 5px;
-        }
-
-        .create-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(90deg, #00d4ff, #0083b0);
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: var(--secondary);
+            color: var(--primary);
             border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: bold;
+            border-radius: var(--border-radius);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
+            transition: var(--transition);
+            text-align: center;
+            font-size: 1rem;
         }
-
-        .create-btn:hover {
+        
+        .btn:hover {
+            background-color: var(--secondary-light);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            box-shadow: var(--shadow);
         }
-
-        .create-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
         }
-
-        /* Tour Viewer Styles */
-        .tour-container {
-            height: 500px;
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
             position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            background: #000;
+            display: inline-block;
+            padding-bottom: 15px;
         }
-
-        .walkthrough-scene {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .scene-image {
+        
+        .section-header h2:after {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out, transform 20s linear;
-        }
-
-        .scene-image.active {
-            opacity: 1;
-        }
-
-        .scene-image.zooming {
-            transform: scale(1.1);
-        }
-
-        .scene-image.panning {
-            animation: panCamera 15s linear infinite;
-        }
-
-        @keyframes panCamera {
-            0% { transform: scale(1.1) translateX(0) translateY(0); }
-            25% { transform: scale(1.1) translateX(-2%) translateY(-1%); }
-            50% { transform: scale(1.1) translateX(-4%) translateY(-2%); }
-            75% { transform: scale(1.1) translateX(-2%) translateY(-1%); }
-            100% { transform: scale(1.1) translateX(0) translateY(0); }
-        }
-
-        .walking-path {
-            position: absolute;
-            bottom: 20px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary);
         }
-
-        .path-point {
-            width: 12px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .path-point.active {
-            background: #00d4ff;
-            box-shadow: 0 0 10px #00d4ff;
-            transform: scale(1.3);
-        }
-
-        .narration-box {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-            padding: 30px 20px 20px;
-            min-height: 120px;
-            z-index: 5;
-        }
-
-        .narration-text {
+        
+        .section-header p {
+            color: var(--gray);
             font-size: 1.1rem;
-            line-height: 1.6;
+            max-width: 700px;
+            margin: 20px auto 0;
+        }
+        
+        /* Header & Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo-tag {
+            font-size: 0.7rem;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 35px;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 120px;
+            background: linear-gradient(rgba(10, 61, 98, 0.85), rgba(10, 61, 98, 0.9)), url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
             color: white;
             text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
             max-width: 800px;
-            margin: 0 auto;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s, transform 0.5s;
+            margin: 0 auto 40px;
+            opacity: 0.9;
         }
-
-        .narration-text.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .tour-controls {
+        
+        .hero-btns {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
-
-        .control-btn {
-            padding: 12px 25px;
-            background: rgba(0, 212, 255, 0.2);
-            border: 1px solid rgba(0, 212, 255, 0.4);
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .control-btn:hover {
-            background: rgba(0, 212, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .control-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .time-display {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            z-index: 10;
-        }
-
-        /* Script Panel */
-        .script-panel {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .script-content {
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            font-size: 1rem;
-            line-height: 1.7;
-            white-space: pre-line;
-        }
-
-        .script-timing {
-            color: #00d4ff;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 100;
-            border-radius: 15px;
-            display: none;
+            margin: 0 auto 25px;
+            color: var(--secondary);
+            font-size: 1.8rem;
         }
-
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(0, 212, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #00d4ff;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+            background-color: var(--gray-light);
         }
-
-        .status-message {
-            text-align: center;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            display: none;
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
         }
-
-        .status-message.success {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            color: #00ff88;
+        
+        .service-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
-
-        .status-message.error {
-            background: rgba(255, 0, 68, 0.1);
-            border: 1px solid rgba(255, 0, 68, 0.3);
-            color: #ff0044;
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
         }
-
-        footer {
-            text-align: center;
+        
+        .service-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
             padding: 30px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 40px;
         }
-
-        .scene-info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
-            border-radius: 20px;
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .service-content ul {
+            list-style-position: inside;
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .service-content li {
+            margin-bottom: 8px;
+        }
+        
+        /* Promise Section */
+        .promise {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .promise-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .promise-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .promise-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+        
+        .promise-list {
+            list-style: none;
+        }
+        
+        .promise-list li {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .promise-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+        
+        .promise-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .promise-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--light);
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin: 20px;
+            text-align: center;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--dark);
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .testimonial-text:before, .testimonial-text:after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--secondary);
+            opacity: 0.5;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--gray-light);
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .author-info p {
+            color: var(--gray);
             font-size: 0.9rem;
-            z-index: 10;
-            color: #00d4ff;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #b0b7c3;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .contact-info {
+            list-style: none;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            color: var(--secondary);
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b7c3;
+            font-size: 0.9rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .features, .services, .promise, .cta, .testimonials {
+                padding: 70px 0;
+            }
+            
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
+    <!-- Header & Navigation -->
+    <header class="header">
+        <div class="container header-container">
             <div class="logo">
-                <i class="fas fa-walking"></i>
+                <h1>CW <span>Services</span></h1>
+                <div class="logo-tag">PREMIUM</div>
             </div>
-            <h1>Walkthrough Pro</h1>
-            <p class="subtitle">Create realistic property walkthroughs with AI-generated narration. Set your desired tour duration (1-5 minutes) and watch as our AI creates a perfectly paced virtual tour.</p>
-        </header>
-
-        <div class="status-message" id="statusMessage"></div>
-
-        <div class="main-content">
-            <div class="control-panel">
-                <div class="input-group">
-                    <label for="propertyUrl"><i class="fas fa-link"></i> Property Listing URL</label>
-                    <input type="url" id="propertyUrl" class="url-input" placeholder="https://www.zillow.com/homedetails/123-Main-St...">
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-clock"></i> Tour Duration</label>
-                    <div class="duration-control">
-                        <input type="range" id="durationSlider" class="duration-slider" min="1" max="5" step="0.5" value="3">
-                        <div class="duration-value" id="durationValue">3.0</div>
-                    </div>
-                    <div class="duration-label">
-                        <span>Brief (1 min)</span>
-                        <span style="float: right">Detailed (5 min)</span>
-                    </div>
-                </div>
-
-                <button id="createTourBtn" class="create-btn">
-                    <i class="fas fa-magic"></i> Generate Realistic Walkthrough
-                </button>
-
-                <div class="script-panel" style="display: none;" id="scriptPanel">
-                    <h3 style="color: #00d4ff; margin-bottom: 15px;">
-                        <i class="fas fa-script"></i> AI-Generated Script
-                    </h3>
-                    <div class="script-content" id="scriptContent">
-                        <!-- Script will be generated here -->
-                    </div>
-                </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
             </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#promise">Our Promise</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="tel:+442012345678" class="btn btn-primary">Call Now</a></li>
+            </ul>
+        </div>
+    </header>
 
-            <div class="tour-viewer">
-                <div class="loading-overlay" id="loadingOverlay">
-                    <div class="loader"></div>
-                    <p style="font-size: 1.2rem; margin-top: 20px;">Creating your ${durationValue} minute walkthrough...</p>
-                    <p style="opacity: 0.7; margin-top: 10px;">Analyzing photos • Writing script • Generating narration</p>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Premium Plumbing & Heating Solutions</h1>
+            <p>CW Services Plumbing & Heating is London's premier independent plumbing company. Experience unmatched expertise, reliability, and craftsmanship for all your domestic and commercial needs.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn">Request a FREE Quote</a>
+                <a href="tel:+442012345678" class="btn btn-primary"><i class="fas fa-phone"></i> 020 1234 5678</a>
+            </div>
+        </div>
+    </section>
 
-                <div class="tour-container" id="tourContainer" style="display: none;">
-                    <div class="walkthrough-scene" id="walkthroughScene">
-                        <!-- Scene images will be added here -->
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose CW Services</h2>
+                <p>Discover the premium difference with our certified engineers and commitment to excellence</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
                     </div>
-                    <div class="scene-info" id="sceneInfo">Front Exterior</div>
-                    <div class="time-display" id="timeDisplay">0:00 / 3:00</div>
-                    
-                    <div class="walking-path" id="walkingPath">
-                        <!-- Path points will be added here -->
-                    </div>
-                    
-                    <div class="narration-box">
-                        <div class="narration-text" id="narrationText">
-                            Welcome to the property tour. Let's begin our walkthrough.
-                        </div>
-                    </div>
+                    <h3>Certified Experts</h3>
+                    <p>Our Gas Safe registered engineers have extensive training and certification for all plumbing and heating systems.</p>
                 </div>
-
-                <div class="tour-controls" id="tourControls" style="display: none;">
-                    <button class="control-btn" id="playBtn">
-                        <i class="fas fa-play"></i> Play Tour
-                    </button>
-                    <button class="control-btn" id="pauseBtn" disabled>
-                        <i class="fas fa-pause"></i> Pause
-                    </button>
-                    <button class="control-btn" id="restartBtn">
-                        <i class="fas fa-redo"></i> Restart
-                    </button>
-                    <button class="control-btn" id="downloadBtn">
-                        <i class="fas fa-download"></i> Download
-                    </button>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Prompt & Reliable</h3>
+                    <p>We arrive at the arranged time and notify you immediately of any delays. Your time is valuable to us.</p>
                 </div>
-
-                <div id="tourPlaceholder" style="text-align: center; padding: 80px 20px;">
-                    <i class="fas fa-home" style="font-size: 5rem; opacity: 0.3; margin-bottom: 20px;"></i>
-                    <h3 style="color: rgba(255, 255, 255, 0.5); margin-bottom: 10px;">Tour Preview</h3>
-                    <p style="color: rgba(255, 255, 255, 0.4);">Generate a walkthrough to see the realistic property tour here</p>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Fully Insured</h3>
+                    <p>Complete peace of mind with fully insured workmanship and public liability coverage up to £5 million.</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <footer>
-            <p>Walkthrough Pro © 2023 • Professional Real Estate Presentations • AI-Powered Narration</p>
-            <p style="margin-top: 10px; font-size: 0.8rem;">Creates timed walkthroughs from 1 to 5 minutes with realistic camera movements</p>
-        </footer>
-    </div>
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Premium Services</h2>
+                <p>Comprehensive plumbing and heating solutions for both domestic and commercial properties</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1621967299229-c6e7085c57b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Boiler Installation & Repair</h3>
+                        <p>Expert installation, servicing, and repair of all boiler types with extended warranties.</p>
+                        <ul>
+                            <li>New boiler installations</li>
+                            <li>Annual servicing</li>
+                            <li>Emergency repairs</li>
+                            <li>Power flushing</li>
+                        </ul>
+                        <a href="#contact" class="btn">Book Service</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Bathroom & Kitchen Renovations</h3>
+                        <p>Complete design and installation of luxury bathrooms and kitchens with premium fixtures.</p>
+                        <ul>
+                            <li>Full bathroom installations</li>
+                            <li>Kitchen plumbing</li>
+                            <li>Wet room conversions</li>
+                            <li>Premium fixture installation</li>
+                        </ul>
+                        <a href="#contact" class="btn">Book Service</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1621967299229-c6e7085c57b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Central Heating Systems</h3>
+                        <p>Design and installation of efficient gas central heating systems with smart controls.</p>
+                        <ul>
+                            <li>Complete heating systems</li>
+                            <li>Radiator installation</li>
+                            <li>Underfloor heating</li>
+                            <li>Smart thermostat setup</li>
+                        </ul>
+                        <a href="#contact" class="btn">Book Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Promise Section -->
+    <section class="promise" id="promise">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Commitment to Excellence</h2>
+                <p>The CW Services promise – our commitment to every customer</p>
+            </div>
+            <div class="promise-container">
+                <div class="promise-content">
+                    <h2>HONEST, CLEAN, RELIABLE</h2>
+                    <ul class="promise-list">
+                        <li>
+                            <div class="promise-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div>
+                                <h4>Customer Politeness & Honesty</h4>
+                                <p>We treat every customer with respect and provide transparent, honest advice about your plumbing needs.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="promise-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4>Prompt Arrival & Communication</h4>
+                                <p>We arrive at the arranged time and notify you immediately of any delays to respect your schedule.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="promise-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div>
+                                <h4>Property Respect & Cleanliness</h4>
+                                <p>We treat your property with the utmost respect, using protective coverings and leaving it as we found it.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="promise-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div>
+                                <h4>Clear Explanation & Transparency</h4>
+                                <p>We explain the problem thoroughly and show you how we'll fix it before starting any work.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="promise-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div>
+                                <h4>No Hidden Charges</h4>
+                                <p>You're only charged for work that will be carried out, with transparent pricing and no surprises.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="promise-image">
+                    <img src="https://images.unsplash.com/photo-1621967299229-c6e7085c57b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="CW Services Engineer at work">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Client Testimonials</h2>
+                <p>Hear what our satisfied customers have to say about our premium service</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    CW Services transformed our outdated bathroom into a luxurious spa-like retreat. The attention to detail was exceptional, and they completed the work ahead of schedule. Highly recommend their premium service!
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Sarah Johnson</h4>
+                                        <p>Kensington, London</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    When our boiler broke down in the middle of winter, CW Services responded within 2 hours. Their engineer was professional, knowledgeable, and fixed the issue efficiently. Worth every penny for peace of mind.
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Michael Thompson</h4>
+                                        <p>Wimbledon, London</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    We've used CW Services for both our home and office plumbing needs. Their team is always punctual, clean, and professional. The premium service truly stands out from other plumbing companies we've tried.
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>David Chen</h4>
+                                        <p>Canary Wharf, London</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2>Ready for Premium Plumbing Service?</h2>
+            <p>Contact us today for a FREE, no-obligation quote on any plumbing or heating project. Our team is ready to deliver exceptional service for your home or business.</p>
+            <div class="hero-btns">
+                <a href="tel:+442012345678" class="btn"><i class="fas fa-phone"></i> Call 020 1234 5678</a>
+                <a href="mailto:info@cwplumbingservices.co.uk" class="btn btn-primary"><i class="fas fa-envelope"></i> Email Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CW Services</h3>
+                    <p>London's premier independent plumbing and heating company, providing premium services for domestic and commercial properties across South London and beyond.</p>
+                    <div class="payment-methods">
+                        <div class="payment-icon">
+                            <i class="fab fa-cc-visa"></i>
+                        </div>
+                        <div class="payment-icon">
+                            <i class="fab fa-cc-mastercard"></i>
+                        </div>
+                        <div class="payment-icon">
+                            <i class="fab fa-cc-amex"></i>
+                        </div>
+                        <div class="payment-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="payment-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#promise">Our Promise</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Phone</strong><br>
+                                <a href="tel:+442012345678">020 1234 5678</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong><br>
+                                <a href="mailto:info@cwplumbingservices.co.uk">info@cwplumbingservices.co.uk</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Service Area</strong><br>
+                                South London & Surrounding Areas
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> CW Services Plumbing & Heating Ltd. All rights reserved. | Gas Safe Registered | Fully Insured</p>
+                <p>FREE quotes subject to terms and conditions. Credit card payments subject to fees.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // DOM Elements
-        const propertyUrlInput = document.getElementById('propertyUrl');
-        const durationSlider = document.getElementById('durationSlider');
-        const durationValue = document.getElementById('durationValue');
-        const createTourBtn = document.getElementById('createTourBtn');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const tourContainer = document.getElementById('tourContainer');
-        const tourPlaceholder = document.getElementById('tourPlaceholder');
-        const walkthroughScene = document.getElementById('walkthroughScene');
-        const walkingPath = document.getElementById('walkingPath');
-        const narrationText = document.getElementById('narrationText');
-        const sceneInfo = document.getElementById('sceneInfo');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const playBtn = document.getElementById('playBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const tourControls = document.getElementById('tourControls');
-        const statusMessage = document.getElementById('statusMessage');
-        const scriptPanel = document.getElementById('scriptPanel');
-        const scriptContent = document.getElementById('scriptContent');
-
-        // Configuration
-        let currentTour = null;
-        let isPlaying = false;
-        let currentScene = 0;
-        let tourTimer = null;
-        let totalSeconds = 180; // 3 minutes default
-
-        // Property scenes with realistic flow
-        const propertyScenes = [
-            {
-                id: 1,
-                name: "Front Exterior",
-                image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&h=800&fit=crop",
-                duration: 15,
-                camera: "panning",
-                narration: "As we approach the property, you'll immediately notice the charming curb appeal with its well-maintained lawn and inviting entrance."
-            },
-            {
-                id: 2,
-                name: "Entrance Hall",
-                image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&h=800&fit=crop",
-                duration: 12,
-                camera: "zooming",
-                narration: "Step inside to the welcoming entrance hall with elegant flooring and abundant natural light."
-            },
-            {
-                id: 3,
-                name: "Living Room",
-                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop",
-                duration: 20,
-                camera: "panning",
-                narration: "The spacious living room features high ceilings, a cozy fireplace, and large windows offering plenty of natural light."
-            },
-            {
-                id: 4,
-                name: "Kitchen",
-                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=800&fit=crop",
-                duration: 18,
-                camera: "zooming",
-                narration: "The modern kitchen boasts stainless steel appliances, quartz countertops, and ample storage space."
-            },
-            {
-                id: 5,
-                name: "Dining Area",
-                image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=800&fit=crop",
-                duration: 12,
-                camera: "panning",
-                narration: "Adjacent to the kitchen, the dining area provides the perfect space for family meals and entertaining."
-            },
-            {
-                id: 6,
-                name: "Master Bedroom",
-                image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&h=800&fit=crop",
-                duration: 15,
-                camera: "zooming",
-                narration: "The generous master bedroom includes a walk-in closet and access to the private ensuite bathroom."
-            },
-            {
-                id: 7,
-                name: "Bathroom",
-                image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1200&h=800&fit=crop",
-                duration: 10,
-                camera: "panning",
-                narration: "The main bathroom features modern fixtures, elegant tiling, and plenty of natural light."
-            },
-            {
-                id: 8,
-                name: "Backyard",
-                image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&h=800&fit=crop",
-                duration: 18,
-                camera: "panning",
-                narration: "Step outside to the private backyard oasis, perfect for outdoor living and entertaining."
-            }
-        ];
-
-        // Duration slider update
-        durationSlider.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            durationValue.textContent = value.toFixed(1);
-            totalSeconds = value * 60;
+        // Mobile Navigation Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileToggle.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
         });
-
-        // Show status message
-        function showStatus(message, type = 'success') {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = 'block';
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    statusMessage.style.display = 'none';
-                }, 5000);
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        const header = document.querySelector('.header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
-        }
-
-        // Generate script based on duration
-        function generateScript(durationMinutes) {
-            const baseScript = `Welcome to this beautiful property tour. Over the next ${durationMinutes} minute${durationMinutes > 1 ? 's' : ''}, we'll take you through every aspect of this wonderful home.
-
-`;
-            
-            let script = baseScript;
-            let timeElapsed = 0;
-            
-            propertyScenes.forEach((scene, index) => {
-                const startTime = timeElapsed;
-                const endTime = startTime + scene.duration;
-                const startMin = Math.floor(startTime / 60);
-                const startSec = startTime % 60;
-                const endMin = Math.floor(endTime / 60);
-                const endSec = endTime % 60;
+        });
+        
+        // Initialize testimonial slider
+        const swiper = new Swiper('.swiper-container', {
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 1,
+                    spaceBetween: 40,
+                },
+            },
+        });
+        
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 
-                script += `[${startMin}:${startSec.toString().padStart(2, '0')}-${endMin}:${endSec.toString().padStart(2, '0')}] ${scene.narration}\n\n`;
-                timeElapsed = endTime;
-            });
-            
-            script += `\nThis concludes our ${durationMinutes} minute tour. Thank you for visiting!`;
-            
-            return script;
-        }
-
-        // Adjust scene durations based on total tour time
-        function adjustSceneDurations(totalSeconds) {
-            const totalSceneTime = propertyScenes.reduce((sum, scene) => sum + scene.duration, 0);
-            const scaleFactor = totalSeconds / totalSceneTime;
-            
-            return propertyScenes.map(scene => ({
-                ...scene,
-                duration: Math.round(scene.duration * scaleFactor)
-            }));
-        }
-
-        // Create realistic walkthrough
-        async function createWalkthrough() {
-            const url = propertyUrlInput.value.trim();
-            const durationMinutes = parseFloat(durationSlider.value);
-            
-            if (!url) {
-                showStatus('Please enter a property URL', 'error');
-                propertyUrlInput.focus();
-                return;
-            }
-
-            // Show loading
-            loadingOverlay.style.display = 'flex';
-            createTourBtn.disabled = true;
-            createTourBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Walkthrough...';
-
-            // Simulate processing time
-            await new Promise(resolve => setTimeout(resolve, 3000));
-
-            // Generate script
-            const script = generateScript(durationMinutes);
-            scriptContent.textContent = script;
-            scriptPanel.style.display = 'block';
-
-            // Adjust scene durations
-            const adjustedScenes = adjustSceneDurations(totalSeconds);
-
-            // Build tour scenes
-            buildTourScenes(adjustedScenes);
-
-            // Hide loading, show tour
-            loadingOverlay.style.display = 'none';
-            tourPlaceholder.style.display = 'none';
-            tourContainer.style.display = 'block';
-            tourControls.style.display = 'flex';
-            createTourBtn.disabled = false;
-            createTourBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Realistic Walkthrough';
-
-            showStatus(`✅ ${durationMinutes}-minute walkthrough created successfully!`);
-        }
-
-        // Build tour scenes
-        function buildTourScenes(scenes) {
-            walkthroughScene.innerHTML = '';
-            walkingPath.innerHTML = '';
-
-            scenes.forEach((scene, index) => {
-                // Create scene image
-                const img = document.createElement('img');
-                img.src = scene.image;
-                img.alt = scene.name;
-                img.className = 'scene-image';
-                img.dataset.index = index;
-                img.style.transitionDuration = `${scene.duration * 0.8}s`;
-                walkthroughScene.appendChild(img);
-
-                // Create path point
-                const point = document.createElement('div');
-                point.className = 'path-point';
-                point.dataset.index = index;
-                point.addEventListener('click', () => jumpToScene(index));
-                walkingPath.appendChild(point);
-            });
-
-            // Set first scene as active
-            setActiveScene(0);
-        }
-
-        // Set active scene
-        function setActiveScene(index) {
-            const scenes = document.querySelectorAll('.scene-image');
-            const points = document.querySelectorAll('.path-point');
-            
-            // Remove active classes
-            scenes.forEach(scene => {
-                scene.classList.remove('active', 'zooming', 'panning');
-            });
-            points.forEach(point => point.classList.remove('active'));
-            
-            // Set new active scene
-            const currentSceneData = propertyScenes[index];
-            scenes[index].classList.add('active', currentSceneData.camera);
-            points[index].classList.add('active');
-            
-            // Update narration
-            narrationText.textContent = currentSceneData.narration;
-            narrationText.classList.remove('active');
-            setTimeout(() => {
-                narrationText.classList.add('active');
-            }, 100);
-            
-            // Update scene info
-            sceneInfo.textContent = currentSceneData.name;
-            
-            currentScene = index;
-        }
-
-        // Jump to specific scene
-        function jumpToScene(index) {
-            if (isPlaying) {
-                pauseTour();
-            }
-            setActiveScene(index);
-            updateTimeDisplay();
-        }
-
-        // Update time display
-        function updateTimeDisplay() {
-            const elapsedSeconds = propertyScenes
-                .slice(0, currentScene)
-                .reduce((sum, scene) => sum + scene.duration, 0);
-            
-            const totalMinutes = Math.floor(totalSeconds / 60);
-            const totalSecondsRemainder = totalSeconds % 60;
-            const elapsedMinutes = Math.floor(elapsedSeconds / 60);
-            const elapsedSecondsRemainder = elapsedSeconds % 60;
-            
-            timeDisplay.textContent = 
-                `${elapsedMinutes}:${elapsedSecondsRemainder.toString().padStart(2, '0')} / ${totalMinutes}:${totalSecondsRemainder.toString().padStart(2, '0')}`;
-        }
-
-        // Play tour
-        function playTour() {
-            if (isPlaying) return;
-            
-            isPlaying = true;
-            playBtn.disabled = true;
-            pauseBtn.disabled = false;
-            
-            let sceneStartTime = Date.now();
-            let sceneDuration = propertyScenes[currentScene].duration * 1000;
-            
-            tourTimer = setInterval(() => {
-                const elapsed = Date.now() - sceneStartTime;
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
                 
-                if (elapsed >= sceneDuration) {
-                    // Move to next scene
-                    if (currentScene < propertyScenes.length - 1) {
-                        setActiveScene(currentScene + 1);
-                        sceneStartTime = Date.now();
-                        sceneDuration = propertyScenes[currentScene].duration * 1000;
-                    } else {
-                        // End of tour
-                        pauseTour();
-                        showStatus('🎉 Tour completed! You can replay or download the tour.');
-                    }
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
                 }
-                
-                updateTimeDisplay();
-            }, 100);
-        }
-
-        // Pause tour
-        function pauseTour() {
-            isPlaying = false;
-            clearInterval(tourTimer);
-            playBtn.disabled = false;
-            pauseBtn.disabled = true;
-        }
-
-        // Restart tour
-        function restartTour() {
-            pauseTour();
-            setActiveScene(0);
-            updateTimeDisplay();
-        }
-
-        // Download tour
-        function downloadTour() {
-            showStatus('Preparing your tour package for download...', 'success');
-            
-            // Create download content
-            const tourData = {
-                duration: parseFloat(durationSlider.value),
-                scenes: propertyScenes,
-                script: scriptContent.textContent,
-                generatedAt: new Date().toISOString()
-            };
-            
-            const dataStr = JSON.stringify(tourData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const link = document.createElement('a');
-            link.href = dataUri;
-            link.download = `property-tour-${Date.now()}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            setTimeout(() => {
-                showStatus('✅ Tour package downloaded successfully!', 'success');
-            }, 1000);
-        }
-
-        // Event listeners
-        createTourBtn.addEventListener('click', createWalkthrough);
-        playBtn.addEventListener('click', playTour);
-        pauseBtn.addEventListener('click', pauseTour);
-        restartBtn.addEventListener('click', restartTour);
-        downloadBtn.addEventListener('click', downloadTour);
-
-        propertyUrlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                createWalkthrough();
-            }
+            });
         });
-
-        // Demo data
-        window.addEventListener('load', () => {
-            propertyUrlInput.value = 'https://www.realtor.com/realestateandhomes-detail/123-Main-St_Springfield_IL_62704_M12345-12345';
-            showStatus('Ready to create a realistic property walkthrough. Adjust duration slider (1-5 minutes) for different script lengths.', 'success');
+        
+        // Form submission handling (for when backend is added)
+        const contactForms = document.querySelectorAll('form');
+        contactForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const formValues = Object.fromEntries(formData);
+                
+                // In a real implementation, this would be an AJAX call to your backend
+                console.log('Form submitted with values:', formValues);
+                
+                // Show success message
+                alert('Thank you for your inquiry! A CW Services representative will contact you within 24 hours.');
+                this.reset();
+            });
+        });
+        
+        // Service card interaction enhancement
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements to animate
+        document.querySelectorAll('.feature-card, .service-card, .promise-list li').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
