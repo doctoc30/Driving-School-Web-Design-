@@ -3,1048 +3,932 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gen-Vent | Professional Ventilation Solutions</title>
+    <title>Gold Standard Driving | Premium Driving Instructor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4E4A6;
+            --gold-dark: #B8860B;
+            --black: #0A0A0A;
+            --black-light: #1A1A1A;
+            --gray: #2A2A2A;
+            --gray-light: #3A3A3A;
+            --white: #F5F5F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--white);
+            background-color: var(--black);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gold);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .logo-text span {
+            color: var(--white);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(to right, var(--gold-dark), var(--gold));
+            color: var(--black);
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background: linear-gradient(to right, var(--gold), var(--gold-light));
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--white);
+            max-width: 600px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            margin-top: 50px;
+        }
+        
+        .stat {
+            margin-right: 40px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Features Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .features {
+            padding: 100px 0;
+            background-color: var(--black-light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: var(--gray);
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            border-top: 4px solid var(--gold);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--black);
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial {
+            background-color: var(--black-light);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            border-left: 4px solid var(--gold);
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .client-name {
+            color: var(--gold);
+            font-weight: 600;
+        }
+        
+        .client-result {
+            color: var(--gold-light);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .quote-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: var(--gold);
+            opacity: 0.5;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background-color: var(--black-light);
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background-color: var(--gray);
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .pricing-card.featured {
+            background-color: var(--black);
+            border: 2px solid var(--gold);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .package-name {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: var(--white);
+        }
+        
+        .package-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .package-features li {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background-color: var(--black);
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 20px;
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .contact-icon {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-right: 15px;
+            width: 30px;
+        }
+        
+        .contact-form {
+            background-color: var(--black-light);
+            padding: 40px;
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 5px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--black-light);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--gold);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            margin-right: 10px;
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray);
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            .pricing-card.featured:hover {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+            }
+            
+            .stat {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                height: auto;
+                padding: 150px 0 80px;
+            }
+            
+            .feature-card, .testimonial, .pricing-card, .contact-form {
+                padding: 30px 20px;
+            }
+        }
+        
+        /* Animation for elements */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* Gold accent elements */
+        .gold-accent {
+            color: var(--gold);
+        }
+        
+        .gold-border {
+            border-color: var(--gold);
+        }
+        
+        .gold-bg {
+            background-color: var(--gold);
+        }
+    </style>
 
 
-<style>
-
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #0066cc;
-    --primary-dark: #0052a3;
-    --secondary-color: #00a896;
-    --accent-color: #ff6b35;
-    --text-dark: #2d3748;
-    --text-light: #718096;
-    --background-light: #f7fafc;
-    --white: #ffffff;
-    --gray-100: #f7fafc;
-    --gray-200: #edf2f7;
-    --gray-300: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    color: var(--text-dark);
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header & Navigation */
-.header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.header.scrolled {
-    background: var(--white);
-    box-shadow: var(--shadow);
-}
-
-.nav-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-.logo-img {
-    height: 40px;
-    width: auto;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-    align-items: center;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    transition: color 0.3s ease;
-    position: relative;
-}
-
-.nav-link:hover {
-    color: var(--primary-color);
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.phone-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.phone-link:hover {
-    color: var(--primary-color);
-}
-
-/* CTA Buttons */
-.cta-button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.cta-button.primary {
-    background: var(--primary-color);
-    color: var(--white);
-}
-
-.cta-button.primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.cta-button.secondary {
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.cta-button.secondary:hover {
-    background: var(--primary-color);
-    color: var(--white);
-    transform: translateY(-2px);
-}
-
-.cta-button.white {
-    background: var(--white);
-    color: var(--primary-color);
-}
-
-.cta-button.white:hover {
-    background: var(--gray-100);
-    transform: translateY(-2px);
-}
-
-.cta-button.large {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-}
-
-/* Hamburger Menu */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 4px;
-}
-
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background: var(--text-dark);
-    transition: all 0.3s ease;
-}
-
-/* Hero Section */
-.hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    overflow: hidden;
-}
-
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-.hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.8) 0%, rgba(0, 168, 150, 0.6) 100%);
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.highlight {
-    color: var(--accent-color);
-    position: relative;
-}
-
-.highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: rgba(255, 107, 53, 0.3);
-    z-index: -1;
-}
-
-.hero-subtitle {
-    font-size: 1.3rem;
-    margin-bottom: 2.5rem;
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-}
-
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-/* Scroll Indicator */
-.scroll-indicator {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.scroll-arrow {
-    width: 30px;
-    height: 30px;
-    border-right: 2px solid var(--white);
-    border-bottom: 2px solid var(--white);
-    transform: rotate(45deg);
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: rotate(45deg) translateY(0);
-    }
-    40% {
-        transform: rotate(45deg) translateY(-10px);
-    }
-    60% {
-        transform: rotate(45deg) translateY(-5px);
-    }
-}
-
-/* Services Section */
-.services {
-    padding: 6rem 0;
-    background: var(--background-light);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 1rem;
-}
-
-.section-subtitle {
-    font-size: 1.2rem;
-    color: var(--text-light);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-}
-
-.service-card {
-    background: var(--white);
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-}
-
-.service-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: var(--white);
-    font-size: 2rem;
-}
-
-.service-card h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
-}
-
-.service-card p {
-    color: var(--text-light);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.service-features {
-    list-style: none;
-    margin-bottom: 2rem;
-    text-align: left;
-}
-
-.service-features li {
-    padding: 0.5rem 0;
-    color: var(--text-dark);
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.service-features li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--secondary-color);
-    font-weight: bold;
-}
-
-.service-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: gap 0.3s ease;
-}
-
-.service-link:hover {
-    gap: 1rem;
-}
-
-/* CTA Banner */
-.cta-banner {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: var(--white);
-    padding: 4rem 0;
-    text-align: center;
-}
-
-.cta-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.cta-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-/* Footer */
-.footer {
-    background: var(--text-dark);
-    color: var(--white);
-    padding: 4rem 0 2rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 3rem;
-    margin-bottom: 3rem;
-}
-
-.footer-section h4 {
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-}
-
-.footer-description {
-    margin: 1rem 0;
-    line-height: 1.6;
-    opacity: 0.8;
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.social-link {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.3s ease;
-}
-
-.social-link:hover {
-    background: var(--primary-color);
-    transform: translateY(-3px);
-}
-
-.footer-links {
-    list-style: none;
-}
-
-.footer-links li {
-    margin-bottom: 0.8rem;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: var(--white);
-}
-
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    opacity: 0.8;
-}
-
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.footer-legal {
-    display: flex;
-    gap: 2rem;
-}
-
-.footer-legal a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-legal a:hover {
-    color: var(--white);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .hero-title {
-        font-size: 3rem;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-menu {
-        display: none;
-    }
-    
-    .hamburger {
-        display: flex;
-    }
-    
-    .nav-actions {
-        display: none;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .hero-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .hero-stats {
-        gap: 2rem;
-    }
-    
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .cta-content h2 {
-        font-size: 2rem;
-    }
-}
-
-</style>
 
 
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="assets/logo.svg" alt="Gen-Vent" class="logo-img">
-                    <span class="logo-text">Gen-Vent</span>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-crown"></i>
                 </div>
-                
-                <ul class="nav-menu">
-                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
-                    <li class="nav-item"><a href="#sectors" class="nav-link">Sectors</a></li>
-                    <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
-                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-
-                <div class="nav-actions">
-                    <a href="tel:+441234567890" class="phone-link">
-                        <i class="fas fa-phone"></i>
-                        01234 567 890
-                    </a>
-                    <button class="cta-button primary">Get Quote</button>
-                </div>
-
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+                <div class="logo-text">Gold<span>Standard</span></div>
             </div>
-        </nav>
+
+
+
+      <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
+    <ul>
+      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
+      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+
+
+            </ul>
+            <a href="#contact" class="cta-button">Book Your Lesson</a>
+        </div>
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="hero-overlay"></div>
-            <video autoplay muted loop class="hero-video">
-                <source src="assets/hero-video.mp4" type="video/mp4">
-                <!-- Fallback image if video doesn't load -->
-            </video>
-        </div>
-        
+    <section class="hero" id="home">
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Professional <span class="highlight">Ventilation</span> 
-                    & Air Conditioning Solutions
-                </h1>
-                <p class="hero-subtitle">
-                    Expert design, installation, and maintenance of ventilation systems 
-                    for commercial, industrial, and residential sectors across the UK.
-                </p>
-                <div class="hero-actions">
-                    <button class="cta-button large primary">
-                        <span>Get Free Consultation</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                    <button class="cta-button large secondary">
-                        <span>View Our Projects</span>
-                        <i class="fas fa-play"></i>
-                    </button>
-                </div>
+            <div class="hero-content animate">
+                <h1>Master the Road with <span class="gold-accent">Premium</span> Driving Instruction</h1>
+                <p>Experience elite driving tuition tailored to your individual needs. With a 98% first-time pass rate and bespoke lesson plans, we transform novice drivers into confident, skilled motorists worthy of the gold standard.</p>
+                <a href="#contact" class="cta-button">Start Your Journey Today</a>
                 
                 <div class="hero-stats">
                     <div class="stat">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Projects Completed</div>
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">First-Time Pass Rate</span>
                     </div>
                     <div class="stat">
-                        <div class="stat-number">25+</div>
-                        <div class="stat-label">Years Experience</div>
+                        <span class="stat-number">1500+</span>
+                        <span class="stat-label">Students Taught</span>
                     </div>
                     <div class="stat">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Client Satisfaction</div>
+                        <span class="stat-number">10+</span>
+                        <span class="stat-label">Years Experience</span>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
-        </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
+    <!-- Features/Services Section -->
+    <section class="features" id="features">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Services</h2>
-                <p class="section-subtitle">
-                    Comprehensive ventilation solutions tailored to your specific needs
-                </p>
+            <div class="section-title">
+                <h2>Premium Driving Experience</h2>
             </div>
             
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-fan"></i>
+            <div class="features-grid">
+                <div class="feature-card animate">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-tie"></i>
                     </div>
-                    <h3>Ventilation Systems</h3>
-                    <p>Design and installation of commercial and industrial ventilation systems for optimal air quality.</p>
-                    <ul class="service-features">
-                        <li>Commercial Kitchen Extraction</li>
-                        <li>HVAC Systems</li>
-                        <li>Air Purification</li>
-                    </ul>
-                    <a href="#" class="service-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <h3>One-to-One Elite Tuition</h3>
+                    <p>Exclusive attention from a DVSA-approved instructor with over 10 years of premium teaching experience. No shared lessons, no distractions.</p>
                 </div>
                 
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-snowflake"></i>
+                <div class="feature-card animate">
+                    <div class="feature-icon">
+                        <i class="fas fa-car"></i>
                     </div>
-                    <h3>Air Conditioning</h3>
-                    <p>Energy-efficient air conditioning solutions for comfortable indoor environments year-round.</p>
-                    <ul class="service-features">
-                        <li>VRF/VRV Systems</li>
-                        <li>Split Systems</li>
-                        <li>Climate Control</li>
-                    </ul>
-                    <a href="#" class="service-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <h3>Luxury Training Vehicle</h3>
+                    <p>Learn in a premium, latest-model vehicle equipped with dual controls, advanced safety features, and supreme comfort for optimal learning.</p>
                 </div>
                 
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
+                <div class="feature-card animate">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
-                    <h3>Maintenance & Repair</h3>
-                    <p>Professional maintenance and repair services to keep your systems running efficiently.</p>
-                    <ul class="service-features">
-                        <li>Preventive Maintenance</li>
-                        <li>24/7 Emergency Repairs</li>
-                        <li>System Optimization</li>
-                    </ul>
-                    <a href="#" class="service-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h3>Consultation & Design</h3>
-                    <p>Expert consultation and custom system design for new builds and renovations.</p>
-                    <ul class="service-features">
-                        <li>System Design</li>
-                        <li>Energy Efficiency Analysis</li>
-                        <li>Regulatory Compliance</li>
-                    </ul>
-                    <a href="#" class="service-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <h3>Flexible Scheduling</h3>
+                    <p>Tailored lesson plans that fit your busy lifestyle. Evening, weekend, and intensive course options available to suit your needs.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Banner -->
-    <section class="cta-banner">
+    <!-- Testimonials -->
+    <section class="testimonials" id="about">
         <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Improve Your Air Quality?</h2>
-                <p>Get a free, no-obligation quote for your ventilation project</p>
-                <button class="cta-button large white">
-                    <span>Get Free Quote</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
+            <div class="section-title">
+                <h2>Student Success Stories</h2>
+            </div>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial animate">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">"After failing my first test with another instructor, I switched to Gold Standard. The attention to detail and personalized approach made all the difference. Passed first time with only 2 minors!"</p>
+                    <p class="client-name">Emily Rutherford</p>
+                    <p class="client-result">Passed first time, May 2024</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Exclusive Packages</h2>
+            </div>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card animate">
+                    <h3 class="package-name">Standard Foundation</h3>
+                    <div class="price">£320<span> / 10 hours</span></div>
+                    <ul class="package-features">
+                        <li>10 hours of premium instruction</li>
+                        <li>Pickup from home/work</li>
+                        <li>Progress tracking portal</li>
+                        <li>Weekly lesson plans</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Select Package</a>
+                </div>
+                
+                <div class="pricing-card featured animate">
+                    <h3 class="package-name">Gold Intensive</h3>
+                    <div class="price">£850<span> / 30 hours</span></div>
+                    <ul class="package-features">
+                        <li>30 hours of premium instruction</li>
+                        <li>Mock test sessions</li>
+                        <li>Theory test support</li>
+                        <li>Test day preparation & pickup</li>
+                        <li>Post-pass guidance session</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Select Package</a>
+                </div>
+                
+                <div class="pricing-card animate">
+                    <h3 class="package-name">Platinum Complete</h3>
+                    <div class="price">£1,450<span> / full course</span></div>
+                    <ul class="package-features">
+                        <li>Full course until test ready</li>
+                        <li>Test booking management</li>
+                        <li>Advanced driving techniques</li>
+                        <li>Motorway driving included</li>
+                        <li>Lifetime refresher lesson</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Select Package</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Begin Your Premium Journey</h2>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info animate">
+                    <h3>Contact Information</h3>
+                    <p>Ready to experience the gold standard in driving instruction? Get in touch to schedule your first lesson.</p>
+                    
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <p><strong>Phone</strong><br>+44 (0)20 7123 4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <p><strong>Email</strong><br>enquiries@goldstandarddriving.co.uk</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <p><strong>Hours</strong><br>Monday - Sunday: 7am - 9pm</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form animate">
+                    <h3>Book Your First Lesson</h3>
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" placeholder="Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select Preferred Package</option>
+                                <option value="standard">Standard Foundation (£320)</option>
+                                <option value="gold">Gold Intensive (£850)</option>
+                                <option value="platinum">Platinum Complete (£1,450)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="4" placeholder="Additional Information (Experience level, availability, etc.)"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Request Booking</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
+                <div class="footer-column">
                     <div class="logo">
-                        <img src="assets/logo-white.svg" alt="Gen-Vent" class="logo-img">
-                        <span class="logo-text">Gen-Vent</span>
+                        <div class="logo-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="logo-text">Gold<span>Standard</span></div>
                     </div>
-                    <p class="footer-description">
-                        Professional ventilation and air conditioning solutions 
-                        serving commercial and residential clients across the UK.
-                    </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <p>Premium driving instruction for discerning learners seeking excellence in skill, safety, and confidence on the road.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 
-                <div class="footer-section">
+                <div class="footer-column">
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#sectors">Sectors</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#features">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-section">
-                    <h4>Services</h4>
+                <div class="footer-column">
+                    <h4>Our Services</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Ventilation Systems</a></li>
-                        <li><a href="#">Air Conditioning</a></li>
-                        <li><a href="#">Maintenance</a></li>
-                        <li><a href="#">Consultation</a></li>
-                        <li><a href="#">Emergency Repairs</a></li>
+                        <li><a href="#">Beginner Lessons</a></li>
+                        <li><a href="#">Intensive Courses</a></li>
+                        <li><a href="#">Refresher Lessons</a></li>
+                        <li><a href="#">Motorway Driving</a></li>
+                        <li><a href="#">Test Preparation</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <span>01234 567 890</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>info@gen-vent.co.uk</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Business Park, City, AB1 2CD</span>
-                        </div>
-                    </div>
+                <div class="footer-column">
+                    <h4>Contact Info</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone"></i> +44 (0)20 7123 4567</li>
+                        <li><i class="fas fa-envelope"></i> enquiries@goldstandarddriving.co.uk</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Serving London & Home Counties</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Gen-Vent. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookies</a>
-                </div>
+            <div class="copyright">
+                <p>&copy; 2025 Gold Standard Driving. All rights reserved. | DVSA Approved Driving Instructor | Professional Indemnity Insured</p>
             </div>
         </div>
     </footer>
 
-
-
-
-
-
     <script>
-
-// Mobile Navigation Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
-const header = document.querySelector('.header');
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// Header scroll effect
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-        }
-    });
-}, observerOptions);
-
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', () => {
-    // Observe service cards
-    document.querySelectorAll('.service-card').forEach(card => {
-        observer.observe(card);
-    });
-    
-    // Observe stats for counting animation
-    document.querySelectorAll('.stat-number').forEach(stat => {
-        observer.observe(stat);
-    });
-});
-
-// Stats counter animation
-function animateStats() {
-    const stats = document.querySelectorAll('.stat-number');
-    
-    stats.forEach(stat => {
-        const target = parseInt(stat.textContent);
-        let current = 0;
-        const increment = target / 50;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            stat.textContent = Math.floor(current) + (stat.textContent.includes('%') ? '%' : '+');
-        }, 40);
-    });
-}
-
-// Initialize stats animation when hero section is in view
-const heroObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateStats();
-            heroObserver.unobserve(entry.target);
-        }
-    });
-});
-
-const heroSection = document.querySelector('.hero');
-if (heroSection) {
-    heroObserver.observe(heroSection);
-}
-
-// Form handling for quote requests
-document.querySelectorAll('.cta-button').forEach(button => {
-    if (button.textContent.includes('Quote') || button.textContent.includes('Consultation')) {
-        button.addEventListener('click', () => {
-            // Here you would typically show a modal or redirect to a contact form
-            console.log('Quote request initiated');
-            // Example: showModal('quote-modal');
+        // Form submission handler
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your booking request! We will contact you within 24 hours to confirm your lesson.');
+            this.reset();
         });
-    }
-});
-
-// Video fallback
-const heroVideo = document.querySelector('.hero-video');
-if (heroVideo) {
-    heroVideo.addEventListener('error', () => {
-        // If video fails to load, set a background image
-        heroVideo.style.display = 'none';
-        document.querySelector('.hero-background').style.backgroundImage = 'url("assets/hero-fallback.jpg")';
-        document.querySelector('.hero-background').style.backgroundSize = 'cover';
-        document.querySelector('.hero-background').style.backgroundPosition = 'center';
-    });
-}
-
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
-
-// Service card hover effects
-document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-console.log('Gen-Vent website loaded successfully');
-
-</script>
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .testimonial, .pricing-card, .contact-info, .contact-form').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 100) {
+                header.style.padding = '10px 0';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.padding = '20px 0';
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
