@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold Standard Driving | Premium Driving Instructor</title>
+    <title>Gold Standard Driving | Elite Driving Instructor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css" />
     <style>
         :root {
             --gold: #D4AF37;
@@ -24,6 +25,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
@@ -55,6 +60,7 @@
             z-index: 1000;
             padding: 20px 0;
             border-bottom: 1px solid var(--gold);
+            transition: all 0.4s ease;
         }
         
         .header-container {
@@ -121,6 +127,15 @@
             width: 100%;
         }
         
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
         .cta-button {
             background: linear-gradient(to right, var(--gold-dark), var(--gold));
             color: var(--black);
@@ -140,20 +155,21 @@
             box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
         }
         
-        /* Hero Section */
+        /* L-Shaped Hero Section */
         .hero {
-            background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            align-items: center;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
             position: relative;
             overflow: hidden;
         }
         
         .hero-content {
-            max-width: 700px;
+            background-color: var(--black);
+            padding: 160px 60px 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             z-index: 2;
         }
         
@@ -161,6 +177,9 @@
             font-size: 3.5rem;
             margin-bottom: 20px;
             line-height: 1.2;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.2s forwards;
         }
         
         .hero p {
@@ -168,11 +187,43 @@
             margin-bottom: 30px;
             color: var(--white);
             max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.4s forwards;
+        }
+        
+        .hero-image {
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.8)), 
+                        url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .floating-car {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: floatIn 1.2s 0.8s forwards;
+        }
+        
+        .car-image {
+            width: 100%;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
         }
         
         .hero-stats {
             display: flex;
             margin-top: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.6s forwards;
         }
         
         .stat {
@@ -233,6 +284,13 @@
             text-align: center;
             transition: transform 0.3s;
             border-top: 4px solid var(--gold);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .feature-card:hover {
@@ -250,10 +308,60 @@
             font-size: 1.5rem;
         }
         
+        /* Car Graphics Section */
+        .car-graphics {
+            padding: 100px 0;
+            background-color: var(--black);
+        }
+        
+        .graphics-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .graphics-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .graphics-image {
+            position: relative;
+        }
+        
+        .graphics-car {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .badge {
+            position: absolute;
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .badge-1 {
+            top: 20px;
+            right: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .badge-2 {
+            bottom: 40px;
+            left: 20px;
+            animation: pulse 2s 0.5s infinite;
+        }
+        
         /* Testimonials */
         .testimonials {
             padding: 100px 0;
-            background-color: var(--black);
+            background-color: var(--black-light);
         }
         
         .testimonial-slider {
@@ -269,6 +377,13 @@
             text-align: center;
             position: relative;
             border-left: 4px solid var(--gold);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .testimonial.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .testimonial-text {
@@ -297,6 +412,60 @@
             opacity: 0.5;
         }
         
+        /* Image Gallery */
+        .gallery {
+            padding: 100px 0;
+            background-color: var(--black);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
         /* Pricing Section */
         .pricing {
             padding: 100px 0;
@@ -318,6 +487,13 @@
             text-align: center;
             position: relative;
             transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .pricing-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .pricing-card.featured {
@@ -385,6 +561,13 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .contact-detail.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .contact-icon {
@@ -398,10 +581,24 @@
             background-color: var(--black-light);
             padding: 40px;
             border-radius: 10px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .contact-form.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .form-group {
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .form-group.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .form-control {
@@ -494,10 +691,64 @@
             font-size: 0.9rem;
         }
         
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+            }
+        }
+        
         /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-content {
+                padding: 160px 40px 80px;
+            }
+            
+            .hero-image {
+                min-height: 500px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 2.8rem;
+            }
+            
+            .graphics-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
             }
             
             .pricing-card.featured {
@@ -510,20 +761,28 @@
         }
         
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-            }
-            
-            .logo {
-                margin-bottom: 15px;
-            }
-            
             .nav-links {
-                margin-top: 15px;
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--black);
+                flex-direction: column;
+                padding: 20px;
+                border-top: 1px solid var(--gray);
+            }
+            
+            .nav-links.active {
+                display: flex;
             }
             
             .nav-links li {
-                margin: 0 10px;
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
             }
             
             .hero h1 {
@@ -538,54 +797,48 @@
                 margin-right: 0;
                 margin-bottom: 20px;
             }
-        }
-        
-        @media (max-width: 576px) {
-            .hero {
-                height: auto;
-                padding: 150px 0 80px;
+            
+            .hero-content {
+                padding: 140px 20px 60px;
             }
             
-            .feature-card, .testimonial, .pricing-card, .contact-form {
+            .contact-form {
                 padding: 30px 20px;
             }
         }
         
-        /* Animation for elements */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        @media (max-width: 576px) {
+            .hero-image {
+                min-height: 400px;
+                padding: 20px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .feature-card, .testimonial, .pricing-card {
+                padding: 30px 20px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
             }
         }
         
-        .animate {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        /* Gold accent elements */
-        .gold-accent {
-            color: var(--gold);
-        }
-        
-        .gold-border {
-            border-color: var(--gold);
-        }
-        
-        .gold-bg {
-            background-color: var(--gold);
+        /* Scroll progress indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(to right, var(--gold-dark), var(--gold));
+            z-index: 1001;
+            transition: width 0.1s;
         }
     </style>
-
-
-
-
 </head>
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress"></div>
+    
     <!-- Header -->
     <header>
         <div class="container header-container">
@@ -595,21 +848,18 @@
                 </div>
                 <div class="logo-text">Gold<span>Standard</span></div>
             </div>
-
-
-
-      <nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
-    <ul>
-      <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
-      <li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
-    </ul>
-  </nav>
-
-
-
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Services</a></li>
+                <li><a href="#graphics">Training Vehicle</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
             <a href="#contact" class="cta-button">Book Your Lesson</a>
         </div>
@@ -617,26 +867,30 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content animate">
-                <h1>Master the Road with <span class="gold-accent">Premium</span> Driving Instruction</h1>
-                <p>Experience elite driving tuition tailored to your individual needs. With a 98% first-time pass rate and bespoke lesson plans, we transform novice drivers into confident, skilled motorists worthy of the gold standard.</p>
-                <a href="#contact" class="cta-button">Start Your Journey Today</a>
-                
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">98%</span>
-                        <span class="stat-label">First-Time Pass Rate</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">1500+</span>
-                        <span class="stat-label">Students Taught</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">10+</span>
-                        <span class="stat-label">Years Experience</span>
-                    </div>
+        <div class="hero-content">
+            <h1>Elite Driving Instruction for Discerning Learners</h1>
+            <p>Master the art of driving with personalized, one-to-one tuition from London's premier driving instructor. Experience the gold standard in skill, safety, and confidence on the road.</p>
+            <a href="#contact" class="cta-button">Begin Your Journey</a>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">First-Time Pass Rate</span>
                 </div>
+                <div class="stat">
+                    <span class="stat-number">1500+</span>
+                    <span class="stat-label">Students Taught</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-image">
+            <div class="floating-car">
+                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Luxury Training Vehicle" class="car-image">
             </div>
         </div>
     </section>
@@ -649,7 +903,7 @@
             </div>
             
             <div class="features-grid">
-                <div class="feature-card animate">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-user-tie"></i>
                     </div>
@@ -657,7 +911,7 @@
                     <p>Exclusive attention from a DVSA-approved instructor with over 10 years of premium teaching experience. No shared lessons, no distractions.</p>
                 </div>
                 
-                <div class="feature-card animate">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-car"></i>
                     </div>
@@ -665,7 +919,7 @@
                     <p>Learn in a premium, latest-model vehicle equipped with dual controls, advanced safety features, and supreme comfort for optimal learning.</p>
                 </div>
                 
-                <div class="feature-card animate">
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-calendar-check"></i>
                     </div>
@@ -676,15 +930,80 @@
         </div>
     </section>
 
+    <!-- Car Graphics Section -->
+    <section class="car-graphics" id="graphics">
+        <div class="container">
+            <div class="graphics-container">
+                <div class="graphics-content">
+                    <h2>State-of-the-Art Training Vehicle</h2>
+                    <p>Our premium training vehicle is equipped with the latest safety technology and comfort features to ensure the best learning environment.</p>
+                    <ul style="margin-top: 20px; padding-left: 20px;">
+                        <li style="margin-bottom: 10px;">Dual controls for instructor safety intervention</li>
+                        <li style="margin-bottom: 10px;">360-degree camera system for parking mastery</li>
+                        <li style="margin-bottom: 10px;">Advanced driver assistance systems (ADAS)</li>
+                        <li style="margin-bottom: 10px;">Climate control for all-weather comfort</li>
+                        <li style="margin-bottom: 10px;">Automatic transmission option available</li>
+                    </ul>
+                    <a href="#contact" class="cta-button" style="margin-top: 30px;">Experience Our Vehicle</a>
+                </div>
+                
+                <div class="graphics-image">
+                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Premium Training Car Interior" class="graphics-car">
+                    <div class="badge badge-1">Dual Controls</div>
+                    <div class="badge badge-2">360° Camera</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Training In Action</h2>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1542282088-72b9c4e216a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Driving Lesson in Progress">
+                    <div class="gallery-overlay">
+                        <p>One-to-One Instruction</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Modern Car Interior">
+                    <div class="gallery-overlay">
+                        <p>Premium Vehicle Interior</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Night Driving Lesson">
+                    <div class="gallery-overlay">
+                        <p>Night Driving Practice</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1593941707882-a5bba5331f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Passed Driving Test">
+                    <div class="gallery-overlay">
+                        <p>Celebrating Success</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials -->
-    <section class="testimonials" id="about">
+    <section class="testimonials">
         <div class="container">
             <div class="section-title">
                 <h2>Student Success Stories</h2>
             </div>
             
             <div class="testimonial-slider">
-                <div class="testimonial animate">
+                <div class="testimonial">
                     <div class="quote-icon">
                         <i class="fas fa-quote-left"></i>
                     </div>
@@ -704,7 +1023,7 @@
             </div>
             
             <div class="pricing-cards">
-                <div class="pricing-card animate">
+                <div class="pricing-card">
                     <h3 class="package-name">Standard Foundation</h3>
                     <div class="price">£320<span> / 10 hours</span></div>
                     <ul class="package-features">
@@ -716,7 +1035,7 @@
                     <a href="#contact" class="cta-button">Select Package</a>
                 </div>
                 
-                <div class="pricing-card featured animate">
+                <div class="pricing-card featured">
                     <h3 class="package-name">Gold Intensive</h3>
                     <div class="price">£850<span> / 30 hours</span></div>
                     <ul class="package-features">
@@ -729,7 +1048,7 @@
                     <a href="#contact" class="cta-button">Select Package</a>
                 </div>
                 
-                <div class="pricing-card animate">
+                <div class="pricing-card">
                     <h3 class="package-name">Platinum Complete</h3>
                     <div class="price">£1,450<span> / full course</span></div>
                     <ul class="package-features">
@@ -753,7 +1072,7 @@
             </div>
             
             <div class="contact-container">
-                <div class="contact-info animate">
+                <div class="contact-info">
                     <h3>Contact Information</h3>
                     <p>Ready to experience the gold standard in driving instruction? Get in touch to schedule your first lesson.</p>
                     
@@ -783,9 +1102,18 @@
                             <p><strong>Hours</strong><br>Monday - Sunday: 7am - 9pm</p>
                         </div>
                     </div>
+                    
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p><strong>Area</strong><br>Serving London & Home Counties</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="contact-form animate">
+                <div class="contact-form">
                     <h3>Book Your First Lesson</h3>
                     <form id="bookingForm">
                         <div class="form-group">
@@ -839,30 +1167,32 @@
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
                         <li><a href="#features">Services</a></li>
+                        <li><a href="#graphics">Training Vehicle</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
                         <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h4>Our Services</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Beginner Lessons</a></li>
-                        <li><a href="#">Intensive Courses</a></li>
-                        <li><a href="#">Refresher Lessons</a></li>
-                        <li><a href="#">Motorway Driving</a></li>
-                        <li><a href="#">Test Preparation</a></li>
+                        <li><a href="#contact">Beginner Lessons</a></li>
+                        <li><a href="#contact">Intensive Courses</a></li>
+                        <li><a href="#contact">Refresher Lessons</a></li>
+                        <li><a href="#contact">Motorway Driving</a></li>
+                        <li><a href="#contact">Test Preparation</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
-                    <h4>Contact Info</h4>
+                    <h4>Certifications</h4>
                     <ul class="footer-links">
-                        <li><i class="fas fa-phone"></i> +44 (0)20 7123 4567</li>
-                        <li><i class="fas fa-envelope"></i> enquiries@goldstandarddriving.co.uk</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Serving London & Home Counties</li>
+                        <li>DVSA Approved Instructor</li>
+                        <li>Enhanced DBS Checked</li>
+                        <li>Fully Insured</li>
+                        <li>CPD Certified</li>
+                        <li>First Aid Trained</li>
                     </ul>
                 </div>
             </div>
@@ -874,11 +1204,95 @@
     </footer>
 
     <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+        
         // Form submission handler
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Thank you for your booking request! We will contact you within 24 hours to confirm your lesson.');
             this.reset();
+        });
+        
+        // Scroll progress indicator
+        const scrollProgress = document.querySelector('.scroll-progress');
+        
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            scrollProgress.style.width = scrolled + '%';
+            
+            // Header scroll effect
+            const header = document.querySelector('header');
+            if(window.scrollY > 100) {
+                header.style.padding = '10px 0';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.padding = '20px 0';
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Stagger animations for form groups
+                    if (entry.target.classList.contains('contact-form')) {
+                        const formGroups = entry.target.querySelectorAll('.form-group');
+                        formGroups.forEach((group, index) => {
+                            setTimeout(() => {
+                                group.classList.add('visible');
+                            }, index * 100);
+                        });
+                    }
+                    
+                    // Stagger animations for contact details
+                    if (entry.target.classList.contains('contact-info')) {
+                        const contactDetails = entry.target.querySelectorAll('.contact-detail');
+                        contactDetails.forEach((detail, index) => {
+                            setTimeout(() => {
+                                detail.classList.add('visible');
+                            }, index * 100);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .testimonial, .pricing-card, .gallery-item, .contact-info, .contact-form').forEach(el => {
+            observer.observe(el);
         });
         
         // Smooth scrolling for navigation links
@@ -899,35 +1313,15 @@
             });
         });
         
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
-            });
-        }, observerOptions);
-        
-        // Observe elements for animation
-        document.querySelectorAll('.feature-card, .testimonial, .pricing-card, .contact-info, .contact-form').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if(window.scrollY > 100) {
-                header.style.padding = '10px 0';
-                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
-            } else {
-                header.style.padding = '20px 0';
-                header.style.boxShadow = 'none';
-            }
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate hero elements
+            setTimeout(() => {
+                document.querySelector('.hero h1').style.animation = 'fadeInUp 1s 0.2s forwards';
+                document.querySelector('.hero p').style.animation = 'fadeInUp 1s 0.4s forwards';
+                document.querySelector('.hero-stats').style.animation = 'fadeInUp 1s 0.6s forwards';
+                document.querySelector('.floating-car').style.animation = 'floatIn 1.2s 0.8s forwards';
+            }, 300);
         });
     </script>
 </body>
