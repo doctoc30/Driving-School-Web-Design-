@@ -1,2446 +1,830 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>D S W D</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
-
-
-<style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #33a7d4;
-    color: white;
-    overflow-x: hidden;
-  }
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background-color: #33a7d4;
-    z-index: 2000;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-  }
-
-  }
-  .hamburger {
-    width: 28px;
-    height: 22px;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 2100;
-  }
-  .hamburger span {
-    display: block;
-    height: 3.5px;
-    background: white;
-    border-radius: 2px;
-    transition: all 0.35s ease-in-out;
-  }
-  .hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-  }
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-  }
-
-  nav.menu {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #33a7d4;
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 4rem;
-    z-index: 2050;
-  }
-  nav.menu.open {
-    transform: translateX(0);
-  }
-  nav.menu ul {
-    list-style: none;
-  }
-  nav.menu ul li {
-    margin-bottom: 2.2rem;
-    opacity: 0;
-    transform: translateX(-40px);
-    font-weight: 900;
-    font-size: 3rem;
-    letter-spacing: 0.1em;
-  }
-  nav.menu ul li a {
-    color: white;
-    text-decoration: none;
-    user-select: none;
-    display: inline-block;
-    transition: color 0.3s ease;
-  }
-  nav.menu ul li a:hover {
-    color: #222;
-  }
-  nav.menu.open ul li {
-    animation: slideInFade 0.4s forwards;
-  }
-  nav.menu.open ul li:nth-child(1) {
-    animation-delay: 0.15s;
-  }
-  nav.menu.open ul li:nth-child(2) {
-    animation-delay: 0.35s;
-  }
-  nav.menu.open ul li:nth-child(3) {
-    animation-delay: 0.55s;
-  }
-  nav.menu.open ul li:nth-child(4) {
-    animation-delay: 0.75s;
-  }
-  nav.menu.open ul li:nth-child(5) {
-    animation-delay: 0.95s;
-  }
-  @keyframes slideInFade {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* Desktop view - raised breakpoint to 1024px */
-  @media (min-width: 1024px) {
-    .hamburger {
-      display: none;
-    }
-    nav.menu {
-      position: static;
-      height: auto;
-      width: auto;
-      background: transparent;
-      transform: none !important;
-      padding-left: 0;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    nav.menu ul {
-      display: flex;
-      gap: 3rem;
-    }
-    nav.menu ul li {
-      margin: 0;
-      opacity: 1 !important;
-      transform: none !important;
-      font-size: 1.25rem;
-      animation: none !important;
-    }
-    nav.menu ul li a {
-      font-weight: 900;
-      font-size: 1.1rem;
-      color: white;
-      letter-spacing: 0.15em;
-    }
-    nav.menu ul li a:hover {
-      color: #222;
-    }
-  }
-
-<title>Splash + Form</title>
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-    background: white;
-  }
-
-  .color-rise {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: white;
-    animation: solidRise 8s ease-in-out forwards;
-    z-index: 0;
-  }
-
-  @keyframes solidRise {
-    0% { background-color: white; }
-    100% { background-color: #33a7d4; }
-  }
-
-  .overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 0 30px #227090; /* Adjusted shadow to complement new color */
-    z-index: 1;
-    text-align: center;
-    opacity: 0;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 1.2;
-    white-space: pre-line;
-  }
-
-  @keyframes rocketRise {
-    0% { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
-    100% { transform: translate(-50%, -150%) translateY(-100vh); opacity: 0; }
-  }
-
-  .typed-line { display: block; }
-
-  .cursor {
-    display: inline-block;
-    width: 1ch;
-    animation: blink 0.8s infinite;
-  }
-
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
-
-
-
-
-  select, input[type="text"], input[type="email"] {
-    padding: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    width: 80%;
-    max-width: 400px;
-    cursor: pointer;
-    appearance: none;
-    background-color: white;
-    color: #333;
-    height: 3.5rem;
-    padding-right: 2.5rem;
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    font-family: inherit;
-  }
-
-  select {
-    background-image: url("data:image/svg+xml;utf8,<svg fill='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  }
-
-  input[type="text"],
-  input[type="email"] {
-    background-image: none;
-    cursor: text;
-  }
-
-.button-row {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem; /* Increased spacing */
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-button {
-    background: white;
-    color: #33a7d4;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: background 0.3s ease;
-    min-width: 140px; /* Further ensures button sizing */
-}
-
-  button:hover {
-    background: #227090; /* Adjusted hover color to complement new color */
-    color: white;
-  }
-
-
- 
- /* ---------- BASE STYLES ---------- */
-
-nav ul {
-  display: block;
-}
-
-nav ul li {
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li a {
-  padding: 0.5rem 1rem;
-}
-
-select,
-input[type="text"],
-input[type="email"] {
-  width: 60%;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  padding: 1rem;
-}
-
-.overlay-text {
-  font-size: calc(6vw + 0.5rem);
-}
-
-
-
- 
-#typewriter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  z-index: 1000;
-  font-family: 'Montserrat', 'Poppins', 'Arial Black', Arial, sans-serif;
-  font-weight: 900;
-  text-align: center;
-  color: white;
-  opacity: 1;
-  pointer-events: none;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  max-width: 90vw;
-  line-height: 1.3;
-}
-
-#typewriter .typed-line {
-  font-size: inherit;
-  margin: 0.1em 0;
-  white-space: normal;
-}
-
-.cursor {
-  display: inline-block;
-  width: 2px;
-  background: white;
-  animation: blink 1s step-start infinite;
-  vertical-align: bottom;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  50% {
-    background: transparent;
-  }
-}
-
-
-
-/* ---------- Mobile (Up to 599px) ---------- */
-@media screen and (max-width: 599px) {
-  #typewriter {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    max-width: 90vw;
-  }
-
-  .typewriter-text {
-    font-size: clamp(2rem, 6vw, 3rem);
-    max-width: 90vw;
-  }
-}
-
-/* ---------- Tablet Portrait (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
-  #typewriter {
-    font-size: 6rem !important;
-    max-width: 90vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.5rem !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* ---------- Tablet Landscape (600–1024px) ---------- */
-@media screen and (min-width: 600px) and (max-width: 1024px) and (orientation: landscape) {
-  #typewriter {
-    font-size: 5.5rem !important;
-    max-width: 85vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 3.2rem !important;
-    max-width: 80vw !important;
-  }
-}
-
-/* ---------- Desktop (1025px+) ---------- */
-@media screen and (min-width: 1025px) {
-  #typewriter {
-    font-size: 6.5rem !important;
-    max-width: 75vw !important;
-  }
-
-  .typewriter-text {
-    font-size: 4rem !important;
-    max-width: 60vw !important;
-  }
-}
-
- /* ---------- iPhone Landscape Final Fix ---------- */
-@media screen and (max-width: 812px) and (orientation: landscape) {
-  #typewriter {
-    top: 60% !important;
-    transform: translate(-50%, -60%) !important;
-    font-size: clamp(1.5rem, 4vw, 2.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 90vw !important;
-  }
-
-  .typewriter-text {
-    font-size: clamp(1rem, 3vw, 1.8rem) !important;
-    line-height: 1.2 !important;
-    max-width: 85vw !important;
-  }
-}
-
-/* Tablet: Ensure space between buttons */
-@media screen and (min-width: 600px) and (max-width: 1024px) {
-  .button-row {
-    gap: 3rem;         /* Increase spacing */
-    flex-wrap: wrap;   /* Allow buttons to wrap to next line if needed */
-    justify-content: center;
-  }
-
-  .button-row button {
-    min-width: 140px;  /* Prevent buttons from shrinking too much */
-    margin: 0.5rem 1rem; /* Extra spacing around each button */
-  }
-}
-
- /* --------------------------------------------
-   1. FIRST QUESTION SCREEN (#form-start-choice)
---------------------------------------------- */
-#form-start-choice {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  background: #33a7d4;
-  color: white;
-  padding: 2rem;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-#form-start-choice.show {
-  display: flex;
-  opacity: 1;
-}
-
-
- 
-/* --------------------------------------------
-   2. MULTI-STEP FORM SCREENS (.form-screen)
---------------------------------------------- */
-.form-screen {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  min-height: 60vh;
-  background: #33a7d4;
-  color: white;
-  padding: 2rem;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 1000;
-  display: none;
-  flex-direction: column;
-  justify-content: center;   /* Center vertically */
-  align-items: center;       /* Center horizontally */
-  overflow-y: auto;
-  border-radius: 12px;
-}
-
-/* Show active screen */
-.form-screen.active {
-  display: flex;
-}
-
-/* On small-height screens, remove vertical centering
-   so content scrolls naturally */
-@media (max-height: 600px) {
-  .form-screen {
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    justify-content: flex-start;
-    padding-top: 4rem;
-    min-height: auto;
-  }
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-  .form-screen h2 {
-    font-weight: 900;
-    font-size: 1.8rem;
-  margin-bottom: 3rem;
-  max-width: 500px;
-  line-height: 1.4;
-}
-
-/* Optional: adjust if very small screens */
-@media (max-height: 600px) {
-  .form-screen {
-    justify-content: flex-start;
-    padding-top: 4rem;
-  }
-}
-
-
-
-/* --------------------------------------------
-   3. FORM FIELDS (input, select)
---------------------------------------------- */
-select,
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
-  padding: 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  max-width: 100%;
-  appearance: none;
-  background-color: white;
-  color: #333;
-  height: 3.5rem;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-/* --------------------------------------------
-   4. CONSENT CHECKBOX SECTION
---------------------------------------------- */
-.consent-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-size: 14px;
-  color: white;
-  margin-bottom: 2rem;
-}
-
-.consent-wrapper input[type="checkbox"] {
-  margin-right: 8px;
-}
-
-/* --------------------------------------------
-   5. BUTTONS
---------------------------------------------- */
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: bold;
-  margin: 0.5rem;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* Optional: group buttons side-by-side */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 1rem;
-}
-
-/* --------------------------------------------
-   6. MOBILE HEIGHT ADJUSTMENTS
---------------------------------------------- */
-
-
-.button-row {
-  display: flex;
-  justify-content: center;  /* Center the buttons */
-  gap: 1rem;                /* Space between buttons */
-  margin-top: 2rem;
-}
-
-.button-row button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  color: #33a7d4;
-  font-weight: bold;
-  cursor: pointer;
-  width: auto;              /* Make sure buttons size to content */
-  min-width: 100px;         /* Optional: consistent width */
-}
-
-.button-row button:hover {
-  opacity: 0.9;
-}
-
-
-
-.skip-link {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  color: #ffffff; /* Or use your brand color */
-  border: none;
-  padding: 0;
-  font-size: 16px;
-  font-weight: normal;
-  text-decoration: none;
-  z-index: 10000;
-  box-shadow: none;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-.skip-link:hover {
-  opacity: 0.8;
-}
- 
-.logo img {
-  height: 40px;   /* fits within your 60px header */
-  width: auto;    /* keeps proportions */
-  display: block;
-}
-
-
-#main-intro-options {
-  justify-content: flex-start !important; /* push content to the top */
-}
-
-#main-intro-options h2 {
-  margin-top: 40px; /* push heading down a little if needed */
-}
-
-#main-intro-options .button-row {
-  margin-top: 60px; /* this moves ONLY the 3 buttons further down */
-}
-
-
-
- #typewriter { display: none; }
-#typewriter.active { display: block; }
-
-.color-rise { display: none; transition: none; }
-.color-rise.active { display: block; transition: background-color 2s ease; }
-
-
-
-
-
-/* ------------------------ */
-/* General funnel screen styling */
-/* ------------------------ */
-.form-screen {
-  display: none;              /* hidden by default */
-  flex-direction: column;     /* stack content vertically */
-  justify-content: center;    /* vertical centering */
-  align-items: center;        /* horizontal centering */
-  min-height: 100vh;          /* full viewport height */
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-/* Active screen */
-.form-screen.active {
-  display: flex;
-}
-
-/* Buttons row styling */
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-/* ------------------------ */
-/* First screen adjustment */
-/* ------------------------ */
-#main-intro-options {
-  padding-top: 120px;   /* ⬅️ adjust this number to move down */
-}
-
-/* ------------------------ */
-/* Tablet / landscape adjustments */
-/* ------------------------ */
-@media (min-width: 768px) {
-  .form-screen {
-    padding: 40px;
-  }
-  #main-intro-options {
-    padding-top: 140px; /* slightly lower on tablet */
-  }
-}
-
-/* ------------------------ */
-/* Desktop adjustments */
-/* ------------------------ */
-@media (min-width: 1024px) {
-  .form-screen {
-    padding: 60px;
-  }
-  #main-intro-options {
-    padding-top: 160px; /* even lower on desktop */
-  }
-}
-
-/* ------------------------ */
-/* Optional: adjust for fixed header */
-/* ------------------------ */
-body header + .form-screen {
-  padding-top: 80px;
-}
-
-
- /* Funnel screen global */
-.form-screen {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.form-screen.active {
-  display: flex;
-}
-
-
- #main-intro-options {
-  justify-content: center !important; /* center vertically */
-  min-height: 100vh;                   /* full viewport height */
-  padding-top: 0 !important;           /* remove any extra top spacing */
-}
-
-
-/* ===== FUNNEL SCREEN ===== */
-.form-screen { display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
-.form-screen.active { display: flex; }
-
-
-
- 
-.brand-btn {
-  background: #fff;
-  color: #33a7d4;
-  border: 2px solid #33a7d4;
-  border-radius: 12px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  margin: 0.5rem 0;
-  transition: all 0.2s ease;
-}
-
-.brand-btn:hover {
-  background: #f0f8ff;
-}
-
-.btn-subtext {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: normal;
-  margin-top: 0.3rem;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-
-
-
- /* ===================== MOBILE PORTRAIT & LANDSCAPE VIEW FIX ===================== */
-
-/* Base styles from pricing.html - maintaining consistency */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-  font-family: 'Poppins', sans-serif; 
-  background-color: #33a7d4; 
-  color: white; 
-  overflow-x: hidden; 
-}
-
-/* Header styling - maintaining original */
-header {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0;
-  height: 60px; 
-  display: flex; 
-  align-items: center;
-  justify-content: space-between; 
-  padding: 0 20px;
-  background-color: #33a7d4; 
-  z-index: 2000;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-}
-
-.logo {
-  font-weight: 900; 
-  font-size: 1.7rem; 
-  letter-spacing: 2px;
-  user-select: none; 
-  cursor: default;
-}
-
- 
-/* iPhone landscape fix */
-@media (orientation: landscape) and (max-device-width: 812px) {
-  footer {
-    padding-left: max(env(safe-area-inset-left), 20px);
-    padding-right: max(env(safe-area-inset-right), 20px);
-  }
-}
- 
-
-  #pricing-section { padding: 80px 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-  .pricing-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1200px; }
-
-  /* Unified Pricing Card */
-  .pricing-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    min-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  }
-  .pricing-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-  }
-
-  .pricing-card.recommended .badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #227090;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: bold;
-  }
-
-  .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; font-weight: 900; }
-  .pricing-card .price { font-size: 2.5rem; margin-bottom: 2rem; font-weight: bold; }
-  .pricing-card ul { list-style: none; margin-bottom: 2rem; padding: 0; }
-  .pricing-card ul li { margin: 10px 0; font-size: 1.1rem; }
-
-  .pricing-card.in-view { opacity: 1; transform: translateY(0); }
-  .pricing-card.recommended.in-view { animation: glow 2s ease infinite alternate; }
-
-  @keyframes glow {
-    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.35); transform: translateY(0) scale(1.03);}
-    100% { box-shadow: 0 25px 50px rgba(255,255,255,0.4); transform: translateY(-5px) scale(1.05);}
-  }
-
-  @media (min-width: 1024px) {
-    .pricing-container { flex-direction: row; gap: 20px; }
-    .pricing-card { min-height: 65vh; }
-  }
-  @media (max-width: 768px) {
-    .pricing-card { min-height: 90vh; padding: 60px 20px; }
-  }
-
-  /* PayPal Button - App-like, Brand Consistent */
-  .pay-now {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #0070ba 0%, #00457c 100%);
-    color: #fff;
-    font-size: 1.05rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 50px; /* pill shape */
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 112, 186, 0.35);
-  }
-
-  .pay-now img { height: 22px; }
-
-  .pay-now:hover {
-    background: linear-gradient(135deg, #004f8c 0%, #00345c 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 112, 186, 0.45);
-  }
-  .pay-now:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 6px rgba(0, 112, 186, 0.3);
-  }
-
-  /* Trust Badge */
-  .paypal-badge {
-    margin-top: 15px;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.9);
-    border: 1px solid #e0e5eb;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-  .paypal-badge img {
-    max-width: 140px;
-    height: auto;
-    margin-bottom: 8px;
-  }
-  .paypal-badge p {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #1d1d1d;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .lock-icon { font-size: 1.1rem; color: #0070ba; }
-
-
-
-
- /* --- Allow normal page scrolling and full-width content --- */
-html, body {
-  overflow-x: hidden !important;  /* hide horizontal scrollbar */
-  overflow-y: auto !important;    /* allow natural vertical scrolling */
-  width: 100% !important;
-  height: auto !important;
-}
-
-/* If pricing section is inside a .form-screen wrapper, unfix it */
-#pricing-section,
-#pricing-section .form-screen,
-#recommended-plan-screen {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  overflow: visible !important;
-}
-
-
- /* === MOBILE PORTRAIT SCROLL FIX – Only when pricing screen is active === */
-@media (max-width: 768px) {
-  /* Target the active funnel screen that holds the pricing section */
-  #recommended-plan-screen.form-screen.active {
-    display: block !important;      /* use normal block flow */
-    min-height: auto !important;
-    height: auto !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
-    padding: 80px 20px 20px !important; /* top padding clears fixed header */
-  }
-
-  /* Inside that screen, let cards stack and scroll */
-  #recommended-plan-screen .pricing-container {
-    display: block !important;
-    gap: 24px !important;
-  }
-
-  #recommended-plan-screen .pricing-card {
-    min-height: auto !important;
-    margin-bottom: 24px;
-  }
-}
-
-
- /* Mobile Portrait Adjustments */
-@media (max-width: 768px) {
-  .pricing-card.recommended {
-    border: 2px solid #ff9900;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-  }
-
-  .pricing-card.recommended::before {
-    top: 8px;
-    right: -30px; /* adjust to fit mobile width */
-    padding: 5px 16px;
-    font-size: 0.75rem;
-  }
-}
-
-
-
-.includes-message {
-  border-top: 1px solid #fff;  /* white line separator */
-  margin: 15px 0;
-  padding-top: 10px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #fff;
-  list-style: none;  /* no bullets */
-}
-
-
- #typewriter, #typewriter * {
-  font-family: 'Montserrat', sans-serif !important;
-  font-weight: 900 !important;
-}
-
-
- /* ---------- GLOBAL FONT FAMILY ---------- */
-body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea, label, .logo {
-  font-family: 'Montserrat', 'Poppins', 'Arial Black', Arial, sans-serif;
-  font-weight: 900; /* bold everywhere */
-  letter-spacing: 0.03em;
-}
-
-/* ---------- HEADER & NAV ---------- */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background-color: #33a7d4;
-  z-index: 2000;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-}
-
-/* ---------- LOGO ---------- */
-.logo {
-  font-weight: 900;
-  font-size: 1.8rem;
-  letter-spacing: 2px;
-  user-select: none;
-  cursor: default;
-  color: white;
-  display: flex;
-  align-items: center;
-  z-index: 2100;
-}
-
-/* ---------- HAMBURGER ---------- */
-.hamburger {
-  width: 28px;
-  height: 22px;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 2101;
-}
-
-.hamburger span {
-  display: block;
-  height: 3.5px;
-  background: white;
-  border-radius: 2px;
-  transition: all 0.35s ease-in-out;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: translateY(9px) rotate(45deg);
-}
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-9px) rotate(-45deg);
-}
-
-/* ---------- NAV MENU ---------- */
-nav.menu {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #33a7d4;
-  transform: translateX(-100%);
-  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 4rem;
-  z-index: 2050;
-}
-
-nav.menu.open { transform: translateX(0); }
-
-nav.menu ul { list-style: none; }
-
-nav.menu ul li {
-  margin-bottom: 2.2rem;
-  opacity: 0;
-  transform: translateX(-40px);
-  font-weight: 900;
-  font-size: 3rem;
-  letter-spacing: 0.1em;
-}
-
-nav.menu ul li a {
-  color: white;
-  text-decoration: none;
-  display: inline-block;
-  transition: color 0.3s ease;
-}
-
-nav.menu ul li a:hover { color: #222; }
-
-nav.menu.open ul li { animation: slideInFade 0.4s forwards; }
-nav.menu.open ul li:nth-child(1) { animation-delay: 0.15s; }
-nav.menu.open ul li:nth-child(2) { animation-delay: 0.35s; }
-nav.menu.open ul li:nth-child(3) { animation-delay: 0.55s; }
-nav.menu.open ul li:nth-child(4) { animation-delay: 0.75s; }
-nav.menu.open ul li:nth-child(5) { animation-delay: 0.95s; }
-
-@keyframes slideInFade {
-  to { opacity: 1; transform: translateX(0); }
-}
-
-/* ---------- DESKTOP VIEW ---------- */
-@media (min-width: 1024px) {
-  .hamburger { display: none; }
-  nav.menu {
-    position: static;
-    height: auto;
-    width: auto;
-    background: transparent;
-    transform: none !important;
-    padding-left: 0;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  nav.menu ul { display: flex; gap: 3rem; }
-  nav.menu ul li {
-    margin: 0;
-    opacity: 1 !important;
-    transform: none !important;
-    font-size: 1.25rem;
-    animation: none !important;
-  }
-  nav.menu ul li a {
-    font-weight: 900;
-    font-size: 1.1rem;
-    color: white;
-    letter-spacing: 0.15em;
-  }
-  nav.menu ul li a:hover { color: #222; }
-}
-
-
-
-
-
-</style>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevate Digital | Premium Web Design Agency</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A1128;
+            --secondary: #001F54;
+            --accent: #034078;
+            --gold: #D4AF37;
+            --light: #FEFCFB;
+            --gray: #8B98A9;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--light);
+            background-color: var(--primary);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 24px 0;
+            transition: var(--transition);
+            background-color: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        header.scrolled {
+            padding: 16px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--gold);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--gold);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 40px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(3, 64, 120, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(3, 64, 120, 0.3);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 17, 40, 0.9), rgba(10, 17, 40, 0.95)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 64px;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+        
+        .hero h1 span {
+            color: var(--gold);
+            position: relative;
+        }
+        
+        .hero h1 span:after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(212, 175, 55, 0.2);
+            z-index: -1;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: var(--gray);
+            max-width: 600px;
+        }
+        
+        .value-badge {
+            display: inline-block;
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Services Section */
+        .section {
+            padding: 120px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-title h2 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 50px 40px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px);
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: var(--light);
+        }
+        
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+        
+        .service-price {
+            color: var(--gold);
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+        
+        .service-price span {
+            font-size: 16px;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        /* Portfolio Section */
+        .portfolio {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .portfolio-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            height: 350px;
+        }
+        
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(10, 17, 40, 0.95));
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.05);
+        }
+        
+        .portfolio-overlay h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-overlay p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Valuation Section */
+        .valuation {
+            text-align: center;
+        }
+        
+        .valuation-box {
+            background: linear-gradient(135deg, rgba(3, 64, 120, 0.1), rgba(0, 31, 84, 0.1));
+            border-radius: 20px;
+            padding: 80px 60px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .valuation-box:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold), var(--accent));
+        }
+        
+        .valuation-amount {
+            font-size: 96px;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+        
+        .valuation-subtitle {
+            font-size: 24px;
+            color: var(--gray);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .valuation-features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature i {
+            font-size: 32px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .feature h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 100px 0;
+            background: linear-gradient(rgba(10, 17, 40, 0.9), rgba(10, 17, 40, 0.95)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        .cta-section h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 20px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 80px 0 40px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .footer-logo span {
+            color: var(--gold);
+        }
+        
+        .footer-about p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .footer-links h4, .footer-contact h4 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--light);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+        
+        .footer-contact p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact i {
+            margin-right: 10px;
+            color: var(--gold);
+            width: 20px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .valuation-amount {
+                font-size: 72px;
+            }
+            
+            .section-title h2 {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .valuation-amount {
+                font-size: 56px;
+            }
+            
+            .valuation-box {
+                padding: 60px 30px;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+    </style>
 </head>
 <body>
-<header>
- <div class="logo">
- 
-       D S W D
-</div>
-
-<div class="hamburger" role="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu" tabindex="0">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
- 
-<nav class="menu" id="primary-menu" role="navigation" aria-hidden="true">
-  <ul>
-  <li><a href="/Driving-School-Web-Design-/pages/home.html">Home</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/about.html">About</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/concepts.html">Concepts</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/pricing.html">Pricing</a></li>
-<li><a href="/Driving-School-Web-Design-/pages/contact.html">Contact</a></li>
-  </ul>
-</nav>
- 
-</header> 
-
-<div class="color-rise"></div>
-<div id="typewriter"></div>
-
-
-<form action="https://formsubmit.co/fazhoq1977@gmail.com" method="POST" id="formWrapper">
-  <input type="hidden" id="hiddenPlan" name="Selected Plan">
-  <input type="hidden" id="hiddenFeatures" name="Selected Features">
-  <input type="hidden" id="hiddenPaymentLink" name="Payment Link">
-
-
-<!-- ===== MAIN INTRO OPTIONS ===== -->
-<div class="form-screen active" id="main-intro-options">
-  <h2>Welcome! What do you need help with today?</h2>
-  <div class="button-row">
-    <button type="button" onclick="setPath('new'); next()">New Website</button>
-    <button type="button" onclick="setPath('redesign'); next()">Redesign Existing Website</button>
-    <button type="button" onclick="setPath('maintenance'); next()">Maintenance / Updates</button>
-  </div>
-</div>
-
-<!-- ===== EXISTING WEBSITE ===== -->
-<div class="form-screen" id="instructor-q1">
-  <h2>Do you currently have a website?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('existing_site'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('existing_site'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<!-- ===== DESIGN CONCEPT ===== -->
-<div class="form-screen" id="instructor-q2">
-  <h2>Do you have a design concept in mind?</h2>
-  <p>You can enter a code, choose from templates, or request custom design.</p>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('design-code')">Yes, I have a code</button>
-    <button type="button" onclick="window.location.href='https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?fromFunnel=1'">Show me concepts</button>
-    <button type="button" onclick="next()">Custom design</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="design-code">
-  <h2>Enter your chosen design code</h2>
-  <input type="text" id="designInput" name="Design Code" placeholder="e.g. SDI-5" required>
-  <div class="button-row">
-    <button type="button" onclick="goToConcept()">Continue</button>
-    <button type="button" onclick="next()">Skip</button>
-    <button type="button" class="back-button" onclick="showScreen('instructor-q2')">Back</button>
-  </div>
-</div>
-
-<!-- ===== SOLO OR SCHOOL ===== -->
-<div class="form-screen" id="instructor-q4">
-  <h2>Are you a solo driving instructor or a driving school?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('solo'); showScreen('lesson-type')">Solo Instructor</button>
-    <button type="button" onclick="recordFeature('school'); next()">Driving School</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<!-- ===== LESSON TYPE ===== -->
-<div class="form-screen" id="lesson-type">
-  <h2>Do you offer Manual lessons, Automatic lessons, or both?</h2>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('manual_lessons'); next()">Manual Lessons</button>
-    <button type="button" onclick="recordFeature('automatic_lessons'); next()">Automatic Lessons</button>
-    <button type="button" onclick="recordFeature('both_lessons'); next()">Both</button>
-    <button type="button" class="back-button" onclick="showScreen('instructor-q4')">Back</button>
-  </div>
-</div>
-
-<!-- ===== BASIC PLAN (11 services) ===== -->
-<div class="form-screen" id="instructor-q5">
-  <h2>Mobile-Friendly Website</h2>
-  <p><strong>(Basic)</strong> – Optimized for all devices.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('mobile'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('mobile'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q6">
-  <h2>Live Chat</h2>
-  <p><strong>(Basic)</strong> – Lets students contact you easily.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('live_chat'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('live_chat'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q7">
-  <h2>Social Media Icons</h2>
-  <p><strong>(Basic)</strong> – Link to your social profiles.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('social'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('social'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q8">
-  <h2>Student Reviews Section</h2>
-  <p><strong>(Basic)</strong> – Show testimonials from past learners.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('reviews'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('reviews'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q9">
-  <h2>Google Map Integration</h2>
-  <p><strong>(Basic)</strong> – Display your location.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('map'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('map'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q10">
-  <h2>Sticky “Book Now” Button</h2>
-  <p><strong>(Basic)</strong> – Always visible for easy bookings.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('sticky_cta'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('sticky_cta'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q11">
-  <h2>Services List Page</h2>
-  <p><strong>(Basic)</strong> – Overview of your lessons and services.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('services_list'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('services_list'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q12">
-  <h2>Photo Gallery</h2>
-  <p><strong>(Basic)</strong> – Showcase your lessons, cars, and facilities.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('photo_gallery'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('photo_gallery'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q13">
-  <h2>FAQ Section</h2>
-  <p><strong>(Basic)</strong> – Answer common student questions.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('faq'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('faq'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q14">
-  <h2>Instructor Bio</h2>
-  <p><strong>(Basic)</strong> – Show your experience and credentials.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('bio'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('bio'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q15">
-  <h2>Logo & Brand Colors</h2>
-  <p><strong>(Basic)</strong> – Include your brand identity.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('branding'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('branding'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-
-<!-- ===== PRO PLAN (12 services) ===== -->
-<div class="form-screen" id="instructor-q16">
-  <h2>Animated Testimonials Slider</h2>
-  <p><strong>(Pro)</strong> – Display reviews dynamically.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('testimonials_slider'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('testimonials_slider'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-
-<div class="form-screen" id="instructor-q17">
-  <h2>Time-Delayed Enquiry Popup</h2>
-  <p><strong>(Pro)</strong> – Show a contact form after a delay to boost enquiries.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('delayed_popup'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('delayed_popup'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q18">
-  <h2>Countdown Offer Banner</h2>
-  <p><strong>(Pro)</strong> – Display limited-time deals to encourage bookings.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('countdown_banner'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('countdown_banner'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q19">
-  <h2>Sticky WhatsApp / Contact Button</h2>
-  <p><strong>(Pro)</strong> – Always visible for instant communication.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('sticky_contact'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('sticky_contact'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q20">
-  <h2>Lesson Quote Calculator</h2>
-  <p><strong>(Pro)</strong> – Students can calculate lesson prices dynamically.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('lesson_calculator'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('lesson_calculator'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q21">
-  <h2>Interactive Photo/Video Gallery</h2>
-  <p><strong>(Pro)</strong> – Showcase lessons, cars, and facilities interactively.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('interactive_gallery'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('interactive_gallery'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q22">
-  <h2>Scroll-Triggered Animations</h2>
-  <p><strong>(Pro)</strong> – Add visual effects as users scroll for engagement.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('scroll_animations'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('scroll_animations'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q23">
-  <h2>Popup Special Offer</h2>
-  <p><strong>(Pro)</strong> – Display a timed or exit-intent offer popup.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('popup_offer'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('popup_offer'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q24">
-  <h2>Sticky Contact Bar</h2>
-  <p><strong>(Pro)</strong> – Always visible bar with call/email links.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('sticky_bar'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('sticky_bar'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q25">
-  <h2>Animated Stats Counters</h2>
-  <p><strong>(Pro)</strong> – Display metrics like students taught, lessons delivered.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('stats_counters'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('stats_counters'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q26">
-  <h2>Book My Lesson Popup Form</h2>
-  <p><strong>(Pro)</strong> – Popup booking form for fast reservations.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('book_popup'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('book_popup'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q27">
-  <h2>On-Page SEO Meta & Structured Tags</h2>
-  <p><strong>(Pro)</strong> – Add meta titles, descriptions, and structured data for search engines.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('seo_meta'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('seo_meta'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-
-
-<!-- ===== PREMIUM PLAN (15 services) ===== -->
-
-<div class="form-screen" id="instructor-q28">
-  <h2>Gift Voucher & Referral Rewards</h2>
-  <p><strong>(Premium)</strong> – Reward students for referrals and gifts.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('gift_rewards'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('gift_rewards'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q29">
-  <h2>Downloadable Lesson Guides</h2>
-  <p><strong>(Premium)</strong> – Students can download learning materials.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('lesson_guides'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('lesson_guides'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q30">
-  <h2>Intro Video Section</h2>
-  <p><strong>(Premium)</strong> – Short welcome or tips video for new students.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('intro_video'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('intro_video'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q31">
-  <h2>“What to Expect” Guide</h2>
-  <p><strong>(Premium)</strong> – Overview of lessons, progress, and expectations.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('expect_guide'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('expect_guide'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q32">
-  <h2>Lesson Progress Tracker</h2>
-  <p><strong>(Premium)</strong> – Interactive tracker students can update manually.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('progress_tracker'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('progress_tracker'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q33">
-  <h2>Feedback Popup Widget</h2>
-  <p><strong>(Premium)</strong> – Capture student testimonials dynamically.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('feedback_popup'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('feedback_popup'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q34">
-  <h2>Content & Images Assistance</h2>
-  <p><strong>(Premium)</strong> – Help with text descriptions and stock images for your site.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('content_images'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('content_images'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q35">
-  <h2>Interactive Package Comparison Tool</h2>
-  <p><strong>(Premium)</strong> – Compare lesson bundles, pricing, or packages.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('package_comparison'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('package_comparison'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q36">
-  <h2>Auto-Updating Weekly Offer Banner</h2>
-  <p><strong>(Premium)</strong> – Change offers weekly via HTML/JS snippet.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('weekly_banner'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('weekly_banner'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q37">
-  <h2>Fast Track Courses</h2>
-  <p><strong>(Premium)</strong> – Highlight accelerated learning programs for students.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('fast_track'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('fast_track'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q38">
-  <h2>Lesson Quote Calculator</h2>
-  <p><strong>(Premium)</strong> – Let students calculate prices directly on your website.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('premium_calculator'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('premium_calculator'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q39">
-  <h2>Weekly Featured Student / Story Section</h2>
-  <p><strong>(Premium)</strong> – Showcase student success stories on your website.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('featured_student'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('featured_student'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q40">
-  <h2>SEO Meta & Structured Tags</h2>
-  <p><strong>(Premium)</strong> – Add meta titles, descriptions, and structured data for search engines.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('seo_meta_premium'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('seo_meta_premium'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q41">
-  <h2>Printable Lesson Certificates</h2>
-  <p><strong>(Premium)</strong> – Issue completion certificates for students.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('certificates'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('certificates'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="instructor-q42">
-  <h2>Feedback/Review Integration</h2>
-  <p><strong>(Premium)</strong> – Connect student feedback to testimonials or admin email.</p>
-  <div class="button-row">
-    <button type="button" onclick="recordFeature('feedback_integration'); next()">Yes</button>
-    <button type="button" onclick="recordNoFeature('feedback_integration'); next()">No</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
- 
-
-
- 
-
-<div class="form-screen" id="final-choice">
-  <h2>What would you like to do next?</h2>
-  <div class="button-row">
-    <button type="button" onclick="showScreen('ownership-choice')">I want to start my website ASAP</button>
-    <button type="button" onclick="window.location.href='https://yourwebsite.com/contact'">I need more info</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
-<div class="form-screen" id="ownership-choice">
-  <h2>Do you want to own the website outright or prefer monthly support including hosting and maintenance?</h2>
-  <div class="button-row">
-    <button type="button" class="own-outright">Own Outright</button>
-    <button type="button" class="monthly-support">Monthly Support</button>
-    <button type="button" class="back-button" onclick="prev()">Back</button>
-  </div>
-</div>
-
- 
-<div class="form-screen" id="recommended-plan-screen">
-  <h2>Your Recommended Plan</h2>
-
-
- <div class="pricing-container">
-
-  <!-- Basic Plan -->
-  <div class="pricing-card" data-plan="basic" data-animate>
-    <h3>Basic</h3>
-    <p class="price">£750</p>
-    <ul class="features-list">
-      <li style="margin-bottom: 12px;">Pages - 10</li>
-      <li style="margin-bottom: 12px;">Revisions - 10</li>
-      <li style="margin-bottom: 12px;">Delivery - 15 Days</li>
-    </ul>
-
-
-
-    <!-- PayPal SDK container -->
-    <div class="pay-now-container"></div>
-
-    <small>50% now to secure, 50% on completion</small>
-  </div>
-
-  <!-- Pro Plan -->
-  <div class="pricing-card" data-plan="pro" data-animate>
-    <div class="badge">Recommended</div>
-    <h3>Pro</h3>
-    <p class="price">£1,500</p>
-    <ul class="features-list">
-      <li style="margin-bottom: 12px;">Pages - 20</li>
-      <li style="margin-bottom: 12px;">Revisions - 20</li>
-      <li style="margin-bottom: 12px;">Delivery - 20 Days</li>
-    </ul>
-
-
-
-    <!-- PayPal SDK container -->
-    <div class="pay-now-container"></div>
-
-    <small>50% now to secure, 50% on completion</small>
-  </div>
-
-  <!-- Premium Plan -->
-  <div class="pricing-card" data-plan="premium" data-animate>
-    <h3>Premium</h3>
-    <p class="price">£2,500</p>
-    <ul class="features-list">
-      <li style="margin-bottom: 12px;">Pages - 30</li>
-      <li style="margin-bottom: 12px;">Revisions - 30</li>
-      <li style="margin-bottom: 12px;">Delivery - 30 Days</li>
-    </ul>
-
- 
-
-    <!-- PayPal SDK container -->
-    <div class="pay-now-container"></div>
-
-    <small>50% now to secure, 50% on completion</small>
-  </div>
-
-</div>
-
-
-<script src="https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP"></script>
-
-<script>
-/* ---------- REVISED FUNNEL JS WITH MONTHLY SUPPORT OPTION ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-
-// ------------------ Basic setup ------------------
-let screens = Array.from(document.querySelectorAll(".form-screen"));
-let currentScreen = 0;
-
-const params = new URLSearchParams(window.location.search);
-const codeParam = params.get("code");
-const stepParam = params.get("step");
-
-// Progress Bar Functions
-function updateWaterProgress() {
-  const wave = document.getElementById('progress-wave');
-  if (!wave) return;
-  const progressPercent = ((currentScreen + 1) / screens.length) * 100;
-  wave.style.height = progressPercent + '%';
-}
-
-function updateProgress(currentStep) {
-  const progressBar = document.querySelector('.progress-bar');
-  const progressLabel = document.querySelector('.progress-label');
-  const percent = Math.round((currentStep / screens.length) * 100);
-  if (progressBar) progressBar.style.width = percent + '%';
-  if (progressLabel) progressLabel.textContent = percent + '%';
-}
-
-// ------------------ Screen Navigation ------------------
-function hideAllScreens() {
-  screens.forEach(screen => {
-    screen.classList.remove("active");
-    screen.style.display = "none";
-  });
-}
-
-function showScreen(id) {
-  const screen = document.getElementById(id);
-  if (!screen) return;
-  hideAllScreens();
-  screen.classList.add("active");
-  screen.style.display = "flex";
-  currentScreen = screens.indexOf(screen);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Handle pricing screen display
-  if (screen.id === "recommended-plan-screen") {
-    // Check if monthly was selected in the ownership step, otherwise default to outright
-    const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
-    showRecommendedPlan(planMode);
-  } else if (screen.id === "monthly-plan-screen") { // Retaining this just in case
-    showRecommendedPlan('monthly');
-  }
-  updateWaterProgress();
-  updateProgress(currentScreen + 1);
-}
-
-function next() {
-  if (currentScreen < screens.length - 1) {
-    currentScreen++;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-function prev() {
-  if (currentScreen > 0) {
-    currentScreen--;
-    showScreen(screens[currentScreen].id);
-  }
-}
-
-window.showScreen = showScreen;
-window.next = next;
-window.prev = prev;
-
-// ------------------ User Path & Features ------------------
-let userPath = "";
-const yesFeatures = [];
-const noFeatures = [];
-window.ownershipChoice = ""; // Ensure it's globally accessible for use in showScreen
-const featureState = {};
-
-function syncFeatureState() {
-  yesFeatures.length = 0;
-  noFeatures.length = 0;
-  Object.entries(featureState).forEach(([f, isYes]) => {
-    if (isYes) yesFeatures.push(f);
-    else noFeatures.push(f);
-  });
-  const hiddenFeatures = document.getElementById('hiddenFeatures');
-  if (hiddenFeatures) hiddenFeatures.value = yesFeatures.join(", ");
-  
-  // Re-render plan if pricing screen is active
-  if (document.getElementById("recommended-plan-screen")?.classList.contains("active")) {
-     const planMode = window.ownershipChoice === 'Monthly Support' ? 'monthly' : 'outright';
-    showRecommendedPlan(planMode);
-  }
-  
-  console.log("Current YES Features:", yesFeatures);
-}
-
-window.setPath = (path) => userPath = path;
-window.recordFeature = (feature) => { featureState[feature] = true; syncFeatureState(); };
-window.recordNoFeature = (feature) => { featureState[feature] = false; syncFeatureState(); };
-
-
-// ------------------ Ownership Button Logic ------------------
-
-/**
- * Sets up the button handlers for the 'ownership-choice' screen.
- */
-function setupOwnershipButtons() {
-  const ownershipScreen = document.getElementById('ownership-choice'); 
-  
-  if (!ownershipScreen) {
-      return; 
-  }
-
-  const ownOutrightBtn   = ownershipScreen.querySelector('button.own-outright');
-  const monthlySupportBtn = ownershipScreen.querySelector('button.monthly-support');
-
-  if (ownOutrightBtn) {
-    ownOutrightBtn.onclick = () => {
-      window.ownershipChoice = 'Owned Outright';
-      // Show pricing screen in Outright mode (default)
-      showScreen('recommended-plan-screen'); 
-    };
-  }
-
-  if (monthlySupportBtn) {
-    monthlySupportBtn.onclick = () => {
-      window.ownershipChoice = 'Monthly Support';
-      
-      // Show pricing screen and force Monthly view
-      showScreen('recommended-plan-screen');
-      showRecommendedPlan('monthly'); 
-    };
-  }
-}
-
-// Call the function to set up the new button logic after the DOM is ready
-setTimeout(setupOwnershipButtons, 500); 
-
-// ------------------ "I Want This Concept" Button ------------------
-document.querySelectorAll(".want-concept").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const code = btn.dataset.code;
-    if (!code) return;
-    const funnelURL = `https://doctoc30.github.io/Driving-School-Web-Design-/index.html?code=${encodeURIComponent(code)}&step=4`;
-    window.location.assign(funnelURL);
-  });
-});
-
-// ------------------ Design Code Handling ------------------
-window.goToConcept = () => {
-  const input = document.getElementById('designInput');
-  if (!input) return;
-  const code = input.value.trim();
-  if (!code) {
-    alert("Please enter a design code.");
-    return;
-  }
-  showFilteredTemplate(code);
-};
-
-function showFilteredTemplate(rawCode) {
-  const code = String(rawCode || '').trim().toUpperCase();
-  if (!code) return;
-  hideAllScreens();
-
-  // If the user came in via a URL with a code/step, send them to Q4.
-  if (stepParam === "4") {
-    const designInput = document.getElementById("designInput");
-    if (designInput) designInput.value = code;
-    showScreen("instructor-q4");
-    return;
-  }
-  
-  // This section handles dynamically showing a template result within the funnel
-  let templateScreen = document.getElementById('template-results');
-  if (!templateScreen) {
-    templateScreen = document.createElement('div');
-    templateScreen.id = 'template-results';
-    templateScreen.classList.add('form-screen');
-    document.getElementById('formWrapper').appendChild(templateScreen);
-    screens = Array.from(document.querySelectorAll('.form-screen'));
-  }
-
-  const container = document.createElement('div');
-  container.className = 'template-container';
-  const heading = document.createElement('h2');
-  heading.textContent = `Showing template for code: ${code}`;
-  container.appendChild(heading);
-
-  let foundEl = document.querySelector(`[data-code="${code}"], [data-template-code="${code}"]`);
-  if (!foundEl) foundEl = document.getElementById(code);
-
-  if (foundEl) {
-    const clone = foundEl.cloneNode(true);
-    clone.classList.add('template-preview-clone');
-    clone.style.width = '100%';
-    container.appendChild(clone);
-
-    const buttonRow = document.createElement('div');
-    buttonRow.className = 'button-row';
-    const contBtn = document.createElement('button');
-    contBtn.type = 'button';
-    contBtn.textContent = 'Continue';
-    contBtn.onclick = () => next();
-    buttonRow.appendChild(contBtn);
-    container.appendChild(buttonRow);
-
-    templateScreen.innerHTML = '';
-    templateScreen.appendChild(container);
-    templateScreen.classList.add('active');
-    // Recalculate screens array and current position
-    screens = Array.from(document.querySelectorAll('.form-screen'));
-    currentScreen = screens.indexOf(templateScreen);
-    updateWaterProgress();
-    updateProgress(currentScreen + 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-  }
-  
-  // Fallback if code isn't found locally
-  window.location.href = `https://doctoc30.github.io/Driving-School-Web-Design-/pages/concepts.html?code=${encodeURIComponent(code)}&fromFunnel=1`;
-}
-
-
-
-
-function showRecommendedPlan(planTypeInput = 'outright') {
-
-  // Determine correct plan type from funnel input
-  const planType =
-    planTypeInput ||
-    localStorage.getItem("selectedPlanType") ||
-    "outright";
-
-  const isMonthly = planType === "monthly";
-
-  const planCards = Array.from(document.querySelectorAll('#recommended-plan-screen .pricing-card'));
-  const hiddenPlanEl = document.getElementById('hiddenPlan');
-  if (!planCards.length || !hiddenPlanEl) return;
-
-  const yes = yesFeatures.slice();
-
-  const tiers = {
-    basic: ["mobile","live_chat","social","reviews","map","sticky_cta","services_list","photo_gallery","faq","bio","branding"],
-    pro: ["testimonials_slider","delayed_popup","countdown_banner","sticky_contact","lesson_calculator","interactive_gallery","scroll_animations","popup_offer","sticky_bar","stats_counters","book_popup","seo_meta"],
-    premium: ["gift_rewards","lesson_guides","intro_video","expect_guide","progress_tracker","feedback_popup","content_images","package_comparison","weekly_banner","fast_track","premium_calculator","featured_student","seo_meta_premium","certificates","feedback_integration"]
-  };
-
-  const labels = {
-    // BASIC
-    mobile: "Mobile-Optimised Design",
-    live_chat: "live Chat",
-    social: "Social Media Links",
-    reviews: "Google Reviews Section",
-    map: "Google Map Integration",
-    sticky_cta: "Sticky Call-to-Action Button",
-    services_list: "Services List",
-    photo_gallery: "Photo Gallery",
-    faq: "FAQ Section",
-    bio: "Instructor Bio",
-    branding: "Brand Colours + Typography",
-
-    // PRO
-    testimonials_slider: "Testimonials Slider",
-    delayed_popup: "Delayed Offer Popup",
-    countdown_banner: "Countdown Banner",
-    sticky_contact: "Sticky Contact Bar",
-    lesson_calculator: "Lesson Price Calculator",
-    interactive_gallery: "Interactive Image Gallery",
-    scroll_animations: "Scroll Animations",
-    popup_offer: "Timed Popup Offer",
-    sticky_bar: "Sticky Info Bar",
-    stats_counters: "Animated Stats Counters",
-    book_popup: "Book Lesson Popup Form",
-    seo_meta: "Advanced SEO Meta Tags",
-
-    // PREMIUM
-    gift_rewards: "Gift Voucher System",
-    lesson_guides: "Lesson Guides Library",
-    intro_video: "Instructor Intro Video",
-    expect_guide: "‘What to Expect’ Guide",
-    progress_tracker: "Student Progress Tracker",
-    feedback_popup: "Feedback Popup System",
-    content_images: "Professional Content + Imagery",
-    package_comparison: "Package Comparison Table",
-    weekly_banner: "Weekly Promo Banner",
-    fast_track: "Fast-Track Booking System",
-    premium_calculator: "Premium Lesson Calculator",
-    featured_student: "Featured Student Section",
-    seo_meta_premium: "Premium SEO Optimisation",
-    certificates: "Certificate Generator",
-    feedback_integration: "Feedback Integration System",
-
-    // Funnel answer
-    business_type: "Business Type"
-  };
-
-  const tierOrder = ["basic","pro","premium"];
-  const coreDefaults = {
-    basic:["Pages - 10","Revisions - 10","Delivery - 15 Days"],
-    pro:["Pages - 20","Revisions - 20","Delivery - 20 Days"],
-    premium:["Pages - 30","Revisions - 30","Delivery - 30 Days"]
-  };
-
-  const monthlyPrices = { basic:70, pro:100, premium:150 };
-  const outrightPrices = { basic:750, pro:1500, premium:2500 };
-  const setupFees = { basic:100, pro:200, premium:300 };
-
-  // Determine recommended plan
-  const highestTier = yes.some(f => tiers.premium.includes(f)) ? "premium"
-                    : yes.some(f => tiers.pro.includes(f)) ? "pro"
-                    : "basic";
-  const selectedPlanLevel = highestTier;
-
-  // Store for thank-you page
-  localStorage.setItem("selectedPlanLevel", selectedPlanLevel);
-  localStorage.setItem("selectedPlanType", planType);
-  localStorage.setItem("yesFeatures", JSON.stringify(yes));
-
-  if (yes.includes("business_type")) {
-    localStorage.setItem("businessType", localStorage.getItem("businessType") || "Solo Instructor");
-  }
-
-  // Hidden form input
-  hiddenPlanEl.value = `${selectedPlanLevel.charAt(0).toUpperCase() + selectedPlanLevel.slice(1)} (${planType})`;
-
-  function ensurePayPalSdk(cb){
-    if(window.paypal) return cb();
-    if(document.getElementById('paypal-sdk-loader')){
-      const poll = setInterval(()=>{ if(window.paypal){ clearInterval(poll); cb(); } },150);
-      setTimeout(()=>clearInterval(poll),8000);
-      return;
-    }
-    const s = document.createElement('script');
-    s.id='paypal-sdk-loader';
-    s.src='https://www.paypal.com/sdk/js?client-id=ATmv-MljFpeoVfNrMzhSdgvVJapAEGtxE3Ri6DnKhL8if-04au6Om5JluaIIBhNcbmBvOaujd6FCEz4f&currency=GBP';
-    s.onload = ()=>cb();
-    s.onerror = ()=>cb(new Error('paypal-sdk-load-failed'));
-    document.head.appendChild(s);
-  }
-
-  // Update plan cards
-  planCards.forEach(card=>{
-    try{
-      const level = card.dataset.plan?.toLowerCase();
-      if(!level) return;
-
-      const list = card.querySelector(".features-list");
-      const priceEl = card.querySelector(".price");
-      const note = card.querySelector("small");
-      const badge = card.querySelector(".badge");
-      const payContainer = card.querySelector(".pay-now-container");
-      const payBtn = card.querySelector(".pay-now");
-      if(!list || !priceEl || !payContainer) return;
-
-      const priceValue = isMonthly ? monthlyPrices[level] : outrightPrices[level];
-      priceEl.textContent = isMonthly ? `£${priceValue}/month` : `£${priceValue}`;
-      if(note) note.textContent = isMonthly ? `£${setupFees[level]} setup + £${priceValue}/month` : "50% now to secure, 50% on completion";
-      if(badge) badge.style.display = (level===selectedPlanLevel)?'block':'none';
-
-      // --- Features list ---
-      list.innerHTML = "";
-      coreDefaults[level].forEach(f=>{
-        const li = document.createElement("li");
-        li.textContent = f;
-        li.style.marginBottom = "12px";
-        list.appendChild(li);
-      });
-
-      const divider = document.createElement("li");
-      divider.className = "gradient-divider";
-      divider.style.height = "2px";
-      divider.style.margin = "25px 0";
-      divider.style.listStyle = "none";
-      divider.style.background = "linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3))";
-      list.appendChild(divider);
-
-      const currentIndex = tierOrder.indexOf(level);
-      for (let i = 0; i <= currentIndex; i++) {
-        const tierName = tierOrder[i];
-        const tierFeatures = yes.filter(f => tiers[tierName].includes(f));
-        if (!tierFeatures.length) continue;
-
-        const sectionDiv = document.createElement("div");
-        sectionDiv.style.border = "1px solid rgba(255,255,255,0.3)";
-        sectionDiv.style.borderRadius = "8px";
-        sectionDiv.style.padding = "15px 20px";
-        sectionDiv.style.marginTop = "25px";
-        sectionDiv.style.background = "rgba(255,255,255,0.05)";
-        sectionDiv.style.backdropFilter = "blur(4px)";
-        sectionDiv.style.boxShadow = "inset 0 0 10px rgba(255,255,255,0.1)";
-
-        const heading = document.createElement("div");
-        heading.textContent = (tierName === level)
-          ? `${level.charAt(0).toUpperCase() + level.slice(1)} Features`
-          : `Includes from ${tierName.charAt(0).toUpperCase() + tierName.slice(1)}`;
-        heading.style.fontWeight = "700";
-        heading.style.marginBottom = "10px";
-        heading.style.fontSize = "16px";
-        heading.style.color = "#fff";
-        heading.style.borderBottom = "1px solid rgba(255,255,255,0.2)";
-        heading.style.paddingBottom = "6px";
-        sectionDiv.appendChild(heading);
-
-        const ul = document.createElement("ul");
-        ul.style.margin = "10px 0 0 10px";
-        tierFeatures.forEach(f => {
-          const li = document.createElement("li");
-          li.textContent = labels[f];
-          li.style.marginBottom = "8px";
-          ul.appendChild(li);
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo"><i class="fas fa-crown"></i>Elevate<span>Digital</span></a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#valuation">Valuation</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a href="#contact" class="cta-button">Start Your Project</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content fade-in">
+                <div class="value-badge">Valuation: £200,000+</div>
+                <h1>Web Design That <span>Elevates</span> Your Business</h1>
+                <p>We create premium digital experiences for discerning clients. Our £200k valuation reflects our proven track record of delivering exceptional ROI through bespoke web design and development.</p>
+                <a href="#services" class="cta-button">Discover Our Process <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Premium Services</h2>
+                <p>Our exclusive services are tailored to elite businesses seeking exceptional digital presence and measurable results.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Bespoke Web Design</h3>
+                    <p>Custom-designed websites that reflect your brand's essence and drive conversions. We don't use templates—every pixel is intentional.</p>
+                    <div class="service-price">From £15,000</div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>E-Commerce Excellence</h3>
+                    <p>High-conversion online stores with premium UX, seamless payment integration, and inventory management systems.</p>
+                    <div class="service-price">From £25,000</div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Brand Strategy & Digital Growth</h3>
+                    <p>Comprehensive digital strategy including SEO, content marketing, and conversion optimization to maximize your online presence.</p>
+                    <div class="service-price">From £10,000/month</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Signature Projects</h2>
+                <p>A selection of our work for premium clients across various industries.</p>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Luxury Fashion E-commerce" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>Véritas Fashion</h3>
+                        <p>Luxury e-commerce platform increasing sales by 240%</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Financial Services Platform" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>Ascendant Capital</h3>
+                        <p>Fintech dashboard managing £50M+ in assets</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2067&q=80" alt="Wellness Brand Website" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3>Serenity Wellness</h3>
+                        <p>Health brand website with booking system and content hub</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valuation Section -->
+    <section class="section valuation" id="valuation">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Why We're Valued at £200,000+</h2>
+                <p>Our valuation is based on tangible assets, recurring revenue, and exceptional client results.</p>
+            </div>
+            <div class="valuation-box fade-in">
+                <div class="valuation-amount">£200,000+</div>
+                <div class="valuation-subtitle">Current Agency Valuation | Based on 4x Annual Recurring Revenue</div>
+                <div class="valuation-features">
+                    <div class="feature">
+                        <i class="fas fa-coins"></i>
+                        <h4>Recurring Revenue</h4>
+                        <p>£50k+ in annual retainer contracts</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-briefcase"></i>
+                        <h4>Premium Clientele</h4>
+                        <p>25+ high-value retained clients</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-trophy"></i>
+                        <h4>Award-Winning</h4>
+                        <p>7 industry awards in 3 years</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>Proven ROI</h4>
+                        <p>Average 300% ROI for clients</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Ready to Elevate Your Digital Presence?</h2>
+                <p>Partner with a £200k-valued agency that delivers exceptional results. Schedule your consultation today.</p>
+                <a href="#contact-form" class="cta-button">Begin Your Project <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">Elevate<span>Digital</span></a>
+                    <p>A premium web design agency with a proven track record of delivering exceptional digital experiences for discerning clients. Valued at £200,000+ based on our assets, revenue, and client results.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#valuation">Valuation</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 27 Mayfair, London W1J 8AQ</p>
+                    <p><i class="fas fa-phone"></i> +44 (0)20 7123 4567</p>
+                    <p><i class="fas fa-envelope"></i> hello@elevatedigital.co.uk</p>
+                    <p><i class="fas fa-clock"></i> Mon-Fri: 9:00-18:00</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Elevate Digital. All rights reserved. Valuation: £200,000+.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
-        sectionDiv.appendChild(ul);
 
-        const wrapperLi = document.createElement("li");
-        wrapperLi.style.listStyle = "none";
-        wrapperLi.appendChild(sectionDiv);
-        list.appendChild(wrapperLi);
-      }
-
-      // --- PayPal Button ---
-      if(payContainer) payContainer.innerHTML='';
-
-      function attachSdkButton(){
-        if(!window.paypal){
-          console.error('PayPal not ready yet');
-          return;
-        }
-        paypal.Buttons({
-          style:{shape:'rect',color:'gold',label:'paypal',layout:'vertical'},
-          createOrder:(data,actions)=>{
-            return actions.order.create({
-              purchase_units:[{
-                description:`${level.charAt(0).toUpperCase()+level.slice(1)} Website Plan (${planType})`,
-                amount:{value:priceValue.toString(), currency_code:'GBP'}
-              }]
+        // Scroll animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = function() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('fade-in');
+                }
             });
-          },
-          onApprove:(data,actions)=>{
-            return actions.order.capture().then(()=>{
-              window.location.href = "https://doctoc30.github.io/Driving-School-Web-Design-/pages/thank-you.html";
+        };
+        
+        // Initial check
+        fadeInOnScroll();
+        
+        // Check on scroll
+        window.addEventListener('scroll', fadeInOnScroll);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
             });
-          },
-          onError:(err)=>{
-            console.error('PayPal error', err);
-          }
-        }).render(payContainer);
-      }
-
-      ensurePayPalSdk(err=>{
-        if(err){
-          console.error(err);
-          return;
-        }
-        attachSdkButton();
-      });
-
-    }catch(err){ console.error(err); }
-  });
-
-  // Highlight recommended plan card
-  planCards.forEach(card=>card.classList.remove("recommended","in-view"));
-  const recCard = planCards.find(c=>c.dataset.plan===selectedPlanLevel);
-  if(recCard){
-    recCard.classList.add("recommended","in-view");
-    setTimeout(()=>recCard.scrollIntoView({behavior:"smooth", block:"center"}),200);
-  }
-
-}
- 
-
-
-// ------------------ Typewriter Animation ------------------
-const typewriterEl = document.getElementById('typewriter');
-const colorRiseEl = document.querySelector('.color-rise');
-
-function startTypewriterAnimation() {
-  if (!typewriterEl) return;
-  typewriterEl.style.opacity = 1;
-  let lines = [];
-  let currentLine = 0;
-  let currentChar = 0;
-  let lineEl = null;
-  const typingSpeed = 100;
-  const lineDelay = 500;
-  const cursor = document.createElement('span');
-  cursor.classList.add('cursor');
-  typewriterEl.appendChild(cursor);
-
-  function setLinesByOrientation() {
-    lines = window.matchMedia("(orientation: landscape)").matches
-      ? ["We build", "your website.", "You approve,", "then pay."]
-      : ["We build", "your", "website.", "You approve,", "then pay."];
-  }
-
-  function typeChar() {
-    if (currentLine >= lines.length) {
-      cursor.remove();
-      setTimeout(() => {
-        typewriterEl.style.animation = 'rocketRise 2s ease forwards';
-        setTimeout(() => showScreen('main-intro-options'), 2000);
-      }, 500);
-      return;
-    }
-    const text = lines[currentLine];
-    if (!lineEl) {
-      lineEl = document.createElement('div');
-      lineEl.classList.add('typed-line');
-      typewriterEl.appendChild(lineEl);
-      lineEl.appendChild(cursor);
-    }
-    if (currentChar < text.length) {
-      lineEl.insertBefore(document.createTextNode(text[currentChar]), cursor);
-      currentChar++;
-      setTimeout(typeChar, typingSpeed);
-    } else {
-      currentLine++;
-      currentChar = 0;
-      lineEl = null;
-      setTimeout(typeChar, lineDelay);
-    }
-  }
-
-  setLinesByOrientation();
-  typeChar();
-
-  window.addEventListener('resize', debounce(() => {
-    currentLine = 0;
-    currentChar = 0;
-    lineEl = null;
-    typewriterEl.textContent = '';
-    typewriterEl.appendChild(cursor);
-    setLinesByOrientation();
-    typeChar();
-  }, 300));
-}
-
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
- 
-// ------------------ Initialize Funnel ------------------
-hideAllScreens();
-
-if (codeParam) {
-  const inputEl = document.getElementById("designInput");
-  if (inputEl) inputEl.value = codeParam;
-  showFilteredTemplate(codeParam);
-} else if (stepParam) {
-  const stepName = `instructor-q${stepParam}`;
-  const screenIndex = screens.findIndex(s => s.id === stepName);
-  if (screenIndex !== -1) {
-    currentScreen = screenIndex;
-    showScreen(stepName);
-  } else {
-    showScreen(screens[0].id);
-  }
-} else {
-  // Only start typewriter animation if no URL parameters are present
-  if (typewriterEl) typewriterEl.classList.add('active');
-  if (colorRiseEl) colorRiseEl.classList.add('active');
-  startTypewriterAnimation();
-}
-
-updateWaterProgress();
-updateProgress(currentScreen + 1);
-
-// ------------------ IntersectionObserver for pricing cards ------------------
-(function initPricingObserver(){
-  const cards = document.querySelectorAll('.pricing-card[data-animate]');
-  if (!cards || cards.length === 0) return; 
-
-  if (!('IntersectionObserver' in window)) {
-    cards.forEach(c => c.classList.add('in-view'));
-    return;
-  }
-
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -12% 0px',
-    threshold: [0, 0.05, 0.15]
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      try {
-        const isVisible = entry.isIntersecting || (typeof entry.intersectionRatio === 'number' && entry.intersectionRatio > 0);
-        if (isVisible) {
-          entry.target.classList.add('in-view');
-          obs.unobserve(entry.target);
-        }
-      } catch (err) {
-        try { entry.target.classList.add('in-view'); } catch(e) {}
-        try { obs.unobserve(entry.target); } catch(e) {}
-      }
-    });
-  }, observerOptions);
-
-  Array.from(cards).forEach(card => observer.observe(card));
-})();
-
-
-
-
-
-
-
-   // ------------------ Hamburger Menu ------------------
-  const hamburger = document.querySelector('.hamburger');
-  const menu = document.querySelector('nav.menu');
-  if (hamburger && menu) {
-    hamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = menu.classList.toggle('open');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', isOpen);
-      menu.setAttribute('aria-hidden', !isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-        menu.classList.remove('open');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', false);
-        menu.setAttribute('aria-hidden', true);
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-
-
-    
-
-}); /* end DOMContentLoaded */
-</script>
-
-
+        });
+        
+        // Display valuation justification on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Elevate Digital - £200k Valuation Justification:");
+            console.log("1. Annual Recurring Revenue: £50,000+");
+            console.log("2. Client Portfolio: 25+ premium retained clients");
+            console.log("3. Intellectual Property: Proprietary design systems & processes");
+            console.log("4. Brand Value: Award-winning reputation in premium market");
+            console.log("5. Asset Value: Premium client contracts & recurring revenue streams");
+            console.log("6. Growth Potential: Scalable business model with 40% YoY growth");
+            console.log("Total Valuation: £200,000 (4x annual revenue)");
+        });
+    </script>
 </body>
 </html>
